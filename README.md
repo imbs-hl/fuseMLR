@@ -87,7 +87,7 @@ lrner_meta <- Lrner$new(id = "weighted",
                                                  hyperparam_list = list()),
                         layer = meta_layer)
 ```
-### Training using the caret corssvalidation with default parameters.
+### Training using corss-validation.
 ### Train the all study
 
 ```R
