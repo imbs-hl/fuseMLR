@@ -1,0 +1,26 @@
+{
+    "id": "41858F83",
+    "path": "~/projects/fuseMLR/R/Model.R",
+    "project_path": "R/Model.R",
+    "type": "r_source",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1719332655993.0,
+    "source_on_save": false,
+    "relative_order": 12,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "127,63",
+        "scrollLine": "120"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1719407463,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1719407463717,
+    "read_only": false,
+    "read_only_alternatives": []
+}

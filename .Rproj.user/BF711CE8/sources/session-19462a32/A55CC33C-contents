@@ -1,0 +1,31 @@
+Package: fuseMLR
+Type: Package
+Title: Fuse machine leaning in R
+Version: 0.1.0
+Author: Cesaire J. K. Fouodo
+Maintainer: The package maintainer <yourself@somewhere.net>
+Description: More about what it does (maybe more than one line)
+    Use four spaces when indenting paragraphs within the Description.
+License: GPL
+Encoding: UTF-8
+Imports: 
+    R6,
+    stats,
+    digest
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Collate: 
+    'Data.R'
+    'HashTable.R'
+    'Layer.R'
+    'Lrner.R'
+    'MetaLayer.R'
+    'Model.R'
+    'NewData.R'
+    'Param.R'
+    'ParamLearner.R'
+    'Study.R'
+    'TrainData.R'
+    'entities.R'
+    'weightedMeanLearner.R'
+    'predict.weightedMeanLearner.R'

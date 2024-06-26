@@ -1,0 +1,26 @@
+{
+    "id": "ACBA67AA",
+    "path": "~/projects/fuseMLR/R/MetaLayer.R",
+    "project_path": "R/MetaLayer.R",
+    "type": "r_source",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1719337703976.0,
+    "source_on_save": false,
+    "relative_order": 13,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "76,0",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1719393808,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1719393808035,
+    "read_only": false,
+    "read_only_alternatives": []
+}

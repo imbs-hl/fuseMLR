@@ -1,0 +1,17 @@
+{
+    "dialog-state": {
+        "query": "getTrainLabel",
+        "path": "",
+        "regex": false,
+        "caseSensitive": true,
+        "wholeWord": false,
+        "filePatterns": [],
+        "useGitGrep": false,
+        "excludeGitIgnore": true,
+        "excludeFilePatterns": [],
+        "resultsCount": 0,
+        "errorCount": 0,
+        "replaceErrors": "",
+        "projectRelative": true
+    }
+}
