@@ -17,14 +17,17 @@ For usage in R, see ?fuseMLR in R. Most importantly, see the Examples section.
 
 The provided example, utilizing simulated data, mirrors a common scenario in multi-omics analysis. It involves data collected from three distinct layers (methylation, gene expression, and protein expression), with disease status serving as the response variable. Initially, the data entities are consolidated into a single object. Subsequently, the learner arguments (such as ```ranger```) and feature selection parameters for each entity are specified. Following model training for both the entity-level models and the meta-learner, predictions can be generated for new datasets.
 
+### Load data
+```R
 data("entities")
+```
 
-# Study
+### Study
 ```R
 study <- Study$new(id = "study")
 ```
 
-# Layers
+### Layers
 ```R
 geneexpr <- Layer$new(id = "geneexpr", study = study)
 proteinexpr <- Layer$new(id = "proteinexpr", study = study)
@@ -32,7 +35,7 @@ methylation <- Layer$new(id = "methylation", study = study)
 meta_layer <- MetaLayer$new(id = "meta_layer", study = study)
 ```
 
-# Training data
+### Training data
 ```R
 train_data_geneexpr <- TrainData$new(id = "geneexpr",
                                      layer = geneexpr,
@@ -51,14 +54,16 @@ train_data_methylation <- TrainData$new(id = "methylation",
                                         target = "disease")
 ```
 
-# Learner parameters. Same parameter values at each layer.
+### Learner parameters. Same parameter values at each layer.
 ```R
 same_param <- ParamLearner$new(id = "ParamRanger",
                                param_list = list(probability = TRUE,
                                                  mtry = 1),
                                hyperparam_list = list(num.trees = 1000))
 ```
-# Learner
+
+### Learner
+
 ```R
 lrner_geneexpr <- Lrner$new(id = "ranger",
                             package = "ranger",
@@ -82,8 +87,8 @@ lrner_meta <- Lrner$new(id = "weighted",
                                                  hyperparam_list = list()),
                         layer = meta_layer)
 ```
-# Training using the caret corssvalidation with default parameters.
-# Train the all study
+### Training using the caret corssvalidation with default parameters.
+### Train the all study
 
 ```R
 study$createMetaTrainData(resampling_method = "caret::createFolds",
@@ -96,15 +101,15 @@ trained_study <- study$train(resampling_method = "caret::createFolds",
                                                    k = 2))
 ```
 
-# Create and predict a new study
+### Create and predict a new study
 
-# Create a new study
+#### Create a new study
 
 ```R
 new_study <- Study$new(id = "new_study")
 ```
 
-# A meta_layer is not reuired
+#### A meta_layer is not required
 
 ```R
 new_geneexpr <- Layer$new(id = "geneexpr", study = new_study)
@@ -112,7 +117,7 @@ new_proteinexpr <- Layer$new(id = "proteinexpr", study = new_study)
 new_methylation <- Layer$new(id = "methylation", study = new_study)
 ```
 
-# NewData are required at each layers
+#### NewData are required at each layers
 
 ```R
 new_data_geneexpr <- NewData$new(id = "geneexpr",
