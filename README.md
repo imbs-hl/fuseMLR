@@ -40,7 +40,7 @@ meta_layer <- MetaLayer$new(id = "meta_layer", study = study)
 train_data_geneexpr <- TrainData$new(id = "geneexpr",
                                      layer = geneexpr,
                                      ind_col = "IDS",
-                                     data_frame = entities$training$geneexpr[-10, ],
+                                     data_frame = entities$training$geneexpr,
                                      target = "disease")
 train_data_proteinexpr <- TrainData$new(id = "proteinexpr",
                                         layer = proteinexpr,
