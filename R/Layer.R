@@ -42,7 +42,6 @@ Layer <- R6Class("Layer",
                      cat("Class : Layer\n")
                      cat(sprintf("id    : %s\n", private$id))
                      cat(sprintf("Contains %s object.\n", length(private$hash_table)))
-                     cat("Do not modify its instances manually.\n")
                    },
                    #' @description
                    #' Getter of the current study
@@ -86,7 +85,7 @@ Layer <- R6Class("Layer",
                    #' @param ind_subset [vector()] \cr
                    #'
                    #' @return
-                   #' A new [Study] object with the predicted values is returned.
+                   #' A new [PredictLayer] object with the predicted data is returned.
                    #' @export
                    #'
                    predict = function (new_layer,
@@ -105,15 +104,15 @@ Layer <- R6Class("Layer",
                      }
                      new_data = new_layer$getNewData()
                      # Predicting: Data and model exist on this layer.
-                     # Initialize a layer to store predictions
-                     pred_layer = HashTable$new(id = self$getId())
+
                      model = self$getModel()
-                     pred = model$predict(new_data = new_data,
+                     pred_data = model$predict(new_data = new_data,
                                           ind_subset = ind_subset)
-                     # Store predictions
-                     pred_layer$add2HashTable(key = "predict",
-                                              value = pred,
-                                              .class = "Predict")
+                     # Initialize a predicted layer to store predictions
+                     pred_layer = PredictLayer$new(
+                       id = id
+                     )
+                     pred_data$setPredictLayer(pred_layer)
                      return(pred_layer)
                    },
                    #' @description
@@ -167,6 +166,7 @@ Layer <- R6Class("Layer",
                    getIndIDs = function () {
                      layer_kc = self$getKeyClass()
                      # Stop if training data is missing on this layer.
+                     # FIXME: Restrict this function to TrainData only.
                      if (("NewData" %in% layer_kc[ , "class"])) {
                        # Searching for layer specific new dataset
                        data_key = layer_kc[layer_kc$class == "NewData" ,
@@ -192,7 +192,7 @@ Layer <- R6Class("Layer",
                    #' @return
                    #' The stored [NewData] object is returned.
                    #' @export
-                   #'
+                   # FIXME: This function has been moved to NewLayer, so remove it.
                    getNewData = function () {
                      layer_kc = self$getKeyClass()
                      if (any(c("NewData", "TrainData") %in% layer_kc[ , "class"])) {
@@ -249,7 +249,7 @@ Layer <- R6Class("Layer",
                    #' @return
                    #' The stored predictions are returned.
                    #' @export
-                   #'
+                   # FIXME: Move this function to PredictLayer
                    getPredictions = function () {
                      layer_kc = self$getKeyClass()
                      if (!("Prediction" %in% layer_kc[ , "class"])) {

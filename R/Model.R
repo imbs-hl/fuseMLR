@@ -201,7 +201,12 @@ Model <- R6Class("Model",
                      predicted_obj = data.frame(
                        rbind(predicted_obj,
                              predicted_obj_missing))
-                     return(predicted_obj)
+                     predicted_data = PredictData$new(
+                       id = new_data$getId(),
+                       ind_col = new_data$getIndCol(),
+                       data_frame = predicted_obj
+                     )
+                     return(predicted_data)
                    }
                  ),
                  private = list(

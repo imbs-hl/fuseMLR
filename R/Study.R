@@ -86,7 +86,8 @@ Study <- R6Class("Study",
                    predictLayer = function (new_study,
                                             ind_subset = NULL) {
                      # Initialize a study to store predictions
-                     pred_study = HashTable$new(id = new_study$getId())
+                     # FIXME: Use PredictStudy to create new predicted study
+                     pred_study = PredictStudy$new(id = new_study$getId())
                      layers = new_study$getKeyClass()
                      # This code accesses each layer (except MetaLayer) level
                      # and make predictions for the new layer in input.
@@ -97,10 +98,8 @@ Study <- R6Class("Study",
                        m_layer = self$getFromHashTable(key = k)
                        pred_layer = m_layer$predict(new_layer = new_layer,
                                                     ind_subset = ind_subset)
-                       # Updating the layer specific predictions
-                       pred_study$add2HashTable(key = k,
-                                                value = pred_layer,
-                                                .class = "Predict")
+                       # Add a new predicted layer to the predicted study
+                       pred_layer$setPredictStudy(pred_study)
                      }
                      return(pred_study)
                    },
@@ -135,7 +134,6 @@ Study <- R6Class("Study",
                                                        # FIXME: Use individual ID colname
                                                        train_ids = self$getTargetValues()[train_index, 1L]
                                                        self$trainLayer(ind_subset = train_ids)
-                                                       self$trainLayer(ind_subset = train_ids)
                                                        test_ids = self$getTargetValues()[test_index, 1L]
                                                        pred_study = self$predictLayer(new_study = self,
                                                                                       ind_subset = test_ids)
@@ -144,8 +142,10 @@ Study <- R6Class("Study",
                                                        current_pred = NULL
                                                        for (k in pred_study_kc$key) {
                                                          layer = pred_study$getFromHashTable(key = k)
-                                                         layer_pred = layer$getFromHashTable(key = "predict")
-                                                         current_pred = rbind(current_pred, layer_pred)
+                                                         pred_layer = layer$getFromHashTable(key = "PredictLayer")
+                                                         pred_data = pred_layer$getPredictData()
+                                                         current_pred = pred_data$getPredictData()
+                                                         current_pred = rbind(current_pred, pred_layer)
                                                        }
                                                        return(current_pred)
                                                      })
@@ -171,7 +171,7 @@ Study <- R6Class("Study",
                        meta_layer = self$getFromHashTable(key = meta_layer_key)
                        # FIXME: Move this: Data should be created by the layer.
                        meta_layer$openAccess()
-                       TrainData$new(id = "predicted",
+                       meta_layer$setTrainData(id = "predicted",
                                      ind_col = names(predicted_values_wide)[1L],
                                      data_frame = predicted_values_wide,
                                      layer = meta_layer,
@@ -211,55 +211,6 @@ Study <- R6Class("Study",
                      return(self)
                    },
                    #' @description
-                   #' Creates a new meta dataset based on layer predictions.
-                   #'
-                   #' @param predicted_study [Study()] \cr
-                   #' Predicted study obtained for each layer by \code{predictLayer()}.
-                   #' @return
-                   #' A [NewData] is returned.
-                   #' @export
-                   #'
-                   createMetaNewData = function (predicted_study) {
-                     # predicted_study = self$predictLayer(new_study = new_study,
-                     #                                     ind_subset = ind_subset)
-                     key_class_study = predicted_study$getKeyClass()
-                     predicted_values = NULL
-                     for (k in key_class_study[ , "key"]) {
-                       # FIXME: Maybe define a class Prediction instead of
-                       #        using Hashtable?
-                       pred_layer = predicted_study$getFromHashTable(key = k)
-                       pred = pred_layer$getFromHashTable(key = "predict")
-                       predicted_values = data.frame(rbind(predicted_values,
-                                                           pred))
-                     }
-                     # Will transform meta data.frame into wide format
-                     predicted_values_wide = reshape(predicted_values,
-                                                     idvar = colnames(predicted_values)[2L],
-                                                     timevar = colnames(predicted_values)[1L],
-                                                     direction = "wide")
-                     colname_vector = gsub(pattern = "Prediction.",
-                                           replacement = "",
-                                           x = names(predicted_values_wide))
-                     names(predicted_values_wide) = colname_vector
-                     ind_ids = self$getIndIDs()
-                     predicted_values_wide = merge(x = ind_ids,
-                                                   y = predicted_values_wide,
-                                                   by = colnames(ind_ids)[1L],
-                                                   all.y = TRUE)
-                     # Add layer specific predictions to a new meta layer
-                     meta_layer = self$getMetaLayer()
-                     new_meta_layer = MetaLayer$new(id = meta_layer$getId(),
-                                                     study = predicted_study)
-                     # FIXME: Move this: Data should be created by the layer.
-                     new_meta_layer$openAccess()
-                     new_meta_data = NewData$new(id = "predicted",
-                                                 ind_col = names(predicted_values_wide)[1L],
-                                                 data_frame = predicted_values_wide,
-                                                 layer = new_meta_layer)
-                     new_meta_layer$closeAccess()
-                     return(new_meta_data)
-                   },
-                   #' @description
                    #' Predicts a new study.
                    #'
                    #' @param new_study [Study()] \cr
@@ -278,28 +229,31 @@ Study <- R6Class("Study",
                                                          ind_subset = ind_subset)
                      # 2) Meta layer predicted new data; resume layer specific
                      #    predictions and create a new data.
-                     new_meta_data = self$createMetaNewData(
-                       predicted_study = predicted_study)
-                     # 3) Predict new meta layer by the meta layer
+                     meta_layer_id = self$getMetaLayer()$getId()
+                     new_meta_data = predicted_study$createMetaNewData(
+                       meta_layer_id = meta_layer_id)
+                     # 3) Predict new meta layer by the trained meta layer
                      layers = self$getKeyClass()
                      meta_layer_key = layers[layers$class == "MetaLayer" , "key"]
                      meta_layer = self$getFromHashTable(key = meta_layer_key)
                      predicted_layer = meta_layer$predict(new_layer = new_meta_data$getLayer(),
                                                           ind_subset = ind_subset)
                      # Updating the predicted meta layer
-                     predicted_study$add2HashTable(key = meta_layer_key,
-                                                   value = predicted_layer,
-                                                   .class = "Predict")
+                     # TODO: This is already done by predicting the meta layer. If no error, remove me.
+                     # predicted_study$add2HashTable(key = meta_layer_key,
+                     #                               value = predicted_layer,
+                     #                               .class = "Predict")
                      # Resume predictions
                      key_class_study = predicted_study$getKeyClass()
                      predicted_values = NULL
                      for (k in key_class_study[ , "key"]) {
-                       # FIXME: Maybe define a class Prediction instead of
-                       #        using Hashtable?
+                       # TODO: Please ensure the difference between [PredictData] and
+                       # predicted values (predicted data.frame) when writting the paper.
                        pred_layer = predicted_study$getFromHashTable(key = k)
-                       pred = pred_layer$getFromHashTable(key = "predict")
+                       pred_data = pred_layer$getPredictData()
+                       pred_values = pred_data$getPredictData()
                        predicted_values = data.frame(rbind(predicted_values,
-                                                           pred))
+                                                           pred_values))
                      }
                      # Will transform meta data.frame into wide format
                      predicted_values_wide = reshape(predicted_values,

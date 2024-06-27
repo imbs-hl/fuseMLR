@@ -1,0 +1,97 @@
+#' @title PredictMetaLayer Class
+#'
+#' @description
+#' This class implement a predicted meta layer. A [PredictMetaLayer] can only exist as unique element of a [Study] object.
+#'
+#' A predicted meta layer can only contain a [PredictData] object.
+#'
+#' @export
+#' @importFrom R6 R6Class
+PredictMetaLayer <- R6Class("PredictMetaLayer",
+                     inherit = HashTable,
+                     public = list(
+                       #' @description
+                       #' constructor
+                       #'
+                       #' @param id (`character()`)\cr
+                       #' See class Param
+                       #' @param predict_study (`PredictStudy()`)\cr
+                       #'
+                       initialize = function (id, predict_study) {
+                         super$initialize(id = id)
+                         private$predict_study = predict_study
+                         predict_study$add2HashTable(key = id,
+                                             value = self,
+                                             .class = "PredictMetaLayer")
+                       },
+                       #' @description
+                       #' Printer
+                       #' @param ... (any) \cr
+                       #'
+                       print = function(...) {
+                         cat("Class: PredictMetaLayer\n")
+                         cat("Do not modify its instances manually.\n")
+                         cat(sprintf("id: %s\n", private$id))
+                         cat(sprintf("Contains %s object", length(private$hash_table)))
+                       },
+                       #' @description
+                       #' Getter of the current predicted study
+                       #'
+                       #' @return
+                       #' The current predicted study is returned.
+                       #'
+                       getPredictStudy = function () {
+                         return(private$predict_study)
+                       },
+                       #' @description
+                       #' Getter of the predicted data.
+                       #'
+                       #' @return
+                       #' The stored [PredictData] object is returned.
+                       #' @export
+                       #'
+                       getPredictData = function () {
+                         layer_kc = self$getKeyClass()
+                         if (any(c("PredictData") %in% layer_kc[ , "class"])) {
+                             predict_data_key = layer_kc[layer_kc$class == "PredictData" ,
+                                                     "key"]
+                             predict_data = self$getFromHashTable(key = predict_data_key[1L])
+                           } else {
+                           stop(sprintf("No predicted data on layer %s.", self$getId()))
+                         }
+                         return(predict_data)
+                       },
+                       #' @description
+                       #' Open access to the meta layer. A meta learner is only
+                       #' modifiable if the access is opened.
+                       #'
+                       #'
+                       openAccess = function () {
+                         private$access = TRUE
+                         invisible(self)
+                       },
+                       #' @description
+                       #' Close access to the meta layer to avoid accidental
+                       #' modification.
+                       #'
+                       #'
+                       closeAccess = function () {
+                         private$access = FALSE
+                         invisible(self)
+                       },
+                       #' @description
+                       #' Getter of the current access to the meta layer.
+                       #'
+                       #' @export
+                       getAccess = function () {
+                         return(private$access)
+                       }
+                     ),
+                     private = list(
+                       # The current study
+                       predict_study = NULL,
+                       # Access to the meta layer.
+                       access = FALSE
+                     ),
+                     cloneable = FALSE
+)

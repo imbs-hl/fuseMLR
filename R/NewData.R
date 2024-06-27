@@ -18,20 +18,20 @@ NewData <- R6Class("NewData",
                      #' Column name containing individual IDs.
                      #' @param data_frame (`data.frame()`)\cr
                      #' \code{data.frame} containing data.
-                     #' @param layer (`Layer()`) \cr
+                     #' @param new_layer (`NewLayer()`) \cr
                      #' Layer where to store the current object.
                      initialize = function (id,
                                            ind_col,
                                            data_frame,
-                                           layer) {
+                                           new_layer) {
                        super$initialize(id = id,
                                         ind_col = ind_col,
                                         data_frame = data_frame)
-                       private$layer = layer
+                       private$new_layer = new_layer
                        # Add to object to ht
-                       if ("MetaLayer" %in% class(layer)) {
-                         if (layer$getAccess()) {
-                           layer$add2HashTable(key = private$id,
+                       if ("NewMetaLayer" %in% class(new_layer)) {
+                         if (new_layer$getAccess()) {
+                           new_layer$add2HashTable(key = private$id,
                                                value = self,
                                                .class = "NewData")
                          } else {
@@ -76,13 +76,13 @@ NewData <- R6Class("NewData",
                      #' is returned.
                      #' @export
                      #'
-                     getLayer = function () {
-                       return(private$layer)
+                     getNewLayer = function () {
+                       return(private$new_layer)
                      }
                    ),
                    private = list(
                      # Current layer.
-                     layer = NULL
+                     new_layer = NULL
                    ),
                    cloneable = TRUE
 )

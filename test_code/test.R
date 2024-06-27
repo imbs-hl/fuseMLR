@@ -69,7 +69,7 @@ trained_study <- study$train(resampling_method = "caret::createFolds",
 # Create and predict a new study
 
 # Create a new study
-new_study <- Study$new(id = "new_study")
+new_study <- NewStudy$new(id = "new_study")
 
 # A meta_layer is not reuired
 new_geneexpr <- Layer$new(id = "geneexpr", study = new_study)

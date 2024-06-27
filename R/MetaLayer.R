@@ -102,6 +102,7 @@ MetaLayer <- R6Class("MetaLayer",
                                         self$getId()))
                          }
                          new_data = new_layer$getNewData()
+                         print(new_data)
                          # Predicting: Data and model exist on this layer.
                          # Initialize a layer to store predictions
                          pred_layer = HashTable$new(id = self$getId())
@@ -215,6 +216,35 @@ MetaLayer <- R6Class("MetaLayer",
                        #' @export
                        getAccess = function () {
                          return(private$access)
+                       },
+                       #' @description
+                       #' Create and set an [TrainData] object to the current
+                       #' meta learner.
+                       #'
+                       #' @param id `character()` \cr
+                       #' ID of the [TrainData] object to be instanciated.
+                       #' @param ind_col `character()` \cr
+                       #' Name of individual column IDs.
+                       #' @param data_frame  `data.frame` \cr
+                       #' \code{data.frame} of layer specific predictions.
+                       #' @param meta_layer `Layer()` \cr
+                       #' Layer where to store the [TrainData] object.
+                       #' @param target `character` \cr
+                       #' Name of the target variable
+                       #'
+                       #' @export
+                       # TODO: Please do not export me.
+                       setTrainData = function (id,
+                                                ind_col,
+                                                data_frame,
+                                                meta_layer,
+                                                target) {
+                         TrainData$new(id = id,
+                                       ind_col = ind_col,
+                                       data_frame = data_frame,
+                                       meta_layer = self,
+                                       target = target)
+                       return(self)
                        }
                      ),
                      private = list(

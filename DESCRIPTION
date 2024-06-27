@@ -12,6 +12,7 @@ Imports:
     R6,
     stats,
     digest
+Depends: R (>= 3.6.0)
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Collate: 
@@ -22,8 +23,15 @@ Collate:
     'MetaLayer.R'
     'Model.R'
     'NewData.R'
+    'NewLayer.R'
+    'NewMetaLayer.R'
+    'NewStudy.R'
     'Param.R'
     'ParamLearner.R'
+    'PredictData.R'
+    'PredictLayer.R'
+    'PredictMetaLayer.R'
+    'PredictStudy.R'
     'Study.R'
     'TrainData.R'
     'entities.R'
