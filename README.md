@@ -22,14 +22,16 @@ The provided example, utilizing simulated data, mirrors a common scenario in mul
 data("entities")
 ```
 
-### Training study
+### Training
+
+#### Training study
 ```R
 train_study <- TrainStudy$new(id = "train_study",
                               ind_col = "IDS",
                               target = "disease")
 ```
 
-### Training layers
+#### Training layers
 ```R
 tl_geneexpr <- TrainLayer$new(id = "geneexpr", train_study = train_study)
 tl_proteinexpr <- TrainLayer$new(id = "proteinexpr", train_study = train_study)
@@ -37,7 +39,7 @@ tl_methylation <- TrainLayer$new(id = "methylation", train_study = train_study)
 tl_meta_layer <- TrainMetaLayer$new(id = "meta_layer", train_study = train_study)
 ```
 
-### Training data
+#### Training data
 ```R
 train_data_geneexpr <- TrainData$new(id = "geneexpr",
                                      train_layer = tl_geneexpr,
@@ -50,7 +52,7 @@ train_data_methylation <- TrainData$new(id = "methylation",
                                         data_frame = entities$training$methylation)
 ```
 
-### Learner parameters. Same parameter values at each layer.
+#### Learner parameters. Same parameter values at each layer.
 ```R
 same_param <- ParamLearner$new(id = "ParamRanger",
                                param_list = list(probability = TRUE,
@@ -58,7 +60,7 @@ same_param <- ParamLearner$new(id = "ParamRanger",
                                hyperparam_list = list(num.trees = 1000))
 ```
 
-### Learner
+#### Learner
 
 ```R
 lrner_geneexpr <- Lrner$new(id = "ranger",
@@ -84,8 +86,8 @@ lrner_meta <- Lrner$new(id = "weighted",
                         train_layer = tl_meta_layer)
 
 ```
-### Training using corss-validation.
-### Train the all study
+
+#### Train the all study using corss-validation.
 
 ```R
 trained_study <- train_study$train(resampling_method = "caret::createFolds",
@@ -93,7 +95,9 @@ trained_study <- train_study$train(resampling_method = "caret::createFolds",
                                                          k = 2))
 ```
 
-### Create and predict a new study
+### Predicting
+
+#### Create and predict a new study
 
 #### Create a new study
 
