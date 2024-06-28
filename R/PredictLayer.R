@@ -87,9 +87,18 @@ PredictLayer <- R6Class("PredictLayer",
                           #' The current object
                           #'
                           setPredictStudy = function (predict_study) {
-                            predict_study$add2HashTable(key = id,
-                                                        value = self,
-                                                        .class = "PredictLayer")
+                            if (!is.null(private$predict_study)) {
+                              stop(sprintf("This layer already belong to study",
+                                           private$predict_study$getId()))
+                            } else {
+                              if ("PredictStudy" %in% class(predict_study)) {
+                                predict_study$add2HashTable(key = id,
+                                                            value = self,
+                                                            .class = "PredictLayer")
+                              } else {
+                                stop("A PredictLayer can only belong to a PredictStudy.")
+                              }
+                            }
                             return(self)
                           }
                         ),

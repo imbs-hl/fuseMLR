@@ -22,12 +22,14 @@ A predicted layer can only contain \link{NewData}.
 \item \href{#method-NewLayer-getNewStudy}{\code{NewLayer$getNewStudy()}}
 \item \href{#method-NewLayer-getIndIDs}{\code{NewLayer$getIndIDs()}}
 \item \href{#method-NewLayer-getNewData}{\code{NewLayer$getNewData()}}
+\item \href{#method-NewLayer-checkNewDataExist}{\code{NewLayer$checkNewDataExist()}}
 }
 }
 \if{html}{\out{
 <details><summary>Inherited methods</summary>
 <ul>
 <li><span class="pkg-link" data-pkg="fuseMLR" data-topic="HashTable" data-id="add2HashTable"><a href='../../fuseMLR/html/HashTable.html#method-HashTable-add2HashTable'><code>fuseMLR::HashTable$add2HashTable()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="fuseMLR" data-topic="HashTable" data-id="checkClassExist"><a href='../../fuseMLR/html/HashTable.html#method-HashTable-checkClassExist'><code>fuseMLR::HashTable$checkClassExist()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="fuseMLR" data-topic="HashTable" data-id="getFromHashTable"><a href='../../fuseMLR/html/HashTable.html#method-HashTable-getFromHashTable'><code>fuseMLR::HashTable$getFromHashTable()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="fuseMLR" data-topic="HashTable" data-id="getHashTable"><a href='../../fuseMLR/html/HashTable.html#method-HashTable-getHashTable'><code>fuseMLR::HashTable$getHashTable()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="fuseMLR" data-topic="HashTable" data-id="getId"><a href='../../fuseMLR/html/HashTable.html#method-HashTable-getId'><code>fuseMLR::HashTable$getId()</code></a></span></li>
@@ -110,6 +112,19 @@ Getter of the predicted data stored on the current layer.
 
 \subsection{Returns}{
 The stored \link{NewData} object is returned.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NewLayer-checkNewDataExist"></a>}}
+\if{latex}{\out{\hypertarget{method-NewLayer-checkNewDataExist}{}}}
+\subsection{Method \code{checkNewDataExist()}}{
+Check whether a new data has been already stored.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{NewLayer$checkNewDataExist()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+Boolean value
 }
 }
 }

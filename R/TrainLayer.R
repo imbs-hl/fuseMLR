@@ -30,9 +30,13 @@ TrainLayer <- R6Class("TrainLayer",
                    initialize = function (id, train_study) {
                      super$initialize(id = id)
                      private$train_study = train_study
-                     train_study$add2HashTable(key = id,
-                                         value = self,
-                                         .class = "TrainLayer")
+                     if ("TrainStudy" %in% class(train_study)) {
+                       train_study$add2HashTable(key = id,
+                                                 value = self,
+                                                 .class = "TrainLayer")
+                     } else {
+                       stop("A TrainLayer can only belong to a TrainStudy.")
+                     }
                      private$status = FALSE
                    },
                    #' @description
@@ -282,6 +286,24 @@ TrainLayer <- R6Class("TrainLayer",
                          key = prediction_key[1L])
                      }
                      return(predictions)
+                   },
+                   #' @description
+                   #' Check whether a training data has been already stored.
+                   #'
+                   #' @return
+                   #' Boolean value
+                   #'
+                   checkLrnerExist = function () {
+                     return(super$checkClassExist(.class = "Lrner"))
+                   },
+                   #' @description
+                   #' Check whether a training data has been already stored.
+                   #'
+                   #' @return
+                   #' Boolean value
+                   #'
+                   checkTrainDataExist = function () {
+                     return(super$checkClassExist(.class = "TrainData"))
                    }
                  ),
                  private = list(

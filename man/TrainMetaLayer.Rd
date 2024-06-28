@@ -36,12 +36,15 @@ The meta layer can predict values given a new meta layer.
 \item \href{#method-TrainMetaLayer-closeAccess}{\code{TrainMetaLayer$closeAccess()}}
 \item \href{#method-TrainMetaLayer-getAccess}{\code{TrainMetaLayer$getAccess()}}
 \item \href{#method-TrainMetaLayer-setTrainData}{\code{TrainMetaLayer$setTrainData()}}
+\item \href{#method-TrainMetaLayer-checkLrnerExist}{\code{TrainMetaLayer$checkLrnerExist()}}
+\item \href{#method-TrainMetaLayer-checkTrainDataExist}{\code{TrainMetaLayer$checkTrainDataExist()}}
 }
 }
 \if{html}{\out{
 <details><summary>Inherited methods</summary>
 <ul>
 <li><span class="pkg-link" data-pkg="fuseMLR" data-topic="HashTable" data-id="add2HashTable"><a href='../../fuseMLR/html/HashTable.html#method-HashTable-add2HashTable'><code>fuseMLR::HashTable$add2HashTable()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="fuseMLR" data-topic="HashTable" data-id="checkClassExist"><a href='../../fuseMLR/html/HashTable.html#method-HashTable-checkClassExist'><code>fuseMLR::HashTable$checkClassExist()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="fuseMLR" data-topic="HashTable" data-id="getFromHashTable"><a href='../../fuseMLR/html/HashTable.html#method-HashTable-getFromHashTable'><code>fuseMLR::HashTable$getFromHashTable()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="fuseMLR" data-topic="HashTable" data-id="getHashTable"><a href='../../fuseMLR/html/HashTable.html#method-HashTable-getHashTable'><code>fuseMLR::HashTable$getHashTable()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="fuseMLR" data-topic="HashTable" data-id="getId"><a href='../../fuseMLR/html/HashTable.html#method-HashTable-getId'><code>fuseMLR::HashTable$getId()</code></a></span></li>
@@ -256,6 +259,32 @@ Layer where to store the \link{TrainData} object.}
 Name of the target variable}
 }
 \if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TrainMetaLayer-checkLrnerExist"></a>}}
+\if{latex}{\out{\hypertarget{method-TrainMetaLayer-checkLrnerExist}{}}}
+\subsection{Method \code{checkLrnerExist()}}{
+Check whether a training data has been already stored.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TrainMetaLayer$checkLrnerExist()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+Boolean value
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TrainMetaLayer-checkTrainDataExist"></a>}}
+\if{latex}{\out{\hypertarget{method-TrainMetaLayer-checkTrainDataExist}{}}}
+\subsection{Method \code{checkTrainDataExist()}}{
+Check whether a training data has been already stored.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TrainMetaLayer$checkTrainDataExist()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+Boolean value
 }
 }
 }

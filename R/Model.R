@@ -29,6 +29,7 @@ Model <- R6Class("Model",
                    #' An object is returned.
                    #'
                    #' @export
+                   #FIXME: Do not export me, since a user can not create model itself.
                    #'
                    initialize = function (lrner,
                                           train_data,
@@ -38,9 +39,13 @@ Model <- R6Class("Model",
                      private$train_data = train_data
                      private$base_model = base_model
                      private$train_layer = train_layer
-                     train_layer$add2HashTable(key = sprintf("%sMo", lrner$getId()),
-                                         value = self,
-                                         .class = "Model")
+                     if ("TrainLayer" %in% class(train_layer)) {
+                       train_layer$add2HashTable(key = sprintf("%sMo", lrner$getId()),
+                                                 value = self,
+                                                 .class = "Model")
+                     } else {
+                       stop("A Model can only belong to a TrainLayer")
+                     }
                    },
                    #' @description
                    #' Printer

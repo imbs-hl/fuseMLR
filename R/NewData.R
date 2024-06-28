@@ -27,6 +27,11 @@ NewData <- R6Class("NewData",
                        super$initialize(id = id,
                                         ind_col = ind_col,
                                         data_frame = data_frame)
+                       if (new_layer$checkLrnerExist()) {
+                         stop(sprintf("Only one new data is allowed per new layer.\n The new data %s already exists on the new layer %s.\n",
+                                      private$getId(),
+                                      new_layer$getId()))
+                       }
                        private$new_layer = new_layer
                        # Add to object to ht
                        if ("NewMetaLayer" %in% class(new_layer)) {

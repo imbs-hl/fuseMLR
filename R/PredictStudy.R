@@ -77,15 +77,13 @@ PredictStudy <- R6Class("PredictStudy",
                                               x = names(predicted_values_wide))
                         names(predicted_values_wide) = colname_vector
                         ind_ids = self$getIndIDs()
-                        print(predicted_values_wide)
-                        print(ind_ids)
                         predicted_values_wide = merge(x = ind_ids,
                                                       y = predicted_values_wide,
                                                       by = colnames(ind_ids)[1L],
                                                       all.y = TRUE)
-                        # Add layer specific predictions to a new meta layer
-                        new_meta_layer = MetaLayer$new(id = meta_layer_id,
-                                                       study = self)
+                        # Add layer specific predictions to a new predicted meta layer
+                        new_meta_layer = PredictMetaLayer$new(id = meta_layer_id,
+                                                       predict_study = self)
                         # FIXME: Move this: Data should be created by the layer.
                         new_meta_layer$openAccess()
                         new_meta_data = NewData$new(id = "predicted",

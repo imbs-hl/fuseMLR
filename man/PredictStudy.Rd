@@ -46,6 +46,7 @@ a new study.
 <details><summary>Inherited methods</summary>
 <ul>
 <li><span class="pkg-link" data-pkg="fuseMLR" data-topic="HashTable" data-id="add2HashTable"><a href='../../fuseMLR/html/HashTable.html#method-HashTable-add2HashTable'><code>fuseMLR::HashTable$add2HashTable()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="fuseMLR" data-topic="HashTable" data-id="checkClassExist"><a href='../../fuseMLR/html/HashTable.html#method-HashTable-checkClassExist'><code>fuseMLR::HashTable$checkClassExist()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="fuseMLR" data-topic="HashTable" data-id="getFromHashTable"><a href='../../fuseMLR/html/HashTable.html#method-HashTable-getFromHashTable'><code>fuseMLR::HashTable$getFromHashTable()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="fuseMLR" data-topic="HashTable" data-id="getHashTable"><a href='../../fuseMLR/html/HashTable.html#method-HashTable-getHashTable'><code>fuseMLR::HashTable$getHashTable()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="fuseMLR" data-topic="HashTable" data-id="getId"><a href='../../fuseMLR/html/HashTable.html#method-HashTable-getId'><code>fuseMLR::HashTable$getId()</code></a></span></li>

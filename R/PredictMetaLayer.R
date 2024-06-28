@@ -20,9 +20,13 @@ PredictMetaLayer <- R6Class("PredictMetaLayer",
                        initialize = function (id, predict_study) {
                          super$initialize(id = id)
                          private$predict_study = predict_study
-                         predict_study$add2HashTable(key = id,
-                                             value = self,
-                                             .class = "PredictMetaLayer")
+                         if ("PredictStudy" %in% class(predict_study)) {
+                           predict_study$add2HashTable(key = id,
+                                                       value = self,
+                                                       .class = "PredictMetaLayer")
+                         } else {
+                           stop("A predicted meta layer can only belong to a PredictStudy.")
+                         }
                        },
                        #' @description
                        #' Printer

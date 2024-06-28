@@ -119,6 +119,17 @@ HashTable <- R6Class("HashTable",
                        #' @export
                        getHashTable = function () {
                          return(private$hash_table)
+                       },
+                       #' @description
+                       #' Check whether object from a class has already been stored.
+                       #'
+                       #' @param .class `character()` \cr
+                       #'
+                       #' @return
+                       #' Boolean value
+                       #'
+                       checkClassExist = function (.class) {
+                         return(.class %in% private$key_class$class)
                        }
                      ),
                      private = list(

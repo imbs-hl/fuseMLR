@@ -22,9 +22,13 @@ NewLayer <- R6Class("NewLayer",
                           initialize = function (id, new_study) {
                             super$initialize(id = id)
                             private$new_study = new_study
-                            new_study$add2HashTable(key = id,
-                                                value = self,
-                                                .class = "NewLayer")
+                            if ("NewStudy" %in% class(new_study)) {
+                              new_study$add2HashTable(key = id,
+                                                      value = self,
+                                                      .class = "NewLayer")
+                            } else {
+                              stop("A NewLayer can only belong to a NewStudy.")
+                            }
                           },
                           #' @description
                           #' Printer
@@ -83,6 +87,15 @@ NewLayer <- R6Class("NewLayer",
                               stop(sprintf("No predicted data on layer %s.", self$getId()))
                             }
                             return(predict_data)
+                          },
+                          #' @description
+                          #' Check whether a new data has been already stored.
+                          #'
+                          #' @return
+                          #' Boolean value
+                          #'
+                          checkNewDataExist = function () {
+                            return(super$checkClassExist(.class = "NewData"))
                           }
                         ),
                         private = list(

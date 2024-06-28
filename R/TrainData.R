@@ -33,6 +33,11 @@ TrainData <- R6Class("TrainData",
                                           ind_col = train_layer$getTrainStudy()$getIndCol(),
                                           data_frame = data_frame)
                          private$target = train_layer$getTarget()
+                         if (train_layer$checkLrnerExist()) {
+                           stop(sprintf("Only one training data is allowed per training layer.\n The training data %s already exists on the training layer %s.\n",
+                                        private$getId(),
+                                        train_layer$getId()))
+                         }
                          private$train_layer = train_layer
                          if (length(unique(self$getTargetValues())) > 2) {
                            stop("Only a binary or dichotomous target variable is allowed.")

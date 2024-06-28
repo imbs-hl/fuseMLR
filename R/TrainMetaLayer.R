@@ -256,6 +256,24 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                                             meta_layer = self,
                                             target = target)
                               return(self)
+                            },
+                            #' @description
+                            #' Check whether a training data has been already stored.
+                            #'
+                            #' @return
+                            #' Boolean value
+                            #'
+                            checkLrnerExist = function () {
+                              return(super$checkClassExist(.class = "Lrner"))
+                            },
+                            #' @description
+                            #' Check whether a training data has been already stored.
+                            #'
+                            #' @return
+                            #' Boolean value
+                            #'
+                            checkTrainDataExist = function () {
+                              return(super$checkClassExist(.class = "TrainData"))
                             }
                           ),
                           private = list(

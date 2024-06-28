@@ -34,14 +34,21 @@ Lrner <- R6Class("Lrner",
                      private$package = package
                      private$lrn_fct = lrn_fct
                      private$param = param
+                     if (train_layer$checkLrnerExist()) {
+                       stop(sprintf("Only one learner is allowed per training layer.\n The learner %s already exists on the training layer %s.\n",
+                                    private$getId(),
+                                    train_layer$getId()))
+                     }
                      private$train_layer = train_layer
                      # print(private$model_reg)
                      # Add to object to ht
-                     layer$add2HashTable(key = private$id,
-                                         value = self,
-                                         .class = "Lrner")
-                     # layer is automatically updated in study, since it
-                     # not cloneable.
+                     if ("TrainLayer" %in% class(train_layer)) {
+                       layer$add2HashTable(key = private$id,
+                                           value = self,
+                                           .class = "Lrner")
+                     } else {
+                       stop("A Lrner can only belong to a TrainLayer")
+                     }
                    },
                    #' @description
                    #' Printer

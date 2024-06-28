@@ -17,6 +17,7 @@ Hashtable to contain object entities. Study and layers are extensions of this cl
 \item \href{#method-HashTable-print}{\code{HashTable$print()}}
 \item \href{#method-HashTable-getId}{\code{HashTable$getId()}}
 \item \href{#method-HashTable-getHashTable}{\code{HashTable$getHashTable()}}
+\item \href{#method-HashTable-checkClassExist}{\code{HashTable$checkClassExist()}}
 }
 }
 \if{html}{\out{<hr>}}
@@ -145,5 +146,25 @@ Getter of the current hashtable.
 \if{html}{\out{<div class="r">}}\preformatted{HashTable$getHashTable()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-HashTable-checkClassExist"></a>}}
+\if{latex}{\out{\hypertarget{method-HashTable-checkClassExist}{}}}
+\subsection{Method \code{checkClassExist()}}{
+Check whether object from a class has already been stored.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HashTable$checkClassExist(.class)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{.class}}{\code{character()} \cr}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Boolean value
+}
 }
 }
