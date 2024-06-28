@@ -99,7 +99,7 @@ trained_study <- train_study$train(resampling_method = "caret::createFolds",
 
 ```R
 new_study <- NewStudy$new(id = "new_study", ind_col = "IDS")
-``
+```
 
 ```R
 # A meta_layer is not required
