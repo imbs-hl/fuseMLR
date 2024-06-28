@@ -17,6 +17,7 @@ A predicted meta layer can only contain a \link{PredictData} object.
 \item \href{#method-PredictMetaLayer-new}{\code{PredictMetaLayer$new()}}
 \item \href{#method-PredictMetaLayer-print}{\code{PredictMetaLayer$print()}}
 \item \href{#method-PredictMetaLayer-getPredictStudy}{\code{PredictMetaLayer$getPredictStudy()}}
+\item \href{#method-PredictMetaLayer-getIndIDs}{\code{PredictMetaLayer$getIndIDs()}}
 \item \href{#method-PredictMetaLayer-getPredictData}{\code{PredictMetaLayer$getPredictData()}}
 \item \href{#method-PredictMetaLayer-openAccess}{\code{PredictMetaLayer$openAccess()}}
 \item \href{#method-PredictMetaLayer-closeAccess}{\code{PredictMetaLayer$closeAccess()}}
@@ -84,6 +85,19 @@ Getter of the current predicted study
 
 \subsection{Returns}{
 The current predicted study is returned.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-PredictMetaLayer-getIndIDs"></a>}}
+\if{latex}{\out{\hypertarget{method-PredictMetaLayer-getIndIDs}{}}}
+\subsection{Method \code{getIndIDs()}}{
+Getter of IDS from the current layer.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{PredictMetaLayer$getIndIDs()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+A \code{data.frame} containing individuals IDs values.
 }
 }
 \if{html}{\out{<hr>}}

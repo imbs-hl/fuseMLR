@@ -25,8 +25,7 @@ PredictLayer <- R6Class("PredictLayer",
                           #' @param ... (any) \cr
                           #'
                           print = function (...){
-                            cat("Class : PredictLayer\n")
-                            cat(sprintf("id    : %s\n", private$id))
+                            cat(sprintf("PredictLayer    : %s\n", private$id))
                             cat(sprintf("Contains %s object.\n", length(private$hash_table)))
                           },
                           #' @description
@@ -92,7 +91,7 @@ PredictLayer <- R6Class("PredictLayer",
                                            private$predict_study$getId()))
                             } else {
                               if ("PredictStudy" %in% class(predict_study)) {
-                                predict_study$add2HashTable(key = id,
+                                predict_study$add2HashTable(key = private$id,
                                                             value = self,
                                                             .class = "PredictLayer")
                               } else {

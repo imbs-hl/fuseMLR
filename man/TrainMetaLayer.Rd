@@ -38,6 +38,7 @@ The meta layer can predict values given a new meta layer.
 \item \href{#method-TrainMetaLayer-setTrainData}{\code{TrainMetaLayer$setTrainData()}}
 \item \href{#method-TrainMetaLayer-checkLrnerExist}{\code{TrainMetaLayer$checkLrnerExist()}}
 \item \href{#method-TrainMetaLayer-checkTrainDataExist}{\code{TrainMetaLayer$checkTrainDataExist()}}
+\item \href{#method-TrainMetaLayer-set2NotTrained}{\code{TrainMetaLayer$set2NotTrained()}}
 }
 }
 \if{html}{\out{
@@ -286,5 +287,15 @@ Check whether a training data has been already stored.
 \subsection{Returns}{
 Boolean value
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TrainMetaLayer-set2NotTrained"></a>}}
+\if{latex}{\out{\hypertarget{method-TrainMetaLayer-set2NotTrained}{}}}
+\subsection{Method \code{set2NotTrained()}}{
+Only usefull to reset status FALSE after cross validation.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TrainMetaLayer$set2NotTrained()}\if{html}{\out{</div>}}
+}
+
 }
 }

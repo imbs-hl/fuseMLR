@@ -70,8 +70,6 @@ NewStudy <- R6Class("NewStudy",
                                            x = names(predicted_values_wide))
                      names(predicted_values_wide) = colname_vector
                      ind_ids = self$getIndIDs()
-                     print(predicted_values_wide)
-                     print(ind_ids)
                      predicted_values_wide = merge(x = ind_ids,
                                                    y = predicted_values_wide,
                                                    by = colnames(ind_ids)[1L],

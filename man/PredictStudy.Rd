@@ -40,6 +40,7 @@ a new study.
 \item \href{#method-PredictStudy-createMetaNewData}{\code{PredictStudy$createMetaNewData()}}
 \item \href{#method-PredictStudy-getIndIDs}{\code{PredictStudy$getIndIDs()}}
 \item \href{#method-PredictStudy-getPredictMetaLayer}{\code{PredictStudy$getPredictMetaLayer()}}
+\item \href{#method-PredictStudy-getIndCol}{\code{PredictStudy$getIndCol()}}
 }
 }
 \if{html}{\out{
@@ -61,7 +62,7 @@ a new study.
 \subsection{Method \code{new()}}{
 constructor
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{PredictStudy$new(id)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{PredictStudy$new(id, ind_col)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -69,6 +70,9 @@ constructor
 \describe{
 \item{\code{id}}{(\code{character(1)})\cr
 See class Param}
+
+\item{\code{ind_col}}{(\code{character(0L)})
+Name of column of individuals IDS}
 }
 \if{html}{\out{</div>}}
 }
@@ -136,5 +140,15 @@ Getter of the meta layer.
 \subsection{Returns}{
 Object from class \link{PredictMetaLayer}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-PredictStudy-getIndCol"></a>}}
+\if{latex}{\out{\hypertarget{method-PredictStudy-getIndCol}{}}}
+\subsection{Method \code{getIndCol()}}{
+Getter of the individual column name.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{PredictStudy$getIndCol()}\if{html}{\out{</div>}}
+}
+
 }
 }

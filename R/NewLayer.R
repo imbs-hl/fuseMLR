@@ -79,7 +79,7 @@ NewLayer <- R6Class("NewLayer",
                           #'
                           getNewData = function () {
                             layer_kc = self$getKeyClass()
-                            if ("NewtData" %in% layer_kc[ , "class"]) {
+                            if ("NewData" %in% layer_kc[ , "class"]) {
                               predict_data_key = layer_kc[layer_kc$class == "NewData" ,
                                                           "key"]
                               predict_data = self$getFromHashTable(key = predict_data_key[1L])

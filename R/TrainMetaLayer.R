@@ -47,7 +47,7 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                               cat(sprintf("Status            : %s\n", status))
                               stored_obj = self$getKeyClass()
                               if (!nrow(stored_obj)) {
-                                cat(sprintf("Nb. of objects stroed : %s\n", 0L))
+                                cat("Empty layer.")
                               } else {
                                 cat(sprintf("Nb. of objects stroed : %s\n", nrow(stored_obj)))
                                 print(stored_obj)
@@ -86,6 +86,15 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                               lrner_key = layer_kc[layer_kc$class == "Lrner" , "key"]
                               lrner = self$getFromHashTable(key = lrner_key[1L])
                               model = lrner$train(ind_subset = ind_subset)
+                              # Updating the training status.
+                              if (!private$status) {
+                                # The training layer has not been trained before.
+                                private$train_study$increaseNbTrainedLayer()
+                                private$status = TRUE
+                              } else {
+                                # The training layer has been trained before.
+                                private$status = TRUE
+                              }
                               return(model)
                             },
                             #' @description
@@ -113,18 +122,19 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                                              self$getId()))
                               }
                               new_data = new_layer$getNewData()
-                              print(new_data)
                               # Predicting: Data and model exist on this layer.
                               # Initialize a layer to store predictions
-                              pred_layer = HashTable$new(id = self$getId())
+                              # pred_layer = HashTable$new(id = self$getId())
+                              pred_layer = PredictLayer$new(id = self$getId())
                               model = self$getModel()
                               # Layer specific prediction
                               pred = model$predict(new_data = new_data,
                                                    ind_subset = ind_subset)
                               # Store predictions
+
                               pred_layer$add2HashTable(key = "predict",
                                                        value = pred,
-                                                       .class = "Predict")
+                                                       .class = "PredictData")
 
                               return(pred_layer)
                             },
@@ -251,10 +261,8 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                                                      meta_layer,
                                                      target) {
                               TrainData$new(id = id,
-                                            ind_col = ind_col,
                                             data_frame = data_frame,
-                                            meta_layer = self,
-                                            target = target)
+                                            train_layer = self)
                               return(self)
                             },
                             #' @description
@@ -273,7 +281,13 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                             #' Boolean value
                             #'
                             checkTrainDataExist = function () {
-                              return(super$checkClassExist(.class = "TrainData"))
+                              # Fix predicted20242806 as reserved word
+                              test = super$checkClassExist(.class = "TrainData") & ("predicted20242806" %in% private$key_class$class)
+                            },
+                            #' @description
+                            #' Only usefull to reset status FALSE after cross validation.
+                            set2NotTrained = function () {
+                              private$status = FALSE
                             }
                           ),
                           private = list(

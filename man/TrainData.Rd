@@ -22,6 +22,7 @@ exist as a component of a \link{TrainLayer} or a \link{TrainMetaLayer} object.
 \item \href{#method-TrainData-getTargetValues}{\code{TrainData$getTargetValues()}}
 \item \href{#method-TrainData-getTargetName}{\code{TrainData$getTargetName()}}
 \item \href{#method-TrainData-getTrainLayer}{\code{TrainData$getTrainLayer()}}
+\item \href{#method-TrainData-getNewLayer}{\code{TrainData$getNewLayer()}}
 \item \href{#method-TrainData-clone}{\code{TrainData$clone()}}
 }
 }
@@ -44,7 +45,7 @@ exist as a component of a \link{TrainLayer} or a \link{TrainMetaLayer} object.
 \subsection{Method \code{new()}}{
 Initialize a new object from the current class.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TrainData$new(id, ind_col, data_frame, train_layer, target)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TrainData$new(id, data_frame, train_layer)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -53,17 +54,11 @@ Initialize a new object from the current class.
 \item{\code{id}}{(\code{character()}) \cr
 The Object ID.}
 
-\item{\code{ind_col}}{(\code{character()})\cr
-Column name containing individual IDs.}
-
 \item{\code{data_frame}}{(\code{data.frame()})\cr
 \code{data.frame} containing data.}
 
 \item{\code{train_layer}}{(\code{TrainLayer()}) \cr
 Training layer where to store the current object.}
-
-\item{\code{target}}{(\code{character()}) \cr
-Target variable name.}
 }
 \if{html}{\out{</div>}}
 }
@@ -133,6 +128,20 @@ Getter of the current training layer.
 
 \subsection{Returns}{
 The training layer (from class \link{TrainLayer}) on which the current train data are stored
+is returned.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TrainData-getNewLayer"></a>}}
+\if{latex}{\out{\hypertarget{method-TrainData-getNewLayer}{}}}
+\subsection{Method \code{getNewLayer()}}{
+Getter of the current layer.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TrainData$getNewLayer()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+The layer (from class \link{NewLayer}) on which the current train data are stored
 is returned.
 }
 }

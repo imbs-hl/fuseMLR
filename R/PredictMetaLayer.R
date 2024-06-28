@@ -48,6 +48,28 @@ PredictMetaLayer <- R6Class("PredictMetaLayer",
                          return(private$predict_study)
                        },
                        #' @description
+                       #' Getter of IDS from the current layer.
+                       #'
+                       #' @return
+                       #' A \code{data.frame} containing individuals IDs values.
+                       #' @export
+                       #'
+                       getIndIDs = function () {
+                         layer_kc = self$getKeyClass()
+                         # Stop if training data is missing on this layer.
+                         if (("PredictData" %in% layer_kc[ , "class"])) {
+                           # Searching for layer specific new dataset
+                           data_key = layer_kc[layer_kc$class == "PredictData" ,
+                                               "key"]
+                           current_data = self$getPredictData()
+                         } else {
+                           stop(sprintf("No data on layer %s.", self$getId()))
+                         }
+                         current_data_frame = current_data$getDataFrame()
+                         ids_data = current_data_frame[ , current_data$getIndCol(), drop = FALSE]
+                         return(ids_data)
+                       },
+                       #' @description
                        #' Getter of the predicted data.
                        #'
                        #' @return
@@ -55,6 +77,7 @@ PredictMetaLayer <- R6Class("PredictMetaLayer",
                        #' @export
                        #'
                        getPredictData = function () {
+                         print("I am in PredictMetaLayer")
                          layer_kc = self$getKeyClass()
                          if (any(c("PredictData") %in% layer_kc[ , "class"])) {
                              predict_data_key = layer_kc[layer_kc$class == "PredictData" ,

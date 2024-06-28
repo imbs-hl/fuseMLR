@@ -39,12 +39,12 @@ Model <- R6Class("Model",
                      private$train_data = train_data
                      private$base_model = base_model
                      private$train_layer = train_layer
-                     if ("TrainLayer" %in% class(train_layer)) {
+                     if (any(c("TrainLayer", "TrainMetaLayer") %in% class(train_layer))) {
                        train_layer$add2HashTable(key = sprintf("%sMo", lrner$getId()),
                                                  value = self,
                                                  .class = "Model")
                      } else {
-                       stop("A Model can only belong to a TrainLayer")
+                       stop("A Model can only belong to a TrainLayer or a TrainMetaLayer.")
                      }
                    },
                    #' @description
@@ -165,7 +165,7 @@ Model <- R6Class("Model",
                      # containing a field predictions with predictions.
                      if (is.vector(predicted_obj)) {
                        predicted_obj = data.frame(
-                         layer = private$lrner$getLayer()$getId(),
+                         layer = private$lrner$getTrainLayer()$getId(),
                          id = ind_subset,
                          pred = predicted_obj)
                        pred_colnames = c("Layer",
@@ -178,7 +178,7 @@ Model <- R6Class("Model",
                            stop("Predicted object must either be a vector or a list containing a field named 'predictions'")
                          } else {
                            predicted_obj = data.frame(
-                             layer = private$lrner$getLayer()$getId(),
+                             layer = private$lrner$getTrainLayer()$getId(),
                              id = ind_subset,
                              pred = predicted_obj$predictions)
                            pred_colnames = c("Layer",
@@ -196,7 +196,7 @@ Model <- R6Class("Model",
                      # Add eventual individuals with missing values
                      if (length(missing_ind)) {
                        predicted_obj_missing = data.frame(
-                         layer = private$lrner$getLayer()$getId(),
+                         layer = private$lrner$getTrainLayer()$getId(),
                          id = missing_ind,
                          pred = NA)
                        names(predicted_obj_missing) = pred_colnames

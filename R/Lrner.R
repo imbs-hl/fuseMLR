@@ -34,18 +34,20 @@ Lrner <- R6Class("Lrner",
                      private$package = package
                      private$lrn_fct = lrn_fct
                      private$param = param
+                     if (!any(c("TrainLayer", "TrainMetaLayer") %in% class(train_layer))) {
+                       stop("A Lrner can only belong to a TrainLayer or a TrainMetaLayer object.")
+                     }
                      if (train_layer$checkLrnerExist()) {
                        stop(sprintf("Only one learner is allowed per training layer.\n The learner %s already exists on the training layer %s.\n",
-                                    private$getId(),
+                                    self$getId(),
                                     train_layer$getId()))
                      }
                      private$train_layer = train_layer
-                     # print(private$model_reg)
                      # Add to object to ht
-                     if ("TrainLayer" %in% class(train_layer)) {
-                       layer$add2HashTable(key = private$id,
-                                           value = self,
-                                           .class = "Lrner")
+                     if (any(c("TrainLayer", "TrainMetaLayer") %in% class(train_layer))) {
+                       train_layer$add2HashTable(key = private$id,
+                                                 value = self,
+                                                 .class = "Lrner")
                      } else {
                        stop("A Lrner can only belong to a TrainLayer")
                      }
@@ -72,8 +74,8 @@ Lrner <- R6Class("Lrner",
                    #' @export
                    #'
                    train = function (ind_subset = NULL) {
-                     train_data = private$layer$getTrainData()
-                     if(private$layer$getId() != train_data$getTrainLayer()$getId()) {
+                     train_data = private$train_layer$getTrainData()
+                     if(private$train_layer$getId() != train_data$getTrainLayer()$getId()) {
                        stop("Learner and data must belong to the same layer.")
                      }
                      # Train only on complete data
@@ -103,12 +105,13 @@ Lrner <- R6Class("Lrner",
                      model = Model$new(lrner = self,
                                        train_data = train_data,
                                        base_model = base_model,
-                                       layer = private$layer)
+                                       train_layer = private$train_layer)
                      private$ind_subset = ind_subset
                      # Update learner into the hash table
-                     private$layer$add2HashTable(key = private$id,
-                                         value = self,
-                                         .class = "Lrner")
+                     # TODO: Maybe not needed bacause addressing by reference
+                     private$train_layer$add2HashTable(key = private$id,
+                                                       value = self,
+                                                       .class = "Lrner")
                      return(model)
                    },
                    #' @description

@@ -21,15 +21,21 @@ NewData <- R6Class("NewData",
                      #' @param new_layer (`NewLayer()`) \cr
                      #' Layer where to store the current object.
                      initialize = function (id,
-                                           ind_col,
                                            data_frame,
                                            new_layer) {
+                       ind_col = new_layer$getNewStudy()$getIndCol()
+                       if (!(ind_col %in% colnames(data_frame))) {
+                         stop("Individual column IDS not found in the provided data.frame.")
+                       }
+                       if (!any(c("NewLayer", "NewMetaLayer") %in% class(new_layer))) {
+                         stop("A Newdata can be stored only on a NewLayer or a NewMetaLayer object.")
+                       }
                        super$initialize(id = id,
                                         ind_col = ind_col,
                                         data_frame = data_frame)
-                       if (new_layer$checkLrnerExist()) {
+                       if (new_layer$checkNewDataExist()) {
                          stop(sprintf("Only one new data is allowed per new layer.\n The new data %s already exists on the new layer %s.\n",
-                                      private$getId(),
+                                      private$id,
                                       new_layer$getId()))
                        }
                        private$new_layer = new_layer
@@ -77,7 +83,7 @@ NewData <- R6Class("NewData",
                      #' Getter of the current layer.
                      #'
                      #' @return
-                     #' The layer (from class [TrainLayer]) on which the current train data are stored
+                     #' The layer (from class [NewLayer]) on which the current train data are stored
                      #' is returned.
                      #' @export
                      #'

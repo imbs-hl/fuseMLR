@@ -22,6 +22,7 @@ A predicted meta layer can only contain a \link{NewData} object.
 \item \href{#method-NewMetaLayer-closeAccess}{\code{NewMetaLayer$closeAccess()}}
 \item \href{#method-NewMetaLayer-getAccess}{\code{NewMetaLayer$getAccess()}}
 \item \href{#method-NewMetaLayer-setNewData}{\code{NewMetaLayer$setNewData()}}
+\item \href{#method-NewMetaLayer-checkNewDataExist}{\code{NewMetaLayer$checkNewDataExist()}}
 }
 }
 \if{html}{\out{
@@ -158,6 +159,19 @@ Name of individual column IDs.}
 Layer where to store the \link{NewData} object.}
 }
 \if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NewMetaLayer-checkNewDataExist"></a>}}
+\if{latex}{\out{\hypertarget{method-NewMetaLayer-checkNewDataExist}{}}}
+\subsection{Method \code{checkNewDataExist()}}{
+Check whether a new data has been already stored.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{NewMetaLayer$checkNewDataExist()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+Boolean value
 }
 }
 }

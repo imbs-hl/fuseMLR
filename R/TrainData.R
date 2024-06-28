@@ -16,26 +16,28 @@ TrainData <- R6Class("TrainData",
                        #'
                        #' @param id (`character()`) \cr
                        #' The Object ID.
-                       #' @param ind_col (`character()`)\cr
-                       #' Column name containing individual IDs.
                        #' @param data_frame (`data.frame()`)\cr
                        #' \code{data.frame} containing data.
                        #' @param train_layer (`TrainLayer()`) \cr
                        #' Training layer where to store the current object.
-                       #' @param target (`character()`) \cr
-                       #'  Target variable name.
                        initialize = function (id,
-                                              ind_col,
                                               data_frame,
-                                              train_layer,
-                                              target) {
+                                              train_layer) {
+                         ind_col = train_layer$getTrainStudy()$getIndCol()
+                         target = train_layer$getTrainStudy()$getTarget()
+                         if (!any(c("TrainLayer", "TrainMetaLayer") %in% class(train_layer))) {
+                           stop("A Traindata can belong a TrainLayer or a TrainMetaLayer object.")
+                         }
+                         if (!all(c(ind_col, target) %in% colnames(data_frame))) {
+                           stop("Individual column ID or target variable not found in the provided data.frame.")
+                         }
                          super$initialize(id = id,
                                           ind_col = train_layer$getTrainStudy()$getIndCol(),
                                           data_frame = data_frame)
-                         private$target = train_layer$getTarget()
-                         if (train_layer$checkLrnerExist()) {
+                         private$target = train_layer$getTrainStudy()$getTarget()
+                         if (train_layer$checkTrainDataExist()) {
                            stop(sprintf("Only one training data is allowed per training layer.\n The training data %s already exists on the training layer %s.\n",
-                                        private$getId(),
+                                        private$id,
                                         train_layer$getId()))
                          }
                          private$train_layer = train_layer
@@ -110,6 +112,18 @@ TrainData <- R6Class("TrainData",
                        #' @export
                        #'
                        getTrainLayer = function () {
+                         return(private$train_layer)
+                       },
+                       #' @description
+                       #' Getter of the current layer.
+                       #'
+                       #' @return
+                       #' The layer (from class [NewLayer]) on which the current train data are stored
+                       #' is returned.
+                       #' @export
+                       #'
+                       #FIXME: Maybe rename getNewLayer, getTrainLayer and getPredictLayer as getLayer?
+                       getNewLayer = function () {
                          return(private$train_layer)
                        }
                      ),

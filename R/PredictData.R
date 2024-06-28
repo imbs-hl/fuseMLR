@@ -70,6 +70,9 @@ PredictData <- R6Class("PredictData",
                          #'
                          setPredictLayer = function (predict_layer) {
                            private$predict_layer = predict_layer
+                           predict_layer$add2HashTable(key = private$id,
+                                                       value = self,
+                                                       .class = "PredictData")
                            return(self)
                          }
                        ),

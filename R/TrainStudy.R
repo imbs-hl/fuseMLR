@@ -74,7 +74,7 @@ TrainStudy <- R6Class("TrainStudy",
 
                        # This code accesses each layer (except MetaLayer) level and trains the corres-
                        # ponding learner.
-                       layers = layers[layers$class %in% "Layer", ]
+                       layers = layers[layers$class %in% "TrainLayer", ]
                        for (k in layers$key) {
                          layer = self$getFromHashTable(key = k)
                          layer$train(ind_subset = ind_subset)
@@ -99,12 +99,13 @@ TrainStudy <- R6Class("TrainStudy",
                    predictLayer = function (new_study,
                                             ind_subset = NULL) {
                      # Initialize a Trainstudy to store predictions
-                     # FIXME: Use PredictStudy to create new predicted study
-                     pred_study = PredictStudy$new(id = new_study$getId())
+                     pred_study = PredictStudy$new(id = new_study$getId(),
+                                                   ind_col = new_study$getIndCol())
                      layers = new_study$getKeyClass()
                      # This code accesses each layer (except MetaLayer) level
                      # and make predictions for the new layer in input.
-                     layers = layers[layers$class %in% "TrainLayer", ]
+                     # TODO: A TrainLayer can be predicted as a NewLayer.
+                     layers = layers[layers$class %in% c("NewLayer", "TrainLayer"), ]
                      for (k in layers$key) {
                        new_layer = new_study$getFromHashTable(key = k)
                        new_layer_kc = new_layer$getKeyClass()
@@ -148,17 +149,18 @@ TrainStudy <- R6Class("TrainStudy",
                                                        train_ids = self$getTargetValues()[train_index, 1L]
                                                        self$trainLayer(ind_subset = train_ids)
                                                        test_ids = self$getTargetValues()[test_index, 1L]
+                                                       # TODO: Note: The current object is not a NewStudy, but a TrainStudy object.
                                                        pred_study = self$predictLayer(new_study = self,
                                                                                       ind_subset = test_ids)
                                                        pred_study_kc = pred_study$getKeyClass()
                                                        ## Assess each layer and extract model
                                                        current_pred = NULL
                                                        for (k in pred_study_kc$key) {
-                                                         layer = pred_study$getFromHashTable(key = k)
-                                                         pred_layer = layer$getFromHashTable(key = "PredictLayer")
+                                                         pred_layer = pred_study$getFromHashTable(key = k)
+                                                         # pred_layer = layer$getFromHashTable(key = "PredictLayer")
                                                          pred_data = pred_layer$getPredictData()
-                                                         current_pred = pred_data$getPredictData()
-                                                         current_pred = rbind(current_pred, pred_layer)
+                                                         pred_values = pred_data$getPredictData()
+                                                         current_pred = rbind(current_pred, pred_values)
                                                        }
                                                        return(current_pred)
                                                      })
@@ -184,11 +186,14 @@ TrainStudy <- R6Class("TrainStudy",
                        meta_layer = self$getFromHashTable(key = meta_layer_key)
                        # TODO: Test and remove comment.
                        meta_layer$openAccess()
-                       meta_layer$setTrainData(id = "predicted",
+                       # predicted20242806 this word just serves as temporary key
+                       # TODO: Maybe remove this object from the training meta layer after crossvalidation.
+                       meta_layer$setTrainData(id = "predicted20242806",
                                                ind_col = names(predicted_values_wide)[1L],
                                                data_frame = predicted_values_wide,
-                                               layer = meta_layer,
+                                               meta_layer = meta_layer,
                                                target = colnames(target_df)[2L])
+                       meta_layer$set2NotTrained()
                        meta_layer$closeAccess()
                        return(predicted_values_wide)
                      }
@@ -249,8 +254,14 @@ TrainStudy <- R6Class("TrainStudy",
                      layers = self$getKeyClass()
                      meta_layer_key = layers[layers$class == "TrainMetaLayer", "key"]
                      meta_layer = self$getFromHashTable(key = meta_layer_key)
-                     predicted_layer = meta_layer$predict(new_layer = new_meta_data$getTrainLayer(),
+                     # TODO: getNewLayer maybe rename it getLayer?
+                     predicted_layer = meta_layer$predict(new_layer = new_meta_data$getNewLayer(),
                                                           ind_subset = ind_subset)
+                     # Store final meta predicted values on meta layer
+                     predicted_study$removeFromHashTable(key = predicted_layer$getId())
+                     predicted_study$add2HashTable(key = predicted_layer$getId(),
+                                                    value = predicted_layer,
+                                                    .class = "PredictData")
                      # Updating the predicted meta layer
                      # TODO: This is already done by predicting the meta layer. If no error, remove me.
                      # predicted_study$add2HashTable(key = meta_layer_key,
@@ -356,6 +367,9 @@ TrainStudy <- R6Class("TrainStudy",
                    #' Increase the number of trained layer.
                    increaseNbTrainedLayer = function () {
                      private$nb_trained_layer = private$nb_trained_layer + 1
+                     if (private$nb_trained_layer == length(private$hash_table)) {
+                       private$status = TRUE
+                     }
                    }
                  ),
                  private = list(

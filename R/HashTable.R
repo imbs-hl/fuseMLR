@@ -89,7 +89,7 @@ HashTable <- R6Class("HashTable",
                          if (exists(hash_key, envir = private$hash_table)) {
                            rm(list = hash_key, envir = private$hash_table)
                            rm_index = which(private$key_class$key == key)
-                           private$key_class = private$key_class[ , - rm_index]
+                           private$key_class = private$key_class[- rm_index , ]
                          }
                          invisible(TRUE)
                        },

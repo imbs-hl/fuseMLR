@@ -30,8 +30,11 @@ PredictStudy <- R6Class("PredictStudy",
                       #'
                       #' @param id (`character(1)`)\cr
                       #' See class Param
-                      initialize = function (id) {
+                      #' @param ind_col (`character(0L)`)
+                      #' Name of column of individuals IDS
+                      initialize = function (id, ind_col) {
                         super$initialize(id = id)
+                        private$ind_col = ind_col
                       },
                       #' @description
                       #' Printer
@@ -39,9 +42,8 @@ PredictStudy <- R6Class("PredictStudy",
                       #' @param ... (any) \cr
                       #'
                       print = function (...) {
-                        cat("Class : PredictStudy\n")
-                        cat(sprintf("id    : %s\n", private$id))
-                        cat(sprintf("Contains %s layers\n", length(private$hash_table)))
+                        cat(sprintf("PredictStudy : %s\n", private$id))
+                        cat(sprintf("Nb. layers   : %s\n", length(private$hash_table)))
                       },
                       #' @param meta_layer_id (`character()`) \cr
                       #' ID of the meta layer where the new meta data will be stored.
@@ -82,14 +84,13 @@ PredictStudy <- R6Class("PredictStudy",
                                                       by = colnames(ind_ids)[1L],
                                                       all.y = TRUE)
                         # Add layer specific predictions to a new predicted meta layer
-                        new_meta_layer = PredictMetaLayer$new(id = meta_layer_id,
-                                                       predict_study = self)
+                        new_meta_layer = NewMetaLayer$new(id = meta_layer_id,
+                                                       new_study = self)
                         # FIXME: Move this: Data should be created by the layer.
                         new_meta_layer$openAccess()
                         new_meta_data = NewData$new(id = "predicted",
-                                                    ind_col = names(predicted_values_wide)[1L],
-                                                    data_frame = predicted_values_wide,
-                                                    layer = new_meta_layer)
+                                                    new_layer = new_meta_layer,
+                                                    data_frame = predicted_values_wide)
                         new_meta_layer$closeAccess()
                         return(new_meta_data)
                       },
@@ -131,7 +132,16 @@ PredictStudy <- R6Class("PredictStudy",
                         meta_layer_key = layers[layers$class == "PredictMetaLayer" , "key"]
                         meta_layer = self$getFromHashTable(key = meta_layer_key)
                         return(meta_layer)
+                      },
+                      #' @description
+                      #' Getter of the individual column name.
+                      #' @export
+                      getIndCol = function () {
+                        return(private$ind_col)
                       }
+                    ),
+                    private = list(
+                      ind_col = NULL
                     ),
                     # TODO: Define a deep_clone function for this class.
                     cloneable = FALSE

@@ -19,7 +19,7 @@ NewMetaLayer <- R6Class("NewMetaLayer",
                           #'
                           initialize = function (id, new_study) {
                             super$initialize(id = id)
-                            private$predict_study = new_study
+                            private$new_study = new_study
                             new_study$add2HashTable(key = id,
                                                     value = self,
                                                     .class = "NewMetaLayer")
@@ -29,10 +29,8 @@ NewMetaLayer <- R6Class("NewMetaLayer",
                           #' @param ... (any) \cr
                           #'
                           print = function(...) {
-                            cat("Class: NewtMetaLayer\n")
-                            cat("Do not modify its instances manually.\n")
-                            cat(sprintf("id: %s\n", private$id))
-                            cat(sprintf("Contains %s object", length(private$hash_table)))
+                            cat(sprintf("NewMetaLayer: %s\n", private$id))
+                            cat(sprintf("Contains %s object\n", length(private$hash_table)))
                           },
                           #' @description
                           #' Getter of the current predicted study
@@ -52,7 +50,7 @@ NewMetaLayer <- R6Class("NewMetaLayer",
                           #'
                           getNewData = function () {
                             layer_kc = self$getKeyClass()
-                            if ("newData" %in% layer_kc[ , "class"]) {
+                            if ("NewData" %in% layer_kc[ , "class"]) {
                               new_data_key = layer_kc[layer_kc$class == "NewData" ,
                                                       "key"]
                               new_data = self$getFromHashTable(key = new_data_key[1L])
@@ -110,6 +108,15 @@ NewMetaLayer <- R6Class("NewMetaLayer",
                                         data_frame = data_frame,
                                         meta_layer = self)
                             return(self)
+                          },
+                          #' @description
+                          #' Check whether a new data has been already stored.
+                          #'
+                          #' @return
+                          #' Boolean value
+                          #'
+                          checkNewDataExist = function () {
+                            return(super$checkClassExist(.class = "NewData"))
                           }
                         ),
                         private = list(

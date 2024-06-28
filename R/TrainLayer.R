@@ -53,9 +53,9 @@ TrainLayer <- R6Class("TrainLayer",
                      cat(sprintf("Status        : %s\n", status))
                      stored_obj = self$getKeyClass()
                      if (!nrow(stored_obj)) {
-                       cat(sprintf("Nb. of objects stroed : %s\n", 0L))
+                       cat("Empty layer.")
                      } else {
-                      cat(sprintf("Nb. of objects stroed : %s\n", nrow(stored_obj)))
+                      cat(sprintf("Nb. of objects stored : %s\n", nrow(stored_obj)))
                       print(stored_obj)
                      }
                    },
@@ -135,7 +135,7 @@ TrainLayer <- R6Class("TrainLayer",
                                           ind_subset = ind_subset)
                      # Initialize a predicted layer to store predictions
                      pred_layer = PredictLayer$new(
-                       id = id
+                       id = private$id
                      )
                      pred_data$setPredictLayer(pred_layer)
                      return(pred_layer)
@@ -293,6 +293,7 @@ TrainLayer <- R6Class("TrainLayer",
                    #' @return
                    #' Boolean value
                    #'
+                   #TODO: checkLrnerExist with "s"
                    checkLrnerExist = function () {
                      return(super$checkClassExist(.class = "Lrner"))
                    },

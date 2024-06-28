@@ -42,7 +42,7 @@ A \link{NewData} object can only exist as a component of a \link{NewLayer} or a 
 \subsection{Method \code{new()}}{
 Initialize a new object from the current class.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{NewData$new(id, ind_col, data_frame, new_layer)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{NewData$new(id, data_frame, new_layer)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -51,14 +51,14 @@ Initialize a new object from the current class.
 \item{\code{id}}{(\code{character()}) \cr
 Object ID.}
 
-\item{\code{ind_col}}{(\code{character()})\cr
-Column name containing individual IDs.}
-
 \item{\code{data_frame}}{(\code{data.frame()})\cr
 \code{data.frame} containing data.}
 
 \item{\code{new_layer}}{(\code{NewLayer()}) \cr
 Layer where to store the current object.}
+
+\item{\code{ind_col}}{(\code{character()})\cr
+Column name containing individual IDs.}
 }
 \if{html}{\out{</div>}}
 }
@@ -104,7 +104,7 @@ Getter of the current layer.
 }
 
 \subsection{Returns}{
-The layer (from class \link{TrainLayer}) on which the current train data are stored
+The layer (from class \link{NewLayer}) on which the current train data are stored
 is returned.
 }
 }
