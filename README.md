@@ -1,5 +1,3 @@
-# Please do not test this version!
-
 ### fuseMLR
 Cesaire J. K. Fouodo
 
