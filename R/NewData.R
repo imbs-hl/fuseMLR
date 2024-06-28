@@ -2,7 +2,7 @@
 #'
 #' @description
 #' This class implements [NewData] object to be predicted.
-#' A [NewData] object can only exist as a component of a [Layer] or a [MetaLayer] object.
+#' A [NewData] object can only exist as a component of a [NewLayer] or a [NewMetaLayer] object.
 #' @export
 #' @importFrom R6 R6Class
 #' @seealso [TrainData]
@@ -38,7 +38,7 @@ NewData <- R6Class("NewData",
                            stop("New data cannot not be added manually to a meta layer.")
                          }
                        } else {
-                         layer$add2HashTable(key = private$id,
+                         new_layer$add2HashTable(key = private$id,
                                              value = self,
                                              .class = "NewData")
                        }
@@ -49,7 +49,7 @@ NewData <- R6Class("NewData",
                      #'
                      print = function (...) {
                        cat("Class     : NewData\n")
-                       cat(sprintf("Layer     : %s\n", private$layer$id))
+                       cat(sprintf("Layer     : %s\n", private$new_layer$id))
                        cat(sprintf("name      : %s\n", private$id))
                        cat(sprintf("ind. id.  : %s\n", private$ind_col))
                        cat(sprintf("n         : %s\n", nrow(private$data_frame)))
@@ -72,7 +72,7 @@ NewData <- R6Class("NewData",
                      #' Getter of the current layer.
                      #'
                      #' @return
-                     #' The layer (from class [Layer]) on which the current train data are stored
+                     #' The layer (from class [TrainLayer]) on which the current train data are stored
                      #' is returned.
                      #' @export
                      #'

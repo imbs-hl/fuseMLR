@@ -13,8 +13,6 @@
 #'
 #' @export
 #'
-#' @example R/examples/example.R
-#'
 #' @examples
 #' set.seed(20240624)
 #' x = data.frame(x1 = rnorm(50))

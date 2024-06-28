@@ -5,7 +5,7 @@
 \title{Model Class}
 \description{
 This class implements a model. A \link{Model} object can only exist as element of a
-\link{Layer} or a \link{MetaLayer} object. A \link{Model} object is
+\link{TrainLayer} or a \link{TrainMetaLayer} object. A \link{Model} object is
 automatically created by fitting a learner on a training data.
 
 A \link{Model} object can compute predictions for a \link{NewData} object. See the \code{predict} function below.
@@ -30,7 +30,7 @@ A \link{Model} object can compute predictions for a \link{NewData} object. See t
 \subsection{Method \code{new()}}{
 Constructor of Model class.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Model$new(lrner, train_data, base_model, layer)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Model$new(lrner, train_data, base_model, train_layer)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -45,8 +45,8 @@ Training data.}
 \item{\code{base_model}}{(\code{object()}) \cr
 Base model as returned by the original learn function.}
 
-\item{\code{layer}}{\cr
-The current layer on which the model is stored.}
+\item{\code{train_layer}}{\cr
+The current training layer on which the model is stored.}
 }
 \if{html}{\out{</div>}}
 }

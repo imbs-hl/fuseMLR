@@ -5,11 +5,11 @@
 #' is designed to contain multiple layers, but only one meta layer.
 #'
 #'  A study is structured as followed:
-#' * [Layer]: Can be clinical, gene expression, etc.
+#' * [PredictLayer]: Can be clinical, gene expression, etc.
 #'    - [Lrner]: Specific to each layer, it must be set up by the user.
 #'    - [TrainData]: Specific to each layer, it must be set up by the user.
 #'    - [Model]: Specific to each layer, it is set up by training the learner on the training data.
-#' * [MetaLayer]: Basically a [Layer], but with some specific properties.
+#' * [PredictMetaLayer]: Basically a [PredictLayer], but with some specific properties.
 #'    - [Lrner]: This is the meta learner, it must be set up by the user.
 #'    - [TrainData]: Specific to each layer, it is set up internally after cross-validation.
 #'    - [Model]: Specific to each layer, it is set up by training the learner on the training data.
@@ -21,7 +21,7 @@
 #'
 #' @importFrom R6 R6Class
 #'
-#' @seealso [Layer]
+#' @seealso [TrainLayer]
 PredictStudy <- R6Class("PredictStudy",
                     inherit = HashTable,
                     public = list(
@@ -124,10 +124,10 @@ PredictStudy <- R6Class("PredictStudy",
                       #' Getter of the meta layer.
                       #'
                       #' @return
-                      #' Object from class [MetaLayer]
+                      #' Object from class [PredictMetaLayer]
                       #' @export
                       #'
-                      getMetaLayer = function () {
+                      getPredictMetaLayer = function () {
                         layers = self$getKeyClass()
                         # FIXME: Use PredictMetaLayer instead of class MetaLayer
                         meta_layer_key = layers[layers$class == "PredictMetaLayer" , "key"]

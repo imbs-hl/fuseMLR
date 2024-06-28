@@ -12,7 +12,7 @@
 #'
 #' @importFrom R6 R6Class
 #'
-#' @seealso [Layer]
+#' @seealso [TrainLayer]
 NewStudy <- R6Class("NewStudy",
                  inherit = HashTable,
                  public = list(
@@ -21,8 +21,11 @@ NewStudy <- R6Class("NewStudy",
                    #'
                    #' @param id (`character(1)`)\cr
                    #' See class Param
-                   initialize = function (id) {
+                   #' @param ind_col (`character(0L)`)
+                   #' Name of column of individuals IDS
+                   initialize = function (id, ind_col) {
                      super$initialize(id = id)
+                     private$ind_col = ind_col
                    },
                    #' @description
                    #' Printer
@@ -30,9 +33,9 @@ NewStudy <- R6Class("NewStudy",
                    #' @param ... (any) \cr
                    #'
                    print = function (...) {
-                     cat("Class : NewStudy\n")
-                     cat(sprintf("id    : %s\n", private$id))
-                     cat(sprintf("Contains %s layers\n", length(private$hash_table)))
+                     nb_layers = length(private$hash_table)
+                     cat(sprintf("NewStudy        : %s\n", private$id))
+                     cat(sprintf("Number of layers: %s\n", nb_layers))
                    },
                    #' @param meta_layer_id (`character()`) \cr
                    #' ID of the meta layer where the new meta data will be stored.
@@ -121,7 +124,23 @@ NewStudy <- R6Class("NewStudy",
                      new_meta_layer_key = layers[layers$class == "NewMetaLayer" , "key"]
                      new_meta_layer = self$getFromHashTable(key = new_meta_layer_key)
                      return(new_meta_layer)
+                   },
+                   #' @description
+                   #' Getter of the individual column name.
+                   #' @export
+                   getIndCol = function () {
+                     return(private$ind_col)
+                   },
+                   #' @description
+                   #' Getter of the target variable name.
+                   #' @export
+                   getTarget = function () {
+                     return(private$target)
                    }
+                 ),
+                 private = list(
+                   ind_col = character(0L),
+                   target = character(0L)
                  ),
                  # TODO: Define a deep_clone function for this class.
                  cloneable = FALSE

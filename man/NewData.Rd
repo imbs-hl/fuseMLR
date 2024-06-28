@@ -5,7 +5,7 @@
 \title{NewData Class}
 \description{
 This class implements \link{NewData} object to be predicted.
-A \link{NewData} object can only exist as a component of a \link{Layer} or a \link{MetaLayer} object.
+A \link{NewData} object can only exist as a component of a \link{NewLayer} or a \link{NewMetaLayer} object.
 }
 \seealso{
 \link{TrainData}
@@ -19,7 +19,7 @@ A \link{NewData} object can only exist as a component of a \link{Layer} or a \li
 \item \href{#method-NewData-new}{\code{NewData$new()}}
 \item \href{#method-NewData-print}{\code{NewData$print()}}
 \item \href{#method-NewData-getData}{\code{NewData$getData()}}
-\item \href{#method-NewData-getLayer}{\code{NewData$getLayer()}}
+\item \href{#method-NewData-getNewLayer}{\code{NewData$getNewLayer()}}
 \item \href{#method-NewData-clone}{\code{NewData$clone()}}
 }
 }
@@ -42,7 +42,7 @@ A \link{NewData} object can only exist as a component of a \link{Layer} or a \li
 \subsection{Method \code{new()}}{
 Initialize a new object from the current class.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{NewData$new(id, ind_col, data_frame, layer)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{NewData$new(id, ind_col, data_frame, new_layer)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -57,7 +57,7 @@ Column name containing individual IDs.}
 \item{\code{data_frame}}{(\code{data.frame()})\cr
 \code{data.frame} containing data.}
 
-\item{\code{layer}}{(\code{Layer()}) \cr
+\item{\code{new_layer}}{(\code{NewLayer()}) \cr
 Layer where to store the current object.}
 }
 \if{html}{\out{</div>}}
@@ -95,16 +95,16 @@ The \code{data.frame} without individual ID nor target variables is returned.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NewData-getLayer"></a>}}
-\if{latex}{\out{\hypertarget{method-NewData-getLayer}{}}}
-\subsection{Method \code{getLayer()}}{
+\if{html}{\out{<a id="method-NewData-getNewLayer"></a>}}
+\if{latex}{\out{\hypertarget{method-NewData-getNewLayer}{}}}
+\subsection{Method \code{getNewLayer()}}{
 Getter of the current layer.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{NewData$getLayer()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{NewData$getNewLayer()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-The layer (from class \link{Layer}) on which the current train data are stored
+The layer (from class \link{TrainLayer}) on which the current train data are stored
 is returned.
 }
 }

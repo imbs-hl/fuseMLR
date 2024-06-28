@@ -2,13 +2,13 @@
 % Please edit documentation in R/TrainData.R
 \name{TrainData}
 \alias{TrainData}
-\title{Lrner Class}
+\title{TrainData Class}
 \description{
 This class implements the training data. A \link{TrainData} object can only
-exist as a component of a \link{Layer} or a \link{MetaLayer} object.
+exist as a component of a \link{TrainLayer} or a \link{TrainMetaLayer} object.
 }
 \seealso{
-\link{Layer}, \link{Lrner}, \link{Model}, \link{ParamLearner}, \link{NewData}
+\link{TrainLayer}, \link{Lrner}, \link{Model}, \link{ParamLearner}, \link{NewData}
 }
 \section{Super class}{
 \code{\link[fuseMLR:Data]{fuseMLR::Data}} -> \code{TrainData}
@@ -21,7 +21,7 @@ exist as a component of a \link{Layer} or a \link{MetaLayer} object.
 \item \href{#method-TrainData-getData}{\code{TrainData$getData()}}
 \item \href{#method-TrainData-getTargetValues}{\code{TrainData$getTargetValues()}}
 \item \href{#method-TrainData-getTargetName}{\code{TrainData$getTargetName()}}
-\item \href{#method-TrainData-getLayer}{\code{TrainData$getLayer()}}
+\item \href{#method-TrainData-getTrainLayer}{\code{TrainData$getTrainLayer()}}
 \item \href{#method-TrainData-clone}{\code{TrainData$clone()}}
 }
 }
@@ -44,7 +44,7 @@ exist as a component of a \link{Layer} or a \link{MetaLayer} object.
 \subsection{Method \code{new()}}{
 Initialize a new object from the current class.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TrainData$new(id, ind_col, data_frame, layer, target)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TrainData$new(id, ind_col, data_frame, train_layer, target)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -59,8 +59,8 @@ Column name containing individual IDs.}
 \item{\code{data_frame}}{(\code{data.frame()})\cr
 \code{data.frame} containing data.}
 
-\item{\code{layer}}{(\code{Layer()}) \cr
-Layer where to store the current object.}
+\item{\code{train_layer}}{(\code{TrainLayer()}) \cr
+Training layer where to store the current object.}
 
 \item{\code{target}}{(\code{character()}) \cr
 Target variable name.}
@@ -103,13 +103,13 @@ The \code{data.frame} without individual ID nor target variables is returned.
 \if{html}{\out{<a id="method-TrainData-getTargetValues"></a>}}
 \if{latex}{\out{\hypertarget{method-TrainData-getTargetValues}{}}}
 \subsection{Method \code{getTargetValues()}}{
-Getter of target values stored on the current layer.
+Getter of target values stored on the current training layer.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TrainData$getTargetValues()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-The observed target values stored on the current layer are returned.
+The observed target values stored on the current training layer are returned.
 }
 }
 \if{html}{\out{<hr>}}
@@ -123,16 +123,16 @@ Getter of the target variable name.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TrainData-getLayer"></a>}}
-\if{latex}{\out{\hypertarget{method-TrainData-getLayer}{}}}
-\subsection{Method \code{getLayer()}}{
-Getter of the current layer.
+\if{html}{\out{<a id="method-TrainData-getTrainLayer"></a>}}
+\if{latex}{\out{\hypertarget{method-TrainData-getTrainLayer}{}}}
+\subsection{Method \code{getTrainLayer()}}{
+Getter of the current training layer.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TrainData$getLayer()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TrainData$getTrainLayer()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-The layer (from class \link{Layer}) on which the current train data are stored
+The training layer (from class \link{TrainLayer}) on which the current train data are stored
 is returned.
 }
 }

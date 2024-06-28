@@ -8,7 +8,7 @@
 #'
 #' @export
 #' @importFrom R6 R6Class
-#' @seealso [Study], [Lrner], [TrainData], [NewData] and [Model]
+#' @seealso [TrainStudy], [Lrner], [TrainData], [NewData] and [Model]
 PredictLayer <- R6Class("PredictLayer",
                         inherit = HashTable,
                         public = list(

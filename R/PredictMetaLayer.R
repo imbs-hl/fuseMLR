@@ -1,7 +1,7 @@
 #' @title PredictMetaLayer Class
 #'
 #' @description
-#' This class implement a predicted meta layer. A [PredictMetaLayer] can only exist as unique element of a [Study] object.
+#' This class implement a predicted meta layer. A [PredictMetaLayer] can only exist as unique element of a [TrainStudy] object.
 #'
 #' A predicted meta layer can only contain a [PredictData] object.
 #'

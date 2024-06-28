@@ -2,7 +2,7 @@
 #'
 #' @description
 #' This class implements a learner. A [Lrner] object can only exist as a component of a
-#' [Layer] or a [MetaLayer] object.
+#' [TrainLayer] or a [TrainMetaLayer] object.
 #'
 #' @export
 #'
@@ -23,18 +23,18 @@ Lrner <- R6Class("Lrner",
                    #' Learn parameters.
                    #' @param param (`Param()`) \cr
                    #' Layer on which the learner is stored.
-                   #' @param layer (`Layer()`) \cr
-                   #'  The ID of current parameter object.
+                   #' @param train_layer (`TrainLayer()`) \cr
+                   #'  The training layer where to store the learner.
                    initialize = function (id,
                                           package = NULL,
                                           lrn_fct,
                                           param,
-                                          layer) {
+                                          train_layer) {
                      private$id = id
                      private$package = package
                      private$lrn_fct = lrn_fct
                      private$param = param
-                     private$layer = layer
+                     private$train_layer = train_layer
                      # print(private$model_reg)
                      # Add to object to ht
                      layer$add2HashTable(key = private$id,
@@ -48,9 +48,8 @@ Lrner <- R6Class("Lrner",
                    #' @param ... (any) \cr
                    #'
                    print = function (...) {
-                     cat("Class            : Lrner\n")
-                     cat(sprintf("Layer            : %s\n", private$layer$getId()))
-                     cat(sprintf("id               : %s\n", private$id))
+                     cat(sprintf("Learner          : %s\n", private$id))
+                     cat(sprintf("TrainLayer       : %s\n", private$train_layer$getId()))
                      cat(sprintf("Package          : %s\n", private$package))
                      cat(sprintf("Learn function   : %s\n", private$lrn_fct))
                      cat(sprintf("Param id         : %s\n", private$param$id))
@@ -67,7 +66,7 @@ Lrner <- R6Class("Lrner",
                    #'
                    train = function (ind_subset = NULL) {
                      train_data = private$layer$getTrainData()
-                     if(private$layer$getId() != train_data$getLayer()$getId()) {
+                     if(private$layer$getId() != train_data$getTrainLayer()$getId()) {
                        stop("Learner and data must belong to the same layer.")
                      }
                      # Train only on complete data
@@ -109,11 +108,11 @@ Lrner <- R6Class("Lrner",
                    #' The current layer is returned.
                    #'
                    #' @return
-                   #' [Layer] object.
+                   #' [TrainLayer] object.
                    #' @export
                    #'
-                   getLayer = function () {
-                     return(private$layer)
+                   getTrainLayer = function () {
+                     return(private$train_layer)
                    },
                    #' @description
                    #' Getter of the current learner ID.
@@ -146,8 +145,8 @@ Lrner <- R6Class("Lrner",
                    lrn_fct = NULL,
                    # Parameters (from class [Param]) of the learn function.
                    param = NULL,
-                   # Layer (from class [Layer] or [MetaLayer]) of the current learner.
-                   layer = NULL,
+                   # Training layer (from class [TainLayer] or [TrainMetaLayer]) of the current learner.
+                   train_layer = NULL,
                    # Individuals subset IDs.
                    ind_subset = NULL,
                    # Variable subset IDs.

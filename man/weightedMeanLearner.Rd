@@ -20,7 +20,6 @@ A model object of class \code{weightedMeanLeaner}.
 Layer weights are estimated for each layer based on Brier score.
 }
 \examples{
-study <- Study$new(id = "test_study")
 set.seed(20240624)
 x = data.frame(x1 = rnorm(50))
 y = sample(x = 0:1, size = 50, replace = TRUE)

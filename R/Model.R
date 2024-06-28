@@ -2,7 +2,7 @@
 #'
 #' @description
 #' This class implements a model. A [Model] object can only exist as element of a
-#' [Layer] or a [MetaLayer] object. A [Model] object is
+#' [TrainLayer] or a [TrainMetaLayer] object. A [Model] object is
 #' automatically created by fitting a learner on a training data.
 #'
 #' A [Model] object can compute predictions for a [NewData] object. See the \code{predict} function below.
@@ -22,8 +22,8 @@ Model <- R6Class("Model",
                    #' Training data.
                    #' @param base_model (`object()`) \cr
                    #' Base model as returned by the original learn function.
-                   #' @param layer \cr
-                   #' The current layer on which the model is stored.
+                   #' @param train_layer \cr
+                   #' The current training layer on which the model is stored.
                    #'
                    #' @return
                    #' An object is returned.
@@ -33,12 +33,12 @@ Model <- R6Class("Model",
                    initialize = function (lrner,
                                           train_data,
                                           base_model,
-                                          layer) {
+                                          train_layer) {
                      private$lrner = lrner
                      private$train_data = train_data
                      private$base_model = base_model
-                     private$layer = layer
-                     layer$add2HashTable(key = sprintf("%sMo", lrner$getId()),
+                     private$train_layer = train_layer
+                     train_layer$add2HashTable(key = sprintf("%sMo", lrner$getId()),
                                          value = self,
                                          .class = "Model")
                    },
@@ -120,7 +120,7 @@ Model <- R6Class("Model",
                    #'
                    predict = function (new_data, ind_subset = NULL, ...) {
                      tmp_lrner = self$getLrner()
-                     if(tmp_lrner$getLayer()$getId() != new_data$getLayer()$getId()) {
+                     if(tmp_lrner$getTrainLayer()$getId() != new_data$getNewLayer()$getId()) {
                        stop("Learner and data must belong to the same layer.")
                      }
                      # Predict only on complete data
@@ -214,7 +214,7 @@ Model <- R6Class("Model",
                    lrner = NULL,
                    train_data = NULL,
                    base_model = NULL,
-                   layer = NULL
+                   train_layer = NULL
                  ),
                  cloneable = TRUE
 )

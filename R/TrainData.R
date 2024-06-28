@@ -1,13 +1,13 @@
-#' @title Lrner Class
+#' @title TrainData Class
 #'
 #' @description
 #' This class implements the training data. A [TrainData] object can only
-#' exist as a component of a [Layer] or a [MetaLayer] object.
+#' exist as a component of a [TrainLayer] or a [TrainMetaLayer] object.
 #'
 #' @export
 #'
 #' @importFrom R6 R6Class
-#' @seealso [Layer], [Lrner], [Model], [ParamLearner], [NewData]
+#' @seealso [TrainLayer], [Lrner], [Model], [ParamLearner], [NewData]
 TrainData <- R6Class("TrainData",
                      inherit = Data,
                      public = list(
@@ -20,34 +20,34 @@ TrainData <- R6Class("TrainData",
                        #' Column name containing individual IDs.
                        #' @param data_frame (`data.frame()`)\cr
                        #' \code{data.frame} containing data.
-                       #' @param layer (`Layer()`) \cr
-                       #' Layer where to store the current object.
+                       #' @param train_layer (`TrainLayer()`) \cr
+                       #' Training layer where to store the current object.
                        #' @param target (`character()`) \cr
                        #'  Target variable name.
                        initialize = function (id,
                                               ind_col,
                                               data_frame,
-                                              layer,
+                                              train_layer,
                                               target) {
                          super$initialize(id = id,
-                                          ind_col = ind_col,
+                                          ind_col = train_layer$getTrainStudy()$getIndCol(),
                                           data_frame = data_frame)
-                         private$target = target
-                         private$layer = layer
+                         private$target = train_layer$getTarget()
+                         private$train_layer = train_layer
                          if (length(unique(self$getTargetValues())) > 2) {
                            stop("Only a binary or dichotomous target variable is allowed.")
                          }
                          # Add to object to ht
-                         if ("MetaLayer" %in% class(layer)) {
-                           if (layer$getAccess()) {
-                             layer$add2HashTable(key = private$id,
+                         if ("TrainMetaLayer" %in% class(train_layer)) {
+                           if (train_layer$getAccess()) {
+                             train_layer$add2HashTable(key = private$id,
                                                  value = self,
                                                  .class = "TrainData")
                            } else {
-                             stop("Training data cannot not be added manually to a meta layer.")
+                             stop("Training data cannot not be added manually to a meta training layer.")
                            }
                          } else {
-                           layer$add2HashTable(key = private$id,
+                           train_layer$add2HashTable(key = private$id,
                                                value = self,
                                                .class = "TrainData")
                          }
@@ -57,9 +57,8 @@ TrainData <- R6Class("TrainData",
                        #' @param ... (any) \cr
                        #'
                        print = function (...) {
-                         cat("Class     : TrainData\n")
-                         cat(sprintf("Layer     : %s\n", private$layer$getId()))
-                         cat(sprintf("name      : %s\n", private$id))
+                         cat(sprintf("TrainData : %s\n", private$id))
+                         cat(sprintf("Layer     : %s\n", private$train_layer$getId()))
                          cat(sprintf("ind. id.  : %s\n", private$ind_col))
                          cat(sprintf("target    : %s\n", private$target))
                          cat(sprintf("n         : %s\n", nrow(private$data_frame)))
@@ -80,10 +79,10 @@ TrainData <- R6Class("TrainData",
                          return(tmp_data)
                        },
                        #' @description
-                       #' Getter of target values stored on the current layer.
+                       #' Getter of target values stored on the current training layer.
                        #'
                        #' @return
-                       #' The observed target values stored on the current layer are returned.
+                       #' The observed target values stored on the current training layer are returned.
                        #' @export
                        #'
                        getTargetValues = function () {
@@ -98,20 +97,20 @@ TrainData <- R6Class("TrainData",
                          return(private$target)
                        },
                        #' @description
-                       #' Getter of the current layer.
+                       #' Getter of the current training layer.
                        #'
                        #' @return
-                       #' The layer (from class [Layer]) on which the current train data are stored
+                       #' The training layer (from class [TrainLayer]) on which the current train data are stored
                        #' is returned.
                        #' @export
                        #'
-                       getLayer = function () {
-                         return(private$layer)
+                       getTrainLayer = function () {
+                         return(private$train_layer)
                        }
                      ),
                      private = list(
                        target = character(0L),
-                       layer = NULL
+                       train_layer = NULL
                      ),
                      cloneable = TRUE
 )

@@ -5,7 +5,7 @@
 \title{Lrner Class}
 \description{
 This class implements a learner. A \link{Lrner} object can only exist as a component of a
-\link{Layer} or a \link{MetaLayer} object.
+\link{TrainLayer} or a \link{TrainMetaLayer} object.
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -13,7 +13,7 @@ This class implements a learner. A \link{Lrner} object can only exist as a compo
 \item \href{#method-Lrner-new}{\code{Lrner$new()}}
 \item \href{#method-Lrner-print}{\code{Lrner$print()}}
 \item \href{#method-Lrner-train}{\code{Lrner$train()}}
-\item \href{#method-Lrner-getLayer}{\code{Lrner$getLayer()}}
+\item \href{#method-Lrner-getTrainLayer}{\code{Lrner$getTrainLayer()}}
 \item \href{#method-Lrner-getId}{\code{Lrner$getId()}}
 \item \href{#method-Lrner-getPackage}{\code{Lrner$getPackage()}}
 }
@@ -26,7 +26,7 @@ Initialize a default parameters list.
 
 Learner ID.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Lrner$new(id, package = NULL, lrn_fct, param, layer)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Lrner$new(id, package = NULL, lrn_fct, param, train_layer)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -45,8 +45,8 @@ Learn parameters.}
 \item{\code{param}}{(\code{Param()}) \cr
 Layer on which the learner is stored.}
 
-\item{\code{layer}}{(\code{Layer()}) \cr
-The ID of current parameter object.}
+\item{\code{train_layer}}{(\code{TrainLayer()}) \cr
+The training layer where to store the learner.}
 }
 \if{html}{\out{</div>}}
 }
@@ -90,16 +90,16 @@ The resulting model, from class \link{Model}, is returned.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Lrner-getLayer"></a>}}
-\if{latex}{\out{\hypertarget{method-Lrner-getLayer}{}}}
-\subsection{Method \code{getLayer()}}{
+\if{html}{\out{<a id="method-Lrner-getTrainLayer"></a>}}
+\if{latex}{\out{\hypertarget{method-Lrner-getTrainLayer}{}}}
+\subsection{Method \code{getTrainLayer()}}{
 The current layer is returned.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Lrner$getLayer()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Lrner$getTrainLayer()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-\link{Layer} object.
+\link{TrainLayer} object.
 }
 }
 \if{html}{\out{<hr>}}
