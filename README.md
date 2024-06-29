@@ -1,12 +1,12 @@
 ### fuseMLR
 Cesaire J. K. Fouodo
 
-### Introduction
-This R package offers a unique approach to integrating multiple machine-learning models. Users can train various machine learning models on different data entities, each representing distinct data collection layers. These models are combined into a single meta-learner using a meta-learner framework. When making predictions for new data, the package leverages predictions from each layer, aggregating them to produce a final prediction.
-
 <!-- badges: start -->
   [![R-CMD-check](https://github.com/imbs-hl/fuseMLR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/imbs-hl/fuseMLR/actions/workflows/R-CMD-check.yaml)
   <!-- badges: end -->
+
+### Introduction
+This R package offers a unique approach to integrating multiple machine-learning models. Users can train various machine learning models on different data entities, each representing distinct data collection layers. These models are combined into a single meta-learner using a meta-learner framework. When making predictions for new data, the package leverages predictions from each layer, aggregating them to produce a final prediction.
 
 ### Installation
 Installation from Github:
