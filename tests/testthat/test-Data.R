@@ -1,3 +1,8 @@
-test_that("multiplication works", {
-  expect_equal(2 * 2, 4)
+data("entities")
+test_data <- Data$new(id = "geneexpr",
+                      ind_col = "IDS",
+                      data_frame = entities$training$geneexpr[-10, ])
+test_that("Data instantiates correctly", {
+  expect_true(R6::is.R6(test_data))
+  expect_equal(class(test_data)[1], "Data")
 })
