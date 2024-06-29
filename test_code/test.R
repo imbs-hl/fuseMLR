@@ -1,30 +1,26 @@
 data("entities")
 
-# Study
-study <- Study$new(id = "study")
+# Training study
+train_study <- TrainStudy$new(id = "train_study",
+                              ind_col = "IDS",
+                              target = "disease")
 
-# Layers
-geneexpr <- Layer$new(id = "geneexpr", study = study)
-proteinexpr <- Layer$new(id = "proteinexpr", study = study)
-methylation <- Layer$new(id = "methylation", study = study)
-meta_layer <- MetaLayer$new(id = "meta_layer", study = study)
+# Training layers
+tl_geneexpr <- TrainLayer$new(id = "geneexpr", train_study = train_study)
+tl_proteinexpr <- TrainLayer$new(id = "proteinexpr", train_study = train_study)
+tl_methylation <- TrainLayer$new(id = "methylation", train_study = train_study)
+tl_meta_layer <- TrainMetaLayer$new(id = "meta_layer", train_study = train_study)
 
 # Training data
 train_data_geneexpr <- TrainData$new(id = "geneexpr",
-                                     layer = geneexpr,
-                                     ind_col = "IDS",
-                                     data_frame = entities$training$geneexpr[-10, ],
-                                     target = "disease")
+                                     train_layer = tl_geneexpr,
+                                     data_frame = entities$training$geneexpr[-10, ])
 train_data_proteinexpr <- TrainData$new(id = "proteinexpr",
-                                        layer = proteinexpr,
-                                        ind_col = "IDS",
-                                        data_frame = entities$training$proteinexpr,
-                                        target = "disease")
+                                        train_layer = tl_proteinexpr,
+                                        data_frame = entities$training$proteinexpr)
 train_data_methylation <- TrainData$new(id = "methylation",
-                                        layer = methylation,
-                                        ind_col = "IDS",
-                                        data_frame = entities$training$methylation,
-                                        target = "disease")
+                                        train_layer = tl_methylation,
+                                        data_frame = entities$training$methylation)
 
 # Learner parameters. Same parameter values at each layer.
 same_param <- ParamLearner$new(id = "ParamRanger",
@@ -36,60 +32,56 @@ lrner_geneexpr <- Lrner$new(id = "ranger",
                             package = "ranger",
                             lrn_fct = "ranger",
                             param = same_param,
-                            layer = geneexpr)
+                            train_layer = tl_geneexpr)
 lrner_proteinexpr <- Lrner$new(id = "ranger",
                                package = "ranger",
                                lrn_fct = "ranger",
                                param = same_param,
-                               layer = proteinexpr)
+                               train_layer = tl_proteinexpr)
 lrner_methylation <- Lrner$new(id = "ranger",
                                package = "ranger",
                                lrn_fct = "ranger",
                                param = same_param,
-                               layer = methylation)
+                               train_layer = tl_methylation)
 lrner_meta <- Lrner$new(id = "weighted",
                         lrn_fct = "weightedMeanLearner",
-                        param = ParamLearner$new(id = "ParamWeighted",
+                        param = ParamLrner$new(id = "ParamWeighted",
                                                  param_list = list(),
                                                  hyperparam_list = list()),
-                        layer = meta_layer)
+                        train_layer = tl_meta_layer)
 
 # Training using the caret corssvalidation with default parameters.
 # Train the all study
 
-study$createMetaTrainData(resampling_method = "caret::createFolds",
-                          resampling_arg = list(y = study$getTargetValues()$disease,
-                                                k = 2))
+train_study$createMetaTrainData(resampling_method = "caret::createFolds",
+                                resampling_arg = list(y = train_study$getTargetValues()$disease,
+                                                      k = 2))
 
-study$getTargetValues()
-trained_study <- study$train(resampling_method = "caret::createFolds",
-                             resampling_arg = list(y = study$getTargetValues()$disease,
-                                                   k = 2))
+trained_study <- train_study$train(resampling_method = "caret::createFolds",
+                                   resampling_arg = list(y = train_study$getTargetValues()$disease,
+                                                         k = 2))
 
 # Create and predict a new study
 
 # Create a new study
-new_study <- NewStudy$new(id = "new_study")
+new_study <- NewStudy$new(id = "new_study", ind_col = "IDS")
 
 # A meta_layer is not reuired
-new_geneexpr <- Layer$new(id = "geneexpr", study = new_study)
-new_proteinexpr <- Layer$new(id = "proteinexpr", study = new_study)
-new_methylation <- Layer$new(id = "methylation", study = new_study)
+new_geneexpr <- NewLayer$new(id = "geneexpr", new_study = new_study)
+new_proteinexpr <- NewLayer$new(id = "proteinexpr", new_study = new_study)
+new_methylation <- NewLayer$new(id = "methylation", new_study = new_study)
 
 # NewData are required at each layers
 new_data_geneexpr <- NewData$new(id = "geneexpr",
-                                     layer = new_geneexpr,
-                                     ind_col = "IDS",
-                                     data_frame = entities$testing$geneexpr)
+                                 new_layer = new_geneexpr,
+                                 data_frame = entities$testing$geneexpr)
 new_data_proteinexpr <- NewData$new(id = "proteinexpr",
-                                        layer = new_proteinexpr,
-                                        ind_col = "IDS",
-                                        data_frame = entities$testing$proteinexpr)
+                                    new_layer = new_proteinexpr,
+                                    data_frame = entities$testing$proteinexpr)
 new_data_methylation <- NewData$new(id = "methylation",
-                                        layer = new_methylation,
-                                        ind_col = "IDS",
-                                        data_frame = entities$testing$methylation)
+                                    new_layer = new_methylation,
+                                    data_frame = entities$testing$methylation)
 
 
-tmp_red_study <- study$predict(new_study = new_study)
+tmp_red_study <- train_study$predict(new_study = new_study)
 

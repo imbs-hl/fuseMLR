@@ -54,7 +54,7 @@ train_data_methylation <- TrainData$new(id = "methylation",
 
 #### Learner parameters. Same parameter values at each layer.
 ```R
-same_param <- ParamLearner$new(id = "ParamRanger",
+same_param <- ParamLrner$new(id = "ParamRanger",
                                param_list = list(probability = TRUE,
                                                  mtry = 1),
                                hyperparam_list = list(num.trees = 1000))
@@ -80,7 +80,7 @@ lrner_methylation <- Lrner$new(id = "ranger",
                                train_layer = tl_methylation)
 lrner_meta <- Lrner$new(id = "weighted",
                         lrn_fct = "weightedMeanLearner",
-                        param = ParamLearner$new(id = "ParamWeighted",
+                        param = ParamLrner$new(id = "ParamWeighted",
                                                  param_list = list(),
                                                  hyperparam_list = list()),
                         train_layer = tl_meta_layer)

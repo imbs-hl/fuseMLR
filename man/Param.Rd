@@ -7,7 +7,7 @@
 Implements a parameter set. Objects from this class contain non-tunable parameters.
 }
 \seealso{
-\link{ParamLearner}
+\link{ParamLrner}
 }
 \section{Methods}{
 \subsection{Public methods}{

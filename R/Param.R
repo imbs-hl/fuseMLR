@@ -5,7 +5,7 @@
 #'
 #' @export
 #' @importFrom R6 R6Class
-#' @seealso [ParamLearner]
+#' @seealso [ParamLrner]
 Param <- R6Class("Param",
                      public = list(
                       #' @description

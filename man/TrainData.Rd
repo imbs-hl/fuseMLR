@@ -8,7 +8,7 @@ This class implements the training data. A \link{TrainData} object can only
 exist as a component of a \link{TrainLayer} or a \link{TrainMetaLayer} object.
 }
 \seealso{
-\link{TrainLayer}, \link{Lrner}, \link{Model}, \link{ParamLearner}, \link{NewData}
+\link{TrainLayer}, \link{Lrner}, \link{Model}, \link{ParamLrner}, \link{NewData}
 }
 \section{Super class}{
 \code{\link[fuseMLR:Data]{fuseMLR::Data}} -> \code{TrainData}
