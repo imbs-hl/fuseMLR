@@ -23,7 +23,7 @@ train_data_methylation <- TrainData$new(id = "methylation",
                                         data_frame = entities$training$methylation)
 
 # Learner parameters. Same parameter values at each layer.
-same_param <- ParamLearner$new(id = "ParamRanger",
+same_param <- ParamLrner$new(id = "ParamRanger",
                                param_list = list(probability = TRUE,
                                                  mtry = 1),
                                hyperparam_list = list(num.trees = 1000))
