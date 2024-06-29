@@ -1,6 +1,10 @@
 <!-- badges: start -->
   [![R-CMD-check](https://github.com/imbs-hl/fuseMLR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/imbs-hl/fuseMLR/actions/workflows/R-CMD-check.yaml)
-  <!-- badges: end -->
+<!-- badges: end -->
+
+<!-- badges: start -->
+  [![CRAN downloads](http://www.r-pkg.org/badges/version/fuseMLR)](http://cranlogs.r-pkg.org/badges/grand-total/fuseMLR)
+<!-- badges: end -->  
   
 ### fuseMLR
 Cesaire J. K. Fouodo
