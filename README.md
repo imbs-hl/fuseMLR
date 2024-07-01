@@ -9,7 +9,7 @@
 Cesaire J. K. Fouodo
 
 ### Introduction
-This R package enable fusing of machine learning analysis. As different types of datasets can be collected at different layers for a group of individuals (e.g. clinical characteristics, labor measurements, gene expression, etc) to predict the same target variable or disease, it is commonly a challenge to find a machine learning method appropriate to all layers. Instead of searching for the best method among different candidates, the best approach is to conduct layer specific predictive analysis at each layer with the most appropriated learner, and to aggregate predicted values as meta predicted values.
+This R package enables fusing of machine learning analysis. As different types of datasets can be collected at different layers for a group of individuals (e.g. clinical characteristics, labor measurements, gene expression, etc) to predict the same target variable or disease, it is commonly a challenge to find a machine learning method appropriate to all layers. Instead of searching for the best method among different candidates, the best approach is to conduct layer specific predictive analysis at each layer with the most appropriated learner, and to aggregate predicted values as meta predicted values.
 
 ### Installation
 Installation from Github:
