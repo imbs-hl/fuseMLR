@@ -15,7 +15,7 @@ PredictLayer <- R6Class("PredictLayer",
                           #' @description
                           #' constructor
                           #'
-                          #' @param id (`character()`) \cr
+                          #' @param id (`character(1)`) \cr
                           #' The layer ID.
                           initialize = function (id) {
                             super$initialize(id = id)
@@ -80,7 +80,7 @@ PredictLayer <- R6Class("PredictLayer",
                           #' @description
                           #' Assigns a predicted study to the predicted layer.
                           #'
-                          #' @param predict_study `PredictStudy()` \cr
+                          #' @param predict_study `PredictStudy(1)` \cr
                           #'
                           #' @return
                           #' The current object
@@ -104,6 +104,5 @@ PredictLayer <- R6Class("PredictLayer",
                         private = list(
                           predict_study = NULL
                         ),
-                        # TODO: define a deep_clone function for this class.
                         cloneable = FALSE
 )

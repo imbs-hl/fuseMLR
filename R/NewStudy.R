@@ -21,7 +21,7 @@ NewStudy <- R6Class("NewStudy",
                    #'
                    #' @param id (`character(1)`)\cr
                    #' See class Param
-                   #' @param ind_col (`character(0L)`)
+                   #' @param ind_col (`character(1)`)
                    #' Name of column of individuals IDS
                    initialize = function (id, ind_col) {
                      super$initialize(id = id)
@@ -96,7 +96,7 @@ NewStudy <- R6Class("NewStudy",
                    getIndIDs = function() {
                      # FIXME: Adjust to the Predict class
                      layers = self$getKeyClass()
-                     # This code accesses each layer (except MetaLayer) level
+                     # This code accesses each layer (except the MetaLayer) level
                      # and get the target variable
                      layers = layers[layers$class %in% "NewLayer", ]
                      ids_data = NULL
@@ -140,6 +140,5 @@ NewStudy <- R6Class("NewStudy",
                    ind_col = character(0L),
                    target = character(0L)
                  ),
-                 # TODO: Define a deep_clone function for this class.
                  cloneable = FALSE
 )

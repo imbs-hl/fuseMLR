@@ -21,9 +21,9 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                             #' @description
                             #' constructor
                             #'
-                            #' @param id (`character()`)\cr
+                            #' @param id (`character(1)`)\cr
                             #' See class Param
-                            #' @param train_study (`TrainStudy()`)\cr
+                            #' @param train_study (`TrainStudy(1)`)\cr
                             #'
                             initialize = function (id, train_study) {
                               super$initialize(id = id)
@@ -65,7 +65,7 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                             #' @description
                             #' Trains the current layer.
                             #'
-                            #' @param ind_subset [vector] \cr
+                            #' @param ind_subset `vector(1)` \cr
                             #' ID subset of individuals to be used for training.
                             #'
                             #' @return
@@ -100,8 +100,8 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                             #' @description
                             #' Predicts values for the new layer taking as argument.
                             #'
-                            #' @param new_layer [TrainLayer()] \cr
-                            #' @param ind_subset [vector()] \cr
+                            #' @param new_layer `TrainLayer(1)` \cr
+                            #' @param ind_subset `vector(1)` \cr
                             #'
                             #' @return
                             #' A new study with the predicted values is returned.
@@ -242,15 +242,15 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                             #' Create and set an [TrainData] object to the current
                             #' meta learner.
                             #'
-                            #' @param id `character()` \cr
+                            #' @param id `character(1)` \cr
                             #' ID of the [TrainData] object to be instanciated.
-                            #' @param ind_col `character()` \cr
+                            #' @param ind_col `character(1)` \cr
                             #' Name of individual column IDs.
-                            #' @param data_frame  `data.frame` \cr
+                            #' @param data_frame  `data.frame(1)` \cr
                             #' \code{data.frame} of layer specific predictions.
-                            #' @param meta_layer `Layer()` \cr
+                            #' @param meta_layer `Layer(1)` \cr
                             #' Layer where to store the [TrainData] object.
-                            #' @param target `character` \cr
+                            #' @param target `character(1)` \cr
                             #' Name of the target variable
                             #'
                             #' @export

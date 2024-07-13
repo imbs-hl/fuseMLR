@@ -14,16 +14,16 @@ Lrner <- R6Class("Lrner",
                    #'
                    #'
                    #' Learner ID.
-                   #' @param id (`character()`) \cr
+                   #' @param id (`character(1)`) \cr
                    #' Package that implements the learn function. If NULL, the
                    #' learn function is called from the current environment.
-                   #' @param package (`character()`) \cr
+                   #' @param package (`character(1)`) \cr
                    #' Learn function name.
-                   #' @param lrn_fct (`character()`) \cr
+                   #' @param lrn_fct (`character(1)`) \cr
                    #' Learn parameters.
-                   #' @param param (`Param()`) \cr
+                   #' @param param (`Param(1)`) \cr
                    #' Layer on which the learner is stored.
-                   #' @param train_layer (`TrainLayer()`) \cr
+                   #' @param train_layer (`TrainLayer(1)`) \cr
                    #'  The training layer where to store the learner.
                    initialize = function (id,
                                           package = NULL,
@@ -66,7 +66,7 @@ Lrner <- R6Class("Lrner",
                    #' @description
                    #' Tains the current learner (from class [Lrner]) on the current training data (from class [TrainData]).
                    #'
-                   #' @param ind_subset \cr
+                   #' @param ind_subset `vector(1)` \cr
                    #' Individual ID subset on which the training will be performed.
                    #'
                    #' @return

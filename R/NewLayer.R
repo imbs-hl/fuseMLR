@@ -15,9 +15,9 @@ NewLayer <- R6Class("NewLayer",
                           #' @description
                           #' constructor
                           #'
-                          #' @param id (`character()`)\cr
+                          #' @param id (`character(1)`)\cr
                           #' See class Param
-                          #' @param new_study (`NewStudy()`)\cr
+                          #' @param new_study (`NewStudy(1)`)\cr
                           #'
                           initialize = function (id, new_study) {
                             super$initialize(id = id)

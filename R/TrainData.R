@@ -14,11 +14,11 @@ TrainData <- R6Class("TrainData",
                        #' @description
                        #' Initialize a new object from the current class.
                        #'
-                       #' @param id (`character()`) \cr
+                       #' @param id (`character(1)`) \cr
                        #' The Object ID.
-                       #' @param data_frame (`data.frame()`)\cr
+                       #' @param data_frame (`data.frame(1)`)\cr
                        #' \code{data.frame} containing data.
-                       #' @param train_layer (`TrainLayer()`) \cr
+                       #' @param train_layer (`TrainLayer(1)`) \cr
                        #' Training layer where to store the current object.
                        initialize = function (id,
                                               data_frame,
@@ -122,7 +122,7 @@ TrainData <- R6Class("TrainData",
                        #' is returned.
                        #' @export
                        #'
-                       #FIXME: Maybe rename getNewLayer, getTrainLayer and getPredictLayer as getLayer?
+                       #TODO: Maybe rename getNewLayer, getTrainLayer and getPredictLayer as getLayer?
                        getNewLayer = function () {
                          return(private$train_layer)
                        }

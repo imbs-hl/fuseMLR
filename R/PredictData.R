@@ -12,11 +12,11 @@ PredictData <- R6Class("PredictData",
                          #' @description
                          #' Initialize a new object from the current class.
                          #'
-                         #' @param id (`character()`) \cr
+                         #' @param id (`character(1)`) \cr
                          #' Object ID.
-                         #' @param ind_col (`character()`)\cr
+                         #' @param ind_col (`character(1)`)\cr
                          #' Column name containing individual IDs.
-                         #' @param data_frame (`data.frame()`)\cr
+                         #' @param data_frame (`data.frame(1)`)\cr
                          #' \code{data.frame} containing data.
                          initialize = function (id,
                                                 ind_col,
@@ -63,7 +63,7 @@ PredictData <- R6Class("PredictData",
                          #' @description
                          #' Assigns a predicted layer to the predicted data.
                          #'
-                         #' @param predict_layer `PredictLayer()` \cr
+                         #' @param predict_layer `PredictLayer(1)` \cr
                          #'
                          #' @return
                          #' The current object

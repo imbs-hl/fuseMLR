@@ -23,9 +23,9 @@ TrainLayer <- R6Class("TrainLayer",
                    #' @description
                    #' constructor
                    #'
-                   #' @param id (`character()`)\cr
+                   #' @param id (`character(1)`)\cr
                    #' See class Param
-                   #' @param train_study (`TrainStudy()`)\cr
+                   #' @param train_study (`TrainStudy(1)`)\cr
                    #'
                    initialize = function (id, train_study) {
                      super$initialize(id = id)
@@ -71,7 +71,7 @@ TrainLayer <- R6Class("TrainLayer",
                    #' @description
                    #' Trains the current layer.
                    #'
-                   #' @param ind_subset [vector] \cr
+                   #' @param ind_subset `vector(1)` \cr
                    #' ID subset of individuals to be used for training.
                    #'
                    #' @return
@@ -106,8 +106,8 @@ TrainLayer <- R6Class("TrainLayer",
                    #' @description
                    #' Predicts values for the new layer taking as argument.
                    #'
-                   #' @param new_layer [TrainLayer()] \cr
-                   #' @param ind_subset [vector()] \cr
+                   #' @param new_layer `TrainLayer()` \cr
+                   #' @param ind_subset `vector()` \cr
                    #'
                    #' @return
                    #' A new [PredictLayer] object with the predicted data is returned.

@@ -3,9 +3,9 @@
 #' @description
 #' Layer weights are estimated for each layer based on Brier score.
 #'
-#' @param x `data.frame()` \cr
+#' @param x `data.frame(1)` \cr
 #' \code{data.frame} of predictors.
-#' @param y `vector` \cr
+#' @param y `vector(1)` \cr
 #' Target observations.
 #'
 #' @return

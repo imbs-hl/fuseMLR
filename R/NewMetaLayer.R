@@ -13,9 +13,9 @@ NewMetaLayer <- R6Class("NewMetaLayer",
                           #' @description
                           #' constructor
                           #'
-                          #' @param id (`character()`)\cr
+                          #' @param id (`character(1)`)\cr
                           #' See class Param
-                          #' @param new_study (`NewStudy()`)\cr
+                          #' @param new_study (`NewStudy(1)`)\cr
                           #'
                           initialize = function (id, new_study) {
                             super$initialize(id = id)
@@ -88,13 +88,13 @@ NewMetaLayer <- R6Class("NewMetaLayer",
                           #' Create and set an [NewData] object to the current
                           #' new meta learner.
                           #'
-                          #' @param id `character()` \cr
+                          #' @param id `character(1)` \cr
                           #' ID of the [NewData] object to be instanciated.
-                          #' @param ind_col `character()` \cr
+                          #' @param ind_col `character(1)` \cr
                           #' Name of individual column IDs.
-                          #' @param data_frame  `data.frame` \cr
+                          #' @param data_frame  `data.frame(1)` \cr
                           #' \code{data.frame} of layer specific predictions.
-                          #' @param meta_layer `NewLayer()` \cr
+                          #' @param meta_layer `NewLayer(1)` \cr
                           #' Layer where to store the [NewData] object.
                           #'
                           #' @export

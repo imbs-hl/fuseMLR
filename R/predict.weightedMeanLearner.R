@@ -5,7 +5,7 @@
 #'
 #' @include weightedMeanLearner.R
 #'
-#' @param object `weightedMeanLearner()` \cr
+#' @param object `weightedMeanLearner(1)` \cr
 #' An object from class [weightedMeanLearner]
 #' @param data `data.frame` \cr
 #' \code{data.frame} to be predicted.

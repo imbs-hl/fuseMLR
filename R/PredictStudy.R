@@ -30,7 +30,7 @@ PredictStudy <- R6Class("PredictStudy",
                       #'
                       #' @param id (`character(1)`)\cr
                       #' See class Param
-                      #' @param ind_col (`character(0L)`)
+                      #' @param ind_col (`character(1L)`)
                       #' Name of column of individuals IDS
                       initialize = function (id, ind_col) {
                         super$initialize(id = id)
@@ -45,7 +45,7 @@ PredictStudy <- R6Class("PredictStudy",
                         cat(sprintf("PredictStudy : %s\n", private$id))
                         cat(sprintf("Nb. layers   : %s\n", length(private$hash_table)))
                       },
-                      #' @param meta_layer_id (`character()`) \cr
+                      #' @param meta_layer_id (`character(1)`) \cr
                       #' ID of the meta layer where the new meta data will be stored.
                       #'
                       #' @description
@@ -143,6 +143,5 @@ PredictStudy <- R6Class("PredictStudy",
                     private = list(
                       ind_col = NULL
                     ),
-                    # TODO: Define a deep_clone function for this class.
                     cloneable = FALSE
 )

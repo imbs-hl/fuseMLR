@@ -13,9 +13,9 @@ Data <- R6Class("Data",
                   #' @description
                   #' Constructor of class Data.
                   #'
-                  #' @param id (`character()`) \cr
+                  #' @param id (`character(1)`) \cr
                   #' Object ID.
-                  #' @param ind_col \cr
+                  #' @param ind_col (`character(1)`) \cr
                   #' Column name containing individual IDs.
                   #' @param data_frame \cr
                   #'  \code{data.frame} containing data.
@@ -42,9 +42,9 @@ Data <- R6Class("Data",
                   #' @description
                   #' Retrieve a data subset for a given variable name and values, a data subset.
                   #'
-                  #' @param var_name \cr
+                  #' @param var_name `character(1)` \cr
                   #' Variable name of interest.
-                  #' @param value \cr
+                  #' @param value `vector(n)` \cr
                   #' Values of interest.
                   #'
                   #' @return
@@ -53,7 +53,7 @@ Data <- R6Class("Data",
                   #' @export
                   #'
                   getIndSubset = function (var_name, value) {
-                    # FIXME: Also profide a function getVarSubset() later
+                    # TODO: Also provide a function getVarSubset() later
                     subset_data <- self$clone(deep = FALSE)
                     index = which(subset_data$getDataFrame()[[var_name]] %in% value)
                     data_frame = subset_data$getDataFrame()[index, ]
@@ -64,9 +64,9 @@ Data <- R6Class("Data",
                   #' For the given variable name, non existing values in the
                   #' current dataset are returned.
                   #'
-                  #' @param var_name \cr
+                  #' @param var_name `character(1)` \cr
                   #' Variable name of interest.
-                  #' @param value
+                  #' @param value `vector(n)` \cr
                   #' Values of interest.
                   #'
                   #' @return
@@ -97,7 +97,7 @@ Data <- R6Class("Data",
                   #' @description
                   #' Set a new \code{data.frame} to the current object.
                   #'
-                  #' @param data_frame
+                  #' @param data_frame `data.frame(1)`
                   #'
                   #' @return
                   #' The current object is returned.
