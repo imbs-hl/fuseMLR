@@ -38,10 +38,10 @@ Constructor of class Data.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{(\code{character()}) \cr
+\item{\code{id}}{(\code{character(1)}) \cr
 Object ID.}
 
-\item{\code{ind_col}}{\cr
+\item{\code{ind_col}}{(\code{character(1)}) \cr
 Column name containing individual IDs.}
 
 \item{\code{data_frame}}{\cr
@@ -79,10 +79,10 @@ Retrieve a data subset for a given variable name and values, a data subset.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{var_name}}{\cr
+\item{\code{var_name}}{(\code{character(1)}) \cr
 Variable name of interest.}
 
-\item{\code{value}}{\cr
+\item{\code{value}}{(\code{vector(n)}) \cr
 Values of interest.}
 }
 \if{html}{\out{</div>}}
@@ -104,10 +104,11 @@ current dataset are returned.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{var_name}}{\cr
+\item{\code{var_name}}{\code{character(1)} \cr
 Variable name of interest.}
 
-\item{\code{value}}{Values of interest.}
+\item{\code{value}}{\code{vector(n)} \cr
+Values of interest.}
 }
 \if{html}{\out{</div>}}
 }
@@ -140,7 +141,7 @@ Set a new \code{data.frame} to the current object.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{data_frame}}{}
+\item{\code{data_frame}}{\code{data.frame(1)}}
 }
 \if{html}{\out{</div>}}
 }

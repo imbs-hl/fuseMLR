@@ -7,10 +7,10 @@
 weightedMeanLearner(x, y)
 }
 \arguments{
-\item{x}{\code{data.frame()} \cr
+\item{x}{\code{data.frame(1)} \cr
 \code{data.frame} of predictors.}
 
-\item{y}{\code{vector} \cr
+\item{y}{\code{vector(1)} \cr
 Target observations.}
 }
 \value{

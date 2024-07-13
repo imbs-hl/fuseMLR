@@ -7,7 +7,7 @@
 \method{predict}{weightedMeanLearner}(object, data)
 }
 \arguments{
-\item{object}{\code{weightedMeanLearner()} \cr
+\item{object}{\code{weightedMeanLearner(1)} \cr
 An object from class \link{weightedMeanLearner}}
 
 \item{data}{\code{data.frame} \cr

@@ -32,20 +32,20 @@ Learner ID.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{(\code{character()}) \cr
+\item{\code{id}}{(\code{character(1)}) \cr
 Package that implements the learn function. If NULL, the
 learn function is called from the current environment.}
 
-\item{\code{package}}{(\code{character()}) \cr
+\item{\code{package}}{(\code{character(1)}) \cr
 Learn function name.}
 
-\item{\code{lrn_fct}}{(\code{character()}) \cr
+\item{\code{lrn_fct}}{(\code{character(1)}) \cr
 Learn parameters.}
 
-\item{\code{param}}{(\code{Param()}) \cr
+\item{\code{param}}{(\code{Param(1)}) \cr
 Layer on which the learner is stored.}
 
-\item{\code{train_layer}}{(\code{TrainLayer()}) \cr
+\item{\code{train_layer}}{(\code{TrainLayer(1)}) \cr
 The training layer where to store the learner.}
 }
 \if{html}{\out{</div>}}
@@ -80,7 +80,7 @@ Tains the current learner (from class \link{Lrner}) on the current training data
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{ind_subset}}{\cr
+\item{\code{ind_subset}}{\code{vector(1)} \cr
 Individual ID subset on which the training will be performed.}
 }
 \if{html}{\out{</div>}}

@@ -50,13 +50,13 @@ Initialize a new object from the current class.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{(\code{character()}) \cr
+\item{\code{id}}{(\code{character(1)}) \cr
 Object ID.}
 
-\item{\code{ind_col}}{(\code{character()})\cr
+\item{\code{ind_col}}{(\code{character(1)})\cr
 Column name containing individual IDs.}
 
-\item{\code{data_frame}}{(\code{data.frame()})\cr
+\item{\code{data_frame}}{(\code{data.frame(1)})\cr
 \code{data.frame} containing data.}
 }
 \if{html}{\out{</div>}}
@@ -119,7 +119,7 @@ Assigns a predicted layer to the predicted data.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{predict_layer}}{\code{PredictLayer()} \cr}
+\item{\code{predict_layer}}{\code{PredictLayer(1)} \cr}
 }
 \if{html}{\out{</div>}}
 }

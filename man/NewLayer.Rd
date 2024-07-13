@@ -50,10 +50,10 @@ constructor
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{(\code{character()})\cr
+\item{\code{id}}{(\code{character(1)})\cr
 See class Param}
 
-\item{\code{new_study}}{(\code{NewStudy()})\cr}
+\item{\code{new_study}}{(\code{NewStudy(1)})\cr}
 }
 \if{html}{\out{</div>}}
 }

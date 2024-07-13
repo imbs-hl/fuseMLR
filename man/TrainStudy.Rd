@@ -77,12 +77,12 @@ constructor
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{(\code{character(1L)})\cr}
+\item{\code{id}}{(\code{character(1)})\cr}
 
-\item{\code{ind_col}}{(\code{character(0L)})
+\item{\code{ind_col}}{(\code{character(1)})
 Name of column of individuals IDS}
 
-\item{\code{target}}{(\code{character(0L)})
+\item{\code{target}}{(\code{character(1)})
 Name of the target variable}
 }
 \if{html}{\out{</div>}}
@@ -117,7 +117,7 @@ Train each layer of the current Trainstudy.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{ind_subset}}{(\code{character()})\cr
+\item{\code{ind_subset}}{(\code{character(1)})\cr
 Subset of individuals IDs to be used for training.}
 }
 \if{html}{\out{</div>}}
@@ -138,10 +138,10 @@ Predicts values given new data.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{new_study}}{(\code{NewData()}) \cr
+\item{\code{new_study}}{(\code{NewData(1)}) \cr
 Object of class \link{NewData}.}
 
-\item{\code{ind_subset}}{(\code{vector()}) \cr
+\item{\code{ind_subset}}{(\code{vector(1)}) \cr
 Subset of individuals IDs to be used for training.}
 }
 \if{html}{\out{</div>}}
@@ -162,10 +162,10 @@ Creates a meta training dataset and assigns it to the meta layer.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{resampling_method}}{(\verb{function()}) \cr
+\item{\code{resampling_method}}{(\verb{function(1)}) \cr
 Function for internal validation.}
 
-\item{\code{resampling_arg}}{(\code{list()}) \cr
+\item{\code{resampling_arg}}{(\code{list(1)}) \cr
 List of arguments to be passed to the function.}
 }
 \if{html}{\out{</div>}}
@@ -186,13 +186,13 @@ Trains the current study. All leaners and the meta learner are trained.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{ind_subset}}{\code{\link[=vector]{vector()}} \cr
+\item{\code{ind_subset}}{(\code{vector(1)}) \cr
 ID subset to be used for training.}
 
-\item{\code{resampling_method}}{(\verb{function()}) \cr
+\item{\code{resampling_method}}{(\verb{function(1)}) \cr
 Function for internal validation.}
 
-\item{\code{resampling_arg}}{(\code{list()}) \cr
+\item{\code{resampling_arg}}{(\code{list(1)}) \cr
 List of arguments to be passed to the function.}
 }
 \if{html}{\out{</div>}}
@@ -213,10 +213,10 @@ Predicts a new study.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{new_study}}{\link{TrainStudy} \cr
+\item{\code{new_study}}{(\code{TrainStudy(1)}) \cr
 A new study to be predicted.}
 
-\item{\code{ind_subset}}{\code{\link[=vector]{vector()}} \cr
+\item{\code{ind_subset}}{(\code{vector(1)}) \cr
 Vector of IDs to be predicted.}
 }
 \if{html}{\out{</div>}}

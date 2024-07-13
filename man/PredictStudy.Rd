@@ -71,7 +71,7 @@ constructor
 \item{\code{id}}{(\code{character(1)})\cr
 See class Param}
 
-\item{\code{ind_col}}{(\code{character(0L)})
+\item{\code{ind_col}}{(\code{character(1L)})
 Name of column of individuals IDS}
 }
 \if{html}{\out{</div>}}
@@ -106,7 +106,7 @@ Creates a new meta dataset based on layer predictions.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{meta_layer_id}}{(\code{character()}) \cr
+\item{\code{meta_layer_id}}{(\code{character(1)}) \cr
 ID of the meta layer where the new meta data will be stored.}
 }
 \if{html}{\out{</div>}}

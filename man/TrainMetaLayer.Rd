@@ -66,10 +66,10 @@ constructor
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{(\code{character()})\cr
+\item{\code{id}}{(\code{character(1)})\cr
 See class Param}
 
-\item{\code{train_study}}{(\code{TrainStudy()})\cr}
+\item{\code{train_study}}{(\code{TrainStudy(1)})\cr}
 }
 \if{html}{\out{</div>}}
 }
@@ -116,7 +116,7 @@ Trains the current layer.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{ind_subset}}{\link{vector} \cr
+\item{\code{ind_subset}}{\code{vector(1)} \cr
 ID subset of individuals to be used for training.}
 }
 \if{html}{\out{</div>}}
@@ -137,9 +137,9 @@ Predicts values for the new layer taking as argument.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{new_layer}}{\code{\link[=TrainLayer]{TrainLayer()}} \cr}
+\item{\code{new_layer}}{\code{TrainLayer(1)} \cr}
 
-\item{\code{ind_subset}}{\code{\link[=vector]{vector()}} \cr}
+\item{\code{ind_subset}}{\code{vector(1)} \cr}
 }
 \if{html}{\out{</div>}}
 }
@@ -244,19 +244,19 @@ meta learner.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{\code{character()} \cr
+\item{\code{id}}{\code{character(1)} \cr
 ID of the \link{TrainData} object to be instanciated.}
 
-\item{\code{ind_col}}{\code{character()} \cr
+\item{\code{ind_col}}{\code{character(1)} \cr
 Name of individual column IDs.}
 
-\item{\code{data_frame}}{\code{data.frame} \cr
+\item{\code{data_frame}}{\code{data.frame(1)} \cr
 \code{data.frame} of layer specific predictions.}
 
-\item{\code{meta_layer}}{\code{Layer()} \cr
+\item{\code{meta_layer}}{\code{Layer(1)} \cr
 Layer where to store the \link{TrainData} object.}
 
-\item{\code{target}}{\code{character} \cr
+\item{\code{target}}{\code{character(1)} \cr
 Name of the target variable}
 }
 \if{html}{\out{</div>}}

@@ -42,9 +42,9 @@ Data <- R6Class("Data",
                   #' @description
                   #' Retrieve a data subset for a given variable name and values, a data subset.
                   #'
-                  #' @param var_name `character(1)` \cr
+                  #' @param var_name (`character(1)`) \cr
                   #' Variable name of interest.
-                  #' @param value `vector(n)` \cr
+                  #' @param value (`vector(n)`) \cr
                   #' Values of interest.
                   #'
                   #' @return

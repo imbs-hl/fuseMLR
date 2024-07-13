@@ -68,10 +68,10 @@ constructor
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{(\code{character()})\cr
+\item{\code{id}}{(\code{character(1)})\cr
 See class Param}
 
-\item{\code{train_study}}{(\code{TrainStudy()})\cr}
+\item{\code{train_study}}{(\code{TrainStudy(1)})\cr}
 }
 \if{html}{\out{</div>}}
 }
@@ -118,7 +118,7 @@ Trains the current layer.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{ind_subset}}{\link{vector} \cr
+\item{\code{ind_subset}}{\code{vector(1)} \cr
 ID subset of individuals to be used for training.}
 }
 \if{html}{\out{</div>}}
@@ -139,9 +139,9 @@ Predicts values for the new layer taking as argument.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{new_layer}}{\code{\link[=TrainLayer]{TrainLayer()}} \cr}
+\item{\code{new_layer}}{\code{TrainLayer()} \cr}
 
-\item{\code{ind_subset}}{\code{\link[=vector]{vector()}} \cr}
+\item{\code{ind_subset}}{\code{vector()} \cr}
 }
 \if{html}{\out{</div>}}
 }

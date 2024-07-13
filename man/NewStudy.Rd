@@ -59,7 +59,7 @@ constructor
 \item{\code{id}}{(\code{character(1)})\cr
 See class Param}
 
-\item{\code{ind_col}}{(\code{character(0L)})
+\item{\code{ind_col}}{(\code{character(1)})
 Name of column of individuals IDS}
 }
 \if{html}{\out{</div>}}

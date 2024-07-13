@@ -51,13 +51,13 @@ Initialize a new object from the current class.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{(\code{character()}) \cr
+\item{\code{id}}{(\code{character(1)}) \cr
 The Object ID.}
 
-\item{\code{data_frame}}{(\code{data.frame()})\cr
+\item{\code{data_frame}}{(\code{data.frame(1)})\cr
 \code{data.frame} containing data.}
 
-\item{\code{train_layer}}{(\code{TrainLayer()}) \cr
+\item{\code{train_layer}}{(\code{TrainLayer(1)}) \cr
 Training layer where to store the current object.}
 }
 \if{html}{\out{</div>}}

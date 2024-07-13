@@ -50,10 +50,10 @@ constructor
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{(\code{character()})\cr
+\item{\code{id}}{(\code{character(1)})\cr
 See class Param}
 
-\item{\code{new_study}}{(\code{NewStudy()})\cr}
+\item{\code{new_study}}{(\code{NewStudy(1)})\cr}
 }
 \if{html}{\out{</div>}}
 }
@@ -146,16 +146,16 @@ new meta learner.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{\code{character()} \cr
+\item{\code{id}}{\code{character(1)} \cr
 ID of the \link{NewData} object to be instanciated.}
 
-\item{\code{ind_col}}{\code{character()} \cr
+\item{\code{ind_col}}{\code{character(1)} \cr
 Name of individual column IDs.}
 
-\item{\code{data_frame}}{\code{data.frame} \cr
+\item{\code{data_frame}}{\code{data.frame(1)} \cr
 \code{data.frame} of layer specific predictions.}
 
-\item{\code{meta_layer}}{\code{NewLayer()} \cr
+\item{\code{meta_layer}}{\code{NewLayer(1)} \cr
 Layer where to store the \link{NewData} object.}
 }
 \if{html}{\out{</div>}}

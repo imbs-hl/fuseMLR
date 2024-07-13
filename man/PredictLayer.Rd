@@ -50,7 +50,7 @@ constructor
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{(\code{character()}) \cr
+\item{\code{id}}{(\code{character(1)}) \cr
 The layer ID.}
 }
 \if{html}{\out{</div>}}
@@ -124,7 +124,7 @@ Assigns a predicted study to the predicted layer.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{predict_study}}{\code{PredictStudy()} \cr}
+\item{\code{predict_study}}{\code{PredictStudy(1)} \cr}
 }
 \if{html}{\out{</div>}}
 }

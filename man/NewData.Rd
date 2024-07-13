@@ -48,16 +48,16 @@ Initialize a new object from the current class.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{(\code{character()}) \cr
+\item{\code{id}}{(\code{character(1)}) \cr
 Object ID.}
 
-\item{\code{data_frame}}{(\code{data.frame()})\cr
+\item{\code{data_frame}}{(\code{data.frame(1)})\cr
 \code{data.frame} containing data.}
 
-\item{\code{new_layer}}{(\code{NewLayer()}) \cr
+\item{\code{new_layer}}{(\code{NewLayer(1)}) \cr
 Layer where to store the current object.}
 
-\item{\code{ind_col}}{(\code{character()})\cr
+\item{\code{ind_col}}{(\code{character(1)})\cr
 Column name containing individual IDs.}
 }
 \if{html}{\out{</div>}}

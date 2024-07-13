@@ -36,16 +36,16 @@ Constructor of Model class.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{lrner}}{(\code{Lrner()}) \cr
+\item{\code{lrner}}{(\code{Lrner(1)}) \cr
 The learner.}
 
-\item{\code{train_data}}{(\code{TrainData()}) \cr
+\item{\code{train_data}}{(\code{TrainData(1)}) \cr
 Training data.}
 
-\item{\code{base_model}}{(\code{object()}) \cr
+\item{\code{base_model}}{(\code{object(1)}) \cr
 Base model as returned by the original learn function.}
 
-\item{\code{train_layer}}{\cr
+\item{\code{train_layer}}{(\code{TrainLayer(1)}) \cr
 The current training layer on which the model is stored.}
 }
 \if{html}{\out{</div>}}
@@ -149,10 +149,10 @@ Predict target values for the new data
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{new_data}}{\cr
+\item{\code{new_data}}{\code{NewData(1)} \cr
 An object from class \link{NewData}.}
 
-\item{\code{ind_subset}}{\cr
+\item{\code{ind_subset}}{\code{vector(1)} \cr
 Subset of individual IDs to be predicted.}
 
 \item{\code{...}}{Further parameters.}

@@ -89,7 +89,7 @@ TrainStudy <- R6Class("TrainStudy",
                    #'
                    #' @param new_study (`NewData(1)`) \cr
                    #' Object of class [NewData].
-                   #' @param ind_subset (`vector(1)`) \cr
+                   #' @param ind_subset  (`vector(1)`) \cr
                    #' Subset of individuals IDs to be used for training.
                    #'
                    #' @return
@@ -201,7 +201,7 @@ TrainStudy <- R6Class("TrainStudy",
                    #' @description
                    #' Trains the current study. All leaners and the meta learner are trained.
                    #'
-                   #' @param ind_subset [`vector(1)`] \cr
+                   #' @param ind_subset (`vector(1)`) \cr
                    #' ID subset to be used for training.
                    #' @param resampling_method (`function(1)`) \cr
                    #' Function for internal validation.
@@ -231,9 +231,9 @@ TrainStudy <- R6Class("TrainStudy",
                    #' @description
                    #' Predicts a new study.
                    #'
-                   #' @param new_study `TrainStudy(1)` \cr
+                   #' @param new_study (`TrainStudy(1)`) \cr
                    #' A new study to be predicted.
-                   #' @param ind_subset `vector()` \cr
+                   #' @param ind_subset (`vector(1)`) \cr
                    #' Vector of IDs to be predicted.
                    #'
                    #' @return
