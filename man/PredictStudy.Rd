@@ -30,7 +30,7 @@ a new study.
 \link{TrainLayer}
 }
 \section{Super class}{
-\code{\link[fuseMLR:HashTable]{fuseMLR::HashTable}} -> \code{PredictStudy}
+\code{fuseMLR::HashTable} -> \code{PredictStudy}
 }
 \section{Methods}{
 \subsection{Public methods}{

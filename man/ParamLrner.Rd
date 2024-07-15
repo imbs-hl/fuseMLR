@@ -9,7 +9,7 @@ Non-tunable parameters and tunable paramters are stored in the object
 from this class.
 }
 \section{Super class}{
-\code{\link[fuseMLR:Param]{fuseMLR::Param}} -> \code{ParamLrner}
+\code{fuseMLR::Param} -> \code{ParamLrner}
 }
 \section{Methods}{
 \subsection{Public methods}{

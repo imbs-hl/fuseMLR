@@ -32,7 +32,7 @@ a new study.
 \link{NewStudy} and \link{PredictStudy}
 }
 \section{Super class}{
-\code{\link[fuseMLR:HashTable]{fuseMLR::HashTable}} -> \code{TrainStudy}
+\code{fuseMLR::HashTable} -> \code{TrainStudy}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -44,6 +44,7 @@ a new study.
 \item \href{#method-TrainStudy-createMetaTrainData}{\code{TrainStudy$createMetaTrainData()}}
 \item \href{#method-TrainStudy-train}{\code{TrainStudy$train()}}
 \item \href{#method-TrainStudy-predict}{\code{TrainStudy$predict()}}
+\item \href{#method-TrainStudy-varSelection}{\code{TrainStudy$varSelection()}}
 \item \href{#method-TrainStudy-getTargetValues}{\code{TrainStudy$getTargetValues()}}
 \item \href{#method-TrainStudy-getIndIDs}{\code{TrainStudy$getIndIDs()}}
 \item \href{#method-TrainStudy-getTrainMetaLayer}{\code{TrainStudy$getTrainMetaLayer()}}
@@ -111,7 +112,7 @@ Printer
 \subsection{Method \code{trainLayer()}}{
 Train each layer of the current Trainstudy.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TrainStudy$trainLayer(ind_subset = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TrainStudy$trainLayer(ind_subset = NULL, use_var_sel = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -119,6 +120,9 @@ Train each layer of the current Trainstudy.
 \describe{
 \item{\code{ind_subset}}{(\code{character(1)})\cr
 Subset of individuals IDs to be used for training.}
+
+\item{\code{use_var_sel}}{\code{boolean(1)} \cr
+If TRUE, selected variables available at each layer are used.}
 }
 \if{html}{\out{</div>}}
 }
@@ -156,7 +160,7 @@ A new \link{TrainStudy} with predicted values for each layer.
 \subsection{Method \code{createMetaTrainData()}}{
 Creates a meta training dataset and assigns it to the meta layer.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TrainStudy$createMetaTrainData(resampling_method, resampling_arg)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TrainStudy$createMetaTrainData(resampling_method, resampling_arg, use_var_sel)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -167,6 +171,9 @@ Function for internal validation.}
 
 \item{\code{resampling_arg}}{(\code{list(1)}) \cr
 List of arguments to be passed to the function.}
+
+\item{\code{use_var_sel}}{\code{boolean(1)} \cr
+If TRUE, selected variables available at each layer are used.}
 }
 \if{html}{\out{</div>}}
 }
@@ -180,7 +187,12 @@ The current object is returned, with a meta training dataset assigned to the met
 \subsection{Method \code{train()}}{
 Trains the current study. All leaners and the meta learner are trained.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TrainStudy$train(ind_subset = NULL, resampling_method, resampling_arg)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TrainStudy$train(
+  ind_subset = NULL,
+  use_var_sel = FALSE,
+  resampling_method,
+  resampling_arg
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -188,6 +200,9 @@ Trains the current study. All leaners and the meta learner are trained.
 \describe{
 \item{\code{ind_subset}}{(\code{vector(1)}) \cr
 ID subset to be used for training.}
+
+\item{\code{use_var_sel}}{\code{boolean(1)} \cr
+If TRUE, variable selection is performed before training.}
 
 \item{\code{resampling_method}}{(\verb{function(1)}) \cr
 Function for internal validation.}
@@ -223,6 +238,27 @@ Vector of IDs to be predicted.}
 }
 \subsection{Returns}{
 The predicted object. All layers and the meta layer are predicted. This is the final predicted object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TrainStudy-varSelection"></a>}}
+\if{latex}{\out{\hypertarget{method-TrainStudy-varSelection}{}}}
+\subsection{Method \code{varSelection()}}{
+Variable selection on the current training study.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TrainStudy$varSelection(ind_subset = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{ind_subset}}{\code{vector(1)} \cr
+ID subset of individuals to be used for variable selection.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+The current layer is returned with the resulting model.
 }
 }
 \if{html}{\out{<hr>}}

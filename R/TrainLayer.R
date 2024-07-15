@@ -73,12 +73,14 @@ TrainLayer <- R6Class("TrainLayer",
                    #'
                    #' @param ind_subset `vector(1)` \cr
                    #' ID subset of individuals to be used for training.
+                   #' @param use_var_sel `boolean(1)` \cr
+                   #' If TRUE, variable selection is performed before training.
                    #'
                    #' @return
                    #' The current layer is returned with the resulting model.
                    #' @export
                    #'
-                   train = function (ind_subset = NULL) {
+                   train = function (ind_subset = NULL, use_var_sel = FALSE) {
                      layer_kc = self$getKeyClass()
                      # Stop if either learner of data is missing on this layer.
                      if (!("Lrner" %in% layer_kc[ , "class"])){
@@ -91,7 +93,8 @@ TrainLayer <- R6Class("TrainLayer",
                      # The learner is trained on the current dataset
                      lrner_key = layer_kc[layer_kc$class == "Lrner" , "key"]
                      lrner = self$getFromHashTable(key = lrner_key[1L])
-                     model = lrner$train(ind_subset = ind_subset)
+                     model = lrner$train(ind_subset = ind_subset,
+                                         use_var_sel = use_var_sel)
                      # Updating the training status.
                      if (!private$status) {
                        # The training layer has not been trained before.
@@ -102,6 +105,32 @@ TrainLayer <- R6Class("TrainLayer",
                        private$status = TRUE
                      }
                      return(model)
+                   },
+                   #' @description
+                   #' Variable selection on the current layer.
+                   #'
+                   #' @param ind_subset `vector(1)` \cr
+                   #' ID subset of individuals to be used for variable selection.
+                   #'
+                   #' @return
+                   #' The current layer is returned with the resulting model.
+                   #' @export
+                   #'
+                   varSelection = function (ind_subset = NULL) {
+                     layer_kc = self$getKeyClass()
+                     # Stop if either selector or data is missing on this layer.
+                     if (!("VarSel" %in% layer_kc[ , "class"])){
+                       stop(sprintf("No var. sel. method on layer %s.", self$getId()))
+                     } else {
+                       if (!("TrainData" %in% layer_kc[ , "class"])) {
+                         stop(sprintf("No data on layer %s.", self$getId()))
+                       }
+                     }
+                     # The learner is trained on the current dataset
+                     varsel_key = layer_kc[layer_kc$class == "VarSel" , "key"]
+                     varsel = self$getFromHashTable(key = varsel_key[1L])
+                     selected = varsel$varSelection(ind_subset = ind_subset)
+                     return(selected)
                    },
                    #' @description
                    #' Predicts values for the new layer taking as argument.
@@ -249,6 +278,23 @@ TrainLayer <- R6Class("TrainLayer",
                        lrner = self$getFromHashTable(key = lrner_key[1L])
                      }
                      return(lrner)
+                   },
+                   #' @description
+                   #' Getter of the variable selector.
+                   #'
+                   #' @return
+                   #' The stored [VarSel] object is returned.
+                   #' @export
+                   getVarSel = function () {
+                     layer_kc = self$getKeyClass()
+                     if (!("VarSel" %in% layer_kc[ , "class"])) {
+                       stop(sprintf("No VarSel on layer %s.", self$getId()))
+                     } else {
+                       varsel_key = layer_kc[layer_kc$class == "VarSel" ,
+                                            "key"]
+                       varsel = self$getFromHashTable(key = varsel_key[1L])
+                     }
+                     return(varsel)
                    },
                    #' @description
                    #' Getter of the model.

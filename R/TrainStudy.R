@@ -62,13 +62,15 @@ TrainStudy <- R6Class("TrainStudy",
                    #'
                    #' @param ind_subset (`character(1)`)\cr
                    #' Subset of individuals IDs to be used for training.
+                   #' @param use_var_sel `boolean(1)` \cr
+                   #' If TRUE, selected variables available at each layer are used.
                    #'
                    #' @return
                    #' Returns the object itself, with a model for each layer.
                    #' @export
                    #'
                    #'
-                   trainLayer = function (ind_subset = NULL) {
+                   trainLayer = function (ind_subset = NULL, use_var_sel = FALSE) {
                      layers = self$getKeyClass()
                      if (nrow(layers)) {
 
@@ -77,7 +79,8 @@ TrainStudy <- R6Class("TrainStudy",
                        layers = layers[layers$class %in% "TrainLayer", ]
                        for (k in layers$key) {
                          layer = self$getFromHashTable(key = k)
-                         layer$train(ind_subset = ind_subset)
+                         layer$train(ind_subset = ind_subset,
+                                     use_var_sel = use_var_sel)
                        }
                      } else {
                        stop("No existing layer in the current training study.")
@@ -125,13 +128,16 @@ TrainStudy <- R6Class("TrainStudy",
                    #' Function for internal validation.
                    #' @param resampling_arg (`list(1)`) \cr
                    #' List of arguments to be passed to the function.
+                   #' @param use_var_sel `boolean(1)` \cr
+                   #' If TRUE, selected variables available at each layer are used.
                    #'
                    #' @return
                    #' The current object is returned, with a meta training dataset assigned to the meta layer.
                    #' @export
                    #'
                    createMetaTrainData = function (resampling_method,
-                                                   resampling_arg) {
+                                                   resampling_arg,
+                                                   use_var_sel) {
                      layers = self$getKeyClass()
                      if (!("TrainMetaLayer" %in% layers$class)) {
                        stop("No existing meta layer. I cannot create meta training data.")
@@ -145,9 +151,9 @@ TrainStudy <- R6Class("TrainStudy",
                                                      function (fold) {
                                                        test_index = resampling[[fold]]
                                                        train_index = setdiff(unlist(resampling), test_index)
-                                                       # TODO: Test and remove this comment
                                                        train_ids = self$getTargetValues()[train_index, 1L]
-                                                       self$trainLayer(ind_subset = train_ids)
+                                                       self$trainLayer(ind_subset = train_ids,
+                                                                       use_var_sel = use_var_sel)
                                                        test_ids = self$getTargetValues()[test_index, 1L]
                                                        # TODO: Note: The current object is not a NewStudy, but a TrainStudy object.
                                                        pred_study = self$predictLayer(new_study = self,
@@ -203,6 +209,8 @@ TrainStudy <- R6Class("TrainStudy",
                    #'
                    #' @param ind_subset (`vector(1)`) \cr
                    #' ID subset to be used for training.
+                   #' @param use_var_sel `boolean(1)` \cr
+                   #' If TRUE, variable selection is performed before training.
                    #' @param resampling_method (`function(1)`) \cr
                    #' Function for internal validation.
                    #' @param resampling_arg (`list(1)`) \cr
@@ -213,13 +221,16 @@ TrainStudy <- R6Class("TrainStudy",
                    #' @export
                    #'
                    train = function (ind_subset = NULL,
+                                     use_var_sel = FALSE,
                                      resampling_method,
                                      resampling_arg) {
                      # 1) Train each layer
-                     self$trainLayer(ind_subset = ind_subset)
+                     self$trainLayer(ind_subset = ind_subset,
+                                     use_var_sel = use_var_sel)
                      # 2) Create meta training data
                      self$createMetaTrainData(resampling_method,
-                                              resampling_arg)
+                                              resampling_arg,
+                                              use_var_sel = use_var_sel)
                      # 3) Train the meta layer
                      # Add layer specific predictions to meta training layer
                      layers = self$getKeyClass()
@@ -291,6 +302,35 @@ TrainStudy <- R6Class("TrainStudy",
 
                      return(list(predicted_study = predicted_study,
                                  predicted_values = predicted_values_wide))
+                   },
+                   #' @description
+                   #' Variable selection on the current training study.
+                   #'
+                   #' @param ind_subset `vector(1)` \cr
+                   #' ID subset of individuals to be used for variable selection.
+                   #'
+                   #' @return
+                   #' The current layer is returned with the resulting model.
+                   #' @export
+                   #'
+                   varSelection = function (ind_subset = NULL) {
+                     layers = self$getKeyClass()
+                     if (nrow(layers)) {
+                       # This code accesses each layer (except MetaLayer) level and
+                       # perform variable selection.
+                       layers = layers[layers$class %in% "TrainLayer", ]
+                       selected = NULL
+                       for (k in layers$key) {
+                         layer = self$getFromHashTable(key = k)
+                         layer_var_sel = layer$varSelection(ind_subset = ind_subset)
+                         selected = rbind(selected,
+                                          data.frame(Layer = layer$getId(),
+                                                     variable = layer_var_sel))
+                       }
+                     } else {
+                       stop("No existing layer in the current training study.")
+                     }
+                     return(selected)
                    },
                    #' @description
                    #' Gather target values from all layer.

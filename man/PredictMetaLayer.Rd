@@ -9,7 +9,7 @@ This class implement a predicted meta layer. A \link{PredictMetaLayer} can only 
 A predicted meta layer can only contain a \link{PredictData} object.
 }
 \section{Super class}{
-\code{\link[fuseMLR:HashTable]{fuseMLR::HashTable}} -> \code{PredictMetaLayer}
+\code{fuseMLR::HashTable} -> \code{PredictMetaLayer}
 }
 \section{Methods}{
 \subsection{Public methods}{

@@ -42,7 +42,7 @@ Learn function name.}
 \item{\code{lrn_fct}}{(\code{character(1)}) \cr
 Learn parameters.}
 
-\item{\code{param}}{(\code{Param(1)}) \cr
+\item{\code{param}}{(\code{ParamLrner(1)}) \cr
 Layer on which the learner is stored.}
 
 \item{\code{train_layer}}{(\code{TrainLayer(1)}) \cr
@@ -74,7 +74,7 @@ Printer
 \subsection{Method \code{train()}}{
 Tains the current learner (from class \link{Lrner}) on the current training data (from class \link{TrainData}).
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Lrner$train(ind_subset = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Lrner$train(ind_subset = NULL, use_var_sel = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -82,6 +82,9 @@ Tains the current learner (from class \link{Lrner}) on the current training data
 \describe{
 \item{\code{ind_subset}}{\code{vector(1)} \cr
 Individual ID subset on which the training will be performed.}
+
+\item{\code{use_var_sel}}{\code{boolean(1)} \cr
+If TRUE, variable selection is performed before training.}
 }
 \if{html}{\out{</div>}}
 }

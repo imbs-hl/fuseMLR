@@ -12,7 +12,7 @@ A predicted layer can only contain \link{NewData}.
 \link{TrainStudy}, \link{Lrner}, \link{TrainData}, \link{NewData} and \link{Model}
 }
 \section{Super class}{
-\code{\link[fuseMLR:HashTable]{fuseMLR::HashTable}} -> \code{NewLayer}
+\code{fuseMLR::HashTable} -> \code{NewLayer}
 }
 \section{Methods}{
 \subsection{Public methods}{

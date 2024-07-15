@@ -16,6 +16,7 @@ As abstract, a \link{Data} object cannot be stored on any layer. Instead, extend
 \item \href{#method-Data-new}{\code{Data$new()}}
 \item \href{#method-Data-print}{\code{Data$print()}}
 \item \href{#method-Data-getIndSubset}{\code{Data$getIndSubset()}}
+\item \href{#method-Data-getVarSubset}{\code{Data$getVarSubset()}}
 \item \href{#method-Data-getSetDiff}{\code{Data$getSetDiff()}}
 \item \href{#method-Data-getDataFrame}{\code{Data$getDataFrame()}}
 \item \href{#method-Data-setDataFrame}{\code{Data$setDataFrame()}}
@@ -84,6 +85,27 @@ Variable name of interest.}
 
 \item{\code{value}}{(\code{vector(n)}) \cr
 Values of interest.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+The data subset is returned.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Data-getVarSubset"></a>}}
+\if{latex}{\out{\hypertarget{method-Data-getVarSubset}{}}}
+\subsection{Method \code{getVarSubset()}}{
+Retrieve a subset of variables from data.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Data$getVarSubset(var_name)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{var_name}}{(\code{character(n)}) \cr
+Variable names of interest.}
 }
 \if{html}{\out{</div>}}
 }

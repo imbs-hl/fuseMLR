@@ -59,6 +59,33 @@ train_data_methylation <- TrainData$new(id = "methylation",
                                         data_frame = entities$training$methylation)
 ```
 
+#### Variable selection
+```R
+same_param_varsel <- ParamVarSel$new(id = "ParamVarSel",
+                               param_list = list(num.trees = 1000, mtry = 3))
+                               
+varsel_geneexpr <- VarSel$new(id = "varsel_geneexpr",
+                                  package = "Boruta",
+                                  varsel_fct = "Boruta",
+                                  param = same_param_varsel,
+                                  train_layer = tl_geneexpr)
+                                  
+varsel_proteinexpr <- VarSel$new(id = "varsel_geneexpr",
+                                  package = "Boruta",
+                                  varsel_fct = "Boruta",
+                                  param = same_param_varsel,
+                                  train_layer = tl_proteinexpr)
+                                  
+varsel_methylation <- VarSel$new(id = "varsel_geneexpr",
+                                  package = "Boruta",
+                                  varsel_fct = "Boruta",
+                                  param = same_param_varsel,
+                                  train_layer = tl_methylation)
+                                  
+# Perform variable selection on the entire study
+var_sel_res <- train_study$varSelection()
+```
+
 #### Learner parameters. Same parameter values at each layer.
 ```R
 same_param <- ParamLrner$new(id = "ParamRanger",
@@ -98,8 +125,9 @@ lrner_meta <- Lrner$new(id = "weighted",
 
 ```R
 trained_study <- train_study$train(resampling_method = "caret::createFolds",
-                                   resampling_arg = list(y = train_study$getTargetValues()$disease,
-                                                         k = 2))
+                                   resampling_arg = list(y=train_study$getTargetValues()$disease,
+                                                         k = 2),
+                                                         use_var_sel = TRUE)
 ```
 
 ### Predicting

@@ -22,7 +22,7 @@ A layer can make predictions for a new layer passed as argument to its predict f
 \link{TrainStudy}, \link{Lrner}, \link{TrainData}, \link{NewData} and \link{Model}
 }
 \section{Super class}{
-\code{\link[fuseMLR:HashTable]{fuseMLR::HashTable}} -> \code{TrainLayer}
+\code{fuseMLR::HashTable} -> \code{TrainLayer}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -31,12 +31,14 @@ A layer can make predictions for a new layer passed as argument to its predict f
 \item \href{#method-TrainLayer-print}{\code{TrainLayer$print()}}
 \item \href{#method-TrainLayer-getTrainStudy}{\code{TrainLayer$getTrainStudy()}}
 \item \href{#method-TrainLayer-train}{\code{TrainLayer$train()}}
+\item \href{#method-TrainLayer-varSelection}{\code{TrainLayer$varSelection()}}
 \item \href{#method-TrainLayer-predict}{\code{TrainLayer$predict()}}
 \item \href{#method-TrainLayer-getTrainData}{\code{TrainLayer$getTrainData()}}
 \item \href{#method-TrainLayer-getTargetValues}{\code{TrainLayer$getTargetValues()}}
 \item \href{#method-TrainLayer-getIndIDs}{\code{TrainLayer$getIndIDs()}}
 \item \href{#method-TrainLayer-getNewData}{\code{TrainLayer$getNewData()}}
 \item \href{#method-TrainLayer-getLrner}{\code{TrainLayer$getLrner()}}
+\item \href{#method-TrainLayer-getVarSel}{\code{TrainLayer$getVarSel()}}
 \item \href{#method-TrainLayer-getModel}{\code{TrainLayer$getModel()}}
 \item \href{#method-TrainLayer-getPredictions}{\code{TrainLayer$getPredictions()}}
 \item \href{#method-TrainLayer-checkLrnerExist}{\code{TrainLayer$checkLrnerExist()}}
@@ -112,7 +114,7 @@ The current study is returned.
 \subsection{Method \code{train()}}{
 Trains the current layer.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TrainLayer$train(ind_subset = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TrainLayer$train(ind_subset = NULL, use_var_sel = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -120,6 +122,30 @@ Trains the current layer.
 \describe{
 \item{\code{ind_subset}}{\code{vector(1)} \cr
 ID subset of individuals to be used for training.}
+
+\item{\code{use_var_sel}}{\code{boolean(1)} \cr
+If TRUE, variable selection is performed before training.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+The current layer is returned with the resulting model.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TrainLayer-varSelection"></a>}}
+\if{latex}{\out{\hypertarget{method-TrainLayer-varSelection}{}}}
+\subsection{Method \code{varSelection()}}{
+Variable selection on the current layer.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TrainLayer$varSelection(ind_subset = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{ind_subset}}{\code{vector(1)} \cr
+ID subset of individuals to be used for variable selection.}
 }
 \if{html}{\out{</div>}}
 }
@@ -212,6 +238,19 @@ Getter of the learner.
 
 \subsection{Returns}{
 The stored \link{Lrner} object is returned.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TrainLayer-getVarSel"></a>}}
+\if{latex}{\out{\hypertarget{method-TrainLayer-getVarSel}{}}}
+\subsection{Method \code{getVarSel()}}{
+Getter of the variable selector.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TrainLayer$getVarSel()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+The stored \link{VarSel} object is returned.
 }
 }
 \if{html}{\out{<hr>}}

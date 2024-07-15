@@ -11,7 +11,7 @@ exist as a component of a \link{TrainLayer} or a \link{TrainMetaLayer} object.
 \link{TrainLayer}, \link{Lrner}, \link{Model}, \link{ParamLrner}, \link{NewData}
 }
 \section{Super class}{
-\code{\link[fuseMLR:Data]{fuseMLR::Data}} -> \code{TrainData}
+\code{fuseMLR::Data} -> \code{TrainData}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -35,6 +35,7 @@ exist as a component of a \link{TrainLayer} or a \link{TrainMetaLayer} object.
 <li><span class="pkg-link" data-pkg="fuseMLR" data-topic="Data" data-id="getIndCol"><a href='../../fuseMLR/html/Data.html#method-Data-getIndCol'><code>fuseMLR::Data$getIndCol()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="fuseMLR" data-topic="Data" data-id="getIndSubset"><a href='../../fuseMLR/html/Data.html#method-Data-getIndSubset'><code>fuseMLR::Data$getIndSubset()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="fuseMLR" data-topic="Data" data-id="getSetDiff"><a href='../../fuseMLR/html/Data.html#method-Data-getSetDiff'><code>fuseMLR::Data$getSetDiff()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="fuseMLR" data-topic="Data" data-id="getVarSubset"><a href='../../fuseMLR/html/Data.html#method-Data-getVarSubset'><code>fuseMLR::Data$getVarSubset()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="fuseMLR" data-topic="Data" data-id="setDataFrame"><a href='../../fuseMLR/html/Data.html#method-Data-setDataFrame'><code>fuseMLR::Data$setDataFrame()</code></a></span></li>
 </ul>
 </details>

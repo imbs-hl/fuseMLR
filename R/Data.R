@@ -53,10 +53,26 @@ Data <- R6Class("Data",
                   #' @export
                   #'
                   getIndSubset = function (var_name, value) {
-                    # TODO: Also provide a function getVarSubset() later
                     subset_data <- self$clone(deep = FALSE)
                     index = which(subset_data$getDataFrame()[[var_name]] %in% value)
                     data_frame = subset_data$getDataFrame()[index, ]
+                    subset_data$setDataFrame(data_frame = data_frame)
+                    return(subset_data)
+                  },
+                  #' @description
+                  #' Retrieve a subset of variables from data.
+                  #'
+                  #' @param var_name (`character(n)`) \cr
+                  #' Variable names of interest.
+                  #'
+                  #' @return
+                  #' The data subset is returned.
+                  #'
+                  #' @export
+                  #'
+                  getVarSubset = function (var_name) {
+                    subset_data <- self$clone(deep = FALSE)
+                    data_frame = subset_data$getDataFrame()[ , var_name]
                     subset_data$setDataFrame(data_frame = data_frame)
                     return(subset_data)
                   },

@@ -21,7 +21,7 @@ Lrner <- R6Class("Lrner",
                    #' Learn function name.
                    #' @param lrn_fct (`character(1)`) \cr
                    #' Learn parameters.
-                   #' @param param (`Param(1)`) \cr
+                   #' @param param (`ParamLrner(1)`) \cr
                    #' Layer on which the learner is stored.
                    #' @param train_layer (`TrainLayer(1)`) \cr
                    #'  The training layer where to store the learner.
@@ -44,13 +44,9 @@ Lrner <- R6Class("Lrner",
                      }
                      private$train_layer = train_layer
                      # Add to object to ht
-                     if (any(c("TrainLayer", "TrainMetaLayer") %in% class(train_layer))) {
-                       train_layer$add2HashTable(key = private$id,
-                                                 value = self,
-                                                 .class = "Lrner")
-                     } else {
-                       stop("A Lrner can only belong to a TrainLayer")
-                     }
+                     train_layer$add2HashTable(key = private$id,
+                                               value = self,
+                                               .class = "Lrner")
                    },
                    #' @description
                    #' Printer
@@ -68,12 +64,14 @@ Lrner <- R6Class("Lrner",
                    #'
                    #' @param ind_subset `vector(1)` \cr
                    #' Individual ID subset on which the training will be performed.
+                   #' @param use_var_sel `boolean(1)` \cr
+                   #' If TRUE, variable selection is performed before training.
                    #'
                    #' @return
                    #' The resulting model, from class [Model], is returned.
                    #' @export
                    #'
-                   train = function (ind_subset = NULL) {
+                   train = function (ind_subset = NULL, use_var_sel = FALSE) {
                      train_data = private$train_layer$getTrainData()
                      if(private$train_layer$getId() != train_data$getTrainLayer()$getId()) {
                        stop("Learner and data must belong to the same layer.")
@@ -87,10 +85,9 @@ Lrner <- R6Class("Lrner",
                      } else {
                        lrn = sprintf('%s::%s', private$package, private$lrn_fct)
                      }
-                     # FIXME: Discuss with Silke and Marina whether multiple parameter settings should be trained at the layer level.
                      lrn_param = private$param$getParamLrner()[1L, ]
                      lrn_param = as.list(lrn_param)
-                     # Prepare training dataset
+                     # Prepare training dataset: extract individual subset
                      if (!is.null(ind_subset)) {
                        train_data = train_data$getIndSubset(
                          var_name = train_data$getIndCol(),
@@ -98,6 +95,22 @@ Lrner <- R6Class("Lrner",
                        private$ind_subset = ind_subset
                      } else {
                        private$ind_subset = "ALL"
+                     }
+                     # Prepare training dataset: extract variable subset
+                     if (use_var_sel) {
+                       var_sel_obj = private$train_layer$getVarSel()
+                       selected_var = var_sel_obj$getVarSubSet()
+                       # Reduce features if at least one variable has been selected.
+                       if (!is.null(selected_var)) {
+                         var_list = c(selected_var, train_data$getTargetName())
+                         train_data = train_data$getVarSubset(var_name = var_list)
+                         private$var_subset = selected_var
+                       } else {
+                         warning("No selected variable found, so all variables have been used for training.\n")
+                         private$var_subset = "ALL"
+                       }
+                     } else {
+                       private$var_subset = "ALL"
                      }
                      lrn_param$x = train_data$getData()
                      lrn_param$y = train_data$getTargetValues()

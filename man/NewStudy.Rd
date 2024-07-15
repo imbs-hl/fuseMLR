@@ -17,7 +17,7 @@ A study is structured as followed:
 \link{TrainLayer}
 }
 \section{Super class}{
-\code{\link[fuseMLR:HashTable]{fuseMLR::HashTable}} -> \code{NewStudy}
+\code{fuseMLR::HashTable} -> \code{NewStudy}
 }
 \section{Methods}{
 \subsection{Public methods}{
