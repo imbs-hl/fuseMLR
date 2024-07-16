@@ -9,7 +9,9 @@
 Cesaire J. K. Fouodo
 
 ### Introduction
-This R package enables fusing of machine learning analysis. As different types of datasets can be collected at different layers for a group of individuals (e.g. clinical characteristics, labor measurements, gene expression, etc) to predict the same target variable or disease, it is commonly a challenge to find a machine learning method appropriate to all layers. Instead of searching for the best method among different candidates, the best approach is to conduct layer specific predictive analysis at each layer with the most appropriated learner, and to aggregate predicted values as meta predicted values.
+Recent technological advances have enabled the simultaneous targeting of multiple pathways to enhance therapies for complex diseases. This often results in the collection of numerous data entities across various layers of patient groups, posing a challenge in integrating all data into a single analysis. Ideally, patient data will overlap across layers, allowing for early or intermediate integrative techniques. However, when patient data does not overlap well, these techniques are difficult to apply. Late integration modeling addresses this by analyzing each data entity separately to obtain layer-specific results, which are then integrated using meta-analysis.
+
+To address this need, we introduce the fuseMLR package for R, designed to facilitate late integration modeling. With fuseMLR, users can define a study with multiple layers and corresponding data entities, and train the entire study as a single task. The package is user-friendly, allowing for the training of different models across layers. Additionally, fuseMLR enables users to perform variable selection at the layer level and make predictions for new studies within a single task.
 
 ### Installation
 Installation from Github:
