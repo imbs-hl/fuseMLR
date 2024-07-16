@@ -12,7 +12,9 @@ Imports:
     R6,
     stats,
     digest
-Suggests: testthat (>= 3.0.0)
+Suggests: 
+    testthat (>= 3.0.0),
+    UpSetR (>= 1.4.0)
 Config/testthat/edition: 3
 Depends: R (>= 3.6.0)
 Roxygen: list(markdown = TRUE)
