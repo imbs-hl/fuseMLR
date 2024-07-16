@@ -47,9 +47,9 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                               cat(sprintf("Status            : %s\n", status))
                               stored_obj = self$getKeyClass()
                               if (!nrow(stored_obj)) {
-                                cat("Empty layer.")
+                                cat("Empty layer.\n")
                               } else {
-                                cat(sprintf("Nb. of objects stroed : %s\n", nrow(stored_obj)))
+                                cat(sprintf("Nb. of objects stored : %s\n", nrow(stored_obj)))
                                 print(stored_obj)
                               }
                             },
@@ -288,6 +288,42 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                             #' Only usefull to reset status FALSE after cross validation.
                             set2NotTrained = function () {
                               private$status = FALSE
+                            },
+                            #' @description
+                            #' Generate summary.
+                            #'
+                            #' @export
+                            #'
+                            summary = function () {
+                              cat("   MetaLayer\n")
+                              cat("   ----------------\n")
+                              if (!private$status) {
+                                status = "Not trained"
+                              } else {
+                                status = "Trained"
+                              }
+                              cat(sprintf("   TrainMetaLayer    : %s\n", private$id))
+                              cat(sprintf("   Status            : %s\n", status))
+                              stored_obj = self$getKeyClass()
+                              if (!nrow(stored_obj)) {
+                                cat("   Empty layer.\n")
+                              } else {
+                                cat(sprintf("   Nb. of objects stored : %s\n", nrow(stored_obj)))
+                              }
+                              cat("\n")
+                              cat("   ----------------\n")
+                              layer_kc = self$getKeyClass()
+                              cat("   Object(s) on MetaLayer\n\n")
+                              if (!nrow(layer_kc)) {
+                                cat("      Empty layer\n")
+                              }
+                              for (k in layer_kc[ , "key"]) {
+                                cat("      ----------------\n")
+                                current_obj = self$getFromHashTable(key = k)
+                                current_obj$summary()
+                                cat("      ----------------\n")
+                                cat("\n")
+                              }
                             }
                           ),
                           private = list(

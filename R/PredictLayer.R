@@ -99,6 +99,19 @@ PredictLayer <- R6Class("PredictLayer",
                               }
                             }
                             return(self)
+                          },
+                          #' @description
+                          #' Generate summary.
+                          #'
+                          #' @export
+                          #'
+                          summary = function () {
+                            layer_kc = self$getKeyClass()
+                            for (k in layer_kc[ , "key"]) {
+                              current_obj = self$getFromHashTable(key = k)
+                              print(current_obj)
+                              cat("\n")
+                            }
                           }
                         ),
                         private = list(

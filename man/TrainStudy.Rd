@@ -51,6 +51,9 @@ a new study.
 \item \href{#method-TrainStudy-getIndCol}{\code{TrainStudy$getIndCol()}}
 \item \href{#method-TrainStudy-getTarget}{\code{TrainStudy$getTarget()}}
 \item \href{#method-TrainStudy-increaseNbTrainedLayer}{\code{TrainStudy$increaseNbTrainedLayer()}}
+\item \href{#method-TrainStudy-test_overlap}{\code{TrainStudy$test_overlap()}}
+\item \href{#method-TrainStudy-upset}{\code{TrainStudy$upset()}}
+\item \href{#method-TrainStudy-summary}{\code{TrainStudy$summary()}}
 }
 }
 \if{html}{\out{
@@ -327,6 +330,45 @@ Getter of the target variable name.
 Increase the number of trained layer.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TrainStudy$increaseNbTrainedLayer()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TrainStudy-test_overlap"></a>}}
+\if{latex}{\out{\hypertarget{method-TrainStudy-test_overlap}{}}}
+\subsection{Method \code{test_overlap()}}{
+Test that individuals overlap over layers.
+At least five individuals must overlapped.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TrainStudy$test_overlap()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TrainStudy-upset"></a>}}
+\if{latex}{\out{\hypertarget{method-TrainStudy-upset}{}}}
+\subsection{Method \code{upset()}}{
+UpSet plot to show an overview of the overlap of individuals across various layers.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TrainStudy$upset(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{\cr
+Further parameters to be passed to the the \code{upset} function from package \code{UpSetR}.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TrainStudy-summary"></a>}}
+\if{latex}{\out{\hypertarget{method-TrainStudy-summary}{}}}
+\subsection{Method \code{summary()}}{
+Generate study summary
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TrainStudy$summary()}\if{html}{\out{</div>}}
 }
 
 }

@@ -35,8 +35,7 @@ NewLayer <- R6Class("NewLayer",
                           #' @param ... (any) \cr
                           #'
                           print = function (...){
-                            cat("Class : NewLayer\n")
-                            cat(sprintf("id    : %s\n", private$id))
+                            cat(sprintf("NewLayer    : %s\n", private$id))
                             cat(sprintf("Contains %s object.\n", length(private$hash_table)))
                           },
                           #' @description
@@ -96,6 +95,19 @@ NewLayer <- R6Class("NewLayer",
                           #'
                           checkNewDataExist = function () {
                             return(super$checkClassExist(.class = "NewData"))
+                          },
+                          #' @description
+                          #' Generate summary.
+                          #'
+                          #' @export
+                          #'
+                          summary = function () {
+                            layer_kc = self$getKeyClass()
+                            for (k in layer_kc[ , "key"]) {
+                              current_obj = self$getFromHashTable(key = k)
+                              print(current_obj)
+                              cat("\n")
+                            }
                           }
                         ),
                         private = list(

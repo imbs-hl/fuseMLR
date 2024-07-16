@@ -15,6 +15,7 @@ A \link{Model} object can compute predictions for a \link{NewData} object. See t
 \itemize{
 \item \href{#method-Model-new}{\code{Model$new()}}
 \item \href{#method-Model-print}{\code{Model$print()}}
+\item \href{#method-Model-summary}{\code{Model$summary()}}
 \item \href{#method-Model-getBaseModel}{\code{Model$getBaseModel()}}
 \item \href{#method-Model-getTrainData}{\code{Model$getTrainData()}}
 \item \href{#method-Model-getTrainLabel}{\code{Model$getTrainLabel()}}
@@ -61,6 +62,23 @@ An object is returned.
 Printer
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Model$print(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{(any) \cr}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Model-summary"></a>}}
+\if{latex}{\out{\hypertarget{method-Model-summary}{}}}
+\subsection{Method \code{summary()}}{
+Summary
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Model$summary(...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

@@ -12,10 +12,13 @@ This class implements a learner. A \link{Lrner} object can only exist as a compo
 \itemize{
 \item \href{#method-Lrner-new}{\code{Lrner$new()}}
 \item \href{#method-Lrner-print}{\code{Lrner$print()}}
+\item \href{#method-Lrner-summary}{\code{Lrner$summary()}}
 \item \href{#method-Lrner-train}{\code{Lrner$train()}}
 \item \href{#method-Lrner-getTrainLayer}{\code{Lrner$getTrainLayer()}}
 \item \href{#method-Lrner-getId}{\code{Lrner$getId()}}
 \item \href{#method-Lrner-getPackage}{\code{Lrner$getPackage()}}
+\item \href{#method-Lrner-getIndSubset}{\code{Lrner$getIndSubset()}}
+\item \href{#method-Lrner-getVarSubset}{\code{Lrner$getVarSubset()}}
 }
 }
 \if{html}{\out{<hr>}}
@@ -58,6 +61,23 @@ The training layer where to store the learner.}
 Printer
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Lrner$print(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{(any) \cr}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Lrner-summary"></a>}}
+\if{latex}{\out{\hypertarget{method-Lrner-summary}{}}}
+\subsection{Method \code{summary()}}{
+Printer
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Lrner$summary(...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -125,6 +145,32 @@ The current learner ID.
 Getter of the learner package implementing the learn function.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Lrner$getPackage()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+The name of the package implementing the learn function.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Lrner-getIndSubset"></a>}}
+\if{latex}{\out{\hypertarget{method-Lrner-getIndSubset}{}}}
+\subsection{Method \code{getIndSubset()}}{
+Getter of the learner package implementing the learn function.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Lrner$getIndSubset()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+The name of the package implementing the learn function.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Lrner-getVarSubset"></a>}}
+\if{latex}{\out{\hypertarget{method-Lrner-getVarSubset}{}}}
+\subsection{Method \code{getVarSubset()}}{
+Getter of the learner package implementing the learn function.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Lrner$getVarSubset()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{

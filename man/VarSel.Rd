@@ -12,6 +12,7 @@ This class implements a learner. A \link{VarSel} object can only exist as a comp
 \itemize{
 \item \href{#method-VarSel-new}{\code{VarSel$new()}}
 \item \href{#method-VarSel-print}{\code{VarSel$print()}}
+\item \href{#method-VarSel-summary}{\code{VarSel$summary()}}
 \item \href{#method-VarSel-varSelection}{\code{VarSel$varSelection()}}
 \item \href{#method-VarSel-getTrainLayer}{\code{VarSel$getTrainLayer()}}
 \item \href{#method-VarSel-getId}{\code{VarSel$getId()}}
@@ -60,6 +61,23 @@ The training layer where to store the learner.}
 Printer
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{VarSel$print(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{(any) \cr}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-VarSel-summary"></a>}}
+\if{latex}{\out{\hypertarget{method-VarSel-summary}{}}}
+\subsection{Method \code{summary()}}{
+Summary
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{VarSel$summary(...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

@@ -62,6 +62,17 @@ Model <- R6Class("Model",
                      print(private$train_data)
                    },
                    #' @description
+                   #' Summary
+                   #' @param ... (any) \cr
+                   #'
+                   summary = function (...) {
+                     cat("      Model           \n\n")
+                     cat("      -----------------------\n")
+                     cat(sprintf("Individual(s) used : $s\n", length(private$lrner$getVarSubset())))
+                     cat(sprintf("Variable(s) used   : $s\n", length(private$lrner$getIndSubset())))
+                     cat("      -----------------------\n")
+                   },
+                   #' @description
                    #' Getter of the base model
                    #'
                    #' @export
@@ -169,8 +180,8 @@ Model <- R6Class("Model",
                          id = ind_subset,
                          pred = predicted_obj)
                        pred_colnames = c("Layer",
-                                      new_data$getIndCol(),
-                                      "Prediction")
+                                         new_data$getIndCol(),
+                                         "Prediction")
                        names(predicted_obj) = pred_colnames
                      } else {
                        if (is.list(predicted_obj)) {

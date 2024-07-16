@@ -18,6 +18,7 @@ exist as a component of a \link{TrainLayer} or a \link{TrainMetaLayer} object.
 \itemize{
 \item \href{#method-TrainData-new}{\code{TrainData$new()}}
 \item \href{#method-TrainData-print}{\code{TrainData$print()}}
+\item \href{#method-TrainData-summary}{\code{TrainData$summary()}}
 \item \href{#method-TrainData-getData}{\code{TrainData$getData()}}
 \item \href{#method-TrainData-getTargetValues}{\code{TrainData$getTargetValues()}}
 \item \href{#method-TrainData-getTargetName}{\code{TrainData$getTargetName()}}
@@ -71,6 +72,23 @@ Training layer where to store the current object.}
 Printer
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TrainData$print(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{(any) \cr}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TrainData-summary"></a>}}
+\if{latex}{\out{\hypertarget{method-TrainData-summary}{}}}
+\subsection{Method \code{summary()}}{
+Summary
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TrainData$summary(...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

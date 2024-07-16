@@ -57,8 +57,17 @@ VarSel <- R6Class("VarSel",
                       cat(sprintf("VarSel           : %s\n", private$id))
                       cat(sprintf("TrainLayer       : %s\n", private$train_layer$getId()))
                       cat(sprintf("Package          : %s\n", private$package))
-                      cat(sprintf("Var. Sel. fct.   : %s\n", private$lrn_fct))
-                      cat(sprintf("Param id         : %s\n", private$param$id))
+                      cat(sprintf("Function         : %s\n", private$varsel_fct))
+                    },
+                    #' @description
+                    #' Summary
+                    #' @param ... (any) \cr
+                    #'
+                    summary = function (...) {
+                      cat(sprintf("      VarSel           : %s\n", private$id))
+                      cat(sprintf("      TrainLayer       : %s\n", private$train_layer$getId()))
+                      cat(sprintf("      Package          : %s\n", private$package))
+                      cat(sprintf("      Function         : %s\n", private$varsel_fct))
                     },
                     #' @description
                     #' Tains the current learner (from class [Lrner]) on the current training data (from class [TrainData]).

@@ -26,10 +26,16 @@ TrainData <- R6Class("TrainData",
                          ind_col = train_layer$getTrainStudy()$getIndCol()
                          target = train_layer$getTrainStudy()$getTarget()
                          if (!any(c("TrainLayer", "TrainMetaLayer") %in% class(train_layer))) {
-                           stop("A Traindata can belong a TrainLayer or a TrainMetaLayer object.")
+                           stop("A Traindata can belong a TrainLayer or a TrainMetaLayer object.\n")
                          }
                          if (!all(c(ind_col, target) %in% colnames(data_frame))) {
-                           stop("Individual column ID or target variable not found in the provided data.frame.")
+                           stop("Individual column ID or target variable not found in the provided data.frame.\n")
+                         }
+                         missing_target = is.na(data_frame[ , target])
+                         if (any(missing_target)) {
+                           warning(sprintf("%s individual(s) with missing target value(s) recognized and removed\n",
+                                           sum(missing_target)))
+                           data_frame = data_frame[!missing_target]
                          }
                          super$initialize(id = id,
                                           ind_col = train_layer$getTrainStudy()$getIndCol(),
@@ -69,7 +75,21 @@ TrainData <- R6Class("TrainData",
                          cat(sprintf("ind. id.  : %s\n", private$ind_col))
                          cat(sprintf("target    : %s\n", private$target))
                          cat(sprintf("n         : %s\n", nrow(private$data_frame)))
+                         cat(sprintf("Missing   : %s\n", sum(!complete.cases(private$data_frame))))
                          cat(sprintf("p         : %s\n", ncol(private$data_frame)))
+                       },
+                       #' @description
+                       #' Summary
+                       #' @param ... (any) \cr
+                       #'
+                       summary = function (...) {
+                         cat(sprintf("      TrainData : %s\n", private$id))
+                         cat(sprintf("      Layer     : %s\n", private$train_layer$getId()))
+                         cat(sprintf("      ind. id.  : %s\n", private$ind_col))
+                         cat(sprintf("      target    : %s\n", private$target))
+                         cat(sprintf("      n         : %s\n", nrow(private$data_frame)))
+                         cat(sprintf("      Missing   : %s\n", sum(!complete.cases(private$data_frame))))
+                         cat(sprintf("      p         : %s\n", ncol(private$data_frame)))
                        },
                        #' @description
                        #' Getter of the current \code{data.frame} wihtout individual

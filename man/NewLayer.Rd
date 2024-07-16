@@ -23,6 +23,7 @@ A predicted layer can only contain \link{NewData}.
 \item \href{#method-NewLayer-getIndIDs}{\code{NewLayer$getIndIDs()}}
 \item \href{#method-NewLayer-getNewData}{\code{NewLayer$getNewData()}}
 \item \href{#method-NewLayer-checkNewDataExist}{\code{NewLayer$checkNewDataExist()}}
+\item \href{#method-NewLayer-summary}{\code{NewLayer$summary()}}
 }
 }
 \if{html}{\out{
@@ -126,5 +127,15 @@ Check whether a new data has been already stored.
 \subsection{Returns}{
 Boolean value
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NewLayer-summary"></a>}}
+\if{latex}{\out{\hypertarget{method-NewLayer-summary}{}}}
+\subsection{Method \code{summary()}}{
+Generate summary.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{NewLayer$summary()}\if{html}{\out{</div>}}
+}
+
 }
 }

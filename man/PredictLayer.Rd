@@ -23,6 +23,7 @@ A predicted layer can only contain \link{PredictData}.
 \item \href{#method-PredictLayer-getIndIDs}{\code{PredictLayer$getIndIDs()}}
 \item \href{#method-PredictLayer-getPredictData}{\code{PredictLayer$getPredictData()}}
 \item \href{#method-PredictLayer-setPredictStudy}{\code{PredictLayer$setPredictStudy()}}
+\item \href{#method-PredictLayer-summary}{\code{PredictLayer$summary()}}
 }
 }
 \if{html}{\out{
@@ -131,5 +132,15 @@ Assigns a predicted study to the predicted layer.
 \subsection{Returns}{
 The current object
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-PredictLayer-summary"></a>}}
+\if{latex}{\out{\hypertarget{method-PredictLayer-summary}{}}}
+\subsection{Method \code{summary()}}{
+Generate summary.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{PredictLayer$summary()}\if{html}{\out{</div>}}
+}
+
 }
 }

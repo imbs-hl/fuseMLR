@@ -43,6 +43,7 @@ A layer can make predictions for a new layer passed as argument to its predict f
 \item \href{#method-TrainLayer-getPredictions}{\code{TrainLayer$getPredictions()}}
 \item \href{#method-TrainLayer-checkLrnerExist}{\code{TrainLayer$checkLrnerExist()}}
 \item \href{#method-TrainLayer-checkTrainDataExist}{\code{TrainLayer$checkTrainDataExist()}}
+\item \href{#method-TrainLayer-summary}{\code{TrainLayer$summary()}}
 }
 }
 \if{html}{\out{
@@ -304,5 +305,15 @@ Check whether a training data has been already stored.
 \subsection{Returns}{
 Boolean value
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TrainLayer-summary"></a>}}
+\if{latex}{\out{\hypertarget{method-TrainLayer-summary}{}}}
+\subsection{Method \code{summary()}}{
+Generate summary.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TrainLayer$summary()}\if{html}{\out{</div>}}
+}
+
 }
 }

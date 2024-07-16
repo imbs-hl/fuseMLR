@@ -60,6 +60,17 @@ Lrner <- R6Class("Lrner",
                      cat(sprintf("Param id         : %s\n", private$param$id))
                    },
                    #' @description
+                   #' Printer
+                   #' @param ... (any) \cr
+                   #'
+                   summary = function (...) {
+                     cat(sprintf("      Learner          : %s\n", private$id))
+                     cat(sprintf("      TrainLayer       : %s\n", private$train_layer$getId()))
+                     cat(sprintf("      Package          : %s\n", private$package))
+                     cat(sprintf("      Learn function   : %s\n", private$lrn_fct))
+                     cat(sprintf("      Param id         : %s\n", private$param$id))
+                   },
+                   #' @description
                    #' Tains the current learner (from class [Lrner]) on the current training data (from class [TrainData]).
                    #'
                    #' @param ind_subset `vector(1)` \cr
@@ -157,6 +168,24 @@ Lrner <- R6Class("Lrner",
                    #'
                    getPackage = function () {
                      return(private$package)
+                   },
+                   #' @description
+                   #' Getter of the learner package implementing the learn function.
+                   #'
+                   #' @return
+                   #' The name of the package implementing the learn function.
+                   #'
+                   getIndSubset = function () {
+                     return(private$ind_subset)
+                   },
+                   #' @description
+                   #' Getter of the learner package implementing the learn function.
+                   #'
+                   #' @return
+                   #' The name of the package implementing the learn function.
+                   #'
+                   getVarSubset = function () {
+                     return(private$ind_subset)
                    }
                  ),
                  private = list(
@@ -173,7 +202,6 @@ Lrner <- R6Class("Lrner",
                    # Individuals subset IDs.
                    ind_subset = NULL,
                    # Variable subset IDs.
-                   # TODO: Set it after variable selection.
                    var_subset = NULL
                  ),
                  cloneable = FALSE
