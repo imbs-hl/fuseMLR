@@ -88,6 +88,7 @@ str(object = entities, max.level = 2)
 train_study <- TrainStudy$new(id = "train_study",
                               ind_col = "IDS",
                               target = "disease")
+# See also train_study$summary()
 print(train_study)
 ```
 
@@ -96,6 +97,12 @@ print(train_study)
     ## Number of layers: 0
     ## Layers trained  : 0
 
+- Prepare new training layers: Training layers are components of a study
+  and represent the second stage of the study.
+
 ``` r
-# See also train_study$summary()
+tl_geneexpr <- TrainLayer$new(id = "geneexpr", train_study = train_study)
+tl_proteinexpr <- TrainLayer$new(id = "proteinexpr", train_study = train_study)
+tl_methylation <- TrainLayer$new(id = "methylation", train_study = train_study)
+tl_meta_layer <- TrainMetaLayer$new(id = "meta_layer", train_study = train_study)
 ```

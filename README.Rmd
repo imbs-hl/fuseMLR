@@ -12,10 +12,10 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 <!-- badges: start -->
-  [![R-CMD-check](https://github.com/imbs-hl/fuseMLR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/imbs-hl/fuseMLR/actions/workflows/R-CMD-check.yaml)
-  [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-  [![CRAN downloads](http://www.r-pkg.org/badges/version/fuseMLR)](http://cranlogs.r-pkg.org/badges/grand-total/fuseMLR)
-  [![Stack Overflow](https://img.shields.io/badge/stackoverflow-questions-orange.svg)](https://stackoverflow.com/questions/tagged/fuseMLR)
+[![R-CMD-check](https://github.com/imbs-hl/fuseMLR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/imbs-hl/fuseMLR/actions/workflows/R-CMD-check.yaml)
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![CRAN downloads](http://www.r-pkg.org/badges/version/fuseMLR)](http://cranlogs.r-pkg.org/badges/grand-total/fuseMLR)
+[![Stack Overflow](https://img.shields.io/badge/stackoverflow-questions-orange.svg)](https://stackoverflow.com/questions/tagged/fuseMLR)
 <!-- badges: end -->
 
 ### fuseMLR
@@ -56,6 +56,15 @@ str(object = entities, max.level = 2)
 train_study <- TrainStudy$new(id = "train_study",
                               ind_col = "IDS",
                               target = "disease")
-print(train_study)
 # See also train_study$summary()
+print(train_study)
+```
+
+- Prepare new training layers: Training layers are components of a study and represent the second stage of the study.
+
+```{r training_layers, include=TRUE, eval=TRUE}
+tl_geneexpr <- TrainLayer$new(id = "geneexpr", train_study = train_study)
+tl_proteinexpr <- TrainLayer$new(id = "proteinexpr", train_study = train_study)
+tl_methylation <- TrainLayer$new(id = "methylation", train_study = train_study)
+tl_meta_layer <- TrainMetaLayer$new(id = "meta_layer", train_study = train_study)
 ```
