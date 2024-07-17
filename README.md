@@ -18,33 +18,30 @@ downloads](http://www.r-pkg.org/badges/version/fuseMLR)](http://cranlogs.r-pkg.o
 Overflow](https://img.shields.io/badge/stackoverflow-questions-orange.svg)](https://stackoverflow.com/questions/tagged/fuseMLR)
 <!-- badges: end -->
 
-## R Markdown
+### fuseMLR
 
-This is an R Markdown document. Markdown is a simple formatting syntax
-for authoring HTML, PDF, and MS Word documents. For more details on
-using R Markdown see <http://rmarkdown.rstudio.com>.
+Cesaire J. K. Fouodo
 
-When you click the **Knit** button a document will be generated that
-includes both content as well as the output of any embedded R code
-chunks within the document. You can embed an R code chunk like this:
+### Introduction
 
-``` r
-summary(cars)
-```
+Recent technological advances have enabled the simultaneous targeting of
+multiple pathways to enhance therapies for complex diseases. This often
+results in the collection of numerous data entities across various
+layers of patient groups, posing a challenge for integrating all data
+into a single analysis. Ideally, patient data will overlap across
+layers, allowing for early or intermediate integrative techniques.
+However, these techniques are challenging when patient data does not
+overlap well. Additionally, the internal structure of each data entity
+may necessitate specific statistical methods rather than applying the
+same method across all layers. Late integration modeling addresses this
+by analyzing each data entity separately to obtain layer-specific
+results, which are then integrated using meta-analysis. Currently, no R
+package offers this flexibility.
 
-    ##      speed           dist       
-    ##  Min.   : 4.0   Min.   :  2.00  
-    ##  1st Qu.:12.0   1st Qu.: 26.00  
-    ##  Median :15.0   Median : 36.00  
-    ##  Mean   :15.4   Mean   : 42.98  
-    ##  3rd Qu.:19.0   3rd Qu.: 56.00  
-    ##  Max.   :25.0   Max.   :120.00
-
-## Including Plots
-
-You can also embed plots, for example:
-
-![](README_files/figure-gfm/pressure-1.png)<!-- -->
-
-Note that the `echo = FALSE` parameter was added to the code chunk to
-prevent printing of the R code that generated the plot.
+We introduce the fuseMLR package for late integration modeling in R.
+This package allows users to define studies with multiple layers, data
+entities, and layer-specific machine learning methods. FuseMLR is
+user-friendly, enabling the training of different models across layers
+and automatically conducting meta-analysis once layer-specific training
+is completed. Additionally, fuseMLR allows for variable selection at the
+layer level and makes predictions for new data entities.
