@@ -1,171 +1,50 @@
+---
+title: "fuseMLR"
+author: Cesaire J. K. Fouodo
+output: 
+  md_document:
+    variant: gfm
+    preserve_yaml: true
+---
+
 <!-- badges: start -->
-  [![R-CMD-check](https://github.com/imbs-hl/fuseMLR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/imbs-hl/fuseMLR/actions/workflows/R-CMD-check.yaml)
-  [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-  [![CRAN downloads](http://www.r-pkg.org/badges/version/fuseMLR)](http://cranlogs.r-pkg.org/badges/grand-total/fuseMLR)
-  [![Stack Overflow](https://img.shields.io/badge/stackoverflow-questions-orange.svg)](https://stackoverflow.com/questions/tagged/fuseMLR)
+
+[![R-CMD-check](https://github.com/imbs-hl/fuseMLR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/imbs-hl/fuseMLR/actions/workflows/R-CMD-check.yaml)
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![CRAN
+downloads](http://www.r-pkg.org/badges/version/fuseMLR)](http://cranlogs.r-pkg.org/badges/grand-total/fuseMLR)
+[![Stack
+Overflow](https://img.shields.io/badge/stackoverflow-questions-orange.svg)](https://stackoverflow.com/questions/tagged/fuseMLR)
 <!-- badges: end -->
-  
-### fuseMLR
-Cesaire J. K. Fouodo
 
-### Introduction
-Recent technological advances have enabled the simultaneous targeting of multiple pathways to enhance therapies for complex diseases. This often results in the collection of numerous data entities across various layers of patient groups, posing a challenge for integrating all data into a single analysis. Ideally, patient data will overlap across layers, allowing for early or intermediate integrative techniques. However, these techniques are challenging when patient data does not overlap well. Additionally, the internal structure of each data entity may necessitate specific statistical methods rather than applying the same method across all layers. Late integration modeling addresses this by analyzing each data entity separately to obtain layer-specific results, which are then integrated using meta-analysis. Currently, no R package offers this flexibility.
+## R Markdown
 
-We introduce the fuseMLR package for late integration modeling in R. This package allows users to define studies with multiple layers, data entities, and layer-specific machine learning methods. FuseMLR is user-friendly, enabling the training of different models across layers and automatically conducting meta-analysis once layer-specific training is completed. Additionally, fuseMLR allows for variable selection at the layer level and makes predictions for new data entities.
+This is an R Markdown document. Markdown is a simple formatting syntax
+for authoring HTML, PDF, and MS Word documents. For more details on
+using R Markdown see <http://rmarkdown.rstudio.com>.
 
-### Installation
-Installation from Github:
-```R
-devtools::install_github("imbs-hl/fuseMLR")
+When you click the **Knit** button a document will be generated that
+includes both content as well as the output of any embedded R code
+chunks within the document. You can embed an R code chunk like this:
+
+``` r
+summary(cars)
 ```
 
-### Usage
-For usage in R, see ?fuseMLR in R. Most importantly, see the Examples section. 
+    ##      speed           dist       
+    ##  Min.   : 4.0   Min.   :  2.00  
+    ##  1st Qu.:12.0   1st Qu.: 26.00  
+    ##  Median :15.0   Median : 36.00  
+    ##  Mean   :15.4   Mean   : 42.98  
+    ##  3rd Qu.:19.0   3rd Qu.: 56.00  
+    ##  Max.   :25.0   Max.   :120.00
 
-The provided example, utilizing simulated data, mirrors a common scenario in multi-omics analysis. It involves data collected from three distinct layers (methylation, gene expression, and protein expression), with disease status serving as the response variable. Initially, the data entities are consolidated into a single object. Subsequently, the learner arguments (such as ```ranger```) and feature selection parameters for each entity are specified. Following model training for both the entity-level models and the meta-learner, predictions can be generated for new datasets.
+## Including Plots
 
-### Load data
-```R
-data("entities")
-```
+You can also embed plots, for example:
 
-### Training
+![](README_files/figure-gfm/pressure-1.png)<!-- -->
 
-#### Training study
-```R
-train_study <- TrainStudy$new(id = "train_study",
-                              ind_col = "IDS",
-                              target = "disease")
-```
-
-#### Training layers
-```R
-tl_geneexpr <- TrainLayer$new(id = "geneexpr", train_study = train_study)
-tl_proteinexpr <- TrainLayer$new(id = "proteinexpr", train_study = train_study)
-tl_methylation <- TrainLayer$new(id = "methylation", train_study = train_study)
-tl_meta_layer <- TrainMetaLayer$new(id = "meta_layer", train_study = train_study)
-```
-
-#### Training data
-```R
-train_data_geneexpr <- TrainData$new(id = "geneexpr",
-                                     train_layer = tl_geneexpr,
-                                     data_frame = entities$training$geneexpr)
-train_data_proteinexpr <- TrainData$new(id = "proteinexpr",
-                                        train_layer = tl_proteinexpr,
-                                        data_frame = entities$training$proteinexpr)
-train_data_methylation <- TrainData$new(id = "methylation",
-                                        train_layer = tl_methylation,
-                                        data_frame = entities$training$methylation)
-
-# Upset plot of the study
-train_study$upset(order.by = "freq")
-```
-
-#### Variable selection
-```R
-same_param_varsel <- ParamVarSel$new(id = "ParamVarSel",
-                               param_list = list(num.trees = 1000, mtry = 3))
-                               
-varsel_geneexpr <- VarSel$new(id = "varsel_geneexpr",
-                                  package = "Boruta",
-                                  varsel_fct = "Boruta",
-                                  param = same_param_varsel,
-                                  train_layer = tl_geneexpr)
-                                  
-varsel_proteinexpr <- VarSel$new(id = "varsel_geneexpr",
-                                  package = "Boruta",
-                                  varsel_fct = "Boruta",
-                                  param = same_param_varsel,
-                                  train_layer = tl_proteinexpr)
-                                  
-varsel_methylation <- VarSel$new(id = "varsel_geneexpr",
-                                  package = "Boruta",
-                                  varsel_fct = "Boruta",
-                                  param = same_param_varsel,
-                                  train_layer = tl_methylation)
-                                  
-# Perform variable selection on the entire study
-var_sel_res <- train_study$varSelection()
-```
-
-#### Learner parameters. Same parameter values at each layer.
-```R
-same_param <- ParamLrner$new(id = "ParamRanger",
-                               param_list = list(probability = TRUE,
-                                                 mtry = 1),
-                               hyperparam_list = list(num.trees = 1000))
-```
-
-#### Learner
-
-```R
-lrner_geneexpr <- Lrner$new(id = "ranger",
-                            package = "ranger",
-                            lrn_fct = "ranger",
-                            param = same_param,
-                            train_layer = tl_geneexpr)
-lrner_proteinexpr <- Lrner$new(id = "ranger",
-                               package = "ranger",
-                               lrn_fct = "ranger",
-                               param = same_param,
-                               train_layer = tl_proteinexpr)
-lrner_methylation <- Lrner$new(id = "ranger",
-                               package = "ranger",
-                               lrn_fct = "ranger",
-                               param = same_param,
-                               train_layer = tl_methylation)
-lrner_meta <- Lrner$new(id = "weighted",
-                        lrn_fct = "weightedMeanLearner",
-                        param = ParamLrner$new(id = "ParamWeighted",
-                                                 param_list = list(),
-                                                 hyperparam_list = list()),
-                        train_layer = tl_meta_layer)
-
-```
-
-#### Train the all study using corss-validation.
-
-```R
-trained_study <- train_study$train(resampling_method = "caret::createFolds",
-                                   resampling_arg = list(y=train_study$getTargetValues()$disease,
-                                                         k = 2),
-                                                         use_var_sel = TRUE)
-```
-
-### Predicting
-
-#### Create and predict a new study
-
-#### Create a new study
-
-```R
-new_study <- NewStudy$new(id = "new_study", ind_col = "IDS")
-```
-
-```R
-# A meta_layer is not required
-new_geneexpr <- NewLayer$new(id = "geneexpr", new_study = new_study)
-new_proteinexpr <- NewLayer$new(id = "proteinexpr", new_study = new_study)
-new_methylation <- NewLayer$new(id = "methylation", new_study = new_study)
-```
-
-#### NewData are mandatory at each layers
-
-```R
-new_data_geneexpr <- NewData$new(id = "geneexpr",
-                                 new_layer = new_geneexpr,
-                                 data_frame = entities$testing$geneexpr)
-new_data_proteinexpr <- NewData$new(id = "proteinexpr",
-                                    new_layer = new_proteinexpr,
-                                    data_frame = entities$testing$proteinexpr)
-new_data_methylation <- NewData$new(id = "methylation",
-                                    new_layer = new_methylation,
-                                    data_frame = entities$testing$methylation)
-
-```
-
-#### Predicting the new study
-```R
-tmp_red_study <- study$predict(new_study = new_study)
-```
+Note that the `echo = FALSE` parameter was added to the code chunk to
+prevent printing of the R code that generated the plot.
