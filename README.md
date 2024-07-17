@@ -101,8 +101,56 @@ print(train_study)
   and represent the second stage of the study.
 
 ``` r
-tl_geneexpr <- TrainLayer$new(id = "geneexpr", train_study = train_study)
-tl_proteinexpr <- TrainLayer$new(id = "proteinexpr", train_study = train_study)
-tl_methylation <- TrainLayer$new(id = "methylation", train_study = train_study)
-tl_meta_layer <- TrainMetaLayer$new(id = "meta_layer", train_study = train_study)
+tl_ge <- TrainLayer$new(id = "geneexpr", train_study = train_study)
+tl_pr <- TrainLayer$new(id = "proteinexpr", train_study = train_study)
+tl_me <- TrainLayer$new(id = "methylation", train_study = train_study)
+# We also prepare the meta layer for the meta analysis.
+tl_meta <- TrainMetaLayer$new(id = "meta_layer", train_study = train_study)
 ```
+
+- Add training data (entities) to layers, excluded the meta layer. The
+  meta layer is modifiable internally after the training phase.
+
+``` r
+train_data_ge <- TrainData$new(id = "geneexpr",
+                               train_layer = tl_ge,
+                               data_frame = entities$training$geneexpr)
+train_data_pr <- TrainData$new(id = "proteinexpr",
+                               train_layer = tl_pr,
+                               data_frame = entities$training$proteinexpr)
+train_data_me <- TrainData$new(id = "methylation",
+                               train_layer = tl_me,
+                               data_frame = entities$training$methylation)
+# An overview of the gene expression training data
+print(train_data_ge)
+```
+
+    ## TrainData : geneexpr
+    ## Layer     : geneexpr
+    ## ind. id.  : IDS
+    ## target    : disease
+    ## n         : 50
+    ## Missing   : 0
+    ## p         : 133
+
+``` r
+# An overview of the gene expression training layer
+print(tl_ge)
+```
+
+    ## TrainLayer            : geneexpr
+    ## Status                : Not trained
+    ## Nb. of objects stored : 1
+    ## -----------------------
+    ##        key     class
+    ## 1 geneexpr TrainData
+
+``` r
+# An overview of the training study
+print(train_study)
+```
+
+    ## TrainStudy      : train_study
+    ## Status          : Not trained
+    ## Number of layers: 4
+    ## Layers trained  : 0
