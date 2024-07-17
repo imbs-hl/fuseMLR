@@ -227,52 +227,55 @@ print(var_sel_res)
     ##          Layer        variable
     ## 1     geneexpr           ACACA
     ## 2     geneexpr            BAP1
-    ## 3     geneexpr           CHEK2
-    ## 4     geneexpr           EIF4E
-    ## 5     geneexpr          MAP2K1
+    ## 3     geneexpr           EIF4E
+    ## 4     geneexpr          MAP2K1
+    ## 5     geneexpr          MAPK14
     ## 6     geneexpr            PCNA
-    ## 7     geneexpr           YWHAE
-    ## 8  proteinexpr        Bap1.c.4
-    ## 9  proteinexpr             Bid
-    ## 10 proteinexpr       Cyclin_E2
-    ## 11 proteinexpr      P.Cadherin
-    ## 12 proteinexpr            Chk1
-    ## 13 proteinexpr      Chk1_pS345
-    ## 14 proteinexpr            EGFR
-    ## 15 proteinexpr     EGFR_pY1173
-    ## 16 proteinexpr     HER3_pY1289
-    ## 17 proteinexpr           MIG.6
-    ## 18 proteinexpr           ETS.1
-    ## 19 proteinexpr MEK1_pS217_S221
-    ## 20 proteinexpr        p38_MAPK
-    ## 21 proteinexpr    c.Met_pY1235
-    ## 22 proteinexpr           N.Ras
-    ## 23 proteinexpr            PCNA
-    ## 24 proteinexpr     PEA15_pS116
-    ## 25 proteinexpr PKC.delta_pS664
-    ## 26 proteinexpr           Rad50
-    ## 27 proteinexpr     C.Raf_pS338
-    ## 28 proteinexpr          p70S6K
-    ## 29 proteinexpr    p70S6K_pT389
-    ## 30 proteinexpr           Smad4
-    ## 31 proteinexpr     STAT3_pY705
-    ## 32 proteinexpr  14.3.3_epsilon
-    ## 33 methylation      cg20139214
-    ## 34 methylation      cg18457775
-    ## 35 methylation      cg01306510
-    ## 36 methylation      cg02412050
-    ## 37 methylation      cg07566050
-    ## 38 methylation      cg02630105
-    ## 39 methylation      cg20849549
-    ## 40 methylation      cg25539131
-    ## 41 methylation      cg07064406
+    ## 7     geneexpr           SMAD4
+    ## 8     geneexpr          SQSTM1
+    ## 9     geneexpr           YWHAE
+    ## 10    geneexpr           YWHAZ
+    ## 11 proteinexpr        Bap1.c.4
+    ## 12 proteinexpr             Bid
+    ## 13 proteinexpr       Cyclin_E2
+    ## 14 proteinexpr      P.Cadherin
+    ## 15 proteinexpr            Chk1
+    ## 16 proteinexpr      Chk1_pS345
+    ## 17 proteinexpr            EGFR
+    ## 18 proteinexpr     EGFR_pY1173
+    ## 19 proteinexpr     HER3_pY1289
+    ## 20 proteinexpr           MIG.6
+    ## 21 proteinexpr           ETS.1
+    ## 22 proteinexpr MEK1_pS217_S221
+    ## 23 proteinexpr        p38_MAPK
+    ## 24 proteinexpr    c.Met_pY1235
+    ## 25 proteinexpr           N.Ras
+    ## 26 proteinexpr            PCNA
+    ## 27 proteinexpr     PEA15_pS116
+    ## 28 proteinexpr PKC.delta_pS664
+    ## 29 proteinexpr           Rad50
+    ## 30 proteinexpr     C.Raf_pS338
+    ## 31 proteinexpr          p70S6K
+    ## 32 proteinexpr    p70S6K_pT389
+    ## 33 proteinexpr           Smad4
+    ## 34 proteinexpr     STAT3_pY705
+    ## 35 proteinexpr  14.3.3_epsilon
+    ## 36 methylation      cg20139214
+    ## 37 methylation      cg18457775
+    ## 38 methylation      cg01306510
+    ## 39 methylation      cg02412050
+    ## 40 methylation      cg07566050
+    ## 41 methylation      cg02630105
+    ## 42 methylation      cg20849549
+    ## 43 methylation      cg25539131
+    ## 44 methylation      cg07064406
 
 For each layer, the variable selection results show the chosen
 variables. In this example, we perform variable selection on the entire
 study. However, users can opt to conduct variable selection on
 individual layers if desired.
 
-#### B) Training
+#### C) Training
 
 We can now train our study using the subset of selected variables. Users
 can choose to set up layer-specific learners, but for illustration, we
@@ -370,6 +373,77 @@ print(model_ge)
     ## Layer     : geneexpr
     ## ind. id.  : IDS
     ## target    : disease
-    ## n         : 26
+    ## n         : 25
     ## Missing   : 0
-    ## p         : 8
+    ## p         : 11
+
+#### C) Predicting
+
+Now, we have created a training study, performed variable selection and
+trained the study with the chosen variables. In this section, we create
+and predict a new study.
+
+- Create a new study.
+
+``` r
+new_study <- NewStudy$new(id = "new_study", ind_col = "IDS")
+```
+
+- Create new layers.
+
+``` r
+nl_ge <- NewLayer$new(id = "geneexpr", new_study = new_study)
+nl_pr <- NewLayer$new(id = "proteinexpr", new_study = new_study)
+nl_me <- NewLayer$new(id = "methylation", new_study = new_study)
+```
+
+- Instantiate and add new training data to new layers.
+
+``` r
+new_data_ge <- NewData$new(id = "geneexpr",
+                                 new_layer = nl_ge,
+                                 data_frame = entities$testing$geneexpr)
+new_data_pr <- NewData$new(id = "proteinexpr",
+                                    new_layer = nl_pr,
+                                    data_frame = entities$testing$proteinexpr)
+new_data_me <- NewData$new(id = "methylation",
+                                    new_layer = nl_me,
+                                    data_frame = entities$testing$methylation)
+```
+
+- Predict the new study.
+
+``` r
+new_predictions <- train_study$predict(new_study = new_study)
+print(new_predictions)
+```
+
+    ## $predicted_study
+    ## PredictStudy : new_study
+    ## Nb. layers   : 4
+    ## 
+    ## $predicted_values
+    ##          IDS  geneexpr proteinexpr methylation meta_layer
+    ## 1   subject4 0.6067187   0.6119083  0.33182817  0.5209286
+    ## 2   subject7 0.4109321   0.2189310  0.61729762  0.4040821
+    ## 3   subject8 0.6746929   0.8667262  0.80640714  0.7894835
+    ## 4  subject10 0.6585460   0.7638556  0.66543492  0.7006365
+    ## 5  subject13 0.4947683   0.2539440  0.08529286  0.2728232
+    ## 6  subject15 0.6994488   0.8390187  0.32866032  0.6339475
+    ## 7  subject16 0.6408147   0.2740290  0.32936230  0.4024482
+    ## 8  subject18 0.5568742   0.2851813  0.05248452  0.2929357
+    ## 9  subject23 0.6719992   0.1901524  0.71083929  0.5018748
+    ## 10 subject24 0.4724123   0.5691786  0.53698690  0.5296822
+    ## 11 subject27 0.4899246   0.2185917  0.59058452  0.4192783
+    ## 12 subject31 0.3499429   0.7916210  0.50772579  0.5676212
+    ## 13 subject32 0.5065488   0.7755845  0.73835317  0.6824607
+    ## 14 subject35 0.4434528   0.7836210  0.60108056  0.6226296
+    ## 15 subject36 0.3183730   0.1848798  0.52778135  0.3346572
+    ## 16 subject50 0.6447103   0.5143079  0.77826746  0.6379506
+    ## 17 subject54 0.5750107   0.5990496  0.82990119  0.6654878
+    ## 18 subject55 0.6246929   0.2048667  0.56081071  0.4452689
+    ## 19 subject59 0.3740976   0.2233389  0.55631111  0.3751600
+    ## 20 subject62 0.4220766   0.3033536  0.40324762  0.3710933
+    ## 21 subject63 0.3846024   0.7639377  0.85401865  0.6781510
+    ## 22 subject66 0.6744151   0.6113643  0.94513651  0.7369564
+    ## 23 subject70 0.2530921   0.3034790  0.37938611  0.3124967

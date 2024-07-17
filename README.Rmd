@@ -145,7 +145,7 @@ print(var_sel_res)
 
 For each layer, the variable selection results show the chosen variables. In this example, we perform variable selection on the entire study. However, users can opt to conduct variable selection on individual layers if desired.
 
-#### B) Training
+#### C) Training
 
 We can now train our study using the subset of selected variables. Users can choose to set up layer-specific learners, but for illustration, we will use the same learner for all layers.
 
@@ -205,4 +205,43 @@ print(tl_ge)
 ```{r basic_lrnr, include=TRUE, eval=TRUE}
 model_ge <- tl_ge$getModel()
 print(model_ge)
+```
+
+#### C) Predicting
+
+Now, we have created a training study, performed variable selection and trained the study with the chosen variables. In this section, we create and predict a new study.
+
+- Create a new study.
+
+```{r new_study, include=TRUE, eval=TRUE}
+new_study <- NewStudy$new(id = "new_study", ind_col = "IDS")
+```
+
+- Create new layers.
+
+```{r new_layer, include=TRUE, eval=TRUE}
+nl_ge <- NewLayer$new(id = "geneexpr", new_study = new_study)
+nl_pr <- NewLayer$new(id = "proteinexpr", new_study = new_study)
+nl_me <- NewLayer$new(id = "methylation", new_study = new_study)
+```
+
+- Instantiate and add new training data to new layers.
+
+```{r new_data, include=TRUE, eval=TRUE}
+new_data_ge <- NewData$new(id = "geneexpr",
+                                 new_layer = nl_ge,
+                                 data_frame = entities$testing$geneexpr)
+new_data_pr <- NewData$new(id = "proteinexpr",
+                                    new_layer = nl_pr,
+                                    data_frame = entities$testing$proteinexpr)
+new_data_me <- NewData$new(id = "methylation",
+                                    new_layer = nl_me,
+                                    data_frame = entities$testing$methylation)
+```
+
+- Predict the new study.
+
+```{r new_pred, include=TRUE, eval=TRUE}
+new_predictions <- train_study$predict(new_study = new_study)
+print(new_predictions)
 ```
