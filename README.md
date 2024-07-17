@@ -230,45 +230,42 @@ print(var_sel_res)
     ## 3     geneexpr           CHEK2
     ## 4     geneexpr           EIF4E
     ## 5     geneexpr          MAP2K1
-    ## 6     geneexpr          MAPK14
-    ## 7     geneexpr            PCNA
-    ## 8     geneexpr           YWHAE
-    ## 9  proteinexpr        Bap1.c.4
-    ## 10 proteinexpr             Bid
-    ## 11 proteinexpr       Cyclin_E2
-    ## 12 proteinexpr      P.Cadherin
-    ## 13 proteinexpr            Chk1
-    ## 14 proteinexpr      Chk1_pS345
-    ## 15 proteinexpr            EGFR
-    ## 16 proteinexpr     EGFR_pY1173
-    ## 17 proteinexpr     HER3_pY1289
-    ## 18 proteinexpr           MIG.6
-    ## 19 proteinexpr           ETS.1
-    ## 20 proteinexpr MEK1_pS217_S221
-    ## 21 proteinexpr        p38_MAPK
-    ## 22 proteinexpr    c.Met_pY1235
-    ## 23 proteinexpr           N.Ras
-    ## 24 proteinexpr            PCNA
-    ## 25 proteinexpr     PEA15_pS116
-    ## 26 proteinexpr PKC.delta_pS664
-    ## 27 proteinexpr           Rad50
-    ## 28 proteinexpr     C.Raf_pS338
-    ## 29 proteinexpr          p70S6K
-    ## 30 proteinexpr    p70S6K_pT389
-    ## 31 proteinexpr           Smad4
-    ## 32 proteinexpr     STAT3_pY705
-    ## 33 proteinexpr  14.3.3_epsilon
-    ## 34 methylation      cg20139214
-    ## 35 methylation      cg18457775
-    ## 36 methylation      cg09637363
-    ## 37 methylation      cg01306510
-    ## 38 methylation      cg02412050
-    ## 39 methylation      cg25984124
-    ## 40 methylation      cg07566050
-    ## 41 methylation      cg02630105
-    ## 42 methylation      cg20849549
-    ## 43 methylation      cg25539131
-    ## 44 methylation      cg07064406
+    ## 6     geneexpr            PCNA
+    ## 7     geneexpr           YWHAE
+    ## 8  proteinexpr        Bap1.c.4
+    ## 9  proteinexpr             Bid
+    ## 10 proteinexpr       Cyclin_E2
+    ## 11 proteinexpr      P.Cadherin
+    ## 12 proteinexpr            Chk1
+    ## 13 proteinexpr      Chk1_pS345
+    ## 14 proteinexpr            EGFR
+    ## 15 proteinexpr     EGFR_pY1173
+    ## 16 proteinexpr     HER3_pY1289
+    ## 17 proteinexpr           MIG.6
+    ## 18 proteinexpr           ETS.1
+    ## 19 proteinexpr MEK1_pS217_S221
+    ## 20 proteinexpr        p38_MAPK
+    ## 21 proteinexpr    c.Met_pY1235
+    ## 22 proteinexpr           N.Ras
+    ## 23 proteinexpr            PCNA
+    ## 24 proteinexpr     PEA15_pS116
+    ## 25 proteinexpr PKC.delta_pS664
+    ## 26 proteinexpr           Rad50
+    ## 27 proteinexpr     C.Raf_pS338
+    ## 28 proteinexpr          p70S6K
+    ## 29 proteinexpr    p70S6K_pT389
+    ## 30 proteinexpr           Smad4
+    ## 31 proteinexpr     STAT3_pY705
+    ## 32 proteinexpr  14.3.3_epsilon
+    ## 33 methylation      cg20139214
+    ## 34 methylation      cg18457775
+    ## 35 methylation      cg01306510
+    ## 36 methylation      cg02412050
+    ## 37 methylation      cg07566050
+    ## 38 methylation      cg02630105
+    ## 39 methylation      cg20849549
+    ## 40 methylation      cg25539131
+    ## 41 methylation      cg07064406
 
 For each layer, the variable selection results show the chosen
 variables. In this example, we perform variable selection on the entire
@@ -335,3 +332,44 @@ print(trained_study)
     ## Status          : Trained
     ## Number of layers: 4
     ## Layers trained  : 4
+
+``` r
+# Let us check the status of a layer as well.
+print(tl_ge)
+```
+
+    ## TrainLayer            : geneexpr
+    ## Status                : Trained
+    ## Nb. of objects stored : 4
+    ## -----------------------
+    ##               key     class
+    ## 1        geneexpr TrainData
+    ## 2 varsel_geneexpr    VarSel
+    ## 3          ranger     Lrner
+    ## 4        rangerMo     Model
+
+- Retrieve the basic model of a specific layer.
+
+``` r
+model_ge <- tl_ge$getModel()
+print(model_ge)
+```
+
+    ## Class           : Model
+    ## 
+    ## Learner info.   
+    ## -----------------------
+    ## Learner          : ranger
+    ## TrainLayer       : geneexpr
+    ## Package          : ranger
+    ## Learn function   : ranger
+    ## 
+    ## Train data info.      
+    ## -----------------------
+    ## TrainData : geneexpr
+    ## Layer     : geneexpr
+    ## ind. id.  : IDS
+    ## target    : disease
+    ## n         : 26
+    ## Missing   : 0
+    ## p         : 8

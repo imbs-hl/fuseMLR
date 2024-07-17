@@ -196,4 +196,13 @@ trained_study <- train_study$train(resampling_method = "caret::createFolds",
                                    use_var_sel = TRUE)
 # Let us now check the status of our study.
 print(trained_study)
+# Let us check the status of a layer as well.
+print(tl_ge)
+```
+
+- Retrieve the basic model of a specific layer.
+
+```{r basic_lrnr, include=TRUE, eval=TRUE}
+model_ge <- tl_ge$getModel()
+print(model_ge)
 ```
