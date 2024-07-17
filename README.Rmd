@@ -40,10 +40,18 @@ devtools::install_github("imbs-hl/fuseMLR")
 
 The following example is based on simulated data available in `fuseMLR`. Data have been simulated using the R package `InterSIM`, version 2.2.0. 
 
+```{r libraries}
+library(fuseMLR)
+library(UpSetR)
+library(ranger)
+```
+
 - Let us inspect our simulated data.
 
 ```{r data_exam, include=TRUE, eval=TRUE}
 library(fuseMLR)
+library(UpSetR)
+library(ranger)
 data("entities")
 # This is a list containing two lists of data: training and test.
 # Each sublist contains three entities.

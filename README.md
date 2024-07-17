@@ -1,3 +1,12 @@
+---
+title: "fuseMLR"
+author: Cesaire J. K. Fouodo
+output: 
+  md_document:
+    variant: gfm
+    preserve_yaml: true
+---
+
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/imbs-hl/fuseMLR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/imbs-hl/fuseMLR/actions/workflows/R-CMD-check.yaml)
@@ -52,10 +61,18 @@ devtools::install_github("imbs-hl/fuseMLR")
 The following example is based on simulated data available in `fuseMLR`.
 Data have been simulated using the R package `InterSIM`, version 2.2.0.
 
+``` r
+library(fuseMLR)
+library(UpSetR)
+library(ranger)
+```
+
 - Let us inspect our simulated data.
 
 ``` r
 library(fuseMLR)
+library(UpSetR)
+library(ranger)
 data("entities")
 # This is a list containing two lists of data: training and test.
 # Each sublist contains three entities.
@@ -222,45 +239,46 @@ print(var_sel_res)
     ## 4     geneexpr           CHEK2
     ## 5     geneexpr           EIF4E
     ## 6     geneexpr          MAP2K1
-    ## 7     geneexpr            PCNA
-    ## 8     geneexpr           YWHAE
-    ## 9     geneexpr           YWHAZ
-    ## 10 proteinexpr        Bap1.c.4
-    ## 11 proteinexpr             Bid
-    ## 12 proteinexpr       Cyclin_E2
-    ## 13 proteinexpr      P.Cadherin
-    ## 14 proteinexpr            Chk1
-    ## 15 proteinexpr      Chk1_pS345
-    ## 16 proteinexpr            EGFR
-    ## 17 proteinexpr     EGFR_pY1173
-    ## 18 proteinexpr     HER3_pY1289
-    ## 19 proteinexpr           MIG.6
-    ## 20 proteinexpr           ETS.1
-    ## 21 proteinexpr MEK1_pS217_S221
-    ## 22 proteinexpr        p38_MAPK
-    ## 23 proteinexpr    c.Met_pY1235
-    ## 24 proteinexpr           N.Ras
-    ## 25 proteinexpr            PCNA
-    ## 26 proteinexpr     PEA15_pS116
-    ## 27 proteinexpr PKC.delta_pS664
-    ## 28 proteinexpr           Rad50
-    ## 29 proteinexpr     C.Raf_pS338
-    ## 30 proteinexpr          p70S6K
-    ## 31 proteinexpr    p70S6K_pT389
-    ## 32 proteinexpr           Smad4
-    ## 33 proteinexpr     STAT3_pY705
-    ## 34 proteinexpr  14.3.3_epsilon
-    ## 35 methylation      cg20139214
-    ## 36 methylation      cg18457775
-    ## 37 methylation      cg24747396
-    ## 38 methylation      cg01306510
-    ## 39 methylation      cg02412050
-    ## 40 methylation      cg25984124
+    ## 7     geneexpr          MAPK14
+    ## 8     geneexpr            PCNA
+    ## 9     geneexpr          SQSTM1
+    ## 10    geneexpr           YWHAE
+    ## 11 proteinexpr        Bap1.c.4
+    ## 12 proteinexpr             Bid
+    ## 13 proteinexpr       Cyclin_E2
+    ## 14 proteinexpr      P.Cadherin
+    ## 15 proteinexpr            Chk1
+    ## 16 proteinexpr      Chk1_pS345
+    ## 17 proteinexpr            EGFR
+    ## 18 proteinexpr     EGFR_pY1173
+    ## 19 proteinexpr     HER3_pY1289
+    ## 20 proteinexpr           MIG.6
+    ## 21 proteinexpr           ETS.1
+    ## 22 proteinexpr MEK1_pS217_S221
+    ## 23 proteinexpr        p38_MAPK
+    ## 24 proteinexpr    c.Met_pY1235
+    ## 25 proteinexpr           N.Ras
+    ## 26 proteinexpr            PCNA
+    ## 27 proteinexpr     PEA15_pS116
+    ## 28 proteinexpr PKC.delta_pS664
+    ## 29 proteinexpr           Rad50
+    ## 30 proteinexpr     C.Raf_pS338
+    ## 31 proteinexpr          p70S6K
+    ## 32 proteinexpr    p70S6K_pT389
+    ## 33 proteinexpr           Smad4
+    ## 34 proteinexpr     STAT3_pY705
+    ## 35 proteinexpr  14.3.3_epsilon
+    ## 36 methylation      cg20139214
+    ## 37 methylation      cg18457775
+    ## 38 methylation      cg24747396
+    ## 39 methylation      cg01306510
+    ## 40 methylation      cg02412050
     ## 41 methylation      cg07566050
     ## 42 methylation      cg02630105
     ## 43 methylation      cg20849549
     ## 44 methylation      cg25539131
     ## 45 methylation      cg07064406
+    ## 46 methylation      cg11816577
 
 For each layer, the variable selection results show the chosen
 variables. In this example, we perform variable selection on the entire
@@ -365,9 +383,9 @@ print(model_ge)
     ## Layer     : geneexpr
     ## ind. id.  : IDS
     ## target    : disease
-    ## n         : 23
+    ## n         : 26
     ## Missing   : 0
-    ## p         : 10
+    ## p         : 11
 
 #### C) Predicting
 
@@ -416,29 +434,29 @@ print(new_predictions)
     ## 
     ## $predicted_values
     ##          IDS  geneexpr proteinexpr methylation meta_layer
-    ## 1   subject4 0.5819528   0.6423877   0.4556944  0.5548049
-    ## 2   subject7 0.5957044   0.2418123   0.4356028  0.4174470
-    ## 3   subject8 0.8260016   0.7800290   0.6811825  0.7563455
-    ## 4  subject10 0.7634992   0.7719115   0.7171159  0.7489190
-    ## 5  subject13 0.5961583   0.3214702   0.3154683  0.3991494
-    ## 6  subject15 0.6096869   0.7909095   0.4298448  0.6028022
-    ## 7  subject16 0.7128421   0.3172734   0.2370698  0.4023062
-    ## 8  subject18 0.7296052   0.2315063   0.1759512  0.3556151
-    ## 9  subject23 0.7137321   0.2179992   0.5798913  0.4979338
-    ## 10 subject24 0.4262175   0.5892270   0.5801833  0.5384033
-    ## 11 subject27 0.3516631   0.2446571   0.4184683  0.3409613
-    ## 12 subject31 0.4353333   0.7683369   0.5736972  0.5984620
-    ## 13 subject32 0.5478357   0.6644591   0.6187845  0.6133989
-    ## 14 subject35 0.3448282   0.6636111   0.6363849  0.5606428
-    ## 15 subject36 0.5197944   0.1920357   0.4225405  0.3738314
-    ## 16 subject50 0.8559476   0.4433349   0.7268147  0.6696837
-    ## 17 subject54 0.5804028   0.6493194   0.8653012  0.7102443
-    ## 18 subject55 0.6496242   0.2483901   0.5191702  0.4666664
-    ## 19 subject59 0.4640766   0.2734353   0.3363806  0.3525088
-    ## 20 subject62 0.2497897   0.2903052   0.2857087  0.2767925
-    ## 21 subject63 0.3049687   0.6436583   0.8194611  0.6110195
-    ## 22 subject66 0.6930524   0.6277417   0.8553694  0.7320909
-    ## 23 subject70 0.2264119   0.2864357   0.2686020  0.2622834
+    ## 1   subject4 0.3973369   0.6258298  0.40468810  0.4747581
+    ## 2   subject7 0.4970290   0.2082278  0.50162817  0.4045058
+    ## 3   subject8 0.7201671   0.8443897  0.69956587  0.7528150
+    ## 4  subject10 0.6627052   0.7825214  0.72233810  0.7247158
+    ## 5  subject13 0.4550956   0.2703933  0.18150397  0.2897634
+    ## 6  subject15 0.6651290   0.8695881  0.38473690  0.6242409
+    ## 7  subject16 0.6968484   0.3446230  0.33281786  0.4421039
+    ## 8  subject18 0.7117651   0.2481956  0.06102222  0.3106017
+    ## 9  subject23 0.6176917   0.2434262  0.56311746  0.4745496
+    ## 10 subject24 0.2775048   0.6383849  0.59248770  0.5162459
+    ## 11 subject27 0.4095131   0.1903718  0.43144246  0.3463857
+    ## 12 subject31 0.4308321   0.7984313  0.64784524  0.6341570
+    ## 13 subject32 0.5034480   0.7836944  0.59301071  0.6293263
+    ## 14 subject35 0.3417940   0.7738702  0.63193214  0.5942417
+    ## 15 subject36 0.5922778   0.1949044  0.54351984  0.4438241
+    ## 16 subject50 0.7657020   0.5289222  0.71462341  0.6687886
+    ## 17 subject54 0.4741087   0.6518258  0.85331310  0.6777043
+    ## 18 subject55 0.5646897   0.2087369  0.47323651  0.4133688
+    ## 19 subject59 0.4569187   0.2231567  0.41613413  0.3649424
+    ## 20 subject62 0.2487980   0.2618056  0.34592460  0.2903310
+    ## 21 subject63 0.4214095   0.8128040  0.77892183  0.6864398
+    ## 22 subject66 0.6874425   0.6665591  0.91744048  0.7689191
+    ## 23 subject70 0.2074909   0.2879774  0.25336468  0.2513790
 
 © 2024 Institute of Medical Biometry and Statistics (IMBS). All rights
 reserved.
