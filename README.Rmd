@@ -246,4 +246,4 @@ new_predictions <- train_study$predict(new_study = new_study)
 print(new_predictions)
 ```
 
-`&copy;` 2024 Institute of Medical Biometry and Statistics (IMBS). All rights reserved.
+&copy; 2024 Institute of Medical Biometry and Statistics (IMBS). All rights reserved.
