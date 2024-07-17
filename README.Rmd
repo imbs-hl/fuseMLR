@@ -26,6 +26,8 @@ Recent technological advances have enabled the simultaneous targeting of multipl
 
 We introduce the fuseMLR package for late integration modeling in R. This package allows users to define studies with multiple layers, data entities, and layer-specific machine learning methods. FuseMLR is user-friendly, enabling the training of different models across layers and automatically conducting meta-analysis once layer-specific training is completed. Additionally, fuseMLR allows for variable selection at the layer level and makes predictions for new data entities.
 
+`fuseMLR` object oriented based on the `R6` package version 2.5.1.
+
 ### Installation
 
 Install the development version from GitHub with
@@ -36,13 +38,24 @@ devtools::install_github("imbs-hl/fuseMLR")
 
 ### Usage example
 
-The following example is based on simulated data available in fuseMLR. Data have been simulated using the R package InterSIM, version 2.2.0.
+The following example is based on simulated data available in `fuseMLR`. Data have been simulated using the R package `InterSIM`, version 2.2.0.
 
-- Let us examine our simulated data.
+- Let us inspect our simulated data.
 
 ```{r data_exam, include=TRUE, eval=TRUE}
+library(fuseMLR)
 data("entities")
 # This is a list containing two lists of data: training and test.
 # Each sublist contains three entities.
-str(object = entities,max.level = 2)
+str(object = entities, max.level = 2)
+```
+
+- Instantiate a training study: A study is the fundamental component of a `fuseMLR` object.
+
+```{r training_study, include=TRUE, eval=TRUE}
+train_study <- TrainStudy$new(id = "train_study",
+                              ind_col = "IDS",
+                              target = "disease")
+print(train_study)
+# See also train_study$summary()
 ```

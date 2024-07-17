@@ -46,6 +46,8 @@ and automatically conducting meta-analysis once layer-specific training
 is completed. Additionally, fuseMLR allows for variable selection at the
 layer level and makes predictions for new data entities.
 
+`fuseMLR` object oriented based on the `R6` package version 2.5.1.
+
 ### Installation
 
 Install the development version from GitHub with
@@ -56,16 +58,17 @@ devtools::install_github("imbs-hl/fuseMLR")
 
 ### Usage example
 
-The following example is based on simulated data available in fuseMLR.
-Data have been simulated using the R package InterSIM, version 2.2.0.
+The following example is based on simulated data available in `fuseMLR`.
+Data have been simulated using the R package `InterSIM`, version 2.2.0.
 
-- Let us examine our simulated data.
+- Let us inspect our simulated data.
 
 ``` r
+library(fuseMLR)
 data("entities")
 # This is a list containing two lists of data: training and test.
 # Each sublist contains three entities.
-str(object = entities,max.level = 2)
+str(object = entities, max.level = 2)
 ```
 
     ## List of 2
@@ -77,3 +80,22 @@ str(object = entities,max.level = 2)
     ##   ..$ geneexpr   :'data.frame':  23 obs. of  133 variables:
     ##   ..$ proteinexpr:'data.frame':  23 obs. of  162 variables:
     ##   ..$ methylation:'data.frame':  23 obs. of  369 variables:
+
+- Instantiate a training study: A study is the fundamental component of
+  a `fuseMLR` object.
+
+``` r
+train_study <- TrainStudy$new(id = "train_study",
+                              ind_col = "IDS",
+                              target = "disease")
+print(train_study)
+```
+
+    ## TrainStudy      : train_study
+    ## Status          : Not trained
+    ## Number of layers: 0
+    ## Layers trained  : 0
+
+``` r
+# See also train_study$summary()
+```
