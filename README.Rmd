@@ -92,6 +92,6 @@ print(train_study)
 
 - An upset plot of the training study: Visualize patient overlap across layers.
 
-```{r training_data, include=TRUE, eval=TRUE}
+```{r upsetplot, include=TRUE, eval=TRUE}
 train_study$upset(order.by = "freq")
 ```

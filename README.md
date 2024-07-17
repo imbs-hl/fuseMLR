@@ -108,8 +108,8 @@ tl_me <- TrainLayer$new(id = "methylation", train_study = train_study)
 tl_meta <- TrainMetaLayer$new(id = "meta_layer", train_study = train_study)
 ```
 
-- Add training data (entities) to layers, excluded the meta layer. The
-  meta layer is modifiable internally after the training phase.
+- Add training data (entities) to layers: Exclude the meta layer, as it
+  is modifiable internally after the training phase.
 
 ``` r
 train_data_ge <- TrainData$new(id = "geneexpr",
@@ -154,3 +154,12 @@ print(train_study)
     ## Status          : Not trained
     ## Number of layers: 4
     ## Layers trained  : 0
+
+- An upset plot of the training study: Visualize patient overlap across
+  layers.
+
+``` r
+train_study$upset(order.by = "freq")
+```
+
+![](README_files/figure-gfm/upsetplot-1.png)<!-- -->
