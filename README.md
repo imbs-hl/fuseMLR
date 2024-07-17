@@ -53,3 +53,27 @@ Install the development version from GitHub with
 ``` r
 devtools::install_github("imbs-hl/fuseMLR")
 ```
+
+### Usage example
+
+The following example is based on simulated data available in fuseMLR.
+Data have been simulated using the R package InterSIM, version 2.2.0.
+
+- Let us examine our simulated data.
+
+``` r
+data("entities")
+# This is a list containing two lists of data: training and test.
+# Each sublist contains three entities.
+str(object = entities,max.level = 2)
+```
+
+    ## List of 2
+    ##  $ training:List of 3
+    ##   ..$ geneexpr   :'data.frame':  50 obs. of  133 variables:
+    ##   ..$ proteinexpr:'data.frame':  50 obs. of  162 variables:
+    ##   ..$ methylation:'data.frame':  50 obs. of  369 variables:
+    ##  $ testing :List of 3
+    ##   ..$ geneexpr   :'data.frame':  23 obs. of  133 variables:
+    ##   ..$ proteinexpr:'data.frame':  23 obs. of  162 variables:
+    ##   ..$ methylation:'data.frame':  23 obs. of  369 variables:
