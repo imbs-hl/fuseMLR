@@ -52,7 +52,7 @@ library(ranger)
 data("entities")
 # This is a list containing two lists of data: training and test.
 # Each sublist contains three entities.
-str(object = entities, max.level = 2)
+str(object = entities, max.level = 2L)
 ```
 
 Variable selection, training and prediction are the main functionalities of `fuseMLR`. As variable selection and training are performed for a training study, predictions are made for a new study.
@@ -115,7 +115,8 @@ We need to set up variable selection methods to our training study. Note that th
 
 ```{r varsel_param, include=TRUE, eval=TRUE}
 same_param_varsel <- ParamVarSel$new(id = "ParamVarSel",
-                                     param_list = list(num.trees = 1000, mtry = 3))
+                                     param_list = list(num.trees = 1000L,
+                                                       mtry = 3L))
 print(same_param_varsel)
 ```
 
@@ -159,8 +160,8 @@ We can now train our study using the subset of selected variables. Users can cho
 ```{r lrner_param, include=TRUE, eval=TRUE}
 same_param <- ParamLrner$new(id = "ParamRanger",
                              param_list = list(probability = TRUE,
-                                               mtry = 1),
-                             hyperparam_list = list(num.trees = 1000))
+                                               mtry = 2L),
+                             hyperparam_list = list(num.trees = 1000L))
 ```
 
 - Set up learners for each layer. We will use a weighted sum for the meta-analysis.
@@ -197,7 +198,7 @@ lrner_meta <- Lrner$new(id = "weighted",
 disease <- train_study$getTargetValues()$disease
 trained_study <- train_study$train(resampling_method = "caret::createFolds",
                                    resampling_arg = list(y = disease,
-                                                         k = 2),
+                                                         k = 2L),
                                    use_var_sel = TRUE)
 # Let us now check the status of our study.
 print(trained_study)
