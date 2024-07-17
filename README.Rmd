@@ -26,3 +26,10 @@ Recent technological advances have enabled the simultaneous targeting of multipl
 
 We introduce the fuseMLR package for late integration modeling in R. This package allows users to define studies with multiple layers, data entities, and layer-specific machine learning methods. FuseMLR is user-friendly, enabling the training of different models across layers and automatically conducting meta-analysis once layer-specific training is completed. Additionally, fuseMLR allows for variable selection at the layer level and makes predictions for new data entities.
 
+### Installation
+
+Install the development version from GitHub with
+
+```R
+devtools::install_github("imbs-hl/fuseMLR")
+```

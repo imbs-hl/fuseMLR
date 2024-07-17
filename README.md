@@ -1,3 +1,12 @@
+---
+title: "fuseMLR"
+author: Cesaire J. K. Fouodo
+output: 
+  md_document:
+    variant: gfm
+    preserve_yaml: true
+---
+
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/imbs-hl/fuseMLR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/imbs-hl/fuseMLR/actions/workflows/R-CMD-check.yaml)
@@ -36,3 +45,11 @@ user-friendly, enabling the training of different models across layers
 and automatically conducting meta-analysis once layer-specific training
 is completed. Additionally, fuseMLR allows for variable selection at the
 layer level and makes predictions for new data entities.
+
+### Installation
+
+Install the development version from GitHub with
+
+``` r
+devtools::install_github("imbs-hl/fuseMLR")
+```
