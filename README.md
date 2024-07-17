@@ -199,22 +199,22 @@ print(same_param_varsel)
 
 ``` r
 varsel_ge <- VarSel$new(id = "varsel_geneexpr",
-                              package = "Boruta",
-                              varsel_fct = "Boruta",
-                              param = same_param_varsel,
-                              train_layer = tl_ge)
+                        package = "Boruta",
+                        varsel_fct = "Boruta",
+                        param = same_param_varsel,
+                        train_layer = tl_ge)
 
 varsel_pr <- VarSel$new(id = "varsel_geneexpr",
-                                 package = "Boruta",
-                                 varsel_fct = "Boruta",
-                                 param = same_param_varsel,
-                                 train_layer = tl_pr)
+                        package = "Boruta",
+                        varsel_fct = "Boruta",
+                        param = same_param_varsel,
+                        train_layer = tl_pr)
 
 varsel_me <- VarSel$new(id = "varsel_geneexpr",
-                                 package = "Boruta",
-                                 varsel_fct = "Boruta",
-                                 param = same_param_varsel,
-                                 train_layer = tl_me)
+                        package = "Boruta",
+                        varsel_fct = "Boruta",
+                        param = same_param_varsel,
+                        train_layer = tl_me)
 ```
 
 - Perform variable selection on our training study.
@@ -227,49 +227,111 @@ print(var_sel_res)
     ##          Layer        variable
     ## 1     geneexpr           ACACA
     ## 2     geneexpr            BAP1
-    ## 3     geneexpr            CDH3
-    ## 4     geneexpr           CHEK2
-    ## 5     geneexpr           EIF4E
-    ## 6     geneexpr          MAP2K1
-    ## 7     geneexpr          MAPK14
-    ## 8     geneexpr            PCNA
-    ## 9     geneexpr           YWHAE
-    ## 10    geneexpr           YWHAZ
-    ## 11 proteinexpr        Bap1.c.4
-    ## 12 proteinexpr             Bid
-    ## 13 proteinexpr       Cyclin_E2
-    ## 14 proteinexpr      P.Cadherin
-    ## 15 proteinexpr            Chk1
-    ## 16 proteinexpr      Chk1_pS345
-    ## 17 proteinexpr            EGFR
-    ## 18 proteinexpr     EGFR_pY1173
-    ## 19 proteinexpr     HER3_pY1289
-    ## 20 proteinexpr           MIG.6
-    ## 21 proteinexpr           ETS.1
-    ## 22 proteinexpr MEK1_pS217_S221
-    ## 23 proteinexpr        p38_MAPK
-    ## 24 proteinexpr    c.Met_pY1235
-    ## 25 proteinexpr           N.Ras
-    ## 26 proteinexpr            PCNA
-    ## 27 proteinexpr     PEA15_pS116
-    ## 28 proteinexpr PKC.delta_pS664
-    ## 29 proteinexpr           Rad50
-    ## 30 proteinexpr     C.Raf_pS338
-    ## 31 proteinexpr          p70S6K
-    ## 32 proteinexpr    p70S6K_pT389
-    ## 33 proteinexpr           Smad4
-    ## 34 proteinexpr     STAT3_pY705
-    ## 35 proteinexpr  14.3.3_epsilon
-    ## 36 methylation      cg20139214
-    ## 37 methylation      cg18457775
-    ## 38 methylation      cg01306510
-    ## 39 methylation      cg02412050
+    ## 3     geneexpr           CHEK2
+    ## 4     geneexpr           EIF4E
+    ## 5     geneexpr          MAP2K1
+    ## 6     geneexpr          MAPK14
+    ## 7     geneexpr            PCNA
+    ## 8     geneexpr           YWHAE
+    ## 9  proteinexpr        Bap1.c.4
+    ## 10 proteinexpr             Bid
+    ## 11 proteinexpr       Cyclin_E2
+    ## 12 proteinexpr      P.Cadherin
+    ## 13 proteinexpr            Chk1
+    ## 14 proteinexpr      Chk1_pS345
+    ## 15 proteinexpr            EGFR
+    ## 16 proteinexpr     EGFR_pY1173
+    ## 17 proteinexpr     HER3_pY1289
+    ## 18 proteinexpr           MIG.6
+    ## 19 proteinexpr           ETS.1
+    ## 20 proteinexpr MEK1_pS217_S221
+    ## 21 proteinexpr        p38_MAPK
+    ## 22 proteinexpr    c.Met_pY1235
+    ## 23 proteinexpr           N.Ras
+    ## 24 proteinexpr            PCNA
+    ## 25 proteinexpr     PEA15_pS116
+    ## 26 proteinexpr PKC.delta_pS664
+    ## 27 proteinexpr           Rad50
+    ## 28 proteinexpr     C.Raf_pS338
+    ## 29 proteinexpr          p70S6K
+    ## 30 proteinexpr    p70S6K_pT389
+    ## 31 proteinexpr           Smad4
+    ## 32 proteinexpr     STAT3_pY705
+    ## 33 proteinexpr  14.3.3_epsilon
+    ## 34 methylation      cg20139214
+    ## 35 methylation      cg18457775
+    ## 36 methylation      cg09637363
+    ## 37 methylation      cg01306510
+    ## 38 methylation      cg02412050
+    ## 39 methylation      cg25984124
     ## 40 methylation      cg07566050
     ## 41 methylation      cg02630105
     ## 42 methylation      cg20849549
-    ## 43 methylation      cg00547829
-    ## 44 methylation      cg25539131
-    ## 45 methylation      cg07064406
+    ## 43 methylation      cg25539131
+    ## 44 methylation      cg07064406
 
-For each layer the variable selection results show which variable have
-been selected.
+For each layer, the variable selection results show the chosen
+variables. In this example, we perform variable selection on the entire
+study. However, users can opt to conduct variable selection on
+individual layers if desired.
+
+#### B) Training
+
+We can now train our study using the subset of selected variables. Users
+can choose to set up layer-specific learners, but for illustration, we
+will use the same learner for all layers.
+
+- Set up the same leaner parameters.
+
+``` r
+same_param <- ParamLrner$new(id = "ParamRanger",
+                             param_list = list(probability = TRUE,
+                                               mtry = 1),
+                             hyperparam_list = list(num.trees = 1000))
+```
+
+- Set up learners for each layer. We will use a weighted sum for the
+  meta-analysis.
+
+``` r
+lrner_ge <- Lrner$new(id = "ranger",
+                      package = "ranger",
+                      lrn_fct = "ranger",
+                      param = same_param,
+                      train_layer = tl_ge)
+lrner_pr <- Lrner$new(id = "ranger",
+                      package = "ranger",
+                      lrn_fct = "ranger",
+                      param = same_param,
+                      train_layer = tl_pr)
+lrner_me <- Lrner$new(id = "ranger",
+                      package = "ranger",
+                      lrn_fct = "ranger",
+                      param = same_param,
+                      train_layer = tl_me)
+lrner_meta <- Lrner$new(id = "weighted",
+                        lrn_fct = "weightedMeanLearner",
+                        param = ParamLrner$new(id = "ParamWeighted",
+                                               param_list = list(),
+                                               hyperparam_list = list()),
+                        train_layer = tl_meta)
+```
+
+- Train the study with the selected variables.
+
+``` r
+# Retrieve the target variable for resampling reasons. Resampling will be used by
+# fuseMLR to generate meta data.
+disease <- train_study$getTargetValues()$disease
+trained_study <- train_study$train(resampling_method = "caret::createFolds",
+                                   resampling_arg = list(y = disease,
+                                                         k = 2),
+                                   use_var_sel = TRUE)
+# Let us now check the status of our study.
+print(trained_study)
+```
+
+    ## TrainStudy      : train_study
+    ## Status          : Trained
+    ## Number of layers: 4
+    ## Layers trained  : 4

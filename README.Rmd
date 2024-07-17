@@ -118,22 +118,22 @@ print(same_param_varsel)
 
 ```{r varsel_object, include=TRUE, eval=TRUE}
 varsel_ge <- VarSel$new(id = "varsel_geneexpr",
-                              package = "Boruta",
-                              varsel_fct = "Boruta",
-                              param = same_param_varsel,
-                              train_layer = tl_ge)
+                        package = "Boruta",
+                        varsel_fct = "Boruta",
+                        param = same_param_varsel,
+                        train_layer = tl_ge)
 
 varsel_pr <- VarSel$new(id = "varsel_geneexpr",
-                                 package = "Boruta",
-                                 varsel_fct = "Boruta",
-                                 param = same_param_varsel,
-                                 train_layer = tl_pr)
+                        package = "Boruta",
+                        varsel_fct = "Boruta",
+                        param = same_param_varsel,
+                        train_layer = tl_pr)
 
 varsel_me <- VarSel$new(id = "varsel_geneexpr",
-                                 package = "Boruta",
-                                 varsel_fct = "Boruta",
-                                 param = same_param_varsel,
-                                 train_layer = tl_me)
+                        package = "Boruta",
+                        varsel_fct = "Boruta",
+                        param = same_param_varsel,
+                        train_layer = tl_me)
 ```
 
 - Perform variable selection on our training study.
@@ -143,4 +143,57 @@ var_sel_res <- train_study$varSelection()
 print(var_sel_res)
 ```
 
-For each layer the variable selection results show which variable have been selected.
+For each layer, the variable selection results show the chosen variables. In this example, we perform variable selection on the entire study. However, users can opt to conduct variable selection on individual layers if desired.
+
+#### B) Training
+
+We can now train our study using the subset of selected variables. Users can choose to set up layer-specific learners, but for illustration, we will use the same learner for all layers.
+
+- Set up the same leaner parameters.
+
+```{r lrner_param, include=TRUE, eval=TRUE}
+same_param <- ParamLrner$new(id = "ParamRanger",
+                             param_list = list(probability = TRUE,
+                                               mtry = 1),
+                             hyperparam_list = list(num.trees = 1000))
+```
+
+- Set up learners for each layer. We will use a weighted sum for the meta-analysis.
+
+```{r lrner, include=TRUE, eval=TRUE}
+lrner_ge <- Lrner$new(id = "ranger",
+                      package = "ranger",
+                      lrn_fct = "ranger",
+                      param = same_param,
+                      train_layer = tl_ge)
+lrner_pr <- Lrner$new(id = "ranger",
+                      package = "ranger",
+                      lrn_fct = "ranger",
+                      param = same_param,
+                      train_layer = tl_pr)
+lrner_me <- Lrner$new(id = "ranger",
+                      package = "ranger",
+                      lrn_fct = "ranger",
+                      param = same_param,
+                      train_layer = tl_me)
+lrner_meta <- Lrner$new(id = "weighted",
+                        lrn_fct = "weightedMeanLearner",
+                        param = ParamLrner$new(id = "ParamWeighted",
+                                               param_list = list(),
+                                               hyperparam_list = list()),
+                        train_layer = tl_meta)
+```
+
+- Train the study with the selected variables.
+
+```{r lrner_train, include=TRUE, eval=TRUE}
+# Retrieve the target variable for resampling reasons. Resampling will be used by
+# fuseMLR to generate meta data.
+disease <- train_study$getTargetValues()$disease
+trained_study <- train_study$train(resampling_method = "caret::createFolds",
+                                   resampling_arg = list(y = disease,
+                                                         k = 2),
+                                   use_var_sel = TRUE)
+# Let us now check the status of our study.
+print(trained_study)
+```
