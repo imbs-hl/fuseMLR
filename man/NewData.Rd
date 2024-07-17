@@ -11,7 +11,7 @@ A \link{NewData} object can only exist as a component of a \link{NewLayer} or a 
 \link{TrainData}
 }
 \section{Super class}{
-\code{fuseMLR::Data} -> \code{NewData}
+\code{\link[fuseMLR:Data]{fuseMLR::Data}} -> \code{NewData}
 }
 \section{Methods}{
 \subsection{Public methods}{

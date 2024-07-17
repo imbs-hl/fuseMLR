@@ -11,7 +11,7 @@ exist as a component of a \link{TrainLayer} or a \link{TrainMetaLayer} object.
 \link{TrainLayer}, \link{Lrner}, \link{Model}, \link{ParamLrner}, \link{NewData}
 }
 \section{Super class}{
-\code{fuseMLR::Data} -> \code{TrainData}
+\code{\link[fuseMLR:Data]{fuseMLR::Data}} -> \code{TrainData}
 }
 \section{Methods}{
 \subsection{Public methods}{

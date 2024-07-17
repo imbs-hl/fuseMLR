@@ -32,7 +32,7 @@ a new study.
 \link{NewStudy} and \link{PredictStudy}
 }
 \section{Super class}{
-\code{fuseMLR::HashTable} -> \code{TrainStudy}
+\code{\link[fuseMLR:HashTable]{fuseMLR::HashTable}} -> \code{TrainStudy}
 }
 \section{Methods}{
 \subsection{Public methods}{

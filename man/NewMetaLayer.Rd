@@ -9,7 +9,7 @@ This class implement a predicted meta layer. A \link{NewMetaLayer} can only exis
 A predicted meta layer can only contain a \link{NewData} object.
 }
 \section{Super class}{
-\code{fuseMLR::HashTable} -> \code{NewMetaLayer}
+\code{\link[fuseMLR:HashTable]{fuseMLR::HashTable}} -> \code{NewMetaLayer}
 }
 \section{Methods}{
 \subsection{Public methods}{

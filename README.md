@@ -19,8 +19,6 @@ Installation from Github:
 devtools::install_github("imbs-hl/fuseMLR")
 ```
 
-CRAN release coming soon.
-
 ### Usage
 For usage in R, see ?fuseMLR in R. Most importantly, see the Examples section. 
 
@@ -52,13 +50,16 @@ tl_meta_layer <- TrainMetaLayer$new(id = "meta_layer", train_study = train_study
 ```R
 train_data_geneexpr <- TrainData$new(id = "geneexpr",
                                      train_layer = tl_geneexpr,
-                                     data_frame = entities$training$geneexpr[-10, ])
+                                     data_frame = entities$training$geneexpr)
 train_data_proteinexpr <- TrainData$new(id = "proteinexpr",
                                         train_layer = tl_proteinexpr,
                                         data_frame = entities$training$proteinexpr)
 train_data_methylation <- TrainData$new(id = "methylation",
                                         train_layer = tl_methylation,
                                         data_frame = entities$training$methylation)
+
+# Upset plot of the study
+train_study$upset(order.by = "freq")
 ```
 
 #### Variable selection
