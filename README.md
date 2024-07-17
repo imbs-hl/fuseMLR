@@ -1,11 +1,3 @@
----
-title: "fuseMLR"
-author: Cesaire J. K. Fouodo
-output: 
-  md_document:
-    variant: gfm
-    preserve_yaml: true
----
 
 <!-- badges: start -->
 
