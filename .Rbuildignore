@@ -2,4 +2,5 @@
 ^\.Rproj\.user$
 ^.*test_code*
 ^\.github$
-^\.README_files*
+^README.Rmd
+^README.files
