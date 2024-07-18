@@ -56,3 +56,12 @@ jobs:
         uses: codecov/codecov-action@v4.0.1
         with:
           verbose: true
+      - name: Run tests
+        run: |
+          Rscript -e 'install.packages("covr");library(covr);cov <- package_coverage();save_coverage(cov, file = "coverage.json")'
+        env:
+          GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Upload coverage to Codecov
+        run: bash <(curl -s https://codecov.io/bash) -f coverage.json -t ${{ secrets.CODECOV_TOKEN }}
