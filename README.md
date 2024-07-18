@@ -235,44 +235,47 @@ print(var_sel_res)
     ##          Layer        variable
     ## 1     geneexpr           ACACA
     ## 2     geneexpr            BAP1
-    ## 3     geneexpr           EIF4E
-    ## 4     geneexpr          MAP2K1
-    ## 5     geneexpr            PCNA
-    ## 6     geneexpr           YWHAE
-    ## 7  proteinexpr        Bap1.c.4
-    ## 8  proteinexpr             Bid
-    ## 9  proteinexpr       Cyclin_E2
-    ## 10 proteinexpr      P.Cadherin
-    ## 11 proteinexpr            Chk1
-    ## 12 proteinexpr      Chk1_pS345
-    ## 13 proteinexpr            EGFR
-    ## 14 proteinexpr     EGFR_pY1173
-    ## 15 proteinexpr     HER3_pY1289
-    ## 16 proteinexpr           MIG.6
-    ## 17 proteinexpr           ETS.1
-    ## 18 proteinexpr MEK1_pS217_S221
-    ## 19 proteinexpr        p38_MAPK
-    ## 20 proteinexpr    c.Met_pY1235
-    ## 21 proteinexpr           N.Ras
-    ## 22 proteinexpr            PCNA
-    ## 23 proteinexpr     PEA15_pS116
-    ## 24 proteinexpr PKC.delta_pS664
-    ## 25 proteinexpr           Rad50
-    ## 26 proteinexpr     C.Raf_pS338
-    ## 27 proteinexpr          p70S6K
-    ## 28 proteinexpr    p70S6K_pT389
-    ## 29 proteinexpr           Smad4
-    ## 30 proteinexpr     STAT3_pY705
-    ## 31 proteinexpr  14.3.3_epsilon
-    ## 32 methylation      cg20139214
-    ## 33 methylation      cg18457775
-    ## 34 methylation      cg24747396
-    ## 35 methylation      cg01306510
-    ## 36 methylation      cg02412050
-    ## 37 methylation      cg07566050
-    ## 38 methylation      cg20849549
-    ## 39 methylation      cg25539131
-    ## 40 methylation      cg07064406
+    ## 3     geneexpr           CHEK2
+    ## 4     geneexpr           EIF4E
+    ## 5     geneexpr          MAP2K1
+    ## 6     geneexpr          MAPK14
+    ## 7     geneexpr            PCNA
+    ## 8     geneexpr           YWHAE
+    ## 9  proteinexpr        Bap1.c.4
+    ## 10 proteinexpr             Bid
+    ## 11 proteinexpr       Cyclin_E2
+    ## 12 proteinexpr      P.Cadherin
+    ## 13 proteinexpr            Chk1
+    ## 14 proteinexpr      Chk1_pS345
+    ## 15 proteinexpr            EGFR
+    ## 16 proteinexpr     EGFR_pY1173
+    ## 17 proteinexpr     HER3_pY1289
+    ## 18 proteinexpr           MIG.6
+    ## 19 proteinexpr           ETS.1
+    ## 20 proteinexpr MEK1_pS217_S221
+    ## 21 proteinexpr        p38_MAPK
+    ## 22 proteinexpr    c.Met_pY1235
+    ## 23 proteinexpr           N.Ras
+    ## 24 proteinexpr            PCNA
+    ## 25 proteinexpr     PEA15_pS116
+    ## 26 proteinexpr PKC.delta_pS664
+    ## 27 proteinexpr           Rad50
+    ## 28 proteinexpr     C.Raf_pS338
+    ## 29 proteinexpr          p70S6K
+    ## 30 proteinexpr    p70S6K_pT389
+    ## 31 proteinexpr           Smad4
+    ## 32 proteinexpr     STAT3_pY705
+    ## 33 proteinexpr  14.3.3_epsilon
+    ## 34 methylation      cg20139214
+    ## 35 methylation      cg18457775
+    ## 36 methylation      cg24747396
+    ## 37 methylation      cg01306510
+    ## 38 methylation      cg02412050
+    ## 39 methylation      cg07566050
+    ## 40 methylation      cg02630105
+    ## 41 methylation      cg20849549
+    ## 42 methylation      cg25539131
+    ## 43 methylation      cg07064406
 
 For each layer, the variable selection results show the chosen
 variables. In this example, we perform variable selection on the entire
@@ -377,9 +380,9 @@ print(model_ge)
     ## Layer     : geneexpr
     ## ind. id.  : IDS
     ## target    : disease
-    ## n         : 26
+    ## n         : 27
     ## Missing   : 0
-    ## p         : 7
+    ## p         : 9
 
 #### C) Predicting
 
@@ -428,29 +431,29 @@ print(new_predictions)
     ## 
     ## $predicted_values
     ##          IDS  geneexpr proteinexpr methylation meta_layer
-    ## 1   subject4 0.7366615   0.6384437  0.32332937  0.5639329
-    ## 2   subject7 0.6361365   0.2253671  0.58885000  0.4649861
-    ## 3   subject8 0.8359429   0.9122571  0.57208492  0.7783530
-    ## 4  subject10 0.8332671   0.8405218  0.82245556  0.8324714
-    ## 5  subject13 0.7866813   0.2582524  0.15968333  0.3808876
-    ## 6  subject15 0.5889984   0.8418933  0.23018810  0.5671874
-    ## 7  subject16 0.9577306   0.2872087  0.30760516  0.4905130
-    ## 8  subject18 0.8485437   0.1967528  0.01865159  0.3294865
-    ## 9  subject23 0.9654341   0.1157877  0.64309841  0.5378101
-    ## 10 subject24 0.4120274   0.6668254  0.58165516  0.5641876
-    ## 11 subject27 0.1468226   0.2008639  0.40676190  0.2525217
-    ## 12 subject31 0.6630813   0.8202754  0.42525714  0.6446734
-    ## 13 subject32 0.7359627   0.7580425  0.42763452  0.6432427
-    ## 14 subject35 0.3883032   0.7742742  0.74610714  0.6518612
-    ## 15 subject36 0.3309869   0.1619488  0.44883571  0.3055726
-    ## 16 subject50 0.8563032   0.5694786  0.60321230  0.6646439
-    ## 17 subject54 0.6911706   0.7139881  0.91125198  0.7719709
-    ## 18 subject55 0.6768560   0.1810726  0.42335754  0.4058851
-    ## 19 subject59 0.6293425   0.2157679  0.37993492  0.3908631
-    ## 20 subject62 0.2332067   0.1793825  0.28952937  0.2312774
-    ## 21 subject63 0.3095397   0.7660052  0.83139325  0.6535934
-    ## 22 subject66 0.6125536   0.6647683  0.89241111  0.7240907
-    ## 23 subject70 0.6169607   0.2390425  0.27369524  0.3612205
+    ## 1   subject4 0.5729984   0.6283444  0.37592262  0.5238763
+    ## 2   subject7 0.4546028   0.1430000  0.41540397  0.3306247
+    ## 3   subject8 0.6938500   0.8740036  0.58768135  0.7206080
+    ## 4  subject10 0.8614921   0.8670433  0.71899286  0.8137715
+    ## 5  subject13 0.4828944   0.3183373  0.17456349  0.3171327
+    ## 6  subject15 0.6921825   0.8668000  0.43054325  0.6627722
+    ## 7  subject16 0.7396742   0.2816353  0.26842897  0.4132131
+    ## 8  subject18 0.7437706   0.1875627  0.02909325  0.2976783
+    ## 9  subject23 0.7547107   0.2127790  0.57286706  0.4994574
+    ## 10 subject24 0.3501337   0.5554821  0.59494167  0.5081872
+    ## 11 subject27 0.5125694   0.2528040  0.35571071  0.3659174
+    ## 12 subject31 0.5171909   0.8374758  0.52997817  0.6350335
+    ## 13 subject32 0.5383274   0.7887183  0.54169921  0.6281439
+    ## 14 subject35 0.3027032   0.7871099  0.72650159  0.6219553
+    ## 15 subject36 0.5808337   0.1891099  0.46222103  0.4008025
+    ## 16 subject50 0.8612718   0.5800012  0.73700675  0.7183713
+    ## 17 subject54 0.5155119   0.7002710  0.89052937  0.7116772
+    ## 18 subject55 0.5351155   0.2145329  0.49238333  0.4067265
+    ## 19 subject59 0.3558187   0.2316774  0.28723532  0.2879582
+    ## 20 subject62 0.2787401   0.2784730  0.27884127  0.2786808
+    ## 21 subject63 0.2825139   0.7363254  0.85223413  0.6418141
+    ## 22 subject66 0.6464357   0.6408508  0.92384881  0.7411852
+    ## 23 subject70 0.2521048   0.3248405  0.20570397  0.2616752
 
 © 2024 Institute of Medical Biometry and Statistics (IMBS). All rights
 reserved.
