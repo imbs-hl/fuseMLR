@@ -50,6 +50,9 @@ jobs:
         with:
           upload-snapshots: true
           build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
+      - name: Run tests
+      run: |
+        Rscript -e 'install.packages("covr");library(covr);codecov(token = Sys.getenv("CODECOV_TOKEN"))'
       env:
         GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
