@@ -52,13 +52,14 @@ jobs:
           upload-snapshots: true
           build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4.0.1
-        with:
-          verbose: true
       - name: Run tests
         run: |
           Rscript -e 'install.packages("covr");library(covr);package_coverage();covr::codecov(coverage = cov)'
         env:
           GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Upload coverage to Codecov
+          uses: codecov/codecov-action@v4.0.1
+          with:
+          verbose: true
