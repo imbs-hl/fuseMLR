@@ -1,5 +1,4 @@
 ./R/entities.R
-./R/HashTable.R
 ./R/Lrner.R
 ./R/Model.R
 ./R/NewData.R

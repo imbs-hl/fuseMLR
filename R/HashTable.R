@@ -22,6 +22,18 @@ HashTable <- R6Class("HashTable",
                                                       parent = emptyenv())
                        },
                        #' @description
+                       #' Printer
+                       #' @param ... (any) \cr
+                       #'
+                       #' @export
+                       #'
+                       print = function (...) {
+                         cat("Class: HashTable\n")
+                         cat(sprintf("id: %s\n", private$id))
+                         cat("-----------------\n")
+                         print(private$key_class)
+                       },
+                       #' @description
                        #' Function to add a key-value pair to the hash table.
                        #' @param key (`character(1)`) \cr
                        #' The key to be added.
@@ -93,18 +105,7 @@ HashTable <- R6Class("HashTable",
                          }
                          invisible(TRUE)
                        },
-                       #' @description
-                       #' Printer
-                       #' @param ... (any) \cr
-                       #'
-                       #' @export
-                       #'
-                       print = function (...) {
-                         cat("Class: HashTable\n")
-                         cat(sprintf("id: %s\n", private$id))
-                         cat("-----------------\n")
-                         print(private$key_class)
-                       },
+
                        #' @description
                        #' Getter of the current object ID.
                        #'
