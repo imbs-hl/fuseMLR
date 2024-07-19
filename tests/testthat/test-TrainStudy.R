@@ -75,7 +75,7 @@ test_that("TrainStudy: until training", {
   # Variable selection works
   expect_no_error({
     same_param_varsel <- ParamVarSel$new(id = "ParamVarSel",
-                                         param_list = list(num.trees = 1000L,
+                                         param_list = list(num.trees = 100L,
                                                            mtry = 3L))
     varsel_ge <- VarSel$new(id = "varsel_geneexpr",
                             package = "Boruta",
@@ -104,7 +104,7 @@ test_that("TrainStudy: until training", {
     same_param <- ParamLrner$new(id = "ParamRanger",
                                  param_list = list(probability = TRUE,
                                                    mtry = 2L),
-                                 hyperparam_list = list(num.trees = 1000L))
+                                 hyperparam_list = list(num.trees = 100L))
   })
 
   # Lrner
