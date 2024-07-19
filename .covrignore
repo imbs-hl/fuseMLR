@@ -15,4 +15,3 @@
 ./R/TrainMetaLayer.R
 ./R/TrainStudy.R
 ./R/VarSel.R
-./R/weightedMeanLearner.R
