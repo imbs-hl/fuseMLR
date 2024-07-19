@@ -32,13 +32,13 @@ Data <- R6Class("Data",
                   #' Printer
                   #' @param ... (any) \cr
                   #'
-                  print = function(...) {
+                  print = function(...) { # nocov
                     cat("Class     : Data\n")
                     cat(sprintf("name      : %s\n", private$id))
                     cat(sprintf("ind. id.  : %s\n", private$ind_col))
                     cat(sprintf("n         : %s\n", nrow(private$data_frame)))
                     cat(sprintf("p         : %s\n", ncol(private$data_frame)))
-                  },
+                  }, # nocov end
                   #' @description
                   #' Retrieve a data subset for a given variable name and values, a data subset.
                   #'
