@@ -5,7 +5,6 @@
 ./R/NewLayer.R
 ./R/NewMetaLayer.R
 ./R/NewStudy.R
-./R/predict.weightedMeanLearner.R
 ./R/PredictData.R
 ./R/PredictLayer.R
 ./R/PredictMetaLayer.R
