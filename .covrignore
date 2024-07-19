@@ -12,5 +12,4 @@
 ./R/TrainData.R
 ./R/TrainLayer.R
 ./R/TrainMetaLayer.R
-./R/TrainStudy.R
 ./R/VarSel.R

@@ -51,7 +51,7 @@ a new study.
 \item \href{#method-TrainStudy-getIndCol}{\code{TrainStudy$getIndCol()}}
 \item \href{#method-TrainStudy-getTarget}{\code{TrainStudy$getTarget()}}
 \item \href{#method-TrainStudy-increaseNbTrainedLayer}{\code{TrainStudy$increaseNbTrainedLayer()}}
-\item \href{#method-TrainStudy-test_overlap}{\code{TrainStudy$test_overlap()}}
+\item \href{#method-TrainStudy-testOverlap}{\code{TrainStudy$testOverlap()}}
 \item \href{#method-TrainStudy-upset}{\code{TrainStudy$upset()}}
 \item \href{#method-TrainStudy-summary}{\code{TrainStudy$summary()}}
 }
@@ -334,13 +334,13 @@ Increase the number of trained layer.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TrainStudy-test_overlap"></a>}}
-\if{latex}{\out{\hypertarget{method-TrainStudy-test_overlap}{}}}
-\subsection{Method \code{test_overlap()}}{
+\if{html}{\out{<a id="method-TrainStudy-testOverlap"></a>}}
+\if{latex}{\out{\hypertarget{method-TrainStudy-testOverlap}{}}}
+\subsection{Method \code{testOverlap()}}{
 Test that individuals overlap over layers.
 At least five individuals must overlapped.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TrainStudy$test_overlap()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TrainStudy$testOverlap()}\if{html}{\out{</div>}}
 }
 
 }

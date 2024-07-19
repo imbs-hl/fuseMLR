@@ -225,8 +225,8 @@ TrainStudy <- R6Class("TrainStudy",
                                           resampling_method,
                                           resampling_arg) {
                           # Test that the study contains ovelapping individuals
-                          if (!self$test_overlap()) {
-                            stop("This study does not contain overlapping individuals.")
+                          if (!self$testOverlap()) {
+                            stop("This study does not contain overlapping individuals.") #nocov
                           }
                           # 1) Train each layer
                           self$trainLayer(ind_subset = ind_subset,
@@ -421,8 +421,11 @@ TrainStudy <- R6Class("TrainStudy",
                         #'
                         #' @export
                         #'
-                        test_overlap = function () {
+                        testOverlap = function () {
                           layers = self$getKeyClass()
+                          if (!nrow(layers)) {
+                            stop ("No layer found in this study.")
+                          }
                           # This code accesses each layer (except TrainMetaLayer) level
                           # and get the individual IDs.
                           layers = layers[layers$class %in% "TrainLayer", ]
@@ -436,7 +439,7 @@ TrainStudy <- R6Class("TrainStudy",
                           if (sum(duplicated(ids_data[ , 1L])) > 5L) {
                             return(TRUE)
                           } else {
-                            return(FALSE)
+                            return(FALSE) # nocov
                           }
                         },
                         #' @description

@@ -10,11 +10,11 @@ Hashtable to contain object entities. Study and layers are extensions of this cl
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-HashTable-new}{\code{HashTable$new()}}
+\item \href{#method-HashTable-print}{\code{HashTable$print()}}
 \item \href{#method-HashTable-add2HashTable}{\code{HashTable$add2HashTable()}}
 \item \href{#method-HashTable-getFromHashTable}{\code{HashTable$getFromHashTable()}}
 \item \href{#method-HashTable-getKeyClass}{\code{HashTable$getKeyClass()}}
 \item \href{#method-HashTable-removeFromHashTable}{\code{HashTable$removeFromHashTable()}}
-\item \href{#method-HashTable-print}{\code{HashTable$print()}}
 \item \href{#method-HashTable-getId}{\code{HashTable$getId()}}
 \item \href{#method-HashTable-getHashTable}{\code{HashTable$getHashTable()}}
 \item \href{#method-HashTable-checkClassExist}{\code{HashTable$checkClassExist()}}
@@ -34,6 +34,23 @@ Initialize a default parameters list.
 \describe{
 \item{\code{id}}{(\code{character(1)}) \cr
 ID of the hash table. It must be unique.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-HashTable-print"></a>}}
+\if{latex}{\out{\hypertarget{method-HashTable-print}{}}}
+\subsection{Method \code{print()}}{
+Printer
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HashTable$print(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{(any) \cr}
 }
 \if{html}{\out{</div>}}
 }
@@ -106,23 +123,6 @@ Remove the object with the corresponding key from the hashtable.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{key}}{Key of the object to be removed.}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-HashTable-print"></a>}}
-\if{latex}{\out{\hypertarget{method-HashTable-print}{}}}
-\subsection{Method \code{print()}}{
-Printer
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{HashTable$print(...)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{(any) \cr}
 }
 \if{html}{\out{</div>}}
 }

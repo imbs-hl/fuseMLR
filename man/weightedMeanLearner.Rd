@@ -20,9 +20,9 @@ A model object of class \code{weightedMeanLeaner}.
 Layer weights are estimated for each layer based on Brier score.
 }
 \examples{
-set.seed(20240624)
-x = data.frame(x1 = rnorm(50))
-y = sample(x = 0:1, size = 50, replace = TRUE)
+set.seed(20240624L)
+x = data.frame(x1 = rnorm(50L))
+y = sample(x = 0L:1L, size = 50L, replace = TRUE)
 my_model = weightedMeanLearner(x = x, y = y)
 
 }
