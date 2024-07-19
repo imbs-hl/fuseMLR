@@ -1,16 +1,16 @@
 data("entities")
-train_study <- TrainStudy$new(id = "train_study",
-                              ind_col = "IDS",
-                              target = "disease")
-# See also train_study$summary()
-print(train_study)
-test_that("TrainStudy: until training", {
+
+test_that("TrainStudy: all tests", {
+  # Create training study
   expect_no_error({
     train_study <- TrainStudy$new(id = "train_study",
                                   ind_col = "IDS",
                                   target = "disease")
     print(train_study)
   })
+  # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  # Tests for empty (no layer) training study                +
+  # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   expect_error({
     train_study$train()
   })
@@ -26,7 +26,6 @@ test_that("TrainStudy: until training", {
   expect_error({
     train_study$test_overlap()
   })
-
   expect_error({
     train_study$train(ind_subset = NULL,
                       use_var_sel = TRUE,
@@ -38,7 +37,9 @@ test_that("TrainStudy: until training", {
                       resampling_arg = list())
   })
 
-  # Layers can be added successfully
+  # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  # Tests for training study with empty layers               +
+  # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   expect_no_error({
     tl_ge <- TrainLayer$new(id = "geneexpr", train_study = train_study)
     tl_pr <- TrainLayer$new(id = "proteinexpr", train_study = train_study)
@@ -46,14 +47,16 @@ test_that("TrainStudy: until training", {
     # We also prepare the meta layer for the meta analysis.
     tl_meta <- TrainMetaLayer$new(id = "meta_layer", train_study = train_study)
   })
-
+  # Expected errors on training empty layers
   expect_error({
     train_study$train()
   })
   expect_error({
     train_study$test_overlap()
   })
-
+  # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  # Tests for training study with loaded data layers         +
+  # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   # TrainData can be added successfully
   expect_no_error({
     train_data_ge <- TrainData$new(id = "geneexpr",
@@ -66,12 +69,13 @@ test_that("TrainStudy: until training", {
                                    train_layer = tl_me,
                                    data_frame = entities$training$methylation)
   })
-
   # Upset plot works
   expect_no_error({
     train_study$upset(order.by = "freq")
   })
-
+  # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  # Tests for training study with loaded varriable selection         +
+  # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   # Variable selection works
   expect_no_error({
     same_param_varsel <- ParamVarSel$new(id = "ParamVarSel",
@@ -98,7 +102,9 @@ test_that("TrainStudy: until training", {
     var_sel_res <- train_study$varSelection()
     print(var_sel_res)
   })
-
+  # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  # Tests for training study with loaded learners.           +
+  # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   # Lrner parameters
   expect_no_error({
     same_param <- ParamLrner$new(id = "ParamRanger",
@@ -106,7 +112,6 @@ test_that("TrainStudy: until training", {
                                                    mtry = 2L),
                                  hyperparam_list = list(num.trees = 100L))
   })
-
   # Lrner
   expect_no_error({
     lrner_ge <- Lrner$new(id = "ranger",
@@ -132,7 +137,9 @@ test_that("TrainStudy: until training", {
                             train_layer = tl_meta)
   })
 
-  # Training
+  # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  # Tests for training study with for training.              +
+  # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   expect_no_error({
     same_param <- ParamLrner$new(id = "ParamRanger",
                                  param_list = list(probability = TRUE,
@@ -158,8 +165,6 @@ test_that("TrainStudy: until training", {
                                        resampling_arg = list(n = 10),
                                        use_var_sel = TRUE)
   })
-
-
   expect_no_error({
     trained_study$getId()
     trained_study$getIndCol()
@@ -168,11 +173,12 @@ test_that("TrainStudy: until training", {
     trained_study$getIndIDs()
     trained_study$getTargetValues()
   })
-
   expect_no_error({
     print(train_study$summary())
   })
-
+  # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  # Tests for training study with for predicting             +
+  # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   # Prediction
   expect_no_error({
     new_study <- NewStudy$new(id = "new_study", ind_col = "IDS")
