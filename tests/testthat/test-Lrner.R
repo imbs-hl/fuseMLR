@@ -14,11 +14,30 @@ ranger_param_lrner <- ParamLrner$new(id = "ParamRanger",
                                                             num.trees = 1000L))
 
 # Learner
+
+expect_error({
+  lrner_geneexpr <- Lrner$new(id = "ranger",
+                              package = "ranger",
+                              lrn_fct = "ranger",
+                              param = ranger_param_lrner,
+                              train_layer = "not_a_train_layer")
+})
+
 lrner_geneexpr <- Lrner$new(id = "ranger",
                             package = "ranger",
                             lrn_fct = "ranger",
                             param = ranger_param_lrner,
                             train_layer = tl_geneexpr)
+expect_error({
+  lrner_geneexpr <- Lrner$new(id = "ranger",
+                              package = "ranger",
+                              lrn_fct = "ranger",
+                              param = ranger_param_lrner,
+                              train_layer = tl_geneexpr)
+})
+expect_no_error({
+  print(lrner_geneexpr)
+})
 
 # Instantiate
 test_that("Lrner instantiates correctly", {

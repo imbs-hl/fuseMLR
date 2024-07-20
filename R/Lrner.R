@@ -84,9 +84,6 @@ Lrner <- R6Class("Lrner",
                    #'
                    train = function (ind_subset = NULL, use_var_sel = FALSE) {
                      train_data = private$train_layer$getTrainData()
-                     if(private$train_layer$getId() != train_data$getTrainLayer()$getId()) {
-                       stop("Learner and data must belong to the same layer.")
-                     }
                      # Train only on complete data
                      train_data = train_data$clone(deep = FALSE)
                      complete_data = train_data$getCompleteData()
@@ -117,8 +114,10 @@ Lrner <- R6Class("Lrner",
                          train_data = train_data$getVarSubset(var_name = var_list)
                          private$var_subset = selected_var
                        } else {
+                         # nocov start
                          warning("No selected variable found, so all variables have been used for training.\n")
                          private$var_subset = "ALL"
+                         # nocov end
                        }
                      } else {
                        private$var_subset = "ALL"

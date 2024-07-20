@@ -32,6 +32,7 @@ test_that("TrainData: all tests", {
     train_data_me <- TrainData$new(id = "methylation",
                                    train_layer = tl_me,
                                    data_frame = entities$training$methylation)
+    train_data_me$getTrainLayer()
     print(train_data_me)
   })
 
