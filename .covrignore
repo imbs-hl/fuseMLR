@@ -9,4 +9,3 @@
 ./R/PredictLayer.R
 ./R/PredictMetaLayer.R
 ./R/PredictStudy.R
-./R/VarSel.R

@@ -40,7 +40,7 @@ If NULL, the variable selection  function is called from
 the current environment.}
 
 \item{\code{package}}{(\code{character(1)}) \cr
-Variable selection function name.}
+Variable selection function name. Note: Variable selection functions, except \code{Boruta}, must return a vector of selected variables.}
 
 \item{\code{varsel_fct}}{(\code{character(1)}) \cr
 Variable selection parameters.}

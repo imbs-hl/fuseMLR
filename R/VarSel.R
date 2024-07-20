@@ -19,7 +19,7 @@ VarSel <- R6Class("VarSel",
                     #'  If NULL, the variable selection  function is called from
                     #'   the current environment.
                     #' @param package (`character(1)`) \cr
-                    #' Variable selection function name.
+                    #' Variable selection function name. Note: Variable selection functions, except \code{Boruta}, must return a vector of selected variables.
                     #' @param varsel_fct (`character(1)`) \cr
                     #' Variable selection parameters.
                     #' @param param (`ParamVarSel(1)`) \cr
@@ -35,8 +35,8 @@ VarSel <- R6Class("VarSel",
                       private$package = package
                       private$varsel_fct = varsel_fct
                       private$param = param
-                      if (!any(c("TrainLayer", "TrainMetaLayer") %in% class(train_layer))) {
-                        stop("A variable selection tool can only belong to TrainLayer.")
+                      if (!any(c("TrainLayer") %in% class(train_layer))) {
+                        stop("A variable selection tool can only belong to object of class TrainLayer.")
                       }
                       if (train_layer$checkVarSelExist()) {
                         stop(sprintf("Only one variable selection tool is allowed per training layer.\n",
@@ -81,9 +81,6 @@ VarSel <- R6Class("VarSel",
                     #'
                     varSelection = function (ind_subset = NULL) {
                       train_data = private$train_layer$getTrainData()
-                      if(private$train_layer$getId() != train_data$getTrainLayer()$getId()) {
-                        stop("Variable selection method and data must belong to the same layer.")
-                      }
                       # Variable selection only on complete data
                       train_data = train_data$clone(deep = FALSE)
                       complete_data = train_data$getCompleteData()
@@ -109,22 +106,32 @@ VarSel <- R6Class("VarSel",
                       varselected = do.call(eval(parse(text = varsel)),
                                             varsel_param)
                       # Only confirmed variables are remained
-                      if (private$package == "Boruta") {
-                        tmp_param = list(x = varselected, withTentative = FALSE)
-                        get_varsel = sprintf('%s::getSelectedAttributes',
-                                             private$package)
-                        # Get selected variables as vector
-                        varselected = do.call(eval(parse(text = get_varsel)),
-                                              tmp_param)
-                      } else {
-                        if (is.vector(varselected)) {
-                          stop("Your variable selection function should return a vector of selected variables.")
+                      if (!is.null(private$package)) {
+                        if ((private$package == "Boruta")) {
+                          tmp_param = list(x = varselected, withTentative = FALSE)
+                          get_varsel = sprintf('%s::getSelectedAttributes',
+                                               private$package)
+                          # Get selected variables as vector
+                          varselected = do.call(eval(parse(text = get_varsel)),
+                                                tmp_param)
                         }
+                      } else {
+                        # Systematic test is challenging for external variable
+                        # Have been test in interactive session
+                        # nocov start
+                        if (!is.vector(varselected)) {
+                          stop("Variable selection function should return a vector of selected variables.")
+                        }
+                        # nocov end
                       }
                       private$ind_subset = ind_subset
                       if (!length(varselected)) {
+                        # Systematic test is challenging for external variable
+                        # Have been test in interactive session
+                        # nocov start
                         stop(sprintf("No variable selected on layer", private$train_layer$getId()))
-                      } else {
+                        # nocov end
+                        } else {
                         private$var_subset = varselected
                       }
                       return(varselected)
