@@ -207,7 +207,6 @@ varsel_pr <- VarSel$new(id = "varsel_geneexpr",
                         varsel_fct = "Boruta",
                         param = same_param_varsel,
                         train_layer = tl_pr)
-set.seed(546)
 varsel_me <- VarSel$new(id = "varsel_geneexpr",
                         package = "Boruta",
                         varsel_fct = "Boruta",
@@ -218,6 +217,7 @@ varsel_me <- VarSel$new(id = "varsel_geneexpr",
 - Perform variable selection on our training study.
 
 ``` r
+set.seed(546)
 var_sel_res <- train_study$varSelection()
 print(var_sel_res)
 ```
