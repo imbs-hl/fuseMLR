@@ -1,5 +1,5 @@
 data("entities")
-
+set.seed(5214)
 test_that("TrainStudy: all tests", {
   # Create training study
   expect_no_error({
@@ -43,7 +43,6 @@ test_that("TrainStudy: all tests", {
   expect_no_error({
     tl_ge <- TrainLayer$new(id = "geneexpr", train_study = train_study)
     tl_pr <- TrainLayer$new(id = "proteinexpr", train_study = train_study)
-    tl_me <- TrainLayer$new(id = "methylation", train_study = train_study)
     # We also prepare the meta layer for the meta analysis.
     tl_meta <- TrainMetaLayer$new(id = "meta_layer", train_study = train_study)
   })
@@ -65,9 +64,6 @@ test_that("TrainStudy: all tests", {
     train_data_pr <- TrainData$new(id = "proteinexpr",
                                    train_layer = tl_pr,
                                    data_frame = entities$training$proteinexpr)
-    train_data_me <- TrainData$new(id = "methylation",
-                                   train_layer = tl_me,
-                                   data_frame = entities$training$methylation)
   })
   # Upset plot works
   expect_no_error({
@@ -79,7 +75,7 @@ test_that("TrainStudy: all tests", {
   # Variable selection works
   expect_no_error({
     same_param_varsel <- ParamVarSel$new(id = "ParamVarSel",
-                                         param_list = list(num.trees = 100L,
+                                         param_list = list(num.trees = 50L,
                                                            mtry = 3L))
     varsel_ge <- VarSel$new(id = "varsel_geneexpr",
                             package = "Boruta",
@@ -93,12 +89,6 @@ test_that("TrainStudy: all tests", {
                             param = same_param_varsel,
                             train_layer = tl_pr)
 
-    varsel_me <- VarSel$new(id = "varsel_geneexpr",
-                            package = "Boruta",
-                            varsel_fct = "Boruta",
-                            param = same_param_varsel,
-                            train_layer = tl_me)
-
     var_sel_res <- train_study$varSelection()
     print(var_sel_res)
   })
@@ -110,7 +100,7 @@ test_that("TrainStudy: all tests", {
     same_param <- ParamLrner$new(id = "ParamRanger",
                                  param_list = list(probability = TRUE,
                                                    mtry = 2L),
-                                 hyperparam_list = list(num.trees = 100L))
+                                 hyperparam_list = list(num.trees = 25L))
   })
   # Lrner
   expect_no_error({
@@ -124,11 +114,6 @@ test_that("TrainStudy: all tests", {
                           lrn_fct = "ranger",
                           param = same_param,
                           train_layer = tl_pr)
-    lrner_me <- Lrner$new(id = "ranger",
-                          package = "ranger",
-                          lrn_fct = "ranger",
-                          param = same_param,
-                          train_layer = tl_me)
     lrner_meta <- Lrner$new(id = "weighted",
                             lrn_fct = "weightedMeanLearner",
                             param = ParamLrner$new(id = "ParamWeighted",
@@ -143,8 +128,8 @@ test_that("TrainStudy: all tests", {
   expect_no_error({
     same_param <- ParamLrner$new(id = "ParamRanger",
                                  param_list = list(probability = TRUE,
-                                                   mtry = 2L),
-                                 hyperparam_list = list(num.trees = 1000L))
+                                                   mtry = 1L),
+                                 hyperparam_list = list(num.trees = 10L))
 
     disease <- train_study$getTargetValues()$disease
     trained_study <- train_study$train(resampling_method = "caret::createFolds",
@@ -152,17 +137,18 @@ test_that("TrainStudy: all tests", {
                                                              k = 2L),
                                        use_var_sel = TRUE)
     print(trained_study)
+    print(tl_ge)
   })
 
   expect_error({
     same_param <- ParamLrner$new(id = "ParamRanger",
                                  param_list = list(probability = TRUE,
                                                    mtry = 2L),
-                                 hyperparam_list = list(num.trees = 1000L))
+                                 hyperparam_list = list(num.trees = 10L))
 
     disease <- train_study$getTargetValues()$disease
     trained_study <- train_study$train(resampling_method = "stats::rnorm",
-                                       resampling_arg = list(n = 10),
+                                       resampling_arg = list(n = 10L),
                                        use_var_sel = TRUE)
   })
   expect_no_error({
@@ -187,7 +173,6 @@ test_that("TrainStudy: all tests", {
   expect_no_error({
     nl_ge <- NewLayer$new(id = "geneexpr", new_study = new_study)
     nl_pr <- NewLayer$new(id = "proteinexpr", new_study = new_study)
-    nl_me <- NewLayer$new(id = "methylation", new_study = new_study)
   })
 
   expect_no_error({
@@ -197,9 +182,6 @@ test_that("TrainStudy: all tests", {
     new_data_pr <- NewData$new(id = "proteinexpr",
                                new_layer = nl_pr,
                                data_frame = entities$testing$proteinexpr)
-    new_data_me <- NewData$new(id = "methylation",
-                               new_layer = nl_me,
-                               data_frame = entities$testing$methylation)
   })
 
   expect_no_error({

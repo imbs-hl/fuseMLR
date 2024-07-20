@@ -9,7 +9,5 @@
 ./R/PredictLayer.R
 ./R/PredictMetaLayer.R
 ./R/PredictStudy.R
-./R/TrainData.R
-./R/TrainLayer.R
 ./R/TrainMetaLayer.R
 ./R/VarSel.R

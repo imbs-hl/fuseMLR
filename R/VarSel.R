@@ -36,10 +36,10 @@ VarSel <- R6Class("VarSel",
                       private$varsel_fct = varsel_fct
                       private$param = param
                       if (!any(c("TrainLayer", "TrainMetaLayer") %in% class(train_layer))) {
-                        stop("A Lrner can only belong to a TrainLayer or a TrainMetaLayer object.")
+                        stop("A variable selection tool can only belong to TrainLayer.")
                       }
-                      if (train_layer$checkLrnerExist()) {
-                        stop(sprintf("Only one learner is allowed per training layer.\n The learner %s already exists on the training layer %s.\n",
+                      if (train_layer$checkVarSelExist()) {
+                        stop(sprintf("Only one variable selection tool is allowed per training layer.\n",
                                      self$getId(),
                                      train_layer$getId()))
                       }
@@ -123,7 +123,7 @@ VarSel <- R6Class("VarSel",
                       }
                       private$ind_subset = ind_subset
                       if (!length(varselected)) {
-                        stop(sprintf("No variable selected on layer", train_layer$getId()))
+                        stop(sprintf("No variable selected on layer", private$train_layer$getId()))
                       } else {
                         private$var_subset = varselected
                       }

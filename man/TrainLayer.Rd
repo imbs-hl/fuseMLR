@@ -40,8 +40,8 @@ A layer can make predictions for a new layer passed as argument to its predict f
 \item \href{#method-TrainLayer-getLrner}{\code{TrainLayer$getLrner()}}
 \item \href{#method-TrainLayer-getVarSel}{\code{TrainLayer$getVarSel()}}
 \item \href{#method-TrainLayer-getModel}{\code{TrainLayer$getModel()}}
-\item \href{#method-TrainLayer-getPredictions}{\code{TrainLayer$getPredictions()}}
 \item \href{#method-TrainLayer-checkLrnerExist}{\code{TrainLayer$checkLrnerExist()}}
+\item \href{#method-TrainLayer-checkVarSelExist}{\code{TrainLayer$checkVarSelExist()}}
 \item \href{#method-TrainLayer-checkTrainDataExist}{\code{TrainLayer$checkTrainDataExist()}}
 \item \href{#method-TrainLayer-summary}{\code{TrainLayer$summary()}}
 }
@@ -268,25 +268,25 @@ The stored \link{Model} object is returned.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TrainLayer-getPredictions"></a>}}
-\if{latex}{\out{\hypertarget{method-TrainLayer-getPredictions}{}}}
-\subsection{Method \code{getPredictions()}}{
-Getter of predictions.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TrainLayer$getPredictions()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-The stored predictions are returned.
-}
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TrainLayer-checkLrnerExist"></a>}}
 \if{latex}{\out{\hypertarget{method-TrainLayer-checkLrnerExist}{}}}
 \subsection{Method \code{checkLrnerExist()}}{
-Check whether a training data has been already stored.
+Check whether a learner data has been already stored.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TrainLayer$checkLrnerExist()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+Boolean value
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TrainLayer-checkVarSelExist"></a>}}
+\if{latex}{\out{\hypertarget{method-TrainLayer-checkVarSelExist}{}}}
+\subsection{Method \code{checkVarSelExist()}}{
+Check whether a variable selection tool has been already stored.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TrainLayer$checkVarSelExist()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{

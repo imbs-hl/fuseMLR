@@ -15,6 +15,7 @@ test_that("TrainData: all tests", {
   tl_ge <- TrainLayer$new(id = "geneexpr", train_study = train_study)
   tl_pr <- TrainLayer$new(id = "proteinexpr", train_study = train_study)
   tl_me <- TrainLayer$new(id = "methylation", train_study = train_study)
+  print(tl_ge)
   # We also prepare the meta layer for the meta analysis.
   tl_meta <- TrainMetaLayer$new(id = "meta_layer", train_study = train_study)
   # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
@@ -78,7 +79,7 @@ test_that("TrainData: all tests", {
     tl_ge_not_bin_target <- TrainLayer$new(id = "geneexpr_no_bin",
                                            train_study = ts_not_bin_target)
     tmp <- entities$training$geneexpr
-    tmp$disease <- sample(x = letters[1:3],
+    tmp$disease <- sample(x = letters[1L:3L],
                           size = length(tmp$disease),
                           replace = TRUE)
     TrainData$new(id = "geneexpr",

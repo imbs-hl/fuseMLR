@@ -152,11 +152,6 @@ TrainLayer <- R6Class("TrainLayer",
                           } else {
                             stop("The new layer ID does not match with the current layer ID.")
                           }
-                          # Check that a model exists on the current layer
-                          if (is.null(m_layer)) {
-                            stop(sprintf("There is no model stored on layer %s.",
-                                         self$getId()))
-                          }
                           new_data = new_layer$getNewData()
                           # Predicting: Data and model exist on this layer.
 
@@ -221,13 +216,6 @@ TrainLayer <- R6Class("TrainLayer",
                         getIndIDs = function () {
                           layer_kc = self$getKeyClass()
                           # Stop if training data is missing on this layer.
-                          # FIXME: Restrict this function to TrainData only.
-                          if (("NewData" %in% layer_kc[ , "class"])) {
-                            # Searching for layer specific new dataset
-                            data_key = layer_kc[layer_kc$class == "NewData" ,
-                                                "key"]
-                            current_data = self$getNewData()
-                          } else {
                             if (("TrainData" %in% layer_kc[ , "class"])) {
                               # Searching for layer specific new dataset
                               data_key = layer_kc[layer_kc$class == "TrainData" ,
@@ -236,7 +224,6 @@ TrainLayer <- R6Class("TrainLayer",
                             } else {
                               stop(sprintf("No data on layer %s.", self$getId()))
                             }
-                          }
                           current_data_frame = current_data$getDataFrame()
                           ids_data = current_data_frame[ , current_data$getIndCol(), drop = FALSE]
                           return(ids_data)
@@ -246,15 +233,17 @@ TrainLayer <- R6Class("TrainLayer",
                         #'
                         #' @return
                         #' The stored [NewData] object is returned.
-                        #' @export
-                        # FIXME: This function has been moved to NewLayer, so remove it after testing.
+                        # A TrainLayer plays the role of NewLayer when creating meta data.
                         getNewData = function () {
                           layer_kc = self$getKeyClass()
                           if (any(c("NewData", "TrainData") %in% layer_kc[ , "class"])) {
                             if ("NewData" %in% layer_kc[ , "class"]) {
+                              # nocov start
+                              # TODO: This part of the code will never be executed. Check it and maybe remove it
                               new_data_key = layer_kc[layer_kc$class == "NewData" ,
                                                       "key"]
                               new_data = self$getFromHashTable(key = new_data_key[1L])
+                              # nocov end
                             } else {
                               new_data = self$getTrainData()
                             }
@@ -316,26 +305,7 @@ TrainLayer <- R6Class("TrainLayer",
                           return(model)
                         },
                         #' @description
-                        #' Getter of predictions.
-                        #'
-                        #' @return
-                        #' The stored predictions are returned.
-                        #' @export
-                        # FIXME: Move this function to PredictLayer
-                        getPredictions = function () {
-                          layer_kc = self$getKeyClass()
-                          if (!("Prediction" %in% layer_kc[ , "class"])) {
-                            stop(sprintf("No Prediction on layer %s.", self$getId()))
-                          } else {
-                            prediction_key = layer_kc[layer_kc$class == "Prediction",
-                                                      "key"]
-                            predictions = self$getFromHashTable(
-                              key = prediction_key[1L])
-                          }
-                          return(predictions)
-                        },
-                        #' @description
-                        #' Check whether a training data has been already stored.
+                        #' Check whether a learner data has been already stored.
                         #'
                         #' @return
                         #' Boolean value
@@ -343,6 +313,15 @@ TrainLayer <- R6Class("TrainLayer",
                         #TODO: checkLrnerExist with "s"
                         checkLrnerExist = function () {
                           return(super$checkClassExist(.class = "Lrner"))
+                        },
+                        #' @description
+                        #' Check whether a variable selection tool has been already stored.
+                        #'
+                        #' @return
+                        #' Boolean value
+                        #'
+                        checkVarSelExist = function () {
+                          return(super$checkClassExist(.class = "VarSel"))
                         },
                         #' @description
                         #' Check whether a training data has been already stored.
