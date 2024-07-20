@@ -29,7 +29,6 @@ The meta layer can predict values given a new meta layer.
 \item \href{#method-TrainMetaLayer-train}{\code{TrainMetaLayer$train()}}
 \item \href{#method-TrainMetaLayer-predict}{\code{TrainMetaLayer$predict()}}
 \item \href{#method-TrainMetaLayer-getTrainData}{\code{TrainMetaLayer$getTrainData()}}
-\item \href{#method-TrainMetaLayer-getNewData}{\code{TrainMetaLayer$getNewData()}}
 \item \href{#method-TrainMetaLayer-getLrner}{\code{TrainMetaLayer$getLrner()}}
 \item \href{#method-TrainMetaLayer-getModel}{\code{TrainMetaLayer$getModel()}}
 \item \href{#method-TrainMetaLayer-openAccess}{\code{TrainMetaLayer$openAccess()}}
@@ -159,19 +158,6 @@ Getter of the training dataset stored on the current layer.
 
 \subsection{Returns}{
 The stored \link{TrainData} object is returned.
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TrainMetaLayer-getNewData"></a>}}
-\if{latex}{\out{\hypertarget{method-TrainMetaLayer-getNewData}{}}}
-\subsection{Method \code{getNewData()}}{
-Getter of the new data.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TrainMetaLayer$getNewData()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-The stored \link{NewData} object is returned.
 }
 }
 \if{html}{\out{<hr>}}

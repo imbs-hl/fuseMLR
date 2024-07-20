@@ -135,7 +135,7 @@ varsel_pr <- VarSel$new(id = "varsel_geneexpr",
                         varsel_fct = "Boruta",
                         param = same_param_varsel,
                         train_layer = tl_pr)
-
+set.seed(546)
 varsel_me <- VarSel$new(id = "varsel_geneexpr",
                         package = "Boruta",
                         varsel_fct = "Boruta",
@@ -194,6 +194,7 @@ lrner_meta <- Lrner$new(id = "weighted",
 - Train the study with the selected variables.
 
 ```{r lrner_train, include=TRUE, eval=TRUE}
+set.seed(5462)
 # Retrieve the target variable for resampling reasons. Resampling will be used by
 # fuseMLR to generate meta data.
 disease <- train_study$getTargetValues()$disease

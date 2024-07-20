@@ -431,6 +431,10 @@ TrainStudy <- R6Class("TrainStudy",
                           layers = layers[layers$class %in% "TrainLayer", ]
                           ids_data = NULL
                           current_data = NULL
+                          # TRUE if only one training layer
+                          if (length(layers$key) == 1) {
+                            return(TRUE)
+                          }
                           for (k in layers$key) {
                             layer = self$getFromHashTable(key = k)
                             ids_data = as.data.frame(rbind(ids_data,

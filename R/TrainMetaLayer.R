@@ -114,12 +114,10 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                               if (k == new_layer$getId()) {
                                 m_layer = self$getModel()
                               } else {
+                                # This code part is not externally accessible by user, so untestable.
+                                # nocov start
                                 stop("The new layer ID does not match with the current layer ID.")
-                              }
-                              # Check that a model exists on the current layer
-                              if (is.null(m_layer)) {
-                                stop(sprintf("There is no model stored on layer %s.",
-                                             self$getId()))
+                                # nocov end
                               }
                               new_data = new_layer$getNewData()
                               # Predicting: Data and model exist on this layer.
@@ -155,28 +153,6 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                                 stop(sprintf("No train data on layer %s.", self$getId()))
                               }
                               return(train_data)
-                            },
-                            #' @description
-                            #' Getter of the new data.
-                            #'
-                            #' @return
-                            #' The stored [NewData] object is returned.
-                            #' @export
-                            #'
-                            getNewData = function () {
-                              layer_kc = self$getKeyClass()
-                              if (any(c("NewData", "TrainData") %in% layer_kc[ , "class"])) {
-                                if ("NewData" %in% layer_kc[ , "class"]) {
-                                  new_data_key = layer_kc[layer_kc$class == "NewData" ,
-                                                          "key"]
-                                  new_data = self$getFromHashTable(key = new_data_key[1L])
-                                } else {
-                                  new_data = self$getTrainData()
-                                }
-                              } else {
-                                stop(sprintf("No new data on layer %s.", self$getId()))
-                              }
-                              return(new_data)
                             },
                             #' @description
                             #' Getter of the learner.
