@@ -28,8 +28,6 @@ Model <- R6Class("Model",
                    #' @return
                    #' An object is returned.
                    #'
-                   #' @export
-                   #FIXME: Do not export me, since a user can not create model itself.
                    #'
                    initialize = function (lrner,
                                           train_data,
@@ -44,7 +42,9 @@ Model <- R6Class("Model",
                                                  value = self,
                                                  .class = "Model")
                      } else {
+                       # nocov start
                        stop("A Model can only belong to a TrainLayer or a TrainMetaLayer.")
+                       # nocov end
                      }
                    },
                    #' @description
@@ -186,7 +186,9 @@ Model <- R6Class("Model",
                      } else {
                        if (is.list(predicted_obj)) {
                          if (is.null(predicted_obj$predictions)) {
+                           # nocov start
                            stop("Predicted object must either be a vector or a list containing a field named 'predictions'")
+                           # nocov end
                          } else {
                            predicted_obj = data.frame(
                              layer = private$lrner$getTrainLayer()$getId(),
@@ -198,7 +200,9 @@ Model <- R6Class("Model",
                            names(predicted_obj) = pred_colnames
                          }
                        } else {
+                         # nocov start
                          stop("Predicted object must either be a vector or a list containing a field named 'predictions'")
+                         # nocov end
                        }
                      }
                      # Ignore all other columns than layer, individual ids and

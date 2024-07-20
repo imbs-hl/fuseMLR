@@ -1,5 +1,4 @@
 ./R/entities.R
-./R/Model.R
 ./R/NewData.R
 ./R/NewLayer.R
 ./R/NewMetaLayer.R
