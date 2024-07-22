@@ -158,9 +158,15 @@ test_that("TrainStudy: all tests", {
     trained_study$getTrainMetaLayer()
     trained_study$getIndIDs()
     trained_study$getTargetValues()
+    print(tl_meta$getTrainData())
+    tmp_lrner <- tl_ge$getLrner()
+    tmp_lrner$getIndSubset()
+    tmp_lrner$getVarSubset()
+    tmp_model <- tl_ge$getModel()
+    tmp_model$summary()
   })
   expect_no_error({
-    print(train_study$summary())
+    train_study$summary()
   })
   # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   # Tests for training study with for predicting             +
@@ -190,11 +196,11 @@ test_that("TrainStudy: all tests", {
   })
 
   expect_no_error({
-    new_study$getTarget
+    new_predictions <- train_study$predict(new_study = new_study)
+    print(new_predictions)
   })
 
   expect_no_error({
-    new_predictions <- train_study$predict(new_study = new_study)
-    print(new_predictions)
+    new_study$getNewMetaLayer()
   })
 })

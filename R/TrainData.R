@@ -70,7 +70,11 @@ TrainData <- R6Class("TrainData",
                        #' @param ... (any) \cr
                        #'
                        print = function (...) {
-                         cat(sprintf("TrainData : %s\n", private$id))
+                         if ("TrainMetaLayer" %in% class(private$train_layer)) {
+                           cat(sprintf("TrainData : %s\n", "meta data"))
+                         } else {
+                           cat(sprintf("TrainData : %s\n", private$id))
+                         }
                          cat(sprintf("Layer     : %s\n", private$train_layer$getId()))
                          cat(sprintf("ind. id.  : %s\n", private$ind_col))
                          cat(sprintf("target    : %s\n", private$target))
@@ -83,7 +87,11 @@ TrainData <- R6Class("TrainData",
                        #' @param ... (any) \cr
                        #'
                        summary = function (...) {
-                         cat(sprintf("      TrainData : %s\n", private$id))
+                         if ("TrainMetaLayer" %in% class(private$train_layer)) {
+                           cat(sprintf("TrainData : %s\n", "meta data"))
+                         } else {
+                           cat(sprintf("TrainData : %s\n", private$id))
+                         }
                          cat(sprintf("      Layer     : %s\n", private$train_layer$getId()))
                          cat(sprintf("      ind. id.  : %s\n", private$ind_col))
                          cat(sprintf("      target    : %s\n", private$target))

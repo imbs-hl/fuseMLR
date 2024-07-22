@@ -69,7 +69,8 @@ NewStudy <- R6Class("NewStudy",
                    #'
                    getNewMetaLayer = function () {
                      new_layers = self$getKeyClass()
-                     new_meta_layer_key = layers[layers$class == "NewMetaLayer" , "key"]
+                     new_meta_layer_key = new_layers[new_layers$class == "NewMetaLayer" ,
+                                                     "key"]
                      new_meta_layer = self$getFromHashTable(key = new_meta_layer_key)
                      return(new_meta_layer)
                    },
@@ -81,8 +82,7 @@ NewStudy <- R6Class("NewStudy",
                    }
                  ),
                  private = list(
-                   ind_col = character(0L),
-                   target = character(0L)
+                   ind_col = character(0L)
                  ),
                  cloneable = FALSE
 )

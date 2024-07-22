@@ -24,11 +24,9 @@ A study is structured as followed:
 \itemize{
 \item \href{#method-NewStudy-new}{\code{NewStudy$new()}}
 \item \href{#method-NewStudy-print}{\code{NewStudy$print()}}
-\item \href{#method-NewStudy-createMetaNewData}{\code{NewStudy$createMetaNewData()}}
 \item \href{#method-NewStudy-getIndIDs}{\code{NewStudy$getIndIDs()}}
 \item \href{#method-NewStudy-getNewMetaLayer}{\code{NewStudy$getNewMetaLayer()}}
 \item \href{#method-NewStudy-getIndCol}{\code{NewStudy$getIndCol()}}
-\item \href{#method-NewStudy-getTarget}{\code{NewStudy$getTarget()}}
 }
 }
 \if{html}{\out{
@@ -83,27 +81,6 @@ Printer
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NewStudy-createMetaNewData"></a>}}
-\if{latex}{\out{\hypertarget{method-NewStudy-createMetaNewData}{}}}
-\subsection{Method \code{createMetaNewData()}}{
-Creates a new meta dataset based on layer predictions.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{NewStudy$createMetaNewData(meta_layer_id)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{meta_layer_id}}{(\code{character()}) \cr
-ID of the meta layer where the new meta data will be stored.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-A \link{NewData} is returned.
-}
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-NewStudy-getIndIDs"></a>}}
 \if{latex}{\out{\hypertarget{method-NewStudy-getIndIDs}{}}}
 \subsection{Method \code{getIndIDs()}}{
@@ -136,16 +113,6 @@ Object from class \link{NewMetaLayer}
 Getter of the individual column name.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{NewStudy$getIndCol()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-NewStudy-getTarget"></a>}}
-\if{latex}{\out{\hypertarget{method-NewStudy-getTarget}{}}}
-\subsection{Method \code{getTarget()}}{
-Getter of the target variable name.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{NewStudy$getTarget()}\if{html}{\out{</div>}}
 }
 
 }

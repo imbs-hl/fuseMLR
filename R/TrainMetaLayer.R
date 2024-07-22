@@ -293,7 +293,7 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                               if (!nrow(layer_kc)) {
                                 cat("      Empty layer\n")
                               }
-                              for (k in layer_kc[ , "key"]) {
+                              for (k in layer_kc[layer_kc$class != "Model", "key"]) {
                                 cat("      ----------------\n")
                                 current_obj = self$getFromHashTable(key = k)
                                 current_obj$summary()

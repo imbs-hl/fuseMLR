@@ -220,7 +220,7 @@ TrainLayer <- R6Class("TrainLayer",
                               # Searching for layer specific new dataset
                               data_key = layer_kc[layer_kc$class == "TrainData" ,
                                                   "key"]
-                              current_data = self$getTrainData()
+                              current_data = self$getNewData()
                             } else {
                               stop(sprintf("No data on layer %s.", self$getId()))
                             }
@@ -359,7 +359,7 @@ TrainLayer <- R6Class("TrainLayer",
                           if (!nrow(layer_kc)) {
                             cat("      Empty layer\n")
                           }
-                          for (k in layer_kc[ , "key"]) {
+                          for (k in layer_kc[layer_kc$class != "Model" , "key"]) {
                             cat("      ----------------\n")
                             current_obj = self$getFromHashTable(key = k)
                             current_obj$summary()

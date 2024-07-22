@@ -68,8 +68,8 @@ Model <- R6Class("Model",
                    summary = function (...) {
                      cat("      Model           \n\n")
                      cat("      -----------------------\n")
-                     cat(sprintf("Individual(s) used : $s\n", length(private$lrner$getVarSubset())))
-                     cat(sprintf("Variable(s) used   : $s\n", length(private$lrner$getIndSubset())))
+                     cat(sprintf("Individual(s) used : %s\n", length(private$lrner$getVarSubset())))
+                     cat(sprintf("Variable(s) used   : %s\n", length(private$lrner$getIndSubset())))
                      cat("      -----------------------\n")
                    },
                    #' @description

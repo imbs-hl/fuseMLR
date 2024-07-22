@@ -61,7 +61,7 @@ NewLayer <- R6Class("NewLayer",
                               # Searching for layer specific new dataset
                               data_key = layer_kc[layer_kc$class == "NewData" ,
                                                   "key"]
-                              current_data = self$getNewtData()
+                              current_data = self$getNewData()
                             } else {
                               stop(sprintf("No data on layer %s.", self$getId()))
                             }
