@@ -45,7 +45,6 @@ NewStudy <- R6Class("NewStudy",
                    #' @export
                    #'
                    getIndIDs = function() {
-                     # FIXME: Adjust to the Predict class
                      layers = self$getKeyClass()
                      # This code accesses each layer (except the MetaLayer) level
                      # and get the target variable
