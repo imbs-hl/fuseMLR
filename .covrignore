@@ -2,7 +2,6 @@
 ./R/NewData.R
 ./R/NewLayer.R
 ./R/NewMetaLayer.R
-./R/NewStudy.R
 ./R/PredictData.R
 ./R/PredictLayer.R
 ./R/PredictMetaLayer.R

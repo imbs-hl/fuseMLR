@@ -37,55 +37,6 @@ NewStudy <- R6Class("NewStudy",
                      cat(sprintf("NewStudy        : %s\n", private$id))
                      cat(sprintf("Number of layers: %s\n", nb_layers))
                    },
-                   #' @param meta_layer_id (`character()`) \cr
-                   #' ID of the meta layer where the new meta data will be stored.
-                   #'
-                   #' @description
-                   #' Creates a new meta dataset based on layer predictions.
-                   #'
-                   #' @return
-                   #' A [NewData] is returned.
-                   #' @export
-                   #'
-                   createMetaNewData = function (meta_layer_id) {
-                     # predicted_study = self$predictLayer(new_study = new_study,
-                     #                                     ind_subset = ind_subset)
-                     key_class_study = self$getKeyClass()
-                     predicted_values = NULL
-                     for (k in key_class_study[ , "key"]) {
-                       # FIXME: Maybe define a class Prediction instead of
-                       #        using Hashtable?
-                       pred_layer = self$getFromHashTable(key = k)
-                       pred = pred_layer$getFromHashTable(key = "predict")
-                       predicted_values = data.frame(rbind(predicted_values,
-                                                           pred))
-                     }
-                     # Will transform meta data.frame into wide format
-                     predicted_values_wide = reshape(predicted_values,
-                                                     idvar = colnames(predicted_values)[2L],
-                                                     timevar = colnames(predicted_values)[1L],
-                                                     direction = "wide")
-                     colname_vector = gsub(pattern = "Prediction.",
-                                           replacement = "",
-                                           x = names(predicted_values_wide))
-                     names(predicted_values_wide) = colname_vector
-                     ind_ids = self$getIndIDs()
-                     predicted_values_wide = merge(x = ind_ids,
-                                                   y = predicted_values_wide,
-                                                   by = colnames(ind_ids)[1L],
-                                                   all.y = TRUE)
-                     # Add layer specific predictions to a new meta layer
-                     new_meta_layer = MetaLayer$new(id = meta_layer_id,
-                                                    study = self)
-                     # FIXME: Move this: Data should be created by the a new layer.
-                     new_meta_layer$openAccess()
-                     new_meta_layer$setNewData(id = "predicted",
-                                             ind_col = names(predicted_values_wide)[1L],
-                                             data_frame = predicted_values_wide,
-                                             layer = meta_layer)
-                     new_meta_layer$closeAccess()
-                     return(new_meta_data)
-                   },
                    #' @description
                    #' Gather individual IDs from all layer.
                    #'
