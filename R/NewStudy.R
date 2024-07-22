@@ -78,12 +78,6 @@ NewStudy <- R6Class("NewStudy",
                    #' @export
                    getIndCol = function () {
                      return(private$ind_col)
-                   },
-                   #' @description
-                   #' Getter of the target variable name.
-                   #' @export
-                   getTarget = function () {
-                     return(private$target)
                    }
                  ),
                  private = list(

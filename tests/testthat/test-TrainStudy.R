@@ -168,6 +168,7 @@ test_that("TrainStudy: all tests", {
   # Prediction
   expect_no_error({
     new_study <- NewStudy$new(id = "new_study", ind_col = "IDS")
+    print(new_study)
   })
 
   expect_no_error({
@@ -182,6 +183,14 @@ test_that("TrainStudy: all tests", {
     new_data_pr <- NewData$new(id = "proteinexpr",
                                new_layer = nl_pr,
                                data_frame = entities$testing$proteinexpr)
+  })
+
+  expect_no_error({
+    new_study$getIndIDs()
+  })
+
+  expect_no_error({
+    new_study$getTarget
   })
 
   expect_no_error({
