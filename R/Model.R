@@ -142,10 +142,12 @@ Model <- R6Class("Model",
                      if(tmp_lrner$getTrainLayer()$getId() != new_data$getNewLayer()$getId()) {
                        stop("Learner and data must belong to the same layer.")
                      }
-                     # Predict only on complete data
+                     # Incomplete data are removed if required.
                      new_data = new_data$clone(deep = FALSE)
-                     complete_data = new_data$getCompleteData()
-                     new_data$setDataFrame(data_frame = complete_data)
+                     if (tmp_lrner$getNaRm()) {
+                       complete_data = new_data$getCompleteData()
+                       new_data$setDataFrame(data_frame = complete_data)
+                     }
                      # Prepare new dataset
                      if (is.null(ind_subset)) {
                        missing_ind = NULL

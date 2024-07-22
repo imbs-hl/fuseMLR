@@ -23,6 +23,15 @@ expect_error({
                               train_layer = "not_a_train_layer")
 })
 
+expect_error({
+  lrner_geneexpr <- Lrner$new(id = "ranger",
+                              package = "ranger",
+                              lrn_fct = "ranger",
+                              param = ranger_param_lrner,
+                              na_rm = "not_logical",
+                              train_layer = tl_geneexpr)
+})
+
 lrner_geneexpr <- Lrner$new(id = "ranger",
                             package = "ranger",
                             lrn_fct = "ranger",

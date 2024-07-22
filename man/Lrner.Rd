@@ -15,6 +15,7 @@ This class implements a learner. A \link{Lrner} object can only exist as a compo
 \item \href{#method-Lrner-summary}{\code{Lrner$summary()}}
 \item \href{#method-Lrner-train}{\code{Lrner$train()}}
 \item \href{#method-Lrner-getTrainLayer}{\code{Lrner$getTrainLayer()}}
+\item \href{#method-Lrner-getNaRm}{\code{Lrner$getNaRm()}}
 \item \href{#method-Lrner-getId}{\code{Lrner$getId()}}
 \item \href{#method-Lrner-getPackage}{\code{Lrner$getPackage()}}
 \item \href{#method-Lrner-getIndSubset}{\code{Lrner$getIndSubset()}}
@@ -29,7 +30,7 @@ Initialize a default parameters list.
 
 Learner ID.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Lrner$new(id, package = NULL, lrn_fct, param, train_layer)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Lrner$new(id, package = NULL, lrn_fct, param, train_layer, na_rm = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -50,6 +51,9 @@ Layer on which the learner is stored.}
 
 \item{\code{train_layer}}{(\code{TrainLayer(1)}) \cr
 The training layer where to store the learner.}
+
+\item{\code{na_rm}}{(\code{logical(1)}) \cr
+If set to TRUE, the individuals with missing predictor values will be removed from the training dataset.}
 }
 \if{html}{\out{</div>}}
 }
@@ -124,6 +128,15 @@ The current layer is returned.
 \subsection{Returns}{
 \link{TrainLayer} object.
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Lrner-getNaRm"></a>}}
+\if{latex}{\out{\hypertarget{method-Lrner-getNaRm}{}}}
+\subsection{Method \code{getNaRm()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Lrner$getNaRm()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Lrner-getId"></a>}}

@@ -119,6 +119,7 @@ test_that("TrainStudy: all tests", {
                             param = ParamLrner$new(id = "ParamWeighted",
                                                    param_list = list(),
                                                    hyperparam_list = list()),
+                            na_rm = FALSE,
                             train_layer = tl_meta)
   })
 

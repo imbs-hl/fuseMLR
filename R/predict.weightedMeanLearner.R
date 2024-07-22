@@ -30,8 +30,7 @@
 predict.weightedMeanLearner = function (object, data, na.rm = TRUE) {
   if (all(names(object) %in% names(data))) {
     pred = apply(data[ , names(object), drop = FALSE], 1L, function (tmp_row) {
-      object <- object[complete.cases(tmp_row)]
-      return(weighted.mean(x = tmp_row, w = object, na.rm = na.rm) )
+      return(weighted.mean(x = tmp_row, w = object, na.rm = na.rm))
     })
     return(list(predictions = unlist(pred)))
   } else {

@@ -188,6 +188,7 @@ lrner_meta <- Lrner$new(id = "weighted",
                         param = ParamLrner$new(id = "ParamWeighted",
                                                param_list = list(),
                                                hyperparam_list = list()),
+                        na_rm = FALSE,
                         train_layer = tl_meta)
 ```
 

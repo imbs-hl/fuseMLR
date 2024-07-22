@@ -14,6 +14,7 @@ Lrner <- R6Class("Lrner",
                    #'
                    #'
                    #' Learner ID.
+                   #'
                    #' @param id (`character(1)`) \cr
                    #' Package that implements the learn function. If NULL, the
                    #' learn function is called from the current environment.
@@ -25,17 +26,25 @@ Lrner <- R6Class("Lrner",
                    #' Layer on which the learner is stored.
                    #' @param train_layer (`TrainLayer(1)`) \cr
                    #'  The training layer where to store the learner.
+                   #' @param na_rm (`logical(1)`) \cr
+                   #' If set to TRUE, the individuals with missing predictor values will be removed from the training dataset.
                    initialize = function (id,
                                           package = NULL,
                                           lrn_fct,
                                           param,
-                                          train_layer) {
+                                          train_layer,
+                                          na_rm = TRUE) {
                      private$id = id
                      private$package = package
                      private$lrn_fct = lrn_fct
                      private$param = param
                      if (!any(c("TrainLayer", "TrainMetaLayer") %in% class(train_layer))) {
                        stop("A Lrner can only belong to a TrainLayer or a TrainMetaLayer object.")
+                     }
+                     if (!is.logical(na_rm)) {
+                       stop("na.rm must be a logical value\n")
+                     } else {
+                       private$na_rm = na_rm
                      }
                      # Remove learner if already existing
                      if (train_layer$checkLrnerExist()) {
@@ -87,8 +96,10 @@ Lrner <- R6Class("Lrner",
                      train_data = private$train_layer$getTrainData()
                      # Train only on complete data
                      train_data = train_data$clone(deep = FALSE)
-                     complete_data = train_data$getCompleteData()
-                     train_data$setDataFrame(data_frame = complete_data)
+                     if (private$na_rm) {
+                       complete_data = train_data$getCompleteData()
+                       train_data$setDataFrame(data_frame = complete_data)
+                     }
                      if (is.null(private$package)) {
                        lrn = private$lrn_fct
                      } else {
@@ -149,6 +160,11 @@ Lrner <- R6Class("Lrner",
                      return(private$train_layer)
                    },
                    #' @description
+                   #' The current layer is returned.
+                   getNaRm = function () {
+                     return(private$na_rm)
+                   },
+                   #' @description
                    #' Getter of the current learner ID.
                    #'
                    #' @return
@@ -197,6 +213,7 @@ Lrner <- R6Class("Lrner",
                    lrn_fct = NULL,
                    # Parameters (from class [Param]) of the learn function.
                    param = NULL,
+                   na_rm = NULL,
                    # Training layer (from class [TainLayer] or [TrainMetaLayer]) of the current learner.
                    train_layer = NULL,
                    # Individuals subset IDs.

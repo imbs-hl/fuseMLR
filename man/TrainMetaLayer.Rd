@@ -36,6 +36,7 @@ The meta layer can predict values given a new meta layer.
 \item \href{#method-TrainMetaLayer-getAccess}{\code{TrainMetaLayer$getAccess()}}
 \item \href{#method-TrainMetaLayer-setTrainData}{\code{TrainMetaLayer$setTrainData()}}
 \item \href{#method-TrainMetaLayer-checkLrnerExist}{\code{TrainMetaLayer$checkLrnerExist()}}
+\item \href{#method-TrainMetaLayer-checkModelExist}{\code{TrainMetaLayer$checkModelExist()}}
 \item \href{#method-TrainMetaLayer-checkTrainDataExist}{\code{TrainMetaLayer$checkTrainDataExist()}}
 \item \href{#method-TrainMetaLayer-set2NotTrained}{\code{TrainMetaLayer$set2NotTrained()}}
 \item \href{#method-TrainMetaLayer-summary}{\code{TrainMetaLayer$summary()}}
@@ -256,6 +257,19 @@ Name of the target variable}
 Check whether a training data has been already stored.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TrainMetaLayer$checkLrnerExist()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+Boolean value
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TrainMetaLayer-checkModelExist"></a>}}
+\if{latex}{\out{\hypertarget{method-TrainMetaLayer-checkModelExist}{}}}
+\subsection{Method \code{checkModelExist()}}{
+Check whether a model has been already stored.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TrainMetaLayer$checkModelExist()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
