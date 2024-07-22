@@ -27,6 +27,8 @@ A study is structured as followed:
 \item \href{#method-NewStudy-getIndIDs}{\code{NewStudy$getIndIDs()}}
 \item \href{#method-NewStudy-getNewMetaLayer}{\code{NewStudy$getNewMetaLayer()}}
 \item \href{#method-NewStudy-getIndCol}{\code{NewStudy$getIndCol()}}
+\item \href{#method-NewStudy-upset}{\code{NewStudy$upset()}}
+\item \href{#method-NewStudy-summary}{\code{NewStudy$summary()}}
 }
 }
 \if{html}{\out{
@@ -113,6 +115,34 @@ Object from class \link{NewMetaLayer}
 Getter of the individual column name.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{NewStudy$getIndCol()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NewStudy-upset"></a>}}
+\if{latex}{\out{\hypertarget{method-NewStudy-upset}{}}}
+\subsection{Method \code{upset()}}{
+UpSet plot to show an overview of the overlap of individuals across various layers.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{NewStudy$upset(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{\cr
+Further parameters to be passed to the the \code{upset} function from package \code{UpSetR}.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-NewStudy-summary"></a>}}
+\if{latex}{\out{\hypertarget{method-NewStudy-summary}{}}}
+\subsection{Method \code{summary()}}{
+Generate study summary
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{NewStudy$summary()}\if{html}{\out{</div>}}
 }
 
 }

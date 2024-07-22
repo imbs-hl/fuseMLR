@@ -216,14 +216,14 @@ TrainLayer <- R6Class("TrainLayer",
                         getIndIDs = function () {
                           layer_kc = self$getKeyClass()
                           # Stop if training data is missing on this layer.
-                            if (("TrainData" %in% layer_kc[ , "class"])) {
-                              # Searching for layer specific new dataset
-                              data_key = layer_kc[layer_kc$class == "TrainData" ,
-                                                  "key"]
-                              current_data = self$getNewData()
-                            } else {
-                              stop(sprintf("No data on layer %s.", self$getId()))
-                            }
+                          if (("TrainData" %in% layer_kc[ , "class"])) {
+                            # Searching for layer specific new dataset
+                            data_key = layer_kc[layer_kc$class == "TrainData" ,
+                                                "key"]
+                            current_data = self$getNewData()
+                          } else {
+                            stop(sprintf("No data on layer %s.", self$getId()))
+                          }
                           current_data_frame = current_data$getDataFrame()
                           ids_data = current_data_frame[ , current_data$getIndCol(), drop = FALSE]
                           return(ids_data)
@@ -305,14 +305,22 @@ TrainLayer <- R6Class("TrainLayer",
                           return(model)
                         },
                         #' @description
-                        #' Check whether a learner data has been already stored.
+                        #' Check whether a learner has been already stored.
                         #'
                         #' @return
                         #' Boolean value
                         #'
-                        #TODO: checkLrnerExist with "s"
                         checkLrnerExist = function () {
                           return(super$checkClassExist(.class = "Lrner"))
+                        },
+                        #' @description
+                        #' Check whether a model has been already stored.
+                        #'
+                        #' @return
+                        #' Boolean value
+                        #'
+                        checkModelExist = function () {
+                          return(super$checkClassExist(.class = "Model"))
                         },
                         #' @description
                         #' Check whether a variable selection tool has been already stored.

@@ -1,6 +1,4 @@
 ./R/entities.R
-./R/NewData.R
-./R/NewLayer.R
 ./R/NewMetaLayer.R
 ./R/PredictData.R
 ./R/PredictLayer.R

@@ -11,7 +11,7 @@ weightedMeanLearner(x, y)
 \code{data.frame} of predictors.}
 
 \item{y}{\code{vector(1)} \cr
-Target observations.}
+Target observations. Either binary or two level factor variable.}
 }
 \value{
 A model object of class \code{weightedMeanLeaner}.

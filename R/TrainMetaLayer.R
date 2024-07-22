@@ -251,6 +251,15 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                               return(super$checkClassExist(.class = "Lrner"))
                             },
                             #' @description
+                            #' Check whether a model has been already stored.
+                            #'
+                            #' @return
+                            #' Boolean value
+                            #'
+                            checkModelExist = function () {
+                              return(super$checkClassExist(.class = "Model"))
+                            },
+                            #' @description
                             #' Check whether a training data has been already stored.
                             #'
                             #' @return

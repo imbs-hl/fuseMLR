@@ -61,17 +61,18 @@ test_that("TrainData: all tests", {
                   train_layer = tl_ge_missing_target,
                   data_frame = tmp)
   })
-  # Only one data per layer
-  expect_error({
-    TrainData$new(id = "geneexpr",
+  # Update TrainData
+  expect_warning({
+    TrainData$new(id = "proteinexpr",
                   train_layer = tl_ge_missing_target,
                   data_frame = tmp)
   })
   expect_error({
-    TrainData$new(id = "geneexpr",
+    TrainData$new(id = "proteinexpr",
                   train_layer = tl_meta,
                   data_frame = tmp)
   })
+
   # Target variable must be binary or dichotome
   expect_error({
     ts_not_bin_target <- TrainStudy$new(id = "train_study",

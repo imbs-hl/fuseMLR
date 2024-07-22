@@ -6,7 +6,7 @@
 #' @param x `data.frame(1)` \cr
 #' \code{data.frame} of predictors.
 #' @param y `vector(1)` \cr
-#' Target observations.
+#' Target observations. Either binary or two level factor variable.
 #'
 #' @return
 #' A model object of class \code{weightedMeanLeaner}.
@@ -22,8 +22,8 @@
 weightedMeanLearner = function (x, y) {
   # y must be binomial. If dichotomy, first category (case) = 1 and
   # second (control) = 0
-  if (length(unique(y)) > 2) {
-    stop("y must be dichtom or binary")
+  if ((length(unique(y)) > 2) | is.character(y)) {
+    stop("y must be either binary or two level factor variable.")
   } else {
     if (!all(y %in% 0:1)) {
       y = 2 - as.integer(y)

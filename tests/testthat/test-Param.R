@@ -8,9 +8,13 @@ test_that("Param: instantialize and print", {
 })
 
 test_that("Param: getId", {
-  ranger_param$getId()
+  expect_no_error({
+    ranger_param$getId()
+  })
 })
 
 test_that("Param: getParamList", {
-  ranger_param$getParamList()
+  expect_no_error({
+    ranger_param$getParamList()
+  })
 })

@@ -79,6 +79,50 @@ NewStudy <- R6Class("NewStudy",
                    #' @export
                    getIndCol = function () {
                      return(private$ind_col)
+                   },
+                   #' @description
+                   #' UpSet plot to show an overview of the overlap of individuals across various layers.
+                   #'
+                   #' @param ... \cr
+                   #' Further parameters to be passed to the the \code{upset} function from package \code{UpSetR}.
+                   #'
+                   #' @export
+                   #'
+                   upset = function (...) {
+                     layers = self$getKeyClass()
+                     # This code accesses each layer (except TrainMetaLayer) level
+                     # and get the individual IDs.
+                     layers = layers[layers$class %in% "NewLayer", ]
+                     ids_list = lapply(layers$key, function (k) {
+                       layer = self$getFromHashTable(key = k)
+                       return(layer$getIndIDs()[ , 1L])
+                     })
+                     param_upset = list(...)
+                     from_list_ids = do.call(eval(parse(text = "UpSetR::fromList")),
+                                             list(input = ids_list))
+                     names(from_list_ids) = layers$key
+                     param_upset$data = from_list_ids
+                     print(do.call(eval(parse(text = "UpSetR::upset")),
+                                   param_upset))
+                     invisible(TRUE)
+                   },
+                   #' @description
+                   #' Generate study summary
+                   #'
+                   #' @export
+                   #'
+                   summary = function () {
+                     cat(sprintf("Study %s\n", self$getId()))
+                     cat("----------------\n")
+                     self$print()
+                     cat("----------------\n")
+                     cat("\n")
+                     layers = self$getKeyClass()
+                     for (k in layers$key) {
+                       layer = self$getFromHashTable(key = k)
+                       layer$summary()
+                       cat("\n")
+                     }
                    }
                  ),
                  private = list(

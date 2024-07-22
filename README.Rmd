@@ -247,6 +247,12 @@ new_data_me <- NewData$new(id = "methylation",
                                     data_frame = entities$testing$methylation)
 ```
 
+- An upset plot of the training study: Visualize patient overlap across layers.
+
+```{r upsetplot_new, include=TRUE, eval=TRUE, }
+new_study$upset(order.by = "freq")
+```
+
 - Predict the new study.
 
 ```{r new_pred, include=TRUE, eval=TRUE}

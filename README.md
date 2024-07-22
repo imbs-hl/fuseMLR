@@ -74,9 +74,9 @@ str(object = entities, max.level = 2L)
     ##   ..$ proteinexpr:'data.frame':  50 obs. of  162 variables:
     ##   ..$ methylation:'data.frame':  50 obs. of  369 variables:
     ##  $ testing :List of 3
-    ##   ..$ geneexpr   :'data.frame':  23 obs. of  133 variables:
-    ##   ..$ proteinexpr:'data.frame':  23 obs. of  162 variables:
-    ##   ..$ methylation:'data.frame':  23 obs. of  369 variables:
+    ##   ..$ geneexpr   :'data.frame':  20 obs. of  133 variables:
+    ##   ..$ proteinexpr:'data.frame':  20 obs. of  162 variables:
+    ##   ..$ methylation:'data.frame':  20 obs. of  369 variables:
 
 Variable selection, training and prediction are the main functionalities
 of `fuseMLR`. We can perform variable selection, train and fuse models
@@ -410,6 +410,15 @@ new_data_me <- NewData$new(id = "methylation",
                                     data_frame = entities$testing$methylation)
 ```
 
+- An upset plot of the training study: Visualize patient overlap across
+  layers.
+
+``` r
+new_study$upset(order.by = "freq")
+```
+
+![](README_files/figure-gfm/upsetplot_new-1.png)<!-- -->
+
 - Predict the new study.
 
 ``` r
@@ -423,29 +432,29 @@ print(new_predictions)
     ## 
     ## $predicted_values
     ##          IDS  geneexpr proteinexpr methylation meta_layer
-    ## 1   subject4 0.6391833   0.6082790  0.31463175  0.5148129
-    ## 2   subject7 0.5665480   0.2114790  0.38740833  0.3766401
-    ## 3   subject8 0.6879345   0.8791171  0.60852421  0.7288027
-    ## 4  subject10 0.6770893   0.7388615  0.59987302  0.6722978
-    ## 5  subject13 0.5174298   0.2034099  0.08103373  0.2524537
-    ## 6  subject15 0.6902270   0.8706675  0.36809048  0.6425187
-    ## 7  subject16 0.8036722   0.3176702  0.29045595  0.4501843
-    ## 8  subject18 0.7211321   0.2188488  0.03343214  0.3009004
-    ## 9  subject23 0.8346401   0.1822258  0.53435754  0.4957761
-    ## 10 subject24 0.5231448   0.6315722  0.44239960  0.5338589
-    ## 11 subject27 0.2707960   0.1899968  0.37721944  0.2789563
-    ## 12 subject31 0.6810714   0.8675401  0.57034087  0.7093163
-    ## 13 subject32 0.4975933   0.7895071  0.58528373  0.6329244
-    ## 14 subject35 0.4783885   0.8314754  0.70653095  0.6846896
-    ## 15 subject36 0.3780171   0.1948250  0.32899484  0.2951865
-    ## 16 subject50 0.8488313   0.6118333  0.75232698  0.7301246
-    ## 17 subject54 0.6748960   0.7518048  0.82969643  0.7565193
-    ## 18 subject55 0.5713615   0.1627544  0.52885317  0.4099377
-    ## 19 subject59 0.3709865   0.2509175  0.32926746  0.3133503
-    ## 20 subject62 0.2614496   0.2386063  0.27328175  0.2573846
-    ## 21 subject63 0.4530873   0.8879044  0.89626587  0.7637664
-    ## 22 subject66 0.7279552   0.7530929  0.93345317  0.8087016
-    ## 23 subject70 0.3845147   0.2313944  0.23812222  0.2784855
+    ## 1  subject18 0.7211321   0.2188488  0.03343214  0.3009004
+    ## 2  subject35 0.4783885          NA          NA         NA
+    ## 3  subject10 0.6770893   0.7388615  0.59987302  0.6722978
+    ## 4  subject27 0.2707960   0.1899968  0.37721944  0.2789563
+    ## 5  subject16 0.8036722   0.3176702          NA         NA
+    ## 6  subject23 0.8346401   0.1822258  0.53435754  0.4957761
+    ## 7  subject55 0.5713615   0.1627544  0.52885317  0.4099377
+    ## 8  subject36 0.3780171   0.1948250  0.32899484  0.2951865
+    ## 9   subject8 0.6879345   0.8791171  0.60852421  0.7288027
+    ## 10  subject4 0.6391833   0.6082790  0.31463175  0.5148129
+    ## 11 subject62 0.2614496   0.2386063  0.27328175  0.2573846
+    ## 12 subject63 0.4530873   0.8879044  0.89626587  0.7637664
+    ## 13 subject15 0.6902270   0.8706675  0.36809048  0.6425187
+    ## 14 subject24 0.5231448          NA  0.44239960         NA
+    ## 15 subject54 0.6748960   0.7518048          NA         NA
+    ## 16 subject59 0.3709865   0.2509175  0.32926746  0.3133503
+    ## 17 subject31 0.6810714   0.8675401  0.57034087  0.7093163
+    ## 18 subject13 0.5174298   0.2034099  0.08103373  0.2524537
+    ## 19 subject50 0.8488313   0.6118333  0.75232698  0.7301246
+    ## 20 subject66 0.7279552          NA  0.93345317         NA
+    ## 24 subject32        NA   0.7895071  0.58528373         NA
+    ## 28 subject70        NA   0.2313944  0.23812222         NA
+    ## 32  subject7        NA   0.2114790  0.38740833         NA
 
 © 2024 Institute of Medical Biometry and Statistics (IMBS). All rights
 reserved.

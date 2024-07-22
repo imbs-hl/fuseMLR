@@ -51,7 +51,7 @@ test_that("TrainStudy: all tests", {
     train_study$train()
   })
   expect_error({
-    train_study$test_overlap()
+    train_study$testOverlap()
   })
   # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   # Tests for training study with loaded data layers         +
@@ -179,7 +179,16 @@ test_that("TrainStudy: all tests", {
 
   expect_no_error({
     nl_ge <- NewLayer$new(id = "geneexpr", new_study = new_study)
+    print(nl_ge)
     nl_pr <- NewLayer$new(id = "proteinexpr", new_study = new_study)
+  })
+
+  expect_error({
+    NewLayer$new(id = "geneexpr", new_study = "not_a_new_study")
+  })
+
+  expect_error({
+    nl_ge$getIndIDs()
   })
 
   expect_no_error({
@@ -189,6 +198,8 @@ test_that("TrainStudy: all tests", {
     new_data_pr <- NewData$new(id = "proteinexpr",
                                new_layer = nl_pr,
                                data_frame = entities$testing$proteinexpr)
+    new_study$summary()
+    new_study$upset()
   })
 
   expect_no_error({

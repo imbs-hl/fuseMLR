@@ -28,15 +28,15 @@ lrner_geneexpr <- Lrner$new(id = "ranger",
                             lrn_fct = "ranger",
                             param = ranger_param_lrner,
                             train_layer = tl_geneexpr)
-expect_error({
+
+expect_no_error({
+  print(lrner_geneexpr)
+  # Update
   lrner_geneexpr <- Lrner$new(id = "ranger",
                               package = "ranger",
                               lrn_fct = "ranger",
                               param = ranger_param_lrner,
                               train_layer = tl_geneexpr)
-})
-expect_no_error({
-  print(lrner_geneexpr)
 })
 
 # Instantiate

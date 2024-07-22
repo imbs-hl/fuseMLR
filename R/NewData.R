@@ -23,20 +23,20 @@ NewData <- R6Class("NewData",
                      initialize = function (id,
                                            data_frame,
                                            new_layer) {
+                       if (!any(c("NewLayer", "NewMetaLayer") %in% class(new_layer))) {
+                         stop("A Newdata can be stored only on a NewLayer or a NewMetaLayer object.")
+                       }
                        ind_col = new_layer$getNewStudy()$getIndCol()
                        if (!(ind_col %in% colnames(data_frame))) {
                          stop("Individual column IDS not found in the provided data.frame.")
-                       }
-                       if (!any(c("NewLayer", "NewMetaLayer") %in% class(new_layer))) {
-                         stop("A Newdata can be stored only on a NewLayer or a NewMetaLayer object.")
                        }
                        super$initialize(id = id,
                                         ind_col = ind_col,
                                         data_frame = data_frame)
                        if (new_layer$checkNewDataExist()) {
-                         stop(sprintf("Only one new data is allowed per new layer.\n The new data %s already exists on the new layer %s.\n",
-                                      private$id,
-                                      new_layer$getId()))
+                           key_class = new_layer$getKeyClass()
+                           key = key_class[key_class$class == "NewData", "key"]
+                           new_layer$removeFromHashTable(key = key)
                        }
                        private$new_layer = new_layer
                        # Add to object to ht
@@ -46,7 +46,7 @@ NewData <- R6Class("NewData",
                                                value = self,
                                                .class = "NewData")
                          } else {
-                           stop("New data cannot not be added manually to a meta layer.")
+                           stop("New data cannot not be added manually to a meta layer.") #nocov
                          }
                        } else {
                          new_layer$add2HashTable(key = private$id,

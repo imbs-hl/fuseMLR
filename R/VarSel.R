@@ -38,10 +38,11 @@ VarSel <- R6Class("VarSel",
                       if (!any(c("TrainLayer") %in% class(train_layer))) {
                         stop("A variable selection tool can only belong to object of class TrainLayer.")
                       }
+                      # Remove VarSel if already existing
                       if (train_layer$checkVarSelExist()) {
-                        stop(sprintf("Only one variable selection tool is allowed per training layer.\n",
-                                     self$getId(),
-                                     train_layer$getId()))
+                          key_class = train_layer$getKeyClass()
+                          key = key_class[key_class$class == "VarSel", "key"]
+                          train_layer$removeFromHashTable(key = key)
                       }
                       private$train_layer = train_layer
                       # Add to object to ht

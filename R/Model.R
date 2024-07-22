@@ -38,6 +38,9 @@ Model <- R6Class("Model",
                      private$base_model = base_model
                      private$train_layer = train_layer
                      if (any(c("TrainLayer", "TrainMetaLayer") %in% class(train_layer))) {
+                       if (train_layer$checkModelExist()) {
+                         train_layer$removeFromHashTable(key = sprintf("%sMo", lrner$getId()))
+                       }
                        train_layer$add2HashTable(key = sprintf("%sMo", lrner$getId()),
                                                  value = self,
                                                  .class = "Model")

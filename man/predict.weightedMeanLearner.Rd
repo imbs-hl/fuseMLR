@@ -4,7 +4,7 @@
 \alias{predict.weightedMeanLearner}
 \title{Weighted mean prediction.}
 \usage{
-\method{predict}{weightedMeanLearner}(object, data)
+\method{predict}{weightedMeanLearner}(object, data, na.rm = TRUE)
 }
 \arguments{
 \item{object}{\code{weightedMeanLearner(1)} \cr
@@ -12,6 +12,9 @@ An object from class \link{weightedMeanLearner}}
 
 \item{data}{\code{data.frame} \cr
 \code{data.frame} to be predicted.}
+
+\item{na.rm}{\cr
+Removes NAs when TRUE.}
 }
 \value{
 Predicted target values are returned.
@@ -21,10 +24,10 @@ Predict function for models from class \code{weightedMeanLearner}.
 }
 \examples{
 set.seed(20240625)
-x <- data.frame(x1 = rnorm(50))
-y <- sample(x = 0:1, size = 50, replace = TRUE)
+x <- data.frame(x1 = rnorm(50L))
+y <- sample(x = 0:1, size = 50L, replace = TRUE)
 my_model <- weightedMeanLearner(x = x, y = y)
-x_new <- data.frame(x1 = rnorm(10))
+x_new <- data.frame(x1 = rnorm(10L))
 my_predictions <- predict(object = my_model, data = x_new)
 
 }

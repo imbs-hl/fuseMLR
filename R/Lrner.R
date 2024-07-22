@@ -37,10 +37,11 @@ Lrner <- R6Class("Lrner",
                      if (!any(c("TrainLayer", "TrainMetaLayer") %in% class(train_layer))) {
                        stop("A Lrner can only belong to a TrainLayer or a TrainMetaLayer object.")
                      }
+                     # Remove learner if already existing
                      if (train_layer$checkLrnerExist()) {
-                       stop(sprintf("Only one learner is allowed per training layer.\n The learner %s already exists on the training layer %s.\n",
-                                    self$getId(),
-                                    train_layer$getId()))
+                       key_class = train_layer$getKeyClass()
+                       key = key_class[key_class$class == "Lrner", "key"]
+                       train_layer$removeFromHashTable(key = key)
                      }
                      private$train_layer = train_layer
                      # Add to object to ht

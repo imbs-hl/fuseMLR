@@ -41,6 +41,7 @@ A layer can make predictions for a new layer passed as argument to its predict f
 \item \href{#method-TrainLayer-getVarSel}{\code{TrainLayer$getVarSel()}}
 \item \href{#method-TrainLayer-getModel}{\code{TrainLayer$getModel()}}
 \item \href{#method-TrainLayer-checkLrnerExist}{\code{TrainLayer$checkLrnerExist()}}
+\item \href{#method-TrainLayer-checkModelExist}{\code{TrainLayer$checkModelExist()}}
 \item \href{#method-TrainLayer-checkVarSelExist}{\code{TrainLayer$checkVarSelExist()}}
 \item \href{#method-TrainLayer-checkTrainDataExist}{\code{TrainLayer$checkTrainDataExist()}}
 \item \href{#method-TrainLayer-summary}{\code{TrainLayer$summary()}}
@@ -271,9 +272,22 @@ The stored \link{Model} object is returned.
 \if{html}{\out{<a id="method-TrainLayer-checkLrnerExist"></a>}}
 \if{latex}{\out{\hypertarget{method-TrainLayer-checkLrnerExist}{}}}
 \subsection{Method \code{checkLrnerExist()}}{
-Check whether a learner data has been already stored.
+Check whether a learner has been already stored.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TrainLayer$checkLrnerExist()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+Boolean value
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TrainLayer-checkModelExist"></a>}}
+\if{latex}{\out{\hypertarget{method-TrainLayer-checkModelExist}{}}}
+\subsection{Method \code{checkModelExist()}}{
+Check whether a model has been already stored.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TrainLayer$checkModelExist()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{

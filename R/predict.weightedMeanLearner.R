@@ -9,26 +9,29 @@
 #' An object from class [weightedMeanLearner]
 #' @param data `data.frame` \cr
 #' \code{data.frame} to be predicted.
+#' @param na.rm \cr
+#' Removes NAs when TRUE.
 #'
 #' @return
 #' Predicted target values are returned.
 #'
 #' @export
 #'
-#' @importFrom stats weighted.mean
+#' @importFrom stats weighted.mean complete.cases
 #'
 #' @examples
 #' set.seed(20240625)
-#' x <- data.frame(x1 = rnorm(50))
-#' y <- sample(x = 0:1, size = 50, replace = TRUE)
+#' x <- data.frame(x1 = rnorm(50L))
+#' y <- sample(x = 0:1, size = 50L, replace = TRUE)
 #' my_model <- weightedMeanLearner(x = x, y = y)
-#' x_new <- data.frame(x1 = rnorm(10))
+#' x_new <- data.frame(x1 = rnorm(10L))
 #' my_predictions <- predict(object = my_model, data = x_new)
 #'
-predict.weightedMeanLearner = function (object, data) {
+predict.weightedMeanLearner = function (object, data, na.rm = TRUE) {
   if (all(names(object) %in% names(data))) {
-    pred = apply(data[ , names(object), drop = FALSE], 1L, function (row) {
-      return(weighted.mean(x = row, w = object, na.rm = TRUE) )
+    pred = apply(data[ , names(object), drop = FALSE], 1L, function (tmp_row) {
+      object <- object[complete.cases(tmp_row)]
+      return(weighted.mean(x = tmp_row, w = object, na.rm = na.rm) )
     })
     return(list(predictions = unlist(pred)))
   } else {

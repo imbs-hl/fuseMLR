@@ -30,7 +30,8 @@ test_that("VarSel: with package for variable selection", {
   expect_no_error({
     varsel_ge$getPackage()
   })
-  expect_error({
+  # Update
+  expect_no_error({
     varsel_ge <- VarSel$new(id = "varsel_geneexpr",
                             package = "Boruta",
                             varsel_fct = "Boruta",
@@ -39,6 +40,7 @@ test_that("VarSel: with package for variable selection", {
   })
   expect_no_error({
     varsel_ge$varSelection(ind_subset = entities$training$geneexpr$IDS[1:45])
+    varsel_ge$getId()
   })
 })
 
