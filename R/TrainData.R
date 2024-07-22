@@ -96,8 +96,8 @@ TrainData <- R6Class("TrainData",
                            cat(sprintf("TrainData : %s\n", private$id))
                          }
                          cat(sprintf("      Layer     : %s\n", private$train_layer$getId()))
-                         cat(sprintf("      ind. id.  : %s\n", private$ind_col))
-                         cat(sprintf("      target    : %s\n", private$target))
+                         cat(sprintf("      Ind. id.  : %s\n", private$ind_col))
+                         cat(sprintf("      Target    : %s\n", private$target))
                          cat(sprintf("      n         : %s\n", nrow(private$data_frame)))
                          cat(sprintf("      Missing   : %s\n", sum(!complete.cases(private$data_frame))))
                          cat(sprintf("      p         : %s\n", ncol(private$data_frame)))
