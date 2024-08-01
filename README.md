@@ -288,8 +288,8 @@ same_param <- ParamLrner$new(id = "ParamRanger",
                              hyperparam_list = list(num.trees = 1000L))
 ```
 
-- Set up learners for each layer. We will use a weighted sum for the
-  meta-analysis.
+- Set up learners for each layer. We will use a weighted sum (internally
+  implemented by `fuseMLR`) for the meta-analysis.
 
 ``` r
 lrner_ge <- Lrner$new(id = "ranger",
