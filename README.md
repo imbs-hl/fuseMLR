@@ -20,23 +20,25 @@ Recent technological advances have enabled the simultaneous targeting of
 multiple pathways to enhance therapies for complex diseases. This often
 results in the collection of numerous data entities across various
 layers of patient groups, posing a challenge for integrating all data
-into a single analysis. Ideally, patient data will overlap across
-layers, allowing for early or intermediate integrative techniques.
-However, these techniques are challenging when patient data does not
-overlap well. Additionally, the internal structure of each data entity
-may necessitate specific statistical methods rather than applying the
-same method across all layers. Late integration modeling addresses this
-by analyzing each data entity separately to obtain layer-specific
-results, which are then integrated using meta-analysis. Currently, no R
-package offers this flexibility.
+into a single analysis. Ideally, data of the different layers are
+measured in the same individuals, allowing for early or intermediate
+integrative techniques. However, these techniques are challenging when
+patient data only partially overlap. Additionally, the internal
+structure of each data entity may necessitate specific statistical
+methods rather than applying the same method across all layers. Late
+integration modeling addresses this by analyzing each data entity
+separately to obtain layer-specific results, which are then integrated
+using aggregation methods. Currently, no R package offers this
+flexibility.
 
-We introduce the fuseMLR package for late integration modeling in R.
-This package allows users to define studies with multiple layers, data
-entities, and layer-specific machine learning methods. FuseMLR is
-user-friendly, enabling the training of different models across layers
-and automatically conducting meta-analysis once layer-specific training
-is completed. Additionally, fuseMLR allows for variable selection at the
-layer level and makes predictions for new data entities.
+We introduce the fuseMLR package for late integration prediction
+modeling in R. This package allows users to define studies with multiple
+layers, data entities, and layer-specific machine learning methods.
+FuseMLR is user-friendly, enables training of different models across
+layers and automatically performs aggregation once layer-specific
+training is completed. Additionally, fuseMLR allows for variable
+selection at the layer level and makes predictions for new data
+entities.
 
 `fuseMLR` is an object-oriented package based on `R6` version 2.5.1.
 
@@ -86,8 +88,8 @@ for training studies, and predict new studies.
 
 We need to set up a study, its layers and the training data entities.
 
-- Instantiate a training study: A study is the fundamental component of
-  a `fuseMLR` object.
+- Instantiate a training study: A study is the first stage of a
+  `fuseMLR` object.
 
 ``` r
 train_study <- TrainStudy$new(id = "train_study",
@@ -114,7 +116,7 @@ tl_meta <- TrainMetaLayer$new(id = "meta_layer", train_study = train_study)
 ```
 
 - Add training data (entities) to layers: Exclude the meta layer, as it
-  is modifiable internally after the training phase.
+  is modified internally after the training phase.
 
 ``` r
 train_data_ge <- TrainData$new(id = "geneexpr",
