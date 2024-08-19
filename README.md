@@ -74,8 +74,9 @@ testing. Individuals do not necessarily overlapped. Effects have been
 introduced for gene expression and methylation by shifting the means by
 $0.5$ to create a case-control study. Individuals do not necessarily
 overlap. Effects were introduced in gene expression and methylation by
-shifting the means by 0.5 to create a case-control study. The data
-simulation code is available
+shifting the means by 0.5 to create a case-control study. For
+illustration, the number of variables was kept smaller than what is
+typically expected in reality. The data simulation code is available
 [here](https://github.com/imbs-hl/fuseMLR/blob/master/test_code/build_data.R).
 
 ``` r
@@ -101,12 +102,20 @@ Variable selection, training and prediction are the main functionalities
 of `fuseMLR`. We can perform variable selection, train and fuse models
 for training studies, and predict new studies.
 
-#### B) Preparation of a training study
+The following figure illustrate the general architecture of `fuseMLR`:
 
-We need to set up a study, its layers and the training data entities.
+<div class="figure">
 
-- Instantiate a training study: A study is the first component of a
-  `fuseMLR` object.
+<embed src="README_files/figure-gfm/fuseMLR_4_blue_bgr.pdf" title="Package architecture" width="70%" height="100%" type="application/pdf" />
+<p class="caption">
+Package architecture
+</p>
+
+</div>
+
+#### B) Instantiate training resources
+
+We need to set up training resources.
 
 ``` r
 train_study <- TrainStudy$new(id = "train_study",
