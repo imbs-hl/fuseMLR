@@ -1,6 +1,6 @@
 ./R/entities.R
-./R/NewMetaLayer.R
+./R/TestMetaLayer.R
 ./R/PredictData.R
 ./R/PredictLayer.R
 ./R/PredictMetaLayer.R
-./R/PredictStudy.R
+./R/Predicting.R
