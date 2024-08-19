@@ -50,6 +50,19 @@ Install the development version from GitHub with
 devtools::install_github("imbs-hl/fuseMLR")
 ```
 
+### Package overview
+
+The following figure illustrates the general architecture of `fuseMLR`:
+
+<img src="README_files/figure-gfm/fuseMLR_4_blue_bgr.png" width="70%" height="100%" />
+
+The general architecture of `fuseMLR` includes the storage classes
+`Training`, `Layer`, and `MetaLayer`. `Layer` and `MetaLayer` are stored
+within a `Training` instance, while `Data`, `Learner`, and `Varselect`
+(for variable selection) are stored within a `Layer` instance. These
+components can be used to automatically build and store the `Model` or
+`MetaModel`.
+
 ### Usage example
 
 The following example is based on simulated data available in `fuseMLR`.
@@ -101,17 +114,6 @@ str(object = entities, max.level = 2L)
 Variable selection, training and prediction are the main functionalities
 of `fuseMLR`. We can perform variable selection, train and fuse models
 for training studies, and predict new studies.
-
-The following figure illustrate the general architecture of `fuseMLR`:
-
-<div class="figure">
-
-<img src="README_files/figure-gfm/fuseMLR_4_blue_bgr.png" alt="Package architecture" width="70%" height="100%" />
-<p class="caption">
-Package architecture
-</p>
-
-</div>
 
 #### B) Instantiate training resources
 
