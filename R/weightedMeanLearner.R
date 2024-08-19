@@ -38,7 +38,8 @@ weightedMeanLearner = function (x, y) {
       mean(x = (predicted - y)^2, na.rm = TRUE)
     })
     brier_values = unlist(brier_values)
-    weights_values = (1 - brier_values) / sum((1 - brier_values))
+    # weights_values = (1 - brier_values) / sum((1 - brier_values))
+    weights_values = (1 / brier_values) / sum((1 / brier_values))
     names(weights_values) = names(x)
     class(weights_values) = "weightedMeanLearner"
     return(weights_values)

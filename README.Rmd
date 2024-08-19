@@ -41,13 +41,16 @@ devtools::install_github("imbs-hl/fuseMLR")
 
 The following example is based on simulated data available in `fuseMLR`. Data have been simulated using the R package `InterSIM`, version 2.2.0. 
 
-```{r libraries}
+```{r libraries, warning = FALSE}
 library(fuseMLR)
 library(UpSetR)
 library(ranger)
+library(DescTools)
 ```
 
 - Let us inspect our simulated data.
+
+Two types of data were simulated: training and testing datasets. Each consists of four `data.frame`s—gene expression, protein expression, methylation data, and target variable observations. Individuals are organized in rows, variables in columns, with an additional column for individual IDs. In total, $70$ individuals with $50$ individuals pro layer have been simulated for training, and $23$ ($20$ per layer) for testing. Individuals do not necessarily overlapped. Effects have been introduced for gene expression and methylation by shifting the means by $0.5$ to create a case-control study.
 
 ```{r data_exam, include=TRUE, eval=TRUE}
 data("entities")
@@ -62,17 +65,18 @@ Variable selection, training and prediction are the main functionalities of `fus
 
 We need to set up a study, its layers and the training data entities.
 
-- Instantiate a training study: A study is the first stage of a `fuseMLR` object.
+- Instantiate a training study: A study is the first component of a `fuseMLR` object.
 
 ```{r training_study, include=TRUE, eval=TRUE}
 train_study <- TrainStudy$new(id = "train_study",
                               ind_col = "IDS",
-                              target = "disease")
+                              target = "disease",
+                              target_df = entities$training$target)
 # See also train_study$summary()
 print(train_study)
 ```
 
-- Prepare new training layers: Training layers are components of a study and represent the second stage of the study.
+- Prepare new training layers: Training layers are components of a study and represent the second component of a `fuseMLR` object.
 
 ```{r training_layers, include=TRUE, eval=TRUE}
 tl_ge <- TrainLayer$new(id = "geneexpr", train_study = train_study)
@@ -117,7 +121,8 @@ We need to set up variable selection methods to our training study. Note that th
 ```{r varsel_param, include=TRUE, eval=TRUE}
 same_param_varsel <- ParamVarSel$new(id = "ParamVarSel",
                                      param_list = list(num.trees = 1000L,
-                                                       mtry = 3L))
+                                                       mtry = 3L,
+                                                       probability = TRUE))
 print(same_param_varsel)
 ```
 
@@ -130,12 +135,12 @@ varsel_ge <- VarSel$new(id = "varsel_geneexpr",
                         param = same_param_varsel,
                         train_layer = tl_ge)
 
-varsel_pr <- VarSel$new(id = "varsel_geneexpr",
+varsel_pr <- VarSel$new(id = "varsel_proteinexpr",
                         package = "Boruta",
                         varsel_fct = "Boruta",
                         param = same_param_varsel,
                         train_layer = tl_pr)
-varsel_me <- VarSel$new(id = "varsel_geneexpr",
+varsel_me <- VarSel$new(id = "varsel_methylation",
                         package = "Boruta",
                         varsel_fct = "Boruta",
                         param = same_param_varsel,
@@ -145,7 +150,7 @@ varsel_me <- VarSel$new(id = "varsel_geneexpr",
 - Perform variable selection on our training study.
 
 ```{r varsel, include=TRUE, eval=TRUE}
-set.seed(546)
+set.seed(5467)
 var_sel_res <- train_study$varSelection()
 print(var_sel_res)
 ```
@@ -161,7 +166,7 @@ We can now train our study using the subset of selected variables. Users can cho
 ```{r lrner_param, include=TRUE, eval=TRUE}
 same_param <- ParamLrner$new(id = "ParamRanger",
                              param_list = list(probability = TRUE,
-                                               mtry = 2L),
+                                               mtry = 1L),
                              hyperparam_list = list(num.trees = 1000L))
 ```
 
@@ -207,6 +212,11 @@ trained_study <- train_study$train(resampling_method = "caret::createFolds",
 print(trained_study)
 # Let us check the status of a layer as well.
 print(tl_ge)
+
+## On the meta model
+# TODO: Remove me after testing.
+tmp_model <- tl_meta$getModel()
+print(tmp_model$getBaseModel())
 ```
 
 - Retrieve the basic model of a specific layer.
@@ -238,14 +248,14 @@ nl_me <- NewLayer$new(id = "methylation", new_study = new_study)
 
 ```{r new_data, include=TRUE, eval=TRUE}
 new_data_ge <- NewData$new(id = "geneexpr",
-                                 new_layer = nl_ge,
-                                 data_frame = entities$testing$geneexpr)
+                           new_layer = nl_ge,
+                           data_frame = entities$testing$geneexpr)
 new_data_pr <- NewData$new(id = "proteinexpr",
-                                    new_layer = nl_pr,
-                                    data_frame = entities$testing$proteinexpr)
+                           new_layer = nl_pr,
+                           data_frame = entities$testing$proteinexpr)
 new_data_me <- NewData$new(id = "methylation",
-                                    new_layer = nl_me,
-                                    data_frame = entities$testing$methylation)
+                           new_layer = nl_me,
+                           data_frame = entities$testing$methylation)
 ```
 
 - An upset plot of the training study: Visualize patient overlap across layers.
@@ -259,6 +269,52 @@ new_study$upset(order.by = "freq")
 ```{r new_pred, include=TRUE, eval=TRUE}
 new_predictions <- train_study$predict(new_study = new_study)
 print(new_predictions)
+```
+
+- Prediction performances for layer-specific available patients, and all patients on the meta layer.
+
+```{r performance_all, include=TRUE, eval=TRUE}
+pred_values <- new_predictions$predicted_values
+actual_pred <- merge(x = pred_values,
+                     y = entities$testing$target,
+                     by = "IDS",
+                     all.y = TRUE)
+x <- as.integer(actual_pred$disease == 2L)
+
+# On all patients
+perf_estimated <- sapply(X = actual_pred[ , 2L:5L], FUN = function (my_pred) {
+  bs <- BrierScore(x = x[complete.cases(my_pred)],
+                   pred = my_pred[complete.cases(my_pred)], na.rm = TRUE)
+  return(bs)
+})
+print(perf_estimated)
+```
+
+- Prediction performances for overlapping individuals.
+
+```{r performance_overlap, include=TRUE, eval=TRUE}
+# On overlapping patients
+perf_overlapping <- sapply(X = actual_pred[complete.cases(actual_pred),
+                                           2L:5L],
+                         FUN = function (my_pred) {
+  bs <- BrierScore(x = x[complete.cases(actual_pred)], pred = my_pred)
+  return(bs)
+})
+print(perf_overlapping)
+```
+
+- Prediction performances for non-overlapping individuals.
+
+```{r performance_non_overlap, include=TRUE, eval=TRUE}
+# On non-overlapping patients
+perf_not_overlapping <- sapply(X = actual_pred[!complete.cases(actual_pred),
+                                               2L:5L],
+                         FUN = function (my_pred) {
+  bs <- BrierScore(x = x[!complete.cases(actual_pred)],
+                   pred = my_pred, na.rm = TRUE)
+  return(bs)
+})
+print(perf_not_overlapping)
 ```
 
 &copy; 2024 Institute of Medical Biometry and Statistics (IMBS). All rights reserved.

@@ -24,12 +24,20 @@ TrainData <- R6Class("TrainData",
                                               data_frame,
                                               train_layer) {
                          if (!any(c("TrainLayer", "TrainMetaLayer") %in% class(train_layer))) {
-                           stop("A Traindata can belong a TrainLayer or a TrainMetaLayer object.\n")
+                           stop("A Traindata can only belong a TrainLayer or a TrainMetaLayer object.\n")
                          }
+                         target_obj = train_layer$getTargetObj()
+                         target_df = target_obj$getData()
                          ind_col = train_layer$getTrainStudy()$getIndCol()
+                         if (!(ind_col %in% colnames(data_frame))) {
+                           stop("Individual column ID not found in the provided data.frame.\n")
+                         }
                          target = train_layer$getTrainStudy()$getTarget()
-                         if (!all(c(ind_col, target) %in% colnames(data_frame))) {
-                           stop("Individual column ID or target variable not found in the provided data.frame.\n")
+                         if ((target %in% colnames(data_frame))) {
+                           if ("TrainLayer" %in% class(train_layer)) {
+                             warning("The target variable must be set using the Target class, so the one in this data.frame will be ignored.\n")
+                           }
+                           data_frame[ , target] = NULL
                          }
                          if (train_layer$checkTrainDataExist()) {
                            # Remove TrainData if already existing
@@ -38,6 +46,14 @@ TrainData <- R6Class("TrainData",
                            train_layer$removeFromHashTable(key = key)
                          }
                          private$train_layer = train_layer
+                         missing_id = is.na(data_frame[ , ind_col])
+                         if (any(missing_id)) {
+                           data_frame = data_frame[!missing_id, ]
+                         }
+                         data_frame = merge(x = target_df,
+                                            y = data_frame,
+                                            by = ind_col,
+                                            all.y = TRUE)
                          missing_target = is.na(data_frame[ , target])
                          if (any(missing_target)) {
                            data_frame = data_frame[!missing_target, ]
@@ -46,9 +62,6 @@ TrainData <- R6Class("TrainData",
                                           ind_col = train_layer$getTrainStudy()$getIndCol(),
                                           data_frame = data_frame)
                          private$target = train_layer$getTrainStudy()$getTarget()
-                         if (length(unique(self$getTargetValues())) > 2) {
-                           stop("Only binary or dichotomous target variables allowed.")
-                         }
                          # Add to object to ht
                          if ("TrainMetaLayer" %in% class(train_layer)) {
                            if (train_layer$getAccess()) {
@@ -66,6 +79,10 @@ TrainData <- R6Class("TrainData",
                          if (any(missing_target)) {
                            warning(sprintf("%s individual(s) with missing target value(s) recognized and removed\n",
                                            sum(missing_target)))
+                         }
+                         if (any(missing_id)) {
+                           warning(sprintf("%s individual(s) with missing ID value(s) recognized and removed.\n",
+                                           sum(missing_id)))
                          }
                        },
                        #' @description

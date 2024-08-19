@@ -1,7 +1,8 @@
 # Training study
 train_study <- TrainStudy$new(id = "train_study",
                               ind_col = "IDS",
-                              target = "disease")
+                              target = "disease",
+                              target_df = entities$training$target)
 # Training layers
 tl_geneexpr <- TrainLayer$new(id = "geneexpr",
                               train_study = train_study)

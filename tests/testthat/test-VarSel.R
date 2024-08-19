@@ -1,7 +1,8 @@
 test_that("VarSel: with package for variable selection", {
   train_study <- TrainStudy$new(id = "train_study",
                                 ind_col = "IDS",
-                                target = "disease")
+                                target = "disease",
+                                target_df = entities$training$target)
   tl_ge <- TrainLayer$new(id = "geneexpr", train_study = train_study)
   train_data_ge <- TrainData$new(id = "geneexpr",
                                  train_layer = tl_ge,
@@ -47,7 +48,8 @@ test_that("VarSel: with package for variable selection", {
 test_that("VarSel: with function for variable selection", {
   train_study <- TrainStudy$new(id = "train_study",
                                 ind_col = "IDS",
-                                target = "disease")
+                                target = "disease",
+                                target_df = entities$training$target)
   tl_ge <- TrainLayer$new(id = "geneexpr", train_study = train_study)
   same_param_varsel <- ParamVarSel$new(id = "ParamVarSel",
                                        param_list = list())
@@ -59,7 +61,7 @@ test_that("VarSel: with function for variable selection", {
                         param = same_param_varsel,
                         train_layer = tl_ge)
   expect_error({
-    #TODO: check why it works in interactiv mode only
+    #TODO: check why it only works in interactiv mode
     test_var_sel = function (x, y) {return(matrix(1:4, 2L, 2L))}
     tl_ge$varSelection()
   })

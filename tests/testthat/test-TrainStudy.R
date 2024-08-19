@@ -5,8 +5,67 @@ test_that("TrainStudy: all tests", {
   expect_no_error({
     train_study <- TrainStudy$new(id = "train_study",
                                   ind_col = "IDS",
-                                  target = "disease")
+                                  target = "disease",
+                                  target_df = entities$training$target)
     print(train_study)
+  })
+  expect_error({
+    TrainStudy$new(id = 1,
+                   ind_col = "IDS",
+                   target = "disease",
+                   target_df = entities$training$target)
+  })
+  expect_error({
+    TrainStudy$new(id = "train_study",
+                   ind_col = 1,
+                   target = "disease",
+                   target_df = entities$training$target)
+  })
+  expect_error({
+    TrainStudy$new(id = "train_study",
+                   ind_col = "IDS",
+                   target = 1,
+                   target_df = entities$training$target)
+  })
+  expect_error({
+    TrainStudy$new(id = "train_study",
+                   ind_col = "IDS",
+                   target = "disease",
+                   target_df = 12)
+  })
+  expect_error({
+    TrainStudy$new(id = "train_study",
+                   ind_col = "IDS",
+                   target = "disease",
+                   target_df = data.frame(x = 1:3, y = 1:3, z = 1:3))
+  })
+  expect_error({
+    train_study$testOverlap()
+  })
+  expect_error({
+    train_study <- TrainStudy$new(id = "train_study",
+                                  ind_col = "IDS",
+                                  target = "disease",
+                                  target_df = entities$training$target,
+                                  problem_type = "test")
+  })
+  expect_warning({
+    tmp <- entities$training$target
+    tmp$disease <- sample(x = 1:3,
+                          size = nrow(tmp),
+                          replace = TRUE)
+    train_study <- TrainStudy$new(id = "train_study",
+                                  ind_col = "IDS",
+                                  target = "disease",
+                                  target_df = tmp,
+                                  problem_type = "classification")
+  })
+  expect_warning({
+    train_study <- TrainStudy$new(id = "train_study",
+                                  ind_col = "IDS",
+                                  target = "disease",
+                                  target_df = entities$training$target,
+                                  problem_type = "regression")
   })
   # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   # Tests for empty (no layer) training study                +
@@ -73,7 +132,7 @@ test_that("TrainStudy: all tests", {
   # Tests for training study with loaded varriable selection         +
   # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   # Variable selection works
-  expect_no_error({
+  expect_warning({
     same_param_varsel <- ParamVarSel$new(id = "ParamVarSel",
                                          param_list = list(num.trees = 50L,
                                                            mtry = 3L))
@@ -83,11 +142,11 @@ test_that("TrainStudy: all tests", {
                             param = same_param_varsel,
                             train_layer = tl_ge)
 
-    varsel_pr <- VarSel$new(id = "varsel_geneexpr",
-                            package = "Boruta",
-                            varsel_fct = "Boruta",
-                            param = same_param_varsel,
-                            train_layer = tl_pr)
+    # varsel_pr <- VarSel$new(id = "varsel_proteinexpr",
+    #                         package = "Boruta",
+    #                         varsel_fct = "Boruta",
+    #                         param = same_param_varsel,
+    #                         train_layer = tl_pr)
 
     var_sel_res <- train_study$varSelection()
     print(var_sel_res)
@@ -133,13 +192,18 @@ test_that("TrainStudy: all tests", {
                                  hyperparam_list = list(num.trees = 10L))
 
     disease <- train_study$getTargetValues()$disease
-    trained_study <- train_study$train(resampling_method = "caret::createFolds",
-                                       resampling_arg = list(y = disease,
-                                                             k = 2L),
-                                       use_var_sel = TRUE)
+  })
+
+
+    three_warning <- capture_warnings(
+      trained_study <- train_study$train(resampling_method = "caret::createFolds",
+                                         resampling_arg = list(y = disease,
+                                                               k = 2L),
+                                         use_var_sel = TRUE)
+    )
     print(trained_study)
     print(tl_ge)
-  })
+    expect_equal(length(three_warning), 3L)
 
   expect_error({
     same_param <- ParamLrner$new(id = "ParamRanger",

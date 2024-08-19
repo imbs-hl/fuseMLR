@@ -51,6 +51,8 @@ a new study.
 \item \href{#method-TrainStudy-getIndCol}{\code{TrainStudy$getIndCol()}}
 \item \href{#method-TrainStudy-getTarget}{\code{TrainStudy$getTarget()}}
 \item \href{#method-TrainStudy-increaseNbTrainedLayer}{\code{TrainStudy$increaseNbTrainedLayer()}}
+\item \href{#method-TrainStudy-checkTargetExist}{\code{TrainStudy$checkTargetExist()}}
+\item \href{#method-TrainStudy-getTargetObj}{\code{TrainStudy$getTargetObj()}}
 \item \href{#method-TrainStudy-testOverlap}{\code{TrainStudy$testOverlap()}}
 \item \href{#method-TrainStudy-upset}{\code{TrainStudy$upset()}}
 \item \href{#method-TrainStudy-summary}{\code{TrainStudy$summary()}}
@@ -75,19 +77,25 @@ a new study.
 \subsection{Method \code{new()}}{
 constructor
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TrainStudy$new(id, ind_col, target)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TrainStudy$new(id, ind_col, target, target_df, problem_type = "classification")}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{(\code{character(1)})\cr}
+\item{\code{id}}{(\code{character(1)}) \cr}
 
-\item{\code{ind_col}}{(\code{character(1)})
-Name of column of individuals IDS}
+\item{\code{ind_col}}{(\code{character(1)}) \cr
+Name of column of individuals IDS.}
 
-\item{\code{target}}{(\code{character(1)})
-Name of the target variable}
+\item{\code{target}}{(\code{character(1)}) \cr
+Name of the target variable.}
+
+\item{\code{target_df}}{(\code{data.frame(1)}) \cr
+Data frame with two columns: individual IDs and response variable values.}
+
+\item{\code{problem_type}}{(\code{character}) \cr
+Either "classification" or "regression".}
 }
 \if{html}{\out{</div>}}
 }
@@ -330,6 +338,29 @@ Getter of the target variable name.
 Increase the number of trained layer.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TrainStudy$increaseNbTrainedLayer()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TrainStudy-checkTargetExist"></a>}}
+\if{latex}{\out{\hypertarget{method-TrainStudy-checkTargetExist}{}}}
+\subsection{Method \code{checkTargetExist()}}{
+Check whether a target object has already been stored.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TrainStudy$checkTargetExist()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+Boolean value
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TrainStudy-getTargetObj"></a>}}
+\if{latex}{\out{\hypertarget{method-TrainStudy-getTargetObj}{}}}
+\subsection{Method \code{getTargetObj()}}{
+Getter of the target object.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TrainStudy$getTargetObj()}\if{html}{\out{</div>}}
 }
 
 }

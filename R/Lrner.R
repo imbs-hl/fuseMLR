@@ -13,21 +13,21 @@ Lrner <- R6Class("Lrner",
                    #' Initialize a default parameters list.
                    #'
                    #'
-                   #' Learner ID.
                    #'
                    #' @param id (`character(1)`) \cr
+                   #' Learner ID.
+
+                   #' @param package (`character(1)`) \cr
                    #' Package that implements the learn function. If NULL, the
                    #' learn function is called from the current environment.
-                   #' @param package (`character(1)`) \cr
-                   #' Learn function name.
                    #' @param lrn_fct (`character(1)`) \cr
-                   #' Learn parameters.
+                   #' Learn function name.
                    #' @param param (`ParamLrner(1)`) \cr
-                   #' Layer on which the learner is stored.
+                   #' Learn parameters.
                    #' @param train_layer (`TrainLayer(1)`) \cr
-                   #'  The training layer where to store the learner.
+                   #' Layer on which the learner is stored.
                    #' @param na_rm (`logical(1)`) \cr
-                   #' If set to TRUE, the individuals with missing predictor values will be removed from the training dataset.
+                   #' If \code{TRUE}, the individuals with missing predictor values will be removed from the training dataset.
                    initialize = function (id,
                                           package = NULL,
                                           lrn_fct,

@@ -28,16 +28,58 @@ TrainStudy <- R6Class("TrainStudy",
                         #' @description
                         #' constructor
                         #'
-                        #' @param id (`character(1)`)\cr
-                        #' @param ind_col (`character(1)`)
-                        #' Name of column of individuals IDS
-                        #' @param target (`character(1)`)
-                        #' Name of the target variable
+                        #' @param id (`character(1)`) \cr
+                        #' @param ind_col (`character(1)`) \cr
+                        #' Name of column of individuals IDS.
+                        #' @param target (`character(1)`) \cr
+                        #' Name of the target variable.
+                        #' @param target_df (`data.frame(1)`) \cr
+                        #' Data frame with two columns: individual IDs and response variable values.
+                        #' @param problem_type (`character`) \cr
+                        #' Either "classification" or "regression".
                         #' @seealso [NewStudy] and [PredictStudy]
-                        initialize = function (id, ind_col, target) {
+                        initialize = function (id,
+                                               ind_col,
+                                               target,
+                                               target_df,
+                                               problem_type = "classification") {
+                          if (!is.character(id)) {
+                            stop("id must be a string")
+                          }
+                          if (!is.character(ind_col)) {
+                            stop("ind_col must be a string")
+                          }
+                          if (!is.character(target)) {
+                            stop("target must be a string")
+                          }
+                          if (!is.data.frame(target_df)) {
+                            stop("target_df must be a data.frame.")
+                          }
+                          if ((ncol(target_df) != 2L)) {
+                            stop("target_df must be a data.frame with two columns: individual IDs and response variable values.")
+                          }
+                          if (!all(c(ind_col, target) %in% names(target_df))) {
+                            stop(sprintf("%s and %s not foung in target_df.",
+                                         ind_col, target))
+                          }
+                          if (!(problem_type %in% c("classification", "regression"))) {
+                            stop("The problem type must be either classification or regression")
+                          } else {
+                            target_values = target_df[ , target, drop = TRUE]
+                            uniq_target_values = length(unique(target_values))
+                            if ((problem_type == "classification") & (uniq_target_values > 2L)) {
+                              warning("You set up a classification problem for more than two classes.")
+                            }
+                            if ((problem_type == "regression") & (uniq_target_values == 2L)) {
+                              warning("You set up a regression problem for only two classes.")
+                            }
+                          }
                           super$initialize(id = id)
                           private$ind_col = ind_col
                           private$target = target
+                          private$target_obj = Target$new(id = "target",
+                                                          data_frame = target_df,
+                                                          train_study = self)
                           private$status = FALSE
                         },
                         #' @description
@@ -56,6 +98,7 @@ TrainStudy <- R6Class("TrainStudy",
                           cat(sprintf("Status          : %s\n", status))
                           cat(sprintf("Number of layers: %s\n", nb_layers))
                           cat(sprintf("Layers trained  : %s\n", private$nb_trained_layer))
+                          cat(sprintf("n               : %s\n", nrow(private$target_obj$getData())))
                         },
                         #' @description
                         #' Train each layer of the current Trainstudy.
@@ -72,8 +115,8 @@ TrainStudy <- R6Class("TrainStudy",
                         #'
                         trainLayer = function (ind_subset = NULL, use_var_sel = FALSE) {
                           layers = self$getKeyClass()
-                          if (nrow(layers)) {
-
+                          nb_layers = nrow(layers[layers$class %in% "TrainLayer", ])
+                          if (nb_layers) {
                             # This code accesses each layer (except MetaLayer) level and trains the corres-
                             # ponding learner.
                             layers = layers[layers$class %in% "TrainLayer", ]
@@ -107,7 +150,6 @@ TrainStudy <- R6Class("TrainStudy",
                           layers = new_study$getKeyClass()
                           # This code accesses each layer (except MetaLayer) level
                           # and make predictions for the new layer in input.
-                          # TODO: A TrainLayer can be predicted as a NewLayer.
                           layers = layers[layers$class %in% c("NewLayer", "TrainLayer"), ]
                           for (k in layers$key) {
                             new_layer = new_study$getFromHashTable(key = k)
@@ -190,15 +232,11 @@ TrainStudy <- R6Class("TrainStudy",
                             layers = self$getKeyClass()
                             meta_layer_key = layers[layers$class == "TrainMetaLayer" , "key"]
                             meta_layer = self$getFromHashTable(key = meta_layer_key)
-                            # TODO: Test and remove comment.
                             meta_layer$openAccess()
                             # predicted20242806 this word just serves as temporary key
-                            # TODO: Maybe remove this object from the training meta layer after crossvalidation.
                             meta_layer$setTrainData(id = "predicted20242806",
                                                     ind_col = names(predicted_values_wide)[1L],
-                                                    data_frame = predicted_values_wide,
-                                                    meta_layer = meta_layer,
-                                                    target = colnames(target_df)[2L])
+                                                    data_frame = predicted_values_wide)
                             meta_layer$set2NotTrained()
                             meta_layer$closeAccess()
                             return(predicted_values_wide)
@@ -228,13 +266,13 @@ TrainStudy <- R6Class("TrainStudy",
                           if (!self$testOverlap()) {
                             stop("This study does not contain overlapping individuals.") #nocov
                           }
-                          # 1) Train each layer
-                          self$trainLayer(ind_subset = ind_subset,
-                                          use_var_sel = use_var_sel)
-                          # 2) Create meta training data
+                          # 1) Create meta training data
                           self$createMetaTrainData(resampling_method,
                                                    resampling_arg,
                                                    use_var_sel = use_var_sel)
+                          # 2) Train each layer
+                          self$trainLayer(ind_subset = ind_subset,
+                                          use_var_sel = use_var_sel)
                           # 3) Train the meta layer
                           # Add layer specific predictions to meta training layer
                           layers = self$getKeyClass()
@@ -278,7 +316,6 @@ TrainStudy <- R6Class("TrainStudy",
                                                         value = predicted_layer,
                                                         .class = "PredictData")
                           # Updating the predicted meta layer
-                          # TODO: This is already done by predicting the meta layer. If no error, remove me.
                           # predicted_study$add2HashTable(key = meta_layer_key,
                           #                               value = predicted_layer,
                           #                               .class = "Predict")
@@ -319,7 +356,8 @@ TrainStudy <- R6Class("TrainStudy",
                         #'
                         varSelection = function (ind_subset = NULL) {
                           layers = self$getKeyClass()
-                          if (nrow(layers)) {
+                          nb_layers = nrow(layers[layers$class %in% "TrainLayer", ])
+                          if (nb_layers) {
                             # This code accesses each layer (except MetaLayer) level and
                             # perform variable selection.
                             layers = layers[layers$class %in% "TrainLayer", ]
@@ -327,9 +365,12 @@ TrainStudy <- R6Class("TrainStudy",
                             for (k in layers$key) {
                               layer = self$getFromHashTable(key = k)
                               layer_var_sel = layer$varSelection(ind_subset = ind_subset)
-                              selected = rbind(selected,
-                                               data.frame(Layer = layer$getId(),
-                                                          variable = layer_var_sel))
+                              if (length(layer_var_sel)) {
+                                # At least one variable selected
+                                selected = rbind(selected,
+                                                 data.frame(Layer = layer$getId(),
+                                                            variable = layer_var_sel))
+                              }
                             }
                           } else {
                             stop("No existing layer in the current training study.")
@@ -411,9 +452,25 @@ TrainStudy <- R6Class("TrainStudy",
                         #' Increase the number of trained layer.
                         increaseNbTrainedLayer = function () {
                           private$nb_trained_layer = private$nb_trained_layer + 1L
-                          if (private$nb_trained_layer == length(private$hash_table)) {
+                          if (private$nb_trained_layer == length(private$hash_table) - 1L) {
                             private$status = TRUE
                           }
+                        },
+                        #' @description
+                        #' Check whether a target object has already been stored.
+                        #'
+                        #' @return
+                        #' Boolean value
+                        #'
+                        checkTargetExist = function () {
+                          return(super$checkClassExist(.class = "Target"))
+                        },
+                        #' @description
+                        #' Getter of the target object.
+                        #' @export
+                        # TODO: Maybe rename this function getTarget and find another appropriate name for the current getTarget function.
+                        getTargetObj = function () {
+                          return(private$target_obj)
                         },
                         #' @description
                         #' Test that individuals overlap over layers.
@@ -423,7 +480,7 @@ TrainStudy <- R6Class("TrainStudy",
                         #'
                         testOverlap = function () {
                           layers = self$getKeyClass()
-                          if (!nrow(layers)) {
+                          if (nrow(layers) == 1L) {
                             stop ("No layer found in this study.")
                           }
                           # This code accesses each layer (except TrainMetaLayer) level
@@ -459,6 +516,9 @@ TrainStudy <- R6Class("TrainStudy",
                           # This code accesses each layer (except TrainMetaLayer) level
                           # and get the individual IDs.
                           layers = layers[layers$class %in% "TrainLayer", ]
+                          if (!nrow(layers)) {
+                            stop("No available layer in this study.")
+                          }
                           ids_list = lapply(layers$key, function (k) {
                             layer = self$getFromHashTable(key = k)
                             return(layer$getIndIDs()[ , 1L])
@@ -494,6 +554,7 @@ TrainStudy <- R6Class("TrainStudy",
                       private = list(
                         ind_col = character(0L),
                         target = character(0L),
+                        target_obj = NULL,
                         nb_trained_layer = 0L,
                         status = FALSE
                       ),

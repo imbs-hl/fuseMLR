@@ -63,6 +63,12 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                               return(private$train_study)
                             },
                             #' @description
+                            #' Getter of the target object.
+                            #' @export
+                            getTargetObj = function () {
+                              return(private$train_study$getTargetObj())
+                            },
+                            #' @description
                             #' Trains the current layer.
                             #'
                             #' @param ind_subset `vector(1)` \cr
@@ -224,8 +230,6 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                             #' Name of individual column IDs.
                             #' @param data_frame  `data.frame(1)` \cr
                             #' \code{data.frame} of layer specific predictions.
-                            #' @param meta_layer `Layer(1)` \cr
-                            #' Layer where to store the [TrainData] object.
                             #' @param target `character(1)` \cr
                             #' Name of the target variable
                             #'
@@ -234,7 +238,6 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                             setTrainData = function (id,
                                                      ind_col,
                                                      data_frame,
-                                                     meta_layer,
                                                      target) {
                               TrainData$new(id = id,
                                             data_frame = data_frame,

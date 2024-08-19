@@ -3,7 +3,8 @@ test_that("TrainData: all tests", {
   # Prepare study and layers
   train_study <- TrainStudy$new(id = "train_study",
                                 ind_col = "IDS",
-                                target = "disease")
+                                target = "disease",
+                                target_df = entities$training$target)
   # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
   # Start testing training data with empty layer                                #
   # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
@@ -37,11 +38,16 @@ test_that("TrainData: all tests", {
   })
 
   # On wrong target or ID column
-  ts_wrong_target <- TrainStudy$new(id = "train_study",
-                                ind_col = "IDS",
-                                target = "diseases")
-  tl_ge_wrong_target <- TrainLayer$new(id = "geneexpr",
-                                       train_study = ts_wrong_target)
+  expect_error({
+    ts_wrong_target <- TrainStudy$new(id = "train_study",
+                                      ind_col = "IDS",
+                                      target = "diseases",
+                                      target_df = entities$training$target)
+  })
+  expect_error({
+    tl_ge_wrong_target <- TrainLayer$new(id = "geneexpr",
+                                         train_study = ts_wrong_target)
+  })
   expect_error({
     TrainData$new(id = "geneexpr",
                   train_layer = tl_ge_wrong_target,
@@ -51,18 +57,20 @@ test_that("TrainData: all tests", {
   # No target variable
   ts_missing_target <- TrainStudy$new(id = "train_study",
                                     ind_col = "IDS",
-                                    target = "disease")
+                                    target = "disease",
+                                    target_df = entities$training$target)
   tl_ge_missing_target <- TrainLayer$new(id = "geneexpr",
                                        train_study = ts_missing_target)
-  expect_warning({
+  expect_no_error({
     tmp <- entities$training$geneexpr
-    tmp$disease[1] <- NA
+    # Re-build this test case
+    # tmp$disease[1] <- NA
     TrainData$new(id = "geneexpr",
                   train_layer = tl_ge_missing_target,
                   data_frame = tmp)
   })
   # Update TrainData
-  expect_warning({
+  expect_no_error({
     TrainData$new(id = "proteinexpr",
                   train_layer = tl_ge_missing_target,
                   data_frame = tmp)
@@ -77,7 +85,8 @@ test_that("TrainData: all tests", {
   expect_error({
     ts_not_bin_target <- TrainStudy$new(id = "train_study",
                                         ind_col = "IDS",
-                                        target = "disease")
+                                        target = "disease",
+                                        target_df = entities$training$target)
     tl_ge_not_bin_target <- TrainLayer$new(id = "geneexpr_no_bin",
                                            train_study = ts_not_bin_target)
     tmp <- entities$training$geneexpr

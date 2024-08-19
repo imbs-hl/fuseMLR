@@ -3,7 +3,8 @@ test_that("TrainLayer: all tests", {
   # Prepare study and layers
   train_study <- TrainStudy$new(id = "train_study",
                                 ind_col = "IDS",
-                                target = "disease")
+                                target = "disease",
+                                target_df = entities$training$target)
   tl_meta <- TrainMetaLayer$new(id = "meta",
                                 train_study = train_study)
   # A TrainLayer can only belong to a TrainStudy

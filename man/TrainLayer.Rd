@@ -30,6 +30,7 @@ A layer can make predictions for a new layer passed as argument to its predict f
 \item \href{#method-TrainLayer-new}{\code{TrainLayer$new()}}
 \item \href{#method-TrainLayer-print}{\code{TrainLayer$print()}}
 \item \href{#method-TrainLayer-getTrainStudy}{\code{TrainLayer$getTrainStudy()}}
+\item \href{#method-TrainLayer-getTargetObj}{\code{TrainLayer$getTargetObj()}}
 \item \href{#method-TrainLayer-train}{\code{TrainLayer$train()}}
 \item \href{#method-TrainLayer-varSelection}{\code{TrainLayer$varSelection()}}
 \item \href{#method-TrainLayer-predict}{\code{TrainLayer$predict()}}
@@ -109,6 +110,16 @@ Getter of the current study
 \subsection{Returns}{
 The current study is returned.
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TrainLayer-getTargetObj"></a>}}
+\if{latex}{\out{\hypertarget{method-TrainLayer-getTargetObj}{}}}
+\subsection{Method \code{getTargetObj()}}{
+Getter of the target object.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TrainLayer$getTargetObj()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TrainLayer-train"></a>}}

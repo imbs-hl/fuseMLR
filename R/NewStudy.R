@@ -93,6 +93,9 @@ NewStudy <- R6Class("NewStudy",
                      # This code accesses each layer (except TrainMetaLayer) level
                      # and get the individual IDs.
                      layers = layers[layers$class %in% "NewLayer", ]
+                     if (!nrow(layers)) {
+                       stop("No available layer in this study.")
+                     }
                      ids_list = lapply(layers$key, function (k) {
                        layer = self$getFromHashTable(key = k)
                        return(layer$getIndIDs()[ , 1L])

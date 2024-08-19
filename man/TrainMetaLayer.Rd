@@ -26,6 +26,7 @@ The meta layer can predict values given a new meta layer.
 \item \href{#method-TrainMetaLayer-new}{\code{TrainMetaLayer$new()}}
 \item \href{#method-TrainMetaLayer-print}{\code{TrainMetaLayer$print()}}
 \item \href{#method-TrainMetaLayer-getTrainStudy}{\code{TrainMetaLayer$getTrainStudy()}}
+\item \href{#method-TrainMetaLayer-getTargetObj}{\code{TrainMetaLayer$getTargetObj()}}
 \item \href{#method-TrainMetaLayer-train}{\code{TrainMetaLayer$train()}}
 \item \href{#method-TrainMetaLayer-predict}{\code{TrainMetaLayer$predict()}}
 \item \href{#method-TrainMetaLayer-getTrainData}{\code{TrainMetaLayer$getTrainData()}}
@@ -104,6 +105,16 @@ Getter of the current training study
 \subsection{Returns}{
 The current training study is returned.
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TrainMetaLayer-getTargetObj"></a>}}
+\if{latex}{\out{\hypertarget{method-TrainMetaLayer-getTargetObj}{}}}
+\subsection{Method \code{getTargetObj()}}{
+Getter of the target object.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TrainMetaLayer$getTargetObj()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TrainMetaLayer-train"></a>}}
@@ -226,7 +237,7 @@ Getter of the current access to the meta layer.
 Create and set an \link{TrainData} object to the current
 meta learner.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TrainMetaLayer$setTrainData(id, ind_col, data_frame, meta_layer, target)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TrainMetaLayer$setTrainData(id, ind_col, data_frame, target)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -240,9 +251,6 @@ Name of individual column IDs.}
 
 \item{\code{data_frame}}{\code{data.frame(1)} \cr
 \code{data.frame} of layer specific predictions.}
-
-\item{\code{meta_layer}}{\code{Layer(1)} \cr
-Layer where to store the \link{TrainData} object.}
 
 \item{\code{target}}{\code{character(1)} \cr
 Name of the target variable}

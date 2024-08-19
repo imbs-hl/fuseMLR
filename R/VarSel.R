@@ -130,7 +130,8 @@ VarSel <- R6Class("VarSel",
                         # Systematic test is challenging for external variable
                         # Have been test in interactive session
                         # nocov start
-                        stop(sprintf("No variable selected on layer", private$train_layer$getId()))
+                        warning(sprintf("No variable selected on layer", private$train_layer$getId()))
+                        private$var_subset = NULL
                         # nocov end
                         } else {
                         private$var_subset = varselected

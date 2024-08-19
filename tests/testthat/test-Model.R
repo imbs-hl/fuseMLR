@@ -3,7 +3,8 @@ test_that("Model: all tests", {
   # Prepare study and layers
   train_study <- TrainStudy$new(id = "train_study",
                                 ind_col = "IDS",
-                                target = "disease")
+                                target = "disease",
+                                target_df = entities$training$target)
   tl_ge <- TrainLayer$new(id = "geneexpr", train_study = train_study)
   same_param <- ParamLrner$new(id = "ParamRanger",
                                param_list = list(probability = TRUE,
@@ -17,7 +18,9 @@ test_that("Model: all tests", {
   train_data_ge <- TrainData$new(id = "geneexpr",
                                  train_layer = tl_ge,
                                  data_frame = entities$training$geneexpr)
-  tl_ge$train()
+  expect_no_error({
+    tl_ge$train()
+  })
   expect_no_error({
     my_model <- tl_ge$getModel()
     print(my_model)

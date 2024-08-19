@@ -3,7 +3,8 @@ test_that("TrainLayer: all tests", {
   # Prepare study and layers
   train_study <- TrainStudy$new(id = "train_study",
                                 ind_col = "IDS",
-                                target = "disease")
+                                target = "disease",
+                                target_df = entities$training$target)
   # A TrainLayer can only belong to a TrainStudy
   expect_error({
     TrainLayer$new(id = "geneexpr", train_study = "not_a_train_study")
@@ -37,8 +38,8 @@ test_that("TrainLayer: all tests", {
   # Must fail because of not existing training data
   expect_error({tl_ge$train()})
   expect_error({tl_ge$getTargetValues()})
-  # Must fail because of no variable selection tool
-  expect_error({tl_ge$varSelection()})
+  # Must throw a warning message because of no variable selection tool
+  expect_warning({tl_ge$varSelection()})
   expect_error({tl_ge$getVarSel()})
   expect_error({tl_ge$getPredictions()})
   same_param_varsel <- ParamVarSel$new(id = "ParamVarSel",

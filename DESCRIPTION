@@ -38,6 +38,7 @@ Collate:
     'PredictLayer.R'
     'PredictMetaLayer.R'
     'PredictStudy.R'
+    'Target.R'
     'TrainData.R'
     'TrainLayer.R'
     'TrainMetaLayer.R'

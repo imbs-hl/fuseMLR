@@ -27,8 +27,6 @@ This class implements a learner. A \link{Lrner} object can only exist as a compo
 \if{latex}{\out{\hypertarget{method-Lrner-new}{}}}
 \subsection{Method \code{new()}}{
 Initialize a default parameters list.
-
-Learner ID.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Lrner$new(id, package = NULL, lrn_fct, param, train_layer, na_rm = TRUE)}\if{html}{\out{</div>}}
 }
@@ -37,23 +35,23 @@ Learner ID.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{id}}{(\code{character(1)}) \cr
+Learner ID.}
+
+\item{\code{package}}{(\code{character(1)}) \cr
 Package that implements the learn function. If NULL, the
 learn function is called from the current environment.}
 
-\item{\code{package}}{(\code{character(1)}) \cr
+\item{\code{lrn_fct}}{(\code{character(1)}) \cr
 Learn function name.}
 
-\item{\code{lrn_fct}}{(\code{character(1)}) \cr
+\item{\code{param}}{(\code{ParamLrner(1)}) \cr
 Learn parameters.}
 
-\item{\code{param}}{(\code{ParamLrner(1)}) \cr
+\item{\code{train_layer}}{(\code{TrainLayer(1)}) \cr
 Layer on which the learner is stored.}
 
-\item{\code{train_layer}}{(\code{TrainLayer(1)}) \cr
-The training layer where to store the learner.}
-
 \item{\code{na_rm}}{(\code{logical(1)}) \cr
-If set to TRUE, the individuals with missing predictor values will be removed from the training dataset.}
+If \code{TRUE}, the individuals with missing predictor values will be removed from the training dataset.}
 }
 \if{html}{\out{</div>}}
 }
@@ -133,6 +131,7 @@ The current layer is returned.
 \if{html}{\out{<a id="method-Lrner-getNaRm"></a>}}
 \if{latex}{\out{\hypertarget{method-Lrner-getNaRm}{}}}
 \subsection{Method \code{getNaRm()}}{
+The current layer is returned.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Lrner$getNaRm()}\if{html}{\out{</div>}}
 }
