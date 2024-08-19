@@ -70,6 +70,12 @@ TrainLayer <- R6Class("TrainLayer",
                           return(private$train_study)
                         },
                         #' @description
+                        #' Getter of the target object.
+                        #' @export
+                        getTargetObj = function () {
+                          return(private$train_study$getTargetObj())
+                        },
+                        #' @description
                         #' Trains the current layer.
                         #'
                         #' @param ind_subset `vector(1)` \cr
@@ -94,6 +100,10 @@ TrainLayer <- R6Class("TrainLayer",
                           # The learner is trained on the current dataset
                           lrner_key = layer_kc[layer_kc$class == "Lrner" , "key"]
                           lrner = self$getFromHashTable(key = lrner_key[1L])
+                          if (use_var_sel & (!self$checkVarSelExist())) {
+                            warning(sprintf("No var. sel. on layer %s.", self$getId()))
+                            use_var_sel = FALSE
+                          }
                           model = lrner$train(ind_subset = ind_subset,
                                               use_var_sel = use_var_sel)
                           # Updating the training status.
@@ -120,8 +130,9 @@ TrainLayer <- R6Class("TrainLayer",
                         varSelection = function (ind_subset = NULL) {
                           layer_kc = self$getKeyClass()
                           # Stop if either selector or data is missing on this layer.
-                          if (!("VarSel" %in% layer_kc[ , "class"])){
-                            stop(sprintf("No var. sel. method on layer %s.", self$getId()))
+                          if (!("VarSel" %in% layer_kc[ , "class"])) {
+                            warning(sprintf("No var. sel. method on layer %s.", self$getId()))
+                            return(NULL)
                           } else {
                             if (!("TrainData" %in% layer_kc[ , "class"])) {
                               stop(sprintf("No data on layer %s.", self$getId()))
