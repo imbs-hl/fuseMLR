@@ -1,13 +1,13 @@
-#' @title NewMetaLayer Class
+#' @title TestMetaLayer Class
 #'
 #' @description
-#' This class implement a predicted meta layer. A [NewMetaLayer] can only exist as unique element of a [TrainStudy] object.
+#' This class implement a predicted meta layer. A [TestMetaLayer] can only exist as unique element of a [Training] object.
 #'
-#' A predicted meta layer can only contain a [NewData] object.
+#' A predicted meta layer can only contain a [TestData] object.
 #'
 #' @export
 #' @importFrom R6 R6Class
-NewMetaLayer <- R6Class("NewMetaLayer",
+TestMetaLayer <- R6Class("TestMetaLayer",
                         inherit = HashTable,
                         public = list(
                           #' @description
@@ -15,43 +15,43 @@ NewMetaLayer <- R6Class("NewMetaLayer",
                           #'
                           #' @param id (`character(1)`)\cr
                           #' See class Param
-                          #' @param new_study (`NewStudy(1)`)\cr
+                          #' @param testing (`Testing(1)`)\cr
                           #'
-                          initialize = function (id, new_study) {
+                          initialize = function (id, testing) {
                             super$initialize(id = id)
-                            private$new_study = new_study
-                            new_study$add2HashTable(key = id,
+                            private$testing = testing
+                            testing$add2HashTable(key = id,
                                                     value = self,
-                                                    .class = "NewMetaLayer")
+                                                    .class = "TestMetaLayer")
                           },
                           #' @description
                           #' Printer
                           #' @param ... (any) \cr
                           #'
                           print = function(...) {
-                            cat(sprintf("NewMetaLayer: %s\n", private$id))
+                            cat(sprintf("TestMetaLayer: %s\n", private$id))
                             cat(sprintf("Contains %s object\n", length(private$hash_table)))
                           },
                           #' @description
-                          #' Getter of the current predicted study
+                          #' Getter of the current testing object.
                           #'
                           #' @return
-                          #' The current new study is returned.
+                          #' The current testing object is returned.
                           #'
-                          getNewStudy = function () {
-                            return(private$new_study)
+                          getTesting = function () {
+                            return(private$testing)
                           },
                           #' @description
                           #' Getter of the training dataset stored on the current layer.
                           #'
                           #' @return
-                          #' The stored [NewData] object is returned.
+                          #' The stored [TestData] object is returned.
                           #' @export
                           #'
-                          getNewData = function () {
+                          getTestData = function () {
                             layer_kc = self$getKeyClass()
-                            if ("NewData" %in% layer_kc[ , "class"]) {
-                              new_data_key = layer_kc[layer_kc$class == "NewData" ,
+                            if ("TestData" %in% layer_kc[ , "class"]) {
+                              new_data_key = layer_kc[layer_kc$class == "TestData" ,
                                                       "key"]
                               new_data = self$getFromHashTable(key = new_data_key[1L])
                             } else {
@@ -85,25 +85,25 @@ NewMetaLayer <- R6Class("NewMetaLayer",
                             return(private$access)
                           },
                           #' @description
-                          #' Create and set an [NewData] object to the current
+                          #' Create and set an [TestData] object to the current
                           #' new meta learner.
                           #'
                           #' @param id `character(1)` \cr
-                          #' ID of the [NewData] object to be instanciated.
+                          #' ID of the [TestData] object to be instanciated.
                           #' @param ind_col `character(1)` \cr
                           #' Name of individual column IDs.
                           #' @param data_frame  `data.frame(1)` \cr
                           #' \code{data.frame} of layer specific predictions.
-                          #' @param meta_layer `NewLayer(1)` \cr
-                          #' Layer where to store the [NewData] object.
+                          #' @param meta_layer `TestLayer(1)` \cr
+                          #' Layer where to store the [TestData] object.
                           #'
                           #' @export
                           # TODO: Please do not export me.
-                          setNewData = function (id,
+                          setTestData = function (id,
                                                  ind_col,
                                                  data_frame,
                                                  meta_layer) {
-                            NewData$new(id = id,
+                            TestData$new(id = id,
                                         ind_col = ind_col,
                                         data_frame = data_frame,
                                         meta_layer = self)
@@ -115,13 +115,13 @@ NewMetaLayer <- R6Class("NewMetaLayer",
                           #' @return
                           #' Boolean value
                           #'
-                          checkNewDataExist = function () {
-                            return(super$checkClassExist(.class = "NewData"))
+                          checkTestDataExist = function () {
+                            return(super$checkClassExist(.class = "TestData"))
                           }
                         ),
                         private = list(
-                          # The current study
-                          new_study = NULL,
+                          # The current testing
+                          testing = NULL,
                           # Access to the meta layer.
                           access = FALSE
                         ),

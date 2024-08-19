@@ -1,15 +1,15 @@
-#' @title NewLayer Class
+#' @title TestLayer Class
 #'
 #' @description
-#' This class implements a layer. A [NewLayer] object can only exist as a component of a [PredictStudy] object.
+#' This class implements a layer. A [TestLayer] object can only exist as a component of a [Predicting] object.
 #'
-#' A predicted layer can only contain [NewData].
+#' A predicted layer can only contain [TestData].
 #'
 #'
 #' @export
 #' @importFrom R6 R6Class
-#' @seealso [TrainStudy], [Lrner], [TrainData], [NewData] and [Model]
-NewLayer <- R6Class("NewLayer",
+#' @seealso [Training], [Lrner], [TrainData], [TestData] and [Model]
+TestLayer <- R6Class("TestLayer",
                         inherit = HashTable,
                         public = list(
                           #' @description
@@ -17,17 +17,17 @@ NewLayer <- R6Class("NewLayer",
                           #'
                           #' @param id (`character(1)`)\cr
                           #' See class Param
-                          #' @param new_study (`NewStudy(1)`)\cr
+                          #' @param testing (`Testing(1)`)\cr
                           #'
-                          initialize = function (id, new_study) {
+                          initialize = function (id, testing) {
                             super$initialize(id = id)
-                            private$new_study = new_study
-                            if ("NewStudy" %in% class(new_study)) {
-                              new_study$add2HashTable(key = id,
+                            private$testing = testing
+                            if ("Testing" %in% class(testing)) {
+                              testing$add2HashTable(key = id,
                                                       value = self,
-                                                      .class = "NewLayer")
+                                                      .class = "TestLayer")
                             } else {
-                              stop("A NewLayer can only belong to a NewStudy.")
+                              stop("A TestLayer can only belong to a TestStudy.")
                             }
                           },
                           #' @description
@@ -35,17 +35,17 @@ NewLayer <- R6Class("NewLayer",
                           #' @param ... (any) \cr
                           #'
                           print = function (...){
-                            cat(sprintf("NewLayer    : %s\n", private$id))
+                            cat(sprintf("TestLayer    : %s\n", private$id))
                             cat(sprintf("Contains %s object.\n", length(private$hash_table)))
                           },
                           #' @description
-                          #' Getter of the current study
+                          #' Getter of the current Testing object.
                           #'
                           #' @return
-                          #' The current study is returned.
+                          #' The current Testing object is returned.
                           #'
-                          getNewStudy = function () {
-                            return(private$new_study)
+                          getTesting = function () {
+                            return(private$testing)
                           },
                           #' @description
                           #' Getter of IDS from the current layer.
@@ -57,11 +57,11 @@ NewLayer <- R6Class("NewLayer",
                           getIndIDs = function () {
                             layer_kc = self$getKeyClass()
                             # Stop if training data is missing on this layer.
-                            if (("NewData" %in% layer_kc[ , "class"])) {
+                            if (("TestData" %in% layer_kc[ , "class"])) {
                               # Searching for layer specific new dataset
-                              data_key = layer_kc[layer_kc$class == "NewData" ,
+                              data_key = layer_kc[layer_kc$class == "TestData" ,
                                                   "key"]
-                              current_data = self$getNewData()
+                              current_data = self$getTestData()
                             } else {
                               stop(sprintf("No data on layer %s.", self$getId()))
                             }
@@ -73,13 +73,13 @@ NewLayer <- R6Class("NewLayer",
                           #' Getter of the predicted data stored on the current layer.
                           #'
                           #' @return
-                          #' The stored [NewData] object is returned.
+                          #' The stored [TestData] object is returned.
                           #' @export
                           #'
-                          getNewData = function () {
+                          getTestData = function () {
                             layer_kc = self$getKeyClass()
-                            if ("NewData" %in% layer_kc[ , "class"]) {
-                              predict_data_key = layer_kc[layer_kc$class == "NewData" ,
+                            if ("TestData" %in% layer_kc[ , "class"]) {
+                              predict_data_key = layer_kc[layer_kc$class == "TestData" ,
                                                           "key"]
                               predict_data = self$getFromHashTable(key = predict_data_key[1L])
                             } else {
@@ -93,8 +93,8 @@ NewLayer <- R6Class("NewLayer",
                           #' @return
                           #' Boolean value
                           #'
-                          checkNewDataExist = function () {
-                            return(super$checkClassExist(.class = "NewData"))
+                          checkTestDataExist = function () {
+                            return(super$checkClassExist(.class = "TestData"))
                           },
                           #' @description
                           #' Generate summary.
@@ -111,7 +111,7 @@ NewLayer <- R6Class("NewLayer",
                           }
                         ),
                         private = list(
-                          new_study = NULL
+                          testing = NULL
                         ),
                         # TODO: define a deep_clone function for this class.
                         cloneable = FALSE

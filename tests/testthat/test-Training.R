@@ -1,49 +1,49 @@
 data("entities")
 set.seed(5214)
-test_that("TrainStudy: all tests", {
-  # Create training study
+test_that("Training: all tests", {
+  # Create training
   expect_no_error({
-    train_study <- TrainStudy$new(id = "train_study",
+    training <- Training$new(id = "training",
                                   ind_col = "IDS",
                                   target = "disease",
                                   target_df = entities$training$target)
-    print(train_study)
+    print(training)
   })
   expect_error({
-    TrainStudy$new(id = 1,
+    Training$new(id = 1,
                    ind_col = "IDS",
                    target = "disease",
                    target_df = entities$training$target)
   })
   expect_error({
-    TrainStudy$new(id = "train_study",
+    Training$new(id = "training",
                    ind_col = 1,
                    target = "disease",
                    target_df = entities$training$target)
   })
   expect_error({
-    TrainStudy$new(id = "train_study",
+    Training$new(id = "training",
                    ind_col = "IDS",
                    target = 1,
                    target_df = entities$training$target)
   })
   expect_error({
-    TrainStudy$new(id = "train_study",
+    Training$new(id = "training",
                    ind_col = "IDS",
                    target = "disease",
                    target_df = 12)
   })
   expect_error({
-    TrainStudy$new(id = "train_study",
+    Training$new(id = "training",
                    ind_col = "IDS",
                    target = "disease",
                    target_df = data.frame(x = 1:3, y = 1:3, z = 1:3))
   })
   expect_error({
-    train_study$testOverlap()
+    training$testOverlap()
   })
   expect_error({
-    train_study <- TrainStudy$new(id = "train_study",
+    training <- Training$new(id = "training",
                                   ind_col = "IDS",
                                   target = "disease",
                                   target_df = entities$training$target,
@@ -54,66 +54,66 @@ test_that("TrainStudy: all tests", {
     tmp$disease <- sample(x = 1:3,
                           size = nrow(tmp),
                           replace = TRUE)
-    train_study <- TrainStudy$new(id = "train_study",
+    training <- Training$new(id = "training",
                                   ind_col = "IDS",
                                   target = "disease",
                                   target_df = tmp,
                                   problem_type = "classification")
   })
   expect_warning({
-    train_study <- TrainStudy$new(id = "train_study",
+    training <- Training$new(id = "training",
                                   ind_col = "IDS",
                                   target = "disease",
                                   target_df = entities$training$target,
                                   problem_type = "regression")
   })
   # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  # Tests for empty (no layer) training study                +
+  # Tests for empty (no layer) training                      +
   # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   expect_error({
-    train_study$train()
+    training$train()
   })
   expect_error({
-    train_study$trainLayer()
+    training$trainLayer()
   })
   expect_error({
-    train_study$createMetaTrainData()
+    training$createMetaTrainData()
   })
   expect_error({
-    train_study$varSelection()
+    training$varSelection()
   })
   expect_error({
-    train_study$test_overlap()
+    training$test_overlap()
   })
   expect_error({
-    train_study$train(ind_subset = NULL,
+    training$train(ind_subset = NULL,
                       use_var_sel = TRUE,
                       resampling_method = character(0L),
                       resampling_arg = list())
-    train_study$train(ind_subset = NULL,
+    training$train(ind_subset = NULL,
                       use_var_sel = TRUE,
                       resampling_method = character(0L),
                       resampling_arg = list())
   })
 
   # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  # Tests for training study with empty layers               +
+  # Tests for training with empty layers.                    +
   # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   expect_no_error({
-    tl_ge <- TrainLayer$new(id = "geneexpr", train_study = train_study)
-    tl_pr <- TrainLayer$new(id = "proteinexpr", train_study = train_study)
+    tl_ge <- TrainLayer$new(id = "geneexpr", training = training)
+    tl_pr <- TrainLayer$new(id = "proteinexpr", training = training)
     # We also prepare the meta layer for the meta analysis.
-    tl_meta <- TrainMetaLayer$new(id = "meta_layer", train_study = train_study)
+    tl_meta <- TrainMetaLayer$new(id = "meta_layer", training = training)
   })
   # Expected errors on training empty layers
   expect_error({
-    train_study$train()
+    training$train()
   })
   expect_error({
-    train_study$testOverlap()
+    training$testOverlap()
   })
   # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  # Tests for training study with loaded data layers         +
+  # Tests for training with loaded data layers               +
   # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   # TrainData can be added successfully
   expect_no_error({
@@ -126,10 +126,10 @@ test_that("TrainStudy: all tests", {
   })
   # Upset plot works
   expect_no_error({
-    train_study$upset(order.by = "freq")
+    training$upset(order.by = "freq")
   })
   # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  # Tests for training study with loaded varriable selection         +
+  # Tests for training with loaded variable selection                +
   # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   # Variable selection works
   expect_warning({
@@ -148,11 +148,11 @@ test_that("TrainStudy: all tests", {
     #                         param = same_param_varsel,
     #                         train_layer = tl_pr)
 
-    var_sel_res <- train_study$varSelection()
+    var_sel_res <- training$varSelection()
     print(var_sel_res)
   })
   # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  # Tests for training study with loaded learners.           +
+  # Tests for training with loaded learners.                 +
   # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   # Lrner parameters
   expect_no_error({
@@ -183,7 +183,7 @@ test_that("TrainStudy: all tests", {
   })
 
   # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  # Tests for training study with for training.              +
+  # Tests for training with for training.                    +
   # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   expect_no_error({
     same_param <- ParamLrner$new(id = "ParamRanger",
@@ -191,17 +191,17 @@ test_that("TrainStudy: all tests", {
                                                    mtry = 1L),
                                  hyperparam_list = list(num.trees = 10L))
 
-    disease <- train_study$getTargetValues()$disease
+    disease <- training$getTargetValues()$disease
   })
 
 
     three_warning <- capture_warnings(
-      trained_study <- train_study$train(resampling_method = "caret::createFolds",
+      trained <- training$train(resampling_method = "caret::createFolds",
                                          resampling_arg = list(y = disease,
                                                                k = 2L),
                                          use_var_sel = TRUE)
     )
-    print(trained_study)
+    print(trained)
     print(tl_ge)
     expect_equal(length(three_warning), 3L)
 
@@ -211,18 +211,18 @@ test_that("TrainStudy: all tests", {
                                                    mtry = 2L),
                                  hyperparam_list = list(num.trees = 10L))
 
-    disease <- train_study$getTargetValues()$disease
-    trained_study <- train_study$train(resampling_method = "stats::rnorm",
+    disease <- training$getTargetValues()$disease
+    trained <- training$train(resampling_method = "stats::rnorm",
                                        resampling_arg = list(n = 10L),
                                        use_var_sel = TRUE)
   })
   expect_no_error({
-    trained_study$getId()
-    trained_study$getIndCol()
-    trained_study$getTarget()
-    trained_study$getTrainMetaLayer()
-    trained_study$getIndIDs()
-    trained_study$getTargetValues()
+    trained$getId()
+    trained$getIndCol()
+    trained$getTarget()
+    trained$getTrainMetaLayer()
+    trained$getIndIDs()
+    trained$getTargetValues()
     print(tl_meta$getTrainData())
     tmp_lrner <- tl_ge$getLrner()
     tmp_lrner$getIndSubset()
@@ -231,25 +231,25 @@ test_that("TrainStudy: all tests", {
     tmp_model$summary()
   })
   expect_no_error({
-    train_study$summary()
+    training$summary()
   })
   # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  # Tests for training study with for predicting             +
+  # Tests for training with for predicting                   +
   # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   # Prediction
   expect_no_error({
-    new_study <- NewStudy$new(id = "new_study", ind_col = "IDS")
-    print(new_study)
+    testing <- Testing$new(id = "testing", ind_col = "IDS")
+    print(testing)
   })
 
   expect_no_error({
-    nl_ge <- NewLayer$new(id = "geneexpr", new_study = new_study)
+    nl_ge <- TestLayer$new(id = "geneexpr", testing = testing)
     print(nl_ge)
-    nl_pr <- NewLayer$new(id = "proteinexpr", new_study = new_study)
+    nl_pr <- TestLayer$new(id = "proteinexpr", testing = testing)
   })
 
   expect_error({
-    NewLayer$new(id = "geneexpr", new_study = "not_a_new_study")
+    TestLayer$new(id = "geneexpr", testing = "not_a_testing")
   })
 
   expect_error({
@@ -257,26 +257,26 @@ test_that("TrainStudy: all tests", {
   })
 
   expect_no_error({
-    new_data_ge <- NewData$new(id = "geneexpr",
+    new_data_ge <- TestData$new(id = "geneexpr",
                                new_layer = nl_ge,
                                data_frame = entities$testing$geneexpr)
-    new_data_pr <- NewData$new(id = "proteinexpr",
+    new_data_pr <- TestData$new(id = "proteinexpr",
                                new_layer = nl_pr,
                                data_frame = entities$testing$proteinexpr)
-    new_study$summary()
-    new_study$upset()
+    testing$summary()
+    testing$upset()
   })
 
   expect_no_error({
-    new_study$getIndIDs()
+    testing$getIndIDs()
   })
 
   expect_no_error({
-    new_predictions <- train_study$predict(new_study = new_study)
+    new_predictions <- training$predict(testing = testing)
     print(new_predictions)
   })
 
   expect_no_error({
-    new_study$getNewMetaLayer()
+    testing$getTestMetaLayer()
   })
 })

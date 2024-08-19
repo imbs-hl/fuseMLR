@@ -1,28 +1,24 @@
-#' @title PredictStudy Class
+#' @title Predicting Class
 #'
 #' @description
 #' This class is the basic class of the present package. An object from this class
 #' is designed to contain multiple layers, but only one meta layer.
 #'
-#'  A study is structured as followed:
+#'  The Predicting is structured as followed:
 #' * [PredictLayer]: Can be clinical, gene expression, etc.
-#'    - [Lrner]: Specific to each layer, it must be set up by the user.
-#'    - [TrainData]: Specific to each layer, it must be set up by the user.
-#'    - [Model]: Specific to each layer, it is set up by training the learner on the training data.
+#'    - [PredictData]: Specific to each layer, it must be set up by the user.
 #' * [PredictMetaLayer]: Basically a [PredictLayer], but with some specific properties.
-#'    - [Lrner]: This is the meta learner, it must be set up by the user.
-#'    - [TrainData]: Specific to each layer, it is set up internally after cross-validation.
-#'    - [Model]: Specific to each layer, it is set up by training the learner on the training data.
+#'    - [PredictData]: Specific to the meta layer, it is set up internally after cross-validation.
 #'
-#' Use the function \code{train} to train a study and \code{predict} to predict
-#' a new study.
+#' Use the function \code{train} for training and \code{predict} for predicting.
 #'
+#'TODO: Do not export me.
 #' @export
 #'
 #' @importFrom R6 R6Class
 #'
 #' @seealso [TrainLayer]
-PredictStudy <- R6Class("PredictStudy",
+Predicting <- R6Class("Predicting",
                     inherit = HashTable,
                     public = list(
                       #' @description
@@ -42,25 +38,23 @@ PredictStudy <- R6Class("PredictStudy",
                       #' @param ... (any) \cr
                       #'
                       print = function (...) {
-                        cat(sprintf("PredictStudy : %s\n", private$id))
+                        cat(sprintf("Predicting   : %s\n", private$id))
                         cat(sprintf("Nb. layers   : %s\n", length(private$hash_table)))
                       },
                       #' @param meta_layer_id (`character(1)`) \cr
-                      #' ID of the meta layer where the new meta data will be stored.
+                      #' ID of the meta layer where the testing meta data will be stored.
                       #'
                       #' @description
                       #' Creates a new meta dataset based on layer predictions.
                       #'
                       #' @return
-                      #' A [NewData] is returned.
+                      #' A [TestData] is returned.
                       #' @export
                       #'
-                      createMetaNewData = function (meta_layer_id) {
-                        # predicted_study = self$predictLayer(new_study = new_study,
-                        #                                     ind_subset = ind_subset)
-                        key_class_study = self$getKeyClass()
+                      createMetaTestData = function (meta_layer_id) {
+                        key_class_predicting = self$getKeyClass()
                         predicted_values = NULL
-                        for (k in key_class_study[ , "key"]) {
+                        for (k in key_class_predicting[ , "key"]) {
                           # FIXME: Maybe define a class Prediction instead of
                           #        using Hashtable?
                           pred_layer = self$getFromHashTable(key = k)
@@ -84,14 +78,14 @@ PredictStudy <- R6Class("PredictStudy",
                                                       by = colnames(ind_ids)[1L],
                                                       all.y = TRUE)
                         # Add layer specific predictions to a new predicted meta layer
-                        new_meta_layer = NewMetaLayer$new(id = meta_layer_id,
-                                                       new_study = self)
+                        testing_meta_layer = TestMetaLayer$new(id = meta_layer_id,
+                                                       testing = self)
                         # FIXME: Move this: Data should be created by the layer.
-                        new_meta_layer$openAccess()
-                        new_meta_data = NewData$new(id = "predicted",
-                                                    new_layer = new_meta_layer,
+                        testing_meta_layer$openAccess()
+                        new_meta_data = TestData$new(id = "predicted",
+                                                    new_layer = testing_meta_layer,
                                                     data_frame = predicted_values_wide)
-                        new_meta_layer$closeAccess()
+                        testing_meta_layer$closeAccess()
                         return(new_meta_data)
                       },
                       #' @description

@@ -1,12 +1,12 @@
-#' @title NewData Class
+#' @title TestData Class
 #'
 #' @description
-#' This class implements [NewData] object to be predicted.
-#' A [NewData] object can only exist as a component of a [NewLayer] or a [NewMetaLayer] object.
+#' This class implements [TestData] object to be predicted.
+#' A [TestData] object can only exist as a component of a [TestLayer] or a [TestMetaLayer] object.
 #' @export
 #' @importFrom R6 R6Class
 #' @seealso [TrainData]
-NewData <- R6Class("NewData",
+TestData <- R6Class("TestData",
                    inherit = Data,
                    public = list(
                      #' @description
@@ -18,40 +18,40 @@ NewData <- R6Class("NewData",
                      #' Column name containing individual IDs.
                      #' @param data_frame (`data.frame(1)`)\cr
                      #' \code{data.frame} containing data.
-                     #' @param new_layer (`NewLayer(1)`) \cr
+                     #' @param new_layer (`TestLayer(1)`) \cr
                      #' Layer where to store the current object.
                      initialize = function (id,
                                            data_frame,
                                            new_layer) {
-                       if (!any(c("NewLayer", "NewMetaLayer") %in% class(new_layer))) {
-                         stop("A Newdata can be stored only on a NewLayer or a NewMetaLayer object.")
+                       if (!any(c("TestLayer", "TestMetaLayer") %in% class(new_layer))) {
+                         stop("A Testdata can be stored only on a TestLayer or a TestMetaLayer object.")
                        }
-                       ind_col = new_layer$getNewStudy()$getIndCol()
+                       ind_col = new_layer$getTesting()$getIndCol()
                        if (!(ind_col %in% colnames(data_frame))) {
                          stop("Individual column IDS not found in the provided data.frame.")
                        }
                        super$initialize(id = id,
                                         ind_col = ind_col,
                                         data_frame = data_frame)
-                       if (new_layer$checkNewDataExist()) {
+                       if (new_layer$checkTestDataExist()) {
                            key_class = new_layer$getKeyClass()
-                           key = key_class[key_class$class == "NewData", "key"]
+                           key = key_class[key_class$class == "TestData", "key"]
                            new_layer$removeFromHashTable(key = key)
                        }
                        private$new_layer = new_layer
                        # Add to object to ht
-                       if ("NewMetaLayer" %in% class(new_layer)) {
+                       if ("TestMetaLayer" %in% class(new_layer)) {
                          if (new_layer$getAccess()) {
                            new_layer$add2HashTable(key = private$id,
                                                value = self,
-                                               .class = "NewData")
+                                               .class = "TestData")
                          } else {
-                           stop("New data cannot not be added manually to a meta layer.") #nocov
+                           stop("Testing data cannot not be added manually to a meta layer.") #nocov
                          }
                        } else {
                          new_layer$add2HashTable(key = private$id,
                                              value = self,
-                                             .class = "NewData")
+                                             .class = "TestData")
                        }
                      },
                      #' @description
@@ -59,7 +59,7 @@ NewData <- R6Class("NewData",
                      #' @param ... (any) \cr
                      #'
                      print = function (...) {
-                       cat("Class     : NewData\n")
+                       cat("Class     : TestData\n")
                        cat(sprintf("Layer     : %s\n", private$new_layer$id))
                        cat(sprintf("name      : %s\n", private$id))
                        cat(sprintf("ind. id.  : %s\n", private$ind_col))
@@ -83,11 +83,11 @@ NewData <- R6Class("NewData",
                      #' Getter of the current layer.
                      #'
                      #' @return
-                     #' The layer (from class [NewLayer]) on which the current train data are stored
+                     #' The layer (from class [TestLayer]) on which the current train data are stored
                      #' is returned.
                      #' @export
                      #'
-                     getNewLayer = function () {
+                     getTestLayer = function () {
                        return(private$new_layer)
                      }
                    ),

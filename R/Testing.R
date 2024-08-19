@@ -1,19 +1,19 @@
-#' @title NewStudy Class
+#' @title Testing Class
 #'
 #' @description
 #' This class is the basic class of the present package. An object from this class
 #' is designed to contain multiple layers, but only one new meta layer.
 #'
-#'  A study is structured as followed:
-#' * [NewLayer]
-#' * [NewMetaLayer]
+#'  A Testing object is structured as followed:
+#' * [TestLayer]
+#' * [TestMetaLayer]
 #'
 #' @export
 #'
 #' @importFrom R6 R6Class
 #'
 #' @seealso [TrainLayer]
-NewStudy <- R6Class("NewStudy",
+Testing <- R6Class("Testing",
                  inherit = HashTable,
                  public = list(
                    #' @description
@@ -34,7 +34,7 @@ NewStudy <- R6Class("NewStudy",
                    #'
                    print = function (...) {
                      nb_layers = length(private$hash_table)
-                     cat(sprintf("NewStudy        : %s\n", private$id))
+                     cat(sprintf("Testing         : %s\n", private$id))
                      cat(sprintf("Number of layers: %s\n", nb_layers))
                    },
                    #' @description
@@ -48,7 +48,7 @@ NewStudy <- R6Class("NewStudy",
                      layers = self$getKeyClass()
                      # This code accesses each layer (except the MetaLayer) level
                      # and get the target variable
-                     layers = layers[layers$class %in% "NewLayer", ]
+                     layers = layers[layers$class %in% "TestLayer", ]
                      ids_data = NULL
                      current_data = NULL
                      for (k in layers$key) {
@@ -64,15 +64,15 @@ NewStudy <- R6Class("NewStudy",
                    #' Getter of the meta layer.
                    #'
                    #' @return
-                   #' Object from class [NewMetaLayer]
+                   #' Object from class [TestMetaLayer]
                    #' @export
                    #'
-                   getNewMetaLayer = function () {
-                     new_layers = self$getKeyClass()
-                     new_meta_layer_key = new_layers[new_layers$class == "NewMetaLayer" ,
+                   getTestMetaLayer = function () {
+                     testing_layers = self$getKeyClass()
+                     testing_meta_layer_key = testing_layers[testing_layers$class == "TestMetaLayer" ,
                                                      "key"]
-                     new_meta_layer = self$getFromHashTable(key = new_meta_layer_key)
-                     return(new_meta_layer)
+                     testing_meta_layer = self$getFromHashTable(key = testing_meta_layer_key)
+                     return(testing_meta_layer)
                    },
                    #' @description
                    #' Getter of the individual column name.
@@ -92,9 +92,9 @@ NewStudy <- R6Class("NewStudy",
                      layers = self$getKeyClass()
                      # This code accesses each layer (except TrainMetaLayer) level
                      # and get the individual IDs.
-                     layers = layers[layers$class %in% "NewLayer", ]
+                     layers = layers[layers$class %in% "TestLayer", ]
                      if (!nrow(layers)) {
-                       stop("No available layer in this study.")
+                       stop("No available layer in this testing object.")
                      }
                      ids_list = lapply(layers$key, function (k) {
                        layer = self$getFromHashTable(key = k)
@@ -110,12 +110,12 @@ NewStudy <- R6Class("NewStudy",
                      invisible(TRUE)
                    },
                    #' @description
-                   #' Generate study summary
+                   #' Generate testing summary
                    #'
                    #' @export
                    #'
                    summary = function () {
-                     cat(sprintf("Study %s\n", self$getId()))
+                     cat(sprintf("Testing %s\n", self$getId()))
                      cat("----------------\n")
                      self$print()
                      cat("----------------\n")

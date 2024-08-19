@@ -1,10 +1,10 @@
-#' @title TrainStudy Class
+#' @title Training Class
 #'
 #' @description
 #' This class is the basic class of the present package. An object from this class
 #' is designed to contain multiple training layers, but only one meta training layer.
 #'
-#'  The Trainstudy class is structured as followed:
+#'  The Training class is structured as followed:
 #' * [TrainLayer]: Specific layer containing:
 #'    - [Lrner]: Specific learner. This must be set by the user.
 #'    - [TrainData]: Specific training dataset. This must be set up by the user.
@@ -14,15 +14,14 @@
 #'    - [TrainData]: Specific meta data. This is set up internally after cross-validation.
 #'    - [Model]: Specific meta model. This is set up by training the learner on the training data.
 #'
-#' Use the function \code{train} to train a study and \code{predict} to predict
-#' a new study.
+#' Use the function \code{train} for training and \code{predict} for predicting.
 #'
 #' @export
 #'
 #' @importFrom R6 R6Class
 #'
 #' @seealso [TrainLayer]
-TrainStudy <- R6Class("TrainStudy",
+Training <- R6Class("Training",
                       inherit = HashTable,
                       public = list(
                         #' @description
@@ -37,7 +36,7 @@ TrainStudy <- R6Class("TrainStudy",
                         #' Data frame with two columns: individual IDs and response variable values.
                         #' @param problem_type (`character`) \cr
                         #' Either "classification" or "regression".
-                        #' @seealso [NewStudy] and [PredictStudy]
+                        #' @seealso [Testing] and [Predicting]
                         initialize = function (id,
                                                ind_col,
                                                target,
@@ -79,7 +78,7 @@ TrainStudy <- R6Class("TrainStudy",
                           private$target = target
                           private$target_obj = Target$new(id = "target",
                                                           data_frame = target_df,
-                                                          train_study = self)
+                                                          training = self)
                           private$status = FALSE
                         },
                         #' @description
@@ -94,14 +93,14 @@ TrainStudy <- R6Class("TrainStudy",
                           } else {
                             status = "Trained"
                           }
-                          cat(sprintf("TrainStudy      : %s\n", private$id))
+                          cat(sprintf("Training        : %s\n", private$id))
                           cat(sprintf("Status          : %s\n", status))
                           cat(sprintf("Number of layers: %s\n", nb_layers))
                           cat(sprintf("Layers trained  : %s\n", private$nb_trained_layer))
                           cat(sprintf("n               : %s\n", nrow(private$target_obj$getData())))
                         },
                         #' @description
-                        #' Train each layer of the current Trainstudy.
+                        #' Train each layer of the current Training.
                         #'
                         #' @param ind_subset (`character(1)`)\cr
                         #' Subset of individuals IDs to be used for training.
@@ -126,41 +125,41 @@ TrainStudy <- R6Class("TrainStudy",
                                           use_var_sel = use_var_sel)
                             }
                           } else {
-                            stop("No existing layer in the current training study.")
+                            stop("No existing layer in the current training object.")
                           }
                           invisible(self)
                         },
                         #' @description
                         #' Predicts values given new data.
                         #'
-                        #' @param new_study (`NewData(1)`) \cr
-                        #' Object of class [NewData].
+                        #' @param testing (`TestData(1)`) \cr
+                        #' Object of class [TestData].
                         #' @param ind_subset  (`vector(1)`) \cr
                         #' Subset of individuals IDs to be used for training.
                         #'
                         #' @return
-                        #' A new [TrainStudy] with predicted values for each layer.
+                        #' A new [Training] with predicted values for each layer.
                         #' @export
                         #'
-                        predictLayer = function (new_study,
+                        predictLayer = function (testing,
                                                  ind_subset = NULL) {
-                          # Initialize a Trainstudy to store predictions
-                          pred_study = PredictStudy$new(id = new_study$getId(),
-                                                        ind_col = new_study$getIndCol())
-                          layers = new_study$getKeyClass()
+                          # Initialize a Training to store predictions
+                          predicting = Predicting$new(id = testing$getId(),
+                                                        ind_col = testing$getIndCol())
+                          layers = testing$getKeyClass()
                           # This code accesses each layer (except MetaLayer) level
                           # and make predictions for the new layer in input.
-                          layers = layers[layers$class %in% c("NewLayer", "TrainLayer"), ]
+                          layers = layers[layers$class %in% c("TestLayer", "TrainLayer"), ]
                           for (k in layers$key) {
-                            new_layer = new_study$getFromHashTable(key = k)
+                            new_layer = testing$getFromHashTable(key = k)
                             new_layer_kc = new_layer$getKeyClass()
                             m_layer = self$getFromHashTable(key = k)
                             pred_layer = m_layer$predict(new_layer = new_layer,
                                                          ind_subset = ind_subset)
-                            # Add a new predicted layer to the predicted study
-                            pred_layer$setPredictStudy(pred_study)
+                            # Add a new predicted layer to the predicted objec
+                            pred_layer$setPredicting(predicting)
                           }
-                          return(pred_study)
+                          return(predicting)
                         },
                         #' @description
                         #' Creates a meta training dataset and assigns it to the meta layer.
@@ -197,14 +196,14 @@ TrainStudy <- R6Class("TrainStudy",
                                                             self$trainLayer(ind_subset = train_ids,
                                                                             use_var_sel = use_var_sel)
                                                             test_ids = self$getTargetValues()[test_index, 1L]
-                                                            # TODO: Note: The current object is not a NewStudy, but a TrainStudy object.
-                                                            pred_study = self$predictLayer(new_study = self,
+                                                            # TODO: Note: The current object is not a TestStudy, but a Training object.
+                                                            predicting = self$predictLayer(testing = self,
                                                                                            ind_subset = test_ids)
-                                                            pred_study_kc = pred_study$getKeyClass()
+                                                            predicting_kc = predicting$getKeyClass()
                                                             ## Assess each layer and extract model
                                                             current_pred = NULL
-                                                            for (k in pred_study_kc$key) {
-                                                              pred_layer = pred_study$getFromHashTable(key = k)
+                                                            for (k in predicting_kc$key) {
+                                                              pred_layer = predicting$getFromHashTable(key = k)
                                                               # pred_layer = layer$getFromHashTable(key = "PredictLayer")
                                                               pred_data = pred_layer$getPredictData()
                                                               pred_values = pred_data$getPredictData()
@@ -243,7 +242,7 @@ TrainStudy <- R6Class("TrainStudy",
                           }
                         },
                         #' @description
-                        #' Trains the current study. All leaners and the meta learner are trained.
+                        #' Trains the current object. All leaners and the meta learner are trained.
                         #'
                         #' @param ind_subset (`vector(1)`) \cr
                         #' ID subset to be used for training.
@@ -262,9 +261,9 @@ TrainStudy <- R6Class("TrainStudy",
                                           use_var_sel = FALSE,
                                           resampling_method,
                                           resampling_arg) {
-                          # Test that the study contains ovelapping individuals
+                          # Test that the training object contains ovelapping individuals
                           if (!self$testOverlap()) {
-                            stop("This study does not contain overlapping individuals.") #nocov
+                            stop("This Training object does not contain overlapping individuals.") #nocov
                           }
                           # 1) Create meta training data
                           self$createMetaTrainData(resampling_method,
@@ -282,10 +281,10 @@ TrainStudy <- R6Class("TrainStudy",
                           return(self)
                         },
                         #' @description
-                        #' Predicts a new study.
+                        #' Compute predictions for a testing object.
                         #'
-                        #' @param new_study (`TrainStudy(1)`) \cr
-                        #' A new study to be predicted.
+                        #' @param testing (`Testing(1)`) \cr
+                        #' A new testing object to be predicted.
                         #' @param ind_subset (`vector(1)`) \cr
                         #' Vector of IDs to be predicted.
                         #'
@@ -293,39 +292,39 @@ TrainStudy <- R6Class("TrainStudy",
                         #' The predicted object. All layers and the meta layer are predicted. This is the final predicted object.
                         #' @export
                         #'
-                        predict = function (new_study,
+                        predict = function (testing,
                                             ind_subset = NULL) {
                           # 1) Layer predictions
-                          predicted_study = self$predictLayer(new_study = new_study,
+                          predicting = self$predictLayer(testing = testing,
                                                               ind_subset = ind_subset)
                           # 2) Meta layer predicted new data; resume layer specific
                           #    predictions and create a new data.
                           meta_layer_id = self$getTrainMetaLayer()$getId()
-                          new_meta_data = predicted_study$createMetaNewData(
+                          testing_meta_data = predicting$createMetaTestData(
                             meta_layer_id = meta_layer_id)
                           # 3) Predict new meta layer by the trained meta layer
                           layers = self$getKeyClass()
                           meta_layer_key = layers[layers$class == "TrainMetaLayer", "key"]
                           meta_layer = self$getFromHashTable(key = meta_layer_key)
-                          # TODO: getNewLayer maybe rename it getLayer?
-                          predicted_layer = meta_layer$predict(new_layer = new_meta_data$getNewLayer(),
+                          # TODO: getTestLayer maybe rename it getLayer?
+                          predicted_layer = meta_layer$predict(new_layer = testing_meta_data$getTestLayer(),
                                                                ind_subset = ind_subset)
                           # Store final meta predicted values on meta layer
-                          predicted_study$removeFromHashTable(key = predicted_layer$getId())
-                          predicted_study$add2HashTable(key = predicted_layer$getId(),
+                          predicting$removeFromHashTable(key = predicted_layer$getId())
+                          predicting$add2HashTable(key = predicted_layer$getId(),
                                                         value = predicted_layer,
                                                         .class = "PredictData")
                           # Updating the predicted meta layer
-                          # predicted_study$add2HashTable(key = meta_layer_key,
+                          # predicting$add2HashTable(key = meta_layer_key,
                           #                               value = predicted_layer,
                           #                               .class = "Predict")
                           # Resume predictions
-                          key_class_study = predicted_study$getKeyClass()
+                          key_class_predicting = predicting$getKeyClass()
                           predicted_values = NULL
-                          for (k in key_class_study[ , "key"]) {
+                          for (k in key_class_predicting[ , "key"]) {
                             # TODO: Please ensure the difference between [PredictData] and
                             # predicted values (predicted data.frame) when writting the paper.
-                            pred_layer = predicted_study$getFromHashTable(key = k)
+                            pred_layer = predicting$getFromHashTable(key = k)
                             pred_data = pred_layer$getPredictData()
                             pred_values = pred_data$getPredictData()
                             predicted_values = data.frame(rbind(predicted_values,
@@ -341,11 +340,11 @@ TrainStudy <- R6Class("TrainStudy",
                                                 x = names(predicted_values_wide))
                           names(predicted_values_wide) = colname_vector
 
-                          return(list(predicted_study = predicted_study,
+                          return(list(predicting = predicting,
                                       predicted_values = predicted_values_wide))
                         },
                         #' @description
-                        #' Variable selection on the current training study.
+                        #' Variable selection on the current training object.
                         #'
                         #' @param ind_subset `vector(1)` \cr
                         #' ID subset of individuals to be used for variable selection.
@@ -373,7 +372,7 @@ TrainStudy <- R6Class("TrainStudy",
                               }
                             }
                           } else {
-                            stop("No existing layer in the current training study.")
+                            stop("No existing layer in the current training object.")
                           }
                           return(selected)
                         },
@@ -481,7 +480,7 @@ TrainStudy <- R6Class("TrainStudy",
                         testOverlap = function () {
                           layers = self$getKeyClass()
                           if (nrow(layers) == 1L) {
-                            stop ("No layer found in this study.")
+                            stop ("No layer found in this training object.")
                           }
                           # This code accesses each layer (except TrainMetaLayer) level
                           # and get the individual IDs.
@@ -517,7 +516,7 @@ TrainStudy <- R6Class("TrainStudy",
                           # and get the individual IDs.
                           layers = layers[layers$class %in% "TrainLayer", ]
                           if (!nrow(layers)) {
-                            stop("No available layer in this study.")
+                            stop("No available layer in this training object.")
                           }
                           ids_list = lapply(layers$key, function (k) {
                             layer = self$getFromHashTable(key = k)
@@ -533,12 +532,12 @@ TrainStudy <- R6Class("TrainStudy",
                           invisible(TRUE)
                         },
                         #' @description
-                        #' Generate study summary
+                        #' Generate training summary
                         #'
                         #' @export
                         #'
                         summary = function () {
-                          cat(sprintf("Study %s\n", self$getId()))
+                          cat(sprintf("Training %s\n", self$getId()))
                           cat("----------------\n")
                           self$print()
                           cat("----------------\n")
