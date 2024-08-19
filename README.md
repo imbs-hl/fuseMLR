@@ -106,7 +106,7 @@ The following figure illustrate the general architecture of `fuseMLR`:
 
 <div class="figure">
 
-<embed src="README_files/figure-gfm/fuseMLR_4_blue_bgr.pdf" title="Package architecture" width="70%" height="100%" type="application/pdf" />
+<img src="README_files/figure-gfm/fuseMLR_4_blue_bgr.png" alt="Package architecture" width="70%" height="100%" />
 <p class="caption">
 Package architecture
 </p>

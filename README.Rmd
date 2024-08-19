@@ -65,7 +65,7 @@ Variable selection, training and prediction are the main functionalities of `fus
 The following figure illustrate the general architecture of `fuseMLR`:
 
 ```{r, echo=FALSE, fig.cap="Package architecture", out.width="70%", out.height="100%"}
-knitr::include_graphics("README_files/figure-gfm/fuseMLR_4_blue_bgr.pdf")
+knitr::include_graphics("README_files/figure-gfm/fuseMLR_4_blue_bgr.png")
 ```
 
 #### B) Instantiate training resources
