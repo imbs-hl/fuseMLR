@@ -48,7 +48,7 @@ library(ranger)
 library(DescTools)
 ```
 
-- Let us inspect our simulated data.
+#### A) Simulated data.
 
 Two types of data were simulated: training and testing datasets. Each consists of four `data.frame`s—gene expression, protein expression, methylation data, and target variable observations. Individuals are organized in rows, variables in columns, with an additional column for individual IDs. In total, $70$ individuals with $50$ individuals pro layer have been simulated for training, and $23$ ($20$ per layer) for testing. Individuals do not necessarily overlapped. Effects have been introduced for gene expression and methylation by shifting the means by $0.5$ to create a case-control study. Individuals do not necessarily overlap. Effects were introduced in gene expression and methylation by shifting the means by 0.5 to create a case-control study. The data simulation code is available [here](https://github.com/imbs-hl/fuseMLR/blob/master/test_code/build_data.R).
 
@@ -62,7 +62,7 @@ str(object = entities, max.level = 2L)
 
 Variable selection, training and prediction are the main functionalities of `fuseMLR`. We can perform variable selection, train and fuse models for training studies, and predict new studies.
 
-#### A) Preparation of a training study
+#### B) Preparation of a training study
 
 We need to set up a study, its layers and the training data entities.
 
@@ -113,7 +113,7 @@ print(train_study)
 train_study$upset(order.by = "freq")
 ```
 
-#### B) Variable selection
+#### C) Variable selection
 
 We need to set up variable selection methods to our training study. Note that this can be the same method or different layer-specific methods. For simplicity, we will set up the same method on all layers.
 
@@ -158,7 +158,7 @@ print(var_sel_res)
 
 For each layer, the variable selection results show the chosen variables. In this example, we perform variable selection on the entire study. However, users can opt to conduct variable selection on individual layers if desired.
 
-#### C) Training
+#### D) Training
 
 We can now train our study using the subset of selected variables. Users can choose to set up layer-specific learners, but for illustration, we will use the same learner for all layers.
 
@@ -227,7 +227,7 @@ model_ge <- tl_ge$getModel()
 print(model_ge)
 ```
 
-#### C) Predicting
+#### E) Predicting
 
 Now, we have created a training study, performed variable selection and trained the study with the chosen variables. In this section, we create and predict a new study.
 

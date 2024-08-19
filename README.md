@@ -62,7 +62,7 @@ library(ranger)
 library(DescTools)
 ```
 
-- Let us inspect our simulated data.
+#### A) Simulated data.
 
 Two types of data were simulated: training and testing datasets. Each
 consists of four `data.frame`s—gene expression, protein expression,
@@ -101,7 +101,7 @@ Variable selection, training and prediction are the main functionalities
 of `fuseMLR`. We can perform variable selection, train and fuse models
 for training studies, and predict new studies.
 
-#### A) Preparation of a training study
+#### B) Preparation of a training study
 
 We need to set up a study, its layers and the training data entities.
 
@@ -191,7 +191,7 @@ train_study$upset(order.by = "freq")
 
 ![](README_files/figure-gfm/upsetplot-1.png)<!-- -->
 
-#### B) Variable selection
+#### C) Variable selection
 
 We need to set up variable selection methods to our training study. Note
 that this can be the same method or different layer-specific methods.
@@ -298,7 +298,7 @@ variables. In this example, we perform variable selection on the entire
 study. However, users can opt to conduct variable selection on
 individual layers if desired.
 
-#### C) Training
+#### D) Training
 
 We can now train our study using the subset of selected variables. Users
 can choose to set up layer-specific learners, but for illustration, we
@@ -415,7 +415,7 @@ print(model_ge)
     ## Missing   : 0
     ## p         : 19
 
-#### C) Predicting
+#### E) Predicting
 
 Now, we have created a training study, performed variable selection and
 trained the study with the chosen variables. In this section, we create
