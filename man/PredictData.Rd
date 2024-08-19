@@ -8,7 +8,7 @@ This class implements \link{PredictData} object to be predicted.
 A \link{PredictData} object can only exist as a component of a \link{PredictLayer} or a \link{PredictMetaLayer} object.
 }
 \seealso{
-\link{TrainData}, \link{NewData}
+\link{TrainData}, \link{TestData}
 }
 \section{Super class}{
 \code{\link[fuseMLR:Data]{fuseMLR::Data}} -> \code{PredictData}

@@ -1,11 +1,11 @@
 data("entities")
 test_that("Model: all tests", {
-  # Prepare study and layers
-  train_study <- TrainStudy$new(id = "train_study",
+  # Prepare training object and layers
+  training <- Training$new(id = "training",
                                 ind_col = "IDS",
                                 target = "disease",
                                 target_df = entities$training$target)
-  tl_ge <- TrainLayer$new(id = "geneexpr", train_study = train_study)
+  tl_ge <- TrainLayer$new(id = "geneexpr", training = training)
   same_param <- ParamLrner$new(id = "ParamRanger",
                                param_list = list(probability = TRUE,
                                                  mtry = 2L),
@@ -29,9 +29,9 @@ test_that("Model: all tests", {
     my_model$setId(id = "test")
   })
 
-  new_study <- NewStudy$new(id = "new_study", ind_col = "IDS")
-  nl_ge <- NewLayer$new(id = "wrong_id", new_study = new_study)
-  new_data_ge <- NewData$new(id = "geneexpr",
+  testing <- Testing$new(id = "testing", ind_col = "IDS")
+  nl_ge <- TestLayer$new(id = "wrong_id", testing = testing)
+  new_data_ge <- TestData$new(id = "geneexpr",
                              new_layer = nl_ge,
                              data_frame = entities$testing$geneexpr)
   expect_error({

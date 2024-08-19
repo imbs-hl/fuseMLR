@@ -1,14 +1,14 @@
 #' @title TrainMetaLayer Class
 #'
 #' @description
-#' This class implement a meta meta layer. A [TrainMetaLayer] can only exist as unique element of a [TrainStudy] object.
+#' This class implement a meta meta layer. A [TrainMetaLayer] can only exist as unique element of a [Training] object.
 #'
 #' A layer is structured as followed:
 #'
 #' * [Lrner]: It is set by the user to be trained on the meta training data.
 #' * [TrainData]: It are meta data, automatically created by the internal cross validation.
 #' * [Model]: The meta model, result of training the learner on the training data, and therefore, not to be set by the user.
-#' * [NewData]: The meta new data to be predicted, consisting in predictions obtained from each layer.
+#' * [TestData]: The meta new data to be predicted, consisting in predictions obtained from each layer.
 #'
 #' A meta layer can train its meta learner on the meta training data and store the resulting meta model.
 #' The meta layer can predict values given a new meta layer.
@@ -23,12 +23,12 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                             #'
                             #' @param id (`character(1)`)\cr
                             #' See class Param
-                            #' @param train_study (`TrainStudy(1)`)\cr
+                            #' @param training (`Training(1)`)\cr
                             #'
-                            initialize = function (id, train_study) {
+                            initialize = function (id, training) {
                               super$initialize(id = id)
-                              private$train_study = train_study
-                              train_study$add2HashTable(key = id,
+                              private$training = training
+                              training$add2HashTable(key = id,
                                                         value = self,
                                                         .class = "TrainMetaLayer")
                               private$status = FALSE
@@ -54,19 +54,19 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                               }
                             },
                             #' @description
-                            #' Getter of the current training study
+                            #' Getter of the current training object.
                             #'
                             #' @return
-                            #' The current training study is returned.
+                            #' The current training object is returned.
                             #'
-                            getTrainStudy = function () {
-                              return(private$train_study)
+                            getTraining = function () {
+                              return(private$training)
                             },
                             #' @description
                             #' Getter of the target object.
                             #' @export
                             getTargetObj = function () {
-                              return(private$train_study$getTargetObj())
+                              return(private$training$getTargetObj())
                             },
                             #' @description
                             #' Trains the current layer.
@@ -95,7 +95,7 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                               # Updating the training status.
                               if (!private$status) {
                                 # The training layer has not been trained before.
-                                private$train_study$increaseNbTrainedLayer()
+                                private$training$increaseNbTrainedLayer()
                                 private$status = TRUE
                               } else {
                                 # The training layer has been trained before.
@@ -110,7 +110,7 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                             #' @param ind_subset `vector(1)` \cr
                             #'
                             #' @return
-                            #' A new study with the predicted values is returned.
+                            #' A new object with the predicted values is returned.
                             #' @export
                             #'
                             predict = function (new_layer,
@@ -125,7 +125,7 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                                 stop("The new layer ID does not match with the current layer ID.")
                                 # nocov end
                               }
-                              new_data = new_layer$getNewData()
+                              new_data = new_layer$getTestData()
                               # Predicting: Data and model exist on this layer.
                               # Initialize a layer to store predictions
                               # pred_layer = HashTable$new(id = self$getId())
@@ -315,8 +315,8 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                             }
                           ),
                           private = list(
-                            # The current training study
-                            train_study = NULL,
+                            # The current training object.
+                            training = NULL,
                             # Access to the meta layer.
                             access = FALSE,
                             status = FALSE

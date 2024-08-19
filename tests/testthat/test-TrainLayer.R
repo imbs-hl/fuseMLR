@@ -1,19 +1,19 @@
 data("entities")
 test_that("TrainLayer: all tests", {
-  # Prepare study and layers
-  train_study <- TrainStudy$new(id = "train_study",
+  # Training and layers
+  training <- Training$new(id = "training",
                                 ind_col = "IDS",
                                 target = "disease",
                                 target_df = entities$training$target)
-  # A TrainLayer can only belong to a TrainStudy
+  # A TrainLayer can only belong to a Training
   expect_error({
-    TrainLayer$new(id = "geneexpr", train_study = "not_a_train_study")
+    TrainLayer$new(id = "geneexpr", training = "not_a_training")
   })
   # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   # Tests for training empty layer                           +
   # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   expect_no_error({
-    tl_ge <- TrainLayer$new(id = "geneexpr", train_study = train_study)
+    tl_ge <- TrainLayer$new(id = "geneexpr", training = training)
   })
   expect_no_error({
     tl_ge$summary()
@@ -52,13 +52,13 @@ test_that("TrainLayer: all tests", {
                           train_layer = tl_ge)
   # Must fail because of not existing training data
   expect_error({tl_ge$varSelection()})
-  expect_error({tl_ge$getNewData()})
+  expect_error({tl_ge$getTestData()})
   train_data_ge <- TrainData$new(id = "geneexpr",
                                  train_layer = tl_ge,
                                  data_frame = entities$training$geneexpr)
 
-  new_study <- NewStudy$new(id = "new_study", ind_col = "IDS")
-  nl_ge <- NewLayer$new(id = "geneexpr", new_study = new_study)
+  testing <- Testing$new(id = "testing", ind_col = "IDS")
+  nl_ge <- TestLayer$new(id = "geneexpr", testing = testing)
   # Must fail because of not existing model
   expect_error({
     tl_ge$predict(nl_ge)
@@ -70,19 +70,19 @@ test_that("TrainLayer: all tests", {
   expect_no_error({
     tl_ge$summary()
   })
-  new_study <- NewStudy$new(id = "new_study", ind_col = "IDS")
-  nl_ge <- NewLayer$new(id = "geneexpr_inconsistent", new_study = new_study)
+  testing <- Testing$new(id = "testing", ind_col = "IDS")
+  nl_ge <- TestLayer$new(id = "geneexpr_inconsistent", testing = testing)
   # Must fail because of inconsistent ID
   expect_error({
     tl_ge$predict(nl_ge)
   })
-  new_study <- NewStudy$new(id = "new_study", ind_col = "IDS")
-  nl_ge <- NewLayer$new(id = "geneexpr", new_study = new_study)
+  testing <- Testing$new(id = "testing", ind_col = "IDS")
+  nl_ge <- TestLayer$new(id = "geneexpr", testing = testing)
   # Must fail because of not existing new data
   expect_error({
     tl_ge$predict(nl_ge)
   })
-  new_data_ge <- NewData$new(id = "geneexpr",
+  new_data_ge <- TestData$new(id = "geneexpr",
                              new_layer = nl_ge,
                              data_frame = entities$testing$geneexpr)
   expect_no_error({

@@ -5,7 +5,7 @@
 #' [TrainLayer] or a [TrainMetaLayer] object. A [Model] object is
 #' automatically created by fitting a learner on a training data.
 #'
-#' A [Model] object can compute predictions for a [NewData] object. See the \code{predict} function below.
+#' A [Model] object can compute predictions for a [TestData] object. See the \code{predict} function below.
 #'
 #' @export
 #'
@@ -122,10 +122,10 @@ Model <- R6Class("Model",
                    },
                    #' @description
                    #' Predict target values for the new data
-                   #' (from class [NewData]) taken as into.
+                   #' (from class [TestData]) taken as into.
                    #'
-                   #' @param new_data `NewData(1)` \cr
-                   #' An object from class [NewData].
+                   #' @param new_data `TestData(1)` \cr
+                   #' An object from class [TestData].
                    #' @param ind_subset `vector(1)` \cr
                    #' Subset of individual IDs to be predicted.
                    #' @param ...
@@ -139,7 +139,7 @@ Model <- R6Class("Model",
                    #'
                    predict = function (new_data, ind_subset = NULL, ...) {
                      tmp_lrner = self$getLrner()
-                     if(tmp_lrner$getTrainLayer()$getId() != new_data$getNewLayer()$getId()) {
+                     if(tmp_lrner$getTrainLayer()$getId() != new_data$getTestLayer()$getId()) {
                        stop("Learner and data must belong to the same layer.")
                      }
                      # Incomplete data are removed if required.

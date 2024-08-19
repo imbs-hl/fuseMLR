@@ -5,10 +5,10 @@
 \title{Target Class}
 \description{
 This class implements the target object. A \link{Target} object can only
-exist as a component of a \link{TrainStudy} object.
+exist as a component of a \link{Training} object.
 }
 \seealso{
-\link{TrainLayer}, \link{Lrner}, \link{Model}, \link{ParamLrner}, \link{NewData}
+\link{TrainLayer}, \link{Lrner}, \link{Model}, \link{ParamLrner}, \link{TestData}
 }
 \section{Super class}{
 \code{\link[fuseMLR:Data]{fuseMLR::Data}} -> \code{Target}
@@ -22,7 +22,7 @@ exist as a component of a \link{TrainStudy} object.
 \item \href{#method-Target-getData}{\code{Target$getData()}}
 \item \href{#method-Target-getTargetValues}{\code{Target$getTargetValues()}}
 \item \href{#method-Target-getTargetName}{\code{Target$getTargetName()}}
-\item \href{#method-Target-getTrainStudy}{\code{Target$getTrainStudy()}}
+\item \href{#method-Target-getTraining}{\code{Target$getTraining()}}
 \item \href{#method-Target-clone}{\code{Target$clone()}}
 }
 }
@@ -46,7 +46,7 @@ exist as a component of a \link{TrainStudy} object.
 \subsection{Method \code{new()}}{
 Initialize a new object from the current class.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Target$new(id, data_frame, train_study)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Target$new(id, data_frame, training)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -58,8 +58,8 @@ The Object ID.}
 \item{\code{data_frame}}{(\code{data.frame(1)})\cr
 \code{data.frame} containing data.}
 
-\item{\code{train_study}}{(\code{TrainStudy(1)}) \cr
-Training study where to store the current object.}
+\item{\code{training}}{(\code{Training(1)}) \cr
+Training where to store the current object.}
 }
 \if{html}{\out{</div>}}
 }
@@ -136,16 +136,16 @@ Getter of the target variable name.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Target-getTrainStudy"></a>}}
-\if{latex}{\out{\hypertarget{method-Target-getTrainStudy}{}}}
-\subsection{Method \code{getTrainStudy()}}{
-Getter of the current training study
+\if{html}{\out{<a id="method-Target-getTraining"></a>}}
+\if{latex}{\out{\hypertarget{method-Target-getTraining}{}}}
+\subsection{Method \code{getTraining()}}{
+Getter of the current training object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Target$getTrainStudy()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Target$getTraining()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-The training layer (from class \link{TrainStudy}) on which the current train data are stored
+The training layer (from class \link{Training}) on which the current train data are stored
 is returned.
 }
 }

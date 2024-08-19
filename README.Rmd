@@ -75,23 +75,23 @@ Variable selection, training and prediction are the main functionalities of `fus
 
 We need to set up training resources.
 
-```{r training_study, include=TRUE, eval=TRUE}
-train_study <- TrainStudy$new(id = "train_study",
+```{r training, include=TRUE, eval=TRUE}
+training <- Training$new(id = "training",
                               ind_col = "IDS",
                               target = "disease",
                               target_df = entities$training$target)
-# See also train_study$summary()
-print(train_study)
+# See also training$summary()
+print(training)
 ```
 
 - Prepare new training layers: Training layers are components of a study and represent the second component of a `fuseMLR` object.
 
 ```{r training_layers, include=TRUE, eval=TRUE}
-tl_ge <- TrainLayer$new(id = "geneexpr", train_study = train_study)
-tl_pr <- TrainLayer$new(id = "proteinexpr", train_study = train_study)
-tl_me <- TrainLayer$new(id = "methylation", train_study = train_study)
+tl_ge <- TrainLayer$new(id = "geneexpr", training = training)
+tl_pr <- TrainLayer$new(id = "proteinexpr", training = training)
+tl_me <- TrainLayer$new(id = "methylation", training = training)
 # We also prepare the meta layer for the meta analysis.
-tl_meta <- TrainMetaLayer$new(id = "meta_layer", train_study = train_study)
+tl_meta <- TrainMetaLayer$new(id = "meta_layer", training = training)
 ```
 
 - Add training data (entities) to layers: Exclude the meta layer, as it is modified internally after the training phase.
@@ -110,19 +110,19 @@ train_data_me <- TrainData$new(id = "methylation",
 print(train_data_ge)
 # An overview of the gene expression training layer
 print(tl_ge)
-# An overview of the training study
-print(train_study)
+# An overview of the training resources
+print(training)
 ```
 
-- An upset plot of the training study: Visualize patient overlap across layers.
+- An upset plot of the training data: Visualize patient overlap across layers.
 
 ```{r upsetplot, include=TRUE, eval=TRUE, }
-train_study$upset(order.by = "freq")
+training$upset(order.by = "freq")
 ```
 
 #### C) Variable selection
 
-We need to set up variable selection methods to our training study. Note that this can be the same method or different layer-specific methods. For simplicity, we will set up the same method on all layers.
+We need to set up variable selection methods to our training resources. Note that this can be the same method or different layer-specific methods. For simplicity, we will set up the same method on all layers.
 
 - Preparation parameters of the variable selection method.
 
@@ -155,19 +155,19 @@ varsel_me <- VarSel$new(id = "varsel_methylation",
                         train_layer = tl_me)
 ```
 
-- Perform variable selection on our training study.
+- Perform variable selection on our training resources
 
 ```{r varsel, include=TRUE, eval=TRUE}
 set.seed(5467)
-var_sel_res <- train_study$varSelection()
+var_sel_res <- training$varSelection()
 print(var_sel_res)
 ```
 
-For each layer, the variable selection results show the chosen variables. In this example, we perform variable selection on the entire study. However, users can opt to conduct variable selection on individual layers if desired.
+For each layer, the variable selection results show the chosen variables. In this example, we perform variable selection. Users can opt to conduct variable selection on individual layers if desired.
 
 #### D) Training
 
-We can now train our study using the subset of selected variables. Users can choose to set up layer-specific learners, but for illustration, we will use the same learner for all layers.
+We can now train our models using the subset of selected variables. Users can choose to set up layer-specific learners, but for illustration, we will use the same learner for all layers.
 
 - Set up the same leaner parameters.
 
@@ -205,19 +205,19 @@ lrner_meta <- Lrner$new(id = "weighted",
                         train_layer = tl_meta)
 ```
 
-- Train the study with the selected variables.
+- Train the models with the selected variables.
 
 ```{r lrner_train, include=TRUE, eval=TRUE}
 set.seed(5462)
 # Retrieve the target variable for resampling reasons. Resampling will be used by
 # fuseMLR to generate meta data.
-disease <- train_study$getTargetValues()$disease
-trained_study <- train_study$train(resampling_method = "caret::createFolds",
+disease <- training$getTargetValues()$disease
+trained <- training$train(resampling_method = "caret::createFolds",
                                    resampling_arg = list(y = disease,
                                                          k = 2L),
                                    use_var_sel = TRUE)
-# Let us now check the status of our study.
-print(trained_study)
+# Let us now check the status of our training resources.
+print(trained)
 # Let us check the status of a layer as well.
 print(tl_ge)
 
@@ -236,53 +236,53 @@ print(model_ge)
 
 #### E) Predicting
 
-Now, we have created a training study, performed variable selection and trained the study with the chosen variables. In this section, we create and predict a new study.
+Now, we have created training resources, performed variable selection and trained the models with the chosen variables. In this section, we create testing resources and make predictions for new data.
 
-- Create a new study.
+- Create the testing object.
 
-```{r new_study, include=TRUE, eval=TRUE}
-new_study <- NewStudy$new(id = "new_study", ind_col = "IDS")
+```{r testing, include=TRUE, eval=TRUE}
+testing <- Testing$new(id = "testing", ind_col = "IDS")
 ```
 
 - Create new layers.
 
 ```{r new_layer, include=TRUE, eval=TRUE}
-nl_ge <- NewLayer$new(id = "geneexpr", new_study = new_study)
-nl_pr <- NewLayer$new(id = "proteinexpr", new_study = new_study)
-nl_me <- NewLayer$new(id = "methylation", new_study = new_study)
+nl_ge <- TestLayer$new(id = "geneexpr", testing = testing)
+nl_pr <- TestLayer$new(id = "proteinexpr", testing = testing)
+nl_me <- TestLayer$new(id = "methylation", testing = testing)
 ```
 
 - Instantiate and add new training data to new layers.
 
 ```{r new_data, include=TRUE, eval=TRUE}
-new_data_ge <- NewData$new(id = "geneexpr",
+new_data_ge <- TestData$new(id = "geneexpr",
                            new_layer = nl_ge,
                            data_frame = entities$testing$geneexpr)
-new_data_pr <- NewData$new(id = "proteinexpr",
+new_data_pr <- TestData$new(id = "proteinexpr",
                            new_layer = nl_pr,
                            data_frame = entities$testing$proteinexpr)
-new_data_me <- NewData$new(id = "methylation",
+new_data_me <- TestData$new(id = "methylation",
                            new_layer = nl_me,
                            data_frame = entities$testing$methylation)
 ```
 
-- An upset plot of the training study: Visualize patient overlap across layers.
+- An upset plot of the training data: Visualize patient overlap across layers.
 
 ```{r upsetplot_new, include=TRUE, eval=TRUE, }
-new_study$upset(order.by = "freq")
+testing$upset(order.by = "freq")
 ```
 
-- Predict the new study.
+- Predict the testing object.
 
 ```{r new_pred, include=TRUE, eval=TRUE}
-new_predictions <- train_study$predict(new_study = new_study)
-print(new_predictions)
+predictions <- training$predict(testing = testing)
+print(predictions)
 ```
 
 - Prediction performances for layer-specific available patients, and all patients on the meta layer.
 
 ```{r performance_all, include=TRUE, eval=TRUE}
-pred_values <- new_predictions$predicted_values
+pred_values <- predictions$predicted_values
 actual_pred <- merge(x = pred_values,
                      y = entities$testing$target,
                      by = "IDS",

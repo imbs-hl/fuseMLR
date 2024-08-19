@@ -8,7 +8,7 @@ This class implements a model. A \link{Model} object can only exist as element o
 \link{TrainLayer} or a \link{TrainMetaLayer} object. A \link{Model} object is
 automatically created by fitting a learner on a training data.
 
-A \link{Model} object can compute predictions for a \link{NewData} object. See the \code{predict} function below.
+A \link{Model} object can compute predictions for a \link{TestData} object. See the \code{predict} function below.
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -159,7 +159,7 @@ ID value}
 \if{latex}{\out{\hypertarget{method-Model-predict}{}}}
 \subsection{Method \code{predict()}}{
 Predict target values for the new data
-(from class \link{NewData}) taken as into.
+(from class \link{TestData}) taken as into.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Model$predict(new_data, ind_subset = NULL, ...)}\if{html}{\out{</div>}}
 }
@@ -167,8 +167,8 @@ Predict target values for the new data
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{new_data}}{\code{NewData(1)} \cr
-An object from class \link{NewData}.}
+\item{\code{new_data}}{\code{TestData(1)} \cr
+An object from class \link{TestData}.}
 
 \item{\code{ind_subset}}{\code{vector(1)} \cr
 Subset of individual IDs to be predicted.}

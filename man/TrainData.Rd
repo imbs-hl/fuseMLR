@@ -8,7 +8,7 @@ This class implements the training data. A \link{TrainData} object can only
 exist as a component of a \link{TrainLayer} or a \link{TrainMetaLayer} object.
 }
 \seealso{
-\link{TrainLayer}, \link{Lrner}, \link{Model}, \link{ParamLrner}, \link{NewData}
+\link{TrainLayer}, \link{Lrner}, \link{Model}, \link{ParamLrner}, \link{TestData}
 }
 \section{Super class}{
 \code{\link[fuseMLR:Data]{fuseMLR::Data}} -> \code{TrainData}
@@ -23,7 +23,7 @@ exist as a component of a \link{TrainLayer} or a \link{TrainMetaLayer} object.
 \item \href{#method-TrainData-getTargetValues}{\code{TrainData$getTargetValues()}}
 \item \href{#method-TrainData-getTargetName}{\code{TrainData$getTargetName()}}
 \item \href{#method-TrainData-getTrainLayer}{\code{TrainData$getTrainLayer()}}
-\item \href{#method-TrainData-getNewLayer}{\code{TrainData$getNewLayer()}}
+\item \href{#method-TrainData-getTestLayer}{\code{TrainData$getTestLayer()}}
 \item \href{#method-TrainData-clone}{\code{TrainData$clone()}}
 }
 }
@@ -151,16 +151,16 @@ is returned.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TrainData-getNewLayer"></a>}}
-\if{latex}{\out{\hypertarget{method-TrainData-getNewLayer}{}}}
-\subsection{Method \code{getNewLayer()}}{
+\if{html}{\out{<a id="method-TrainData-getTestLayer"></a>}}
+\if{latex}{\out{\hypertarget{method-TrainData-getTestLayer}{}}}
+\subsection{Method \code{getTestLayer()}}{
 Getter of the current layer.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TrainData$getNewLayer()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TrainData$getTestLayer()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-The layer (from class \link{NewLayer}) on which the current train data are stored
+The layer (from class \link{TestLayer}) on which the current train data are stored
 is returned.
 }
 }

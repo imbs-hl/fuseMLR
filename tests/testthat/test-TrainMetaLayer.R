@@ -1,13 +1,13 @@
 data("entities")
 test_that("TrainLayer: all tests", {
-  # Prepare study and layers
-  train_study <- TrainStudy$new(id = "train_study",
+  # Training and layers
+  training <- Training$new(id = "training",
                                 ind_col = "IDS",
                                 target = "disease",
                                 target_df = entities$training$target)
   tl_meta <- TrainMetaLayer$new(id = "meta",
-                                train_study = train_study)
-  # A TrainLayer can only belong to a TrainStudy
+                                training = training)
+  # A TrainLayer can only belong to a Training
   expect_no_error({
     print(tl_meta)
   })
@@ -37,7 +37,7 @@ test_that("TrainLayer: all tests", {
                                param_list = list(probability = TRUE,
                                                  mtry = 2L),
                                hyperparam_list = list(num.trees = 10L))
-  tl_ge <- TrainLayer$new(id = "geneexpr", train_study = train_study)
+  tl_ge <- TrainLayer$new(id = "geneexpr", training = training)
   lrner_ge <- Lrner$new(id = "ranger",
                         package = "ranger",
                         lrn_fct = "ranger",
@@ -53,21 +53,21 @@ test_that("TrainLayer: all tests", {
     tl_meta$getTrainData()
   })
   # Predicting without model
-  new_study <- NewStudy$new(id = "new_study", ind_col = "IDS")
-  nl_ge <- NewLayer$new(id = "meta", new_study = new_study)
+  testing <- Testing$new(id = "testing", ind_col = "IDS")
+  nl_ge <- TestLayer$new(id = "meta", testing = testing)
   # Must fail because of not existing model
   expect_error({
     tl_meta$predict(nl_ge)
   })
-  disease <- train_study$getTargetValues()$disease
+  disease <- training$getTargetValues()$disease
   expect_no_error({
-    train_study$train(resampling_method = "caret::createFolds",
+    training$train(resampling_method = "caret::createFolds",
                       resampling_arg = list(y = disease,
                                             k = 2L),
                       use_var_sel = FALSE)
     print(tl_meta)
     tl_meta$train()
-    train_study$train(resampling_method = "caret::createFolds",
+    training$train(resampling_method = "caret::createFolds",
                       resampling_arg = list(y = disease,
                                             k = 2L),
                       use_var_sel = FALSE)

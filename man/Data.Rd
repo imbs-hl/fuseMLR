@@ -5,10 +5,10 @@
 \title{Abstract class Data}
 \description{
 As abstract, a \link{Data} object cannot be stored on any layer. Instead, extended
-\link{TrainData} or \link{NewData} objects can be stored on a layer.
+\link{TrainData} or \link{TestData} objects can be stored on a layer.
 }
 \seealso{
-\link{TrainData} and \link{NewData}
+\link{TrainData} and \link{TestData}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -202,7 +202,7 @@ The current object ID is returned.
 \if{latex}{\out{\hypertarget{method-Data-getData}{}}}
 \subsection{Method \code{getData()}}{
 Getter of the current Data. This function is re-implemented
-by \link{TrainData} and \link{NewData}.
+by \link{TrainData} and \link{TestData}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Data$getData()}\if{html}{\out{</div>}}
 }

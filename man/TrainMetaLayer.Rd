@@ -4,14 +4,14 @@
 \alias{TrainMetaLayer}
 \title{TrainMetaLayer Class}
 \description{
-This class implement a meta meta layer. A \link{TrainMetaLayer} can only exist as unique element of a \link{TrainStudy} object.
+This class implement a meta meta layer. A \link{TrainMetaLayer} can only exist as unique element of a \link{Training} object.
 
 A layer is structured as followed:
 \itemize{
 \item \link{Lrner}: It is set by the user to be trained on the meta training data.
 \item \link{TrainData}: It are meta data, automatically created by the internal cross validation.
 \item \link{Model}: The meta model, result of training the learner on the training data, and therefore, not to be set by the user.
-\item \link{NewData}: The meta new data to be predicted, consisting in predictions obtained from each layer.
+\item \link{TestData}: The meta new data to be predicted, consisting in predictions obtained from each layer.
 }
 
 A meta layer can train its meta learner on the meta training data and store the resulting meta model.
@@ -25,7 +25,7 @@ The meta layer can predict values given a new meta layer.
 \itemize{
 \item \href{#method-TrainMetaLayer-new}{\code{TrainMetaLayer$new()}}
 \item \href{#method-TrainMetaLayer-print}{\code{TrainMetaLayer$print()}}
-\item \href{#method-TrainMetaLayer-getTrainStudy}{\code{TrainMetaLayer$getTrainStudy()}}
+\item \href{#method-TrainMetaLayer-getTraining}{\code{TrainMetaLayer$getTraining()}}
 \item \href{#method-TrainMetaLayer-getTargetObj}{\code{TrainMetaLayer$getTargetObj()}}
 \item \href{#method-TrainMetaLayer-train}{\code{TrainMetaLayer$train()}}
 \item \href{#method-TrainMetaLayer-predict}{\code{TrainMetaLayer$predict()}}
@@ -62,7 +62,7 @@ The meta layer can predict values given a new meta layer.
 \subsection{Method \code{new()}}{
 constructor
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TrainMetaLayer$new(id, train_study)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TrainMetaLayer$new(id, training)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -71,7 +71,7 @@ constructor
 \item{\code{id}}{(\code{character(1)})\cr
 See class Param}
 
-\item{\code{train_study}}{(\code{TrainStudy(1)})\cr}
+\item{\code{training}}{(\code{Training(1)})\cr}
 }
 \if{html}{\out{</div>}}
 }
@@ -94,16 +94,16 @@ Printer
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TrainMetaLayer-getTrainStudy"></a>}}
-\if{latex}{\out{\hypertarget{method-TrainMetaLayer-getTrainStudy}{}}}
-\subsection{Method \code{getTrainStudy()}}{
-Getter of the current training study
+\if{html}{\out{<a id="method-TrainMetaLayer-getTraining"></a>}}
+\if{latex}{\out{\hypertarget{method-TrainMetaLayer-getTraining}{}}}
+\subsection{Method \code{getTraining()}}{
+Getter of the current training object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TrainMetaLayer$getTrainStudy()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TrainMetaLayer$getTraining()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-The current training study is returned.
+The current training object is returned.
 }
 }
 \if{html}{\out{<hr>}}
@@ -156,7 +156,7 @@ Predicts values for the new layer taking as argument.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A new study with the predicted values is returned.
+A new object with the predicted values is returned.
 }
 }
 \if{html}{\out{<hr>}}

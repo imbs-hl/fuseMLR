@@ -1,14 +1,14 @@
 #' @title PredictLayer Class
 #'
 #' @description
-#' This class implements a layer. A [PredictLayer] object can only exist as a component of a [PredictStudy] object.
+#' This class implements a layer. A [PredictLayer] object can only exist as a component of a [Predicting] object.
 #'
 #' A predicted layer can only contain [PredictData].
 #'
 #'
 #' @export
 #' @importFrom R6 R6Class
-#' @seealso [TrainStudy], [Lrner], [TrainData], [NewData] and [Model]
+#' @seealso [Training], [Lrner], [TrainData], [TestData] and [Model]
 PredictLayer <- R6Class("PredictLayer",
                         inherit = HashTable,
                         public = list(
@@ -29,13 +29,13 @@ PredictLayer <- R6Class("PredictLayer",
                             cat(sprintf("Contains %s object.\n", length(private$hash_table)))
                           },
                           #' @description
-                          #' Getter of the current study
+                          #' Getter of the current predicting object
                           #'
                           #' @return
-                          #' The current study is returned.
+                          #' The current predicting object is returned.
                           #'
-                          getPredictStudy = function () {
-                            return(private$predict_study)
+                          getPredicting = function () {
+                            return(private$predicting)
                           },
                           #' @description
                           #' Getter of IDS from the current layer.
@@ -78,24 +78,24 @@ PredictLayer <- R6Class("PredictLayer",
                             return(predict_data)
                           },
                           #' @description
-                          #' Assigns a predicted study to the predicted layer.
+                          #' Assigns a predicting object to the predicted layer.
                           #'
-                          #' @param predict_study `PredictStudy(1)` \cr
+                          #' @param predicting `Predicting(1)` \cr
                           #'
                           #' @return
                           #' The current object
                           #'
-                          setPredictStudy = function (predict_study) {
-                            if (!is.null(private$predict_study)) {
-                              stop(sprintf("This layer already belong to study",
-                                           private$predict_study$getId()))
+                          setPredicting = function (predicting) {
+                            if (!is.null(private$predicting)) {
+                              stop(sprintf("This layer already belong to ",
+                                           private$predicting$getId()))
                             } else {
-                              if ("PredictStudy" %in% class(predict_study)) {
-                                predict_study$add2HashTable(key = private$id,
+                              if ("Predicting" %in% class(predicting)) {
+                                predicting$add2HashTable(key = private$id,
                                                             value = self,
                                                             .class = "PredictLayer")
                               } else {
-                                stop("A PredictLayer can only belong to a PredictStudy.")
+                                stop("A PredictLayer can only belong to a Predicting.")
                               }
                             }
                             return(self)
@@ -115,7 +115,7 @@ PredictLayer <- R6Class("PredictLayer",
                           }
                         ),
                         private = list(
-                          predict_study = NULL
+                          predicting = NULL
                         ),
                         cloneable = FALSE
 )

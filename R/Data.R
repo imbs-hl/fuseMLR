@@ -2,12 +2,12 @@
 #'
 #' @description
 #' As abstract, a [Data] object cannot be stored on any layer. Instead, extended
-#' [TrainData] or [NewData] objects can be stored on a layer.
+#' [TrainData] or [TestData] objects can be stored on a layer.
 #'
 #' @export
 #'
 #' @importFrom R6 R6Class
-#' @seealso [TrainData] and [NewData]
+#' @seealso [TrainData] and [TestData]
 Data <- R6Class("Data",
                 public = list(
                   #' @description
@@ -150,7 +150,7 @@ Data <- R6Class("Data",
                   },
                   #' @description
                   #' Getter of the current Data. This function is re-implemented
-                  #' by [TrainData] and [NewData].
+                  #' by [TrainData] and [TestData].
                   #'
                   #' @return
                   #' Do not use on this class.

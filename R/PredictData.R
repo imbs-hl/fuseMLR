@@ -5,7 +5,7 @@
 #' A [PredictData] object can only exist as a component of a [PredictLayer] or a [PredictMetaLayer] object.
 #' @export
 #' @importFrom R6 R6Class
-#' @seealso [TrainData], [NewData]
+#' @seealso [TrainData], [TestData]
 PredictData <- R6Class("PredictData",
                        inherit = Data,
                        public = list(

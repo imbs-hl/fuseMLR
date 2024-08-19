@@ -4,7 +4,7 @@
 \alias{PredictMetaLayer}
 \title{PredictMetaLayer Class}
 \description{
-This class implement a predicted meta layer. A \link{PredictMetaLayer} can only exist as unique element of a \link{TrainStudy} object.
+This class implement a predicted meta layer. A \link{PredictMetaLayer} can only exist as unique element of a \link{Training} object.
 
 A predicted meta layer can only contain a \link{PredictData} object.
 }
@@ -16,7 +16,7 @@ A predicted meta layer can only contain a \link{PredictData} object.
 \itemize{
 \item \href{#method-PredictMetaLayer-new}{\code{PredictMetaLayer$new()}}
 \item \href{#method-PredictMetaLayer-print}{\code{PredictMetaLayer$print()}}
-\item \href{#method-PredictMetaLayer-getPredictStudy}{\code{PredictMetaLayer$getPredictStudy()}}
+\item \href{#method-PredictMetaLayer-getPredicting}{\code{PredictMetaLayer$getPredicting()}}
 \item \href{#method-PredictMetaLayer-getIndIDs}{\code{PredictMetaLayer$getIndIDs()}}
 \item \href{#method-PredictMetaLayer-getPredictData}{\code{PredictMetaLayer$getPredictData()}}
 \item \href{#method-PredictMetaLayer-openAccess}{\code{PredictMetaLayer$openAccess()}}
@@ -43,7 +43,7 @@ A predicted meta layer can only contain a \link{PredictData} object.
 \subsection{Method \code{new()}}{
 constructor
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{PredictMetaLayer$new(id, predict_study)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{PredictMetaLayer$new(id, predicting)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -52,7 +52,7 @@ constructor
 \item{\code{id}}{(\code{character(1)})\cr
 See class Param}
 
-\item{\code{predict_study}}{(\code{PredictStudy(1)})\cr}
+\item{\code{predicting}}{(\code{Predicting(1)})\cr}
 }
 \if{html}{\out{</div>}}
 }
@@ -75,16 +75,16 @@ Printer
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-PredictMetaLayer-getPredictStudy"></a>}}
-\if{latex}{\out{\hypertarget{method-PredictMetaLayer-getPredictStudy}{}}}
-\subsection{Method \code{getPredictStudy()}}{
-Getter of the current predicted study
+\if{html}{\out{<a id="method-PredictMetaLayer-getPredicting"></a>}}
+\if{latex}{\out{\hypertarget{method-PredictMetaLayer-getPredicting}{}}}
+\subsection{Method \code{getPredicting()}}{
+Getter of the current predicting object
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{PredictMetaLayer$getPredictStudy()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{PredictMetaLayer$getPredicting()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-The current predicted study is returned.
+The current predicting object is returned.
 }
 }
 \if{html}{\out{<hr>}}

@@ -1,7 +1,7 @@
 #' @title PredictMetaLayer Class
 #'
 #' @description
-#' This class implement a predicted meta layer. A [PredictMetaLayer] can only exist as unique element of a [TrainStudy] object.
+#' This class implement a predicted meta layer. A [PredictMetaLayer] can only exist as unique element of a [Training] object.
 #'
 #' A predicted meta layer can only contain a [PredictData] object.
 #'
@@ -15,13 +15,13 @@ PredictMetaLayer <- R6Class("PredictMetaLayer",
                        #'
                        #' @param id (`character(1)`)\cr
                        #' See class Param
-                       #' @param predict_study (`PredictStudy(1)`)\cr
+                       #' @param predicting (`Predicting(1)`)\cr
                        #'
-                       initialize = function (id, predict_study) {
+                       initialize = function (id, predicting) {
                          super$initialize(id = id)
-                         private$predict_study = predict_study
-                         if ("PredictStudy" %in% class(predict_study)) {
-                           predict_study$add2HashTable(key = id,
+                         private$predicting = predicting
+                         if ("Predicting" %in% class(predicting)) {
+                           predicting$add2HashTable(key = id,
                                                        value = self,
                                                        .class = "PredictMetaLayer")
                          } else {
@@ -39,13 +39,13 @@ PredictMetaLayer <- R6Class("PredictMetaLayer",
                          cat(sprintf("Contains %s object", length(private$hash_table)))
                        },
                        #' @description
-                       #' Getter of the current predicted study
+                       #' Getter of the current predicting object
                        #'
                        #' @return
-                       #' The current predicted study is returned.
+                       #' The current predicting object is returned.
                        #'
-                       getPredictStudy = function () {
-                         return(private$predict_study)
+                       getPredicting = function () {
+                         return(private$predicting)
                        },
                        #' @description
                        #' Getter of IDS from the current layer.
@@ -115,8 +115,8 @@ PredictMetaLayer <- R6Class("PredictMetaLayer",
                        }
                      ),
                      private = list(
-                       # The current study
-                       predict_study = NULL,
+                       # The current predicting object.
+                       predicting = NULL,
                        # Access to the meta layer.
                        access = FALSE
                      ),

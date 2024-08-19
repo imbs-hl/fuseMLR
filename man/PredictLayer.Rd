@@ -4,12 +4,12 @@
 \alias{PredictLayer}
 \title{PredictLayer Class}
 \description{
-This class implements a layer. A \link{PredictLayer} object can only exist as a component of a \link{PredictStudy} object.
+This class implements a layer. A \link{PredictLayer} object can only exist as a component of a \link{Predicting} object.
 
 A predicted layer can only contain \link{PredictData}.
 }
 \seealso{
-\link{TrainStudy}, \link{Lrner}, \link{TrainData}, \link{NewData} and \link{Model}
+\link{Training}, \link{Lrner}, \link{TrainData}, \link{TestData} and \link{Model}
 }
 \section{Super class}{
 \code{\link[fuseMLR:HashTable]{fuseMLR::HashTable}} -> \code{PredictLayer}
@@ -19,10 +19,10 @@ A predicted layer can only contain \link{PredictData}.
 \itemize{
 \item \href{#method-PredictLayer-new}{\code{PredictLayer$new()}}
 \item \href{#method-PredictLayer-print}{\code{PredictLayer$print()}}
-\item \href{#method-PredictLayer-getPredictStudy}{\code{PredictLayer$getPredictStudy()}}
+\item \href{#method-PredictLayer-getPredicting}{\code{PredictLayer$getPredicting()}}
 \item \href{#method-PredictLayer-getIndIDs}{\code{PredictLayer$getIndIDs()}}
 \item \href{#method-PredictLayer-getPredictData}{\code{PredictLayer$getPredictData()}}
-\item \href{#method-PredictLayer-setPredictStudy}{\code{PredictLayer$setPredictStudy()}}
+\item \href{#method-PredictLayer-setPredicting}{\code{PredictLayer$setPredicting()}}
 \item \href{#method-PredictLayer-summary}{\code{PredictLayer$summary()}}
 }
 }
@@ -75,16 +75,16 @@ Printer
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-PredictLayer-getPredictStudy"></a>}}
-\if{latex}{\out{\hypertarget{method-PredictLayer-getPredictStudy}{}}}
-\subsection{Method \code{getPredictStudy()}}{
-Getter of the current study
+\if{html}{\out{<a id="method-PredictLayer-getPredicting"></a>}}
+\if{latex}{\out{\hypertarget{method-PredictLayer-getPredicting}{}}}
+\subsection{Method \code{getPredicting()}}{
+Getter of the current predicting object
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{PredictLayer$getPredictStudy()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{PredictLayer$getPredicting()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-The current study is returned.
+The current predicting object is returned.
 }
 }
 \if{html}{\out{<hr>}}
@@ -114,18 +114,18 @@ The stored \link{PredictData} object is returned.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-PredictLayer-setPredictStudy"></a>}}
-\if{latex}{\out{\hypertarget{method-PredictLayer-setPredictStudy}{}}}
-\subsection{Method \code{setPredictStudy()}}{
-Assigns a predicted study to the predicted layer.
+\if{html}{\out{<a id="method-PredictLayer-setPredicting"></a>}}
+\if{latex}{\out{\hypertarget{method-PredictLayer-setPredicting}{}}}
+\subsection{Method \code{setPredicting()}}{
+Assigns a predicting object to the predicted layer.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{PredictLayer$setPredictStudy(predict_study)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{PredictLayer$setPredicting(predicting)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{predict_study}}{\code{PredictStudy(1)} \cr}
+\item{\code{predicting}}{\code{Predicting(1)} \cr}
 }
 \if{html}{\out{</div>}}
 }

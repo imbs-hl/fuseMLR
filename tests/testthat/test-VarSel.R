@@ -1,9 +1,9 @@
 test_that("VarSel: with package for variable selection", {
-  train_study <- TrainStudy$new(id = "train_study",
+  training <- Training$new(id = "training",
                                 ind_col = "IDS",
                                 target = "disease",
                                 target_df = entities$training$target)
-  tl_ge <- TrainLayer$new(id = "geneexpr", train_study = train_study)
+  tl_ge <- TrainLayer$new(id = "geneexpr", training = training)
   train_data_ge <- TrainData$new(id = "geneexpr",
                                  train_layer = tl_ge,
                                  data_frame = entities$training$geneexpr)
@@ -46,11 +46,11 @@ test_that("VarSel: with package for variable selection", {
 })
 
 test_that("VarSel: with function for variable selection", {
-  train_study <- TrainStudy$new(id = "train_study",
+  training <- Training$new(id = "training",
                                 ind_col = "IDS",
                                 target = "disease",
                                 target_df = entities$training$target)
-  tl_ge <- TrainLayer$new(id = "geneexpr", train_study = train_study)
+  tl_ge <- TrainLayer$new(id = "geneexpr", training = training)
   same_param_varsel <- ParamVarSel$new(id = "ParamVarSel",
                                        param_list = list())
   train_data_ge <- TrainData$new(id = "geneexpr",

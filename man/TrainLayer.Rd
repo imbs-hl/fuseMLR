@@ -4,14 +4,14 @@
 \alias{TrainLayer}
 \title{TrainLayer Class}
 \description{
-This class implements a traning layer. A \link{TrainLayer} object can only exist as a component of a \link{TrainStudy} object.
+This class implements a traning layer. A \link{TrainLayer} object can only exist as a component of a \link{Training} object.
 
 A training layer is structured as followed:
 \itemize{
 \item \link{Lrner}: It is set by the user to be trained on the training data.
 \item \link{TrainData}: It is set by the user to be used to train the learner.
 \item \link{Model}: The result of training the learner on the training data, and therefore, not set by the user.
-\item \link{NewData}: It is set by the user implements new data to be predicted.
+\item \link{TestData}: It is set by the user implements new data to be predicted.
 }
 
 A layer can train its learner on its training data and store the resulting model. See the public function \code{Layer$train()} below.
@@ -19,7 +19,7 @@ A layer can train its learner on its training data and store the resulting model
 A layer can make predictions for a new layer passed as argument to its predict function. See the public function \code{Layer$predict()} below.
 }
 \seealso{
-\link{TrainStudy}, \link{Lrner}, \link{TrainData}, \link{NewData} and \link{Model}
+\link{Training}, \link{Lrner}, \link{TrainData}, \link{TestData} and \link{Model}
 }
 \section{Super class}{
 \code{\link[fuseMLR:HashTable]{fuseMLR::HashTable}} -> \code{TrainLayer}
@@ -29,7 +29,7 @@ A layer can make predictions for a new layer passed as argument to its predict f
 \itemize{
 \item \href{#method-TrainLayer-new}{\code{TrainLayer$new()}}
 \item \href{#method-TrainLayer-print}{\code{TrainLayer$print()}}
-\item \href{#method-TrainLayer-getTrainStudy}{\code{TrainLayer$getTrainStudy()}}
+\item \href{#method-TrainLayer-getTraining}{\code{TrainLayer$getTraining()}}
 \item \href{#method-TrainLayer-getTargetObj}{\code{TrainLayer$getTargetObj()}}
 \item \href{#method-TrainLayer-train}{\code{TrainLayer$train()}}
 \item \href{#method-TrainLayer-varSelection}{\code{TrainLayer$varSelection()}}
@@ -37,7 +37,7 @@ A layer can make predictions for a new layer passed as argument to its predict f
 \item \href{#method-TrainLayer-getTrainData}{\code{TrainLayer$getTrainData()}}
 \item \href{#method-TrainLayer-getTargetValues}{\code{TrainLayer$getTargetValues()}}
 \item \href{#method-TrainLayer-getIndIDs}{\code{TrainLayer$getIndIDs()}}
-\item \href{#method-TrainLayer-getNewData}{\code{TrainLayer$getNewData()}}
+\item \href{#method-TrainLayer-getTestData}{\code{TrainLayer$getTestData()}}
 \item \href{#method-TrainLayer-getLrner}{\code{TrainLayer$getLrner()}}
 \item \href{#method-TrainLayer-getVarSel}{\code{TrainLayer$getVarSel()}}
 \item \href{#method-TrainLayer-getModel}{\code{TrainLayer$getModel()}}
@@ -67,7 +67,7 @@ A layer can make predictions for a new layer passed as argument to its predict f
 \subsection{Method \code{new()}}{
 constructor
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TrainLayer$new(id, train_study)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TrainLayer$new(id, training)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -76,7 +76,7 @@ constructor
 \item{\code{id}}{(\code{character(1)})\cr
 See class Param}
 
-\item{\code{train_study}}{(\code{TrainStudy(1)})\cr}
+\item{\code{training}}{(\code{Training(1)})\cr}
 }
 \if{html}{\out{</div>}}
 }
@@ -99,16 +99,16 @@ Printer
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TrainLayer-getTrainStudy"></a>}}
-\if{latex}{\out{\hypertarget{method-TrainLayer-getTrainStudy}{}}}
-\subsection{Method \code{getTrainStudy()}}{
-Getter of the current study
+\if{html}{\out{<a id="method-TrainLayer-getTraining"></a>}}
+\if{latex}{\out{\hypertarget{method-TrainLayer-getTraining}{}}}
+\subsection{Method \code{getTraining()}}{
+Getter of the current training object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TrainLayer$getTrainStudy()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TrainLayer$getTraining()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-The current study is returned.
+The current training object is returned.
 }
 }
 \if{html}{\out{<hr>}}
@@ -228,16 +228,16 @@ A \code{data.frame} containing individuals IDs values.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TrainLayer-getNewData"></a>}}
-\if{latex}{\out{\hypertarget{method-TrainLayer-getNewData}{}}}
-\subsection{Method \code{getNewData()}}{
+\if{html}{\out{<a id="method-TrainLayer-getTestData"></a>}}
+\if{latex}{\out{\hypertarget{method-TrainLayer-getTestData}{}}}
+\subsection{Method \code{getTestData()}}{
 Getter of the new data.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TrainLayer$getNewData()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TrainLayer$getTestData()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-The stored \link{NewData} object is returned.
+The stored \link{TestData} object is returned.
 }
 }
 \if{html}{\out{<hr>}}

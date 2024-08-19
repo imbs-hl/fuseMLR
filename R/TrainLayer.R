@@ -1,14 +1,14 @@
 #' @title TrainLayer Class
 #'
 #' @description
-#' This class implements a traning layer. A [TrainLayer] object can only exist as a component of a [TrainStudy] object.
+#' This class implements a traning layer. A [TrainLayer] object can only exist as a component of a [Training] object.
 #'
 #' A training layer is structured as followed:
 #'
 #' * [Lrner]: It is set by the user to be trained on the training data.
 #' * [TrainData]: It is set by the user to be used to train the learner.
 #' * [Model]: The result of training the learner on the training data, and therefore, not set by the user.
-#' * [NewData]: It is set by the user implements new data to be predicted.
+#' * [TestData]: It is set by the user implements new data to be predicted.
 #'
 #' A layer can train its learner on its training data and store the resulting model. See the public function \code{Layer$train()} below.
 #'
@@ -16,7 +16,7 @@
 #'
 #' @export
 #' @importFrom R6 R6Class
-#' @seealso [TrainStudy], [Lrner], [TrainData], [NewData] and [Model]
+#' @seealso [Training], [Lrner], [TrainData], [TestData] and [Model]
 TrainLayer <- R6Class("TrainLayer",
                       inherit = HashTable,
                       public = list(
@@ -25,17 +25,17 @@ TrainLayer <- R6Class("TrainLayer",
                         #'
                         #' @param id (`character(1)`)\cr
                         #' See class Param
-                        #' @param train_study (`TrainStudy(1)`)\cr
+                        #' @param training (`Training(1)`)\cr
                         #'
-                        initialize = function (id, train_study) {
+                        initialize = function (id, training) {
                           super$initialize(id = id)
-                          private$train_study = train_study
-                          if ("TrainStudy" %in% class(train_study)) {
-                            train_study$add2HashTable(key = id,
+                          private$training = training
+                          if ("Training" %in% class(training)) {
+                            training$add2HashTable(key = id,
                                                       value = self,
                                                       .class = "TrainLayer")
                           } else {
-                            stop("A TrainLayer can only belong to a TrainStudy.")
+                            stop("A TrainLayer can only belong to a Training.")
                           }
                           private$status = FALSE
                         },
@@ -61,19 +61,19 @@ TrainLayer <- R6Class("TrainLayer",
                           }
                         },
                         #' @description
-                        #' Getter of the current study
+                        #' Getter of the current training object.
                         #'
                         #' @return
-                        #' The current study is returned.
+                        #' The current training object is returned.
                         #'
-                        getTrainStudy = function () {
-                          return(private$train_study)
+                        getTraining = function () {
+                          return(private$training)
                         },
                         #' @description
                         #' Getter of the target object.
                         #' @export
                         getTargetObj = function () {
-                          return(private$train_study$getTargetObj())
+                          return(private$training$getTargetObj())
                         },
                         #' @description
                         #' Trains the current layer.
@@ -109,7 +109,7 @@ TrainLayer <- R6Class("TrainLayer",
                           # Updating the training status.
                           if (!private$status) {
                             # The training layer has not been trained before.
-                            private$train_study$increaseNbTrainedLayer()
+                            private$training$increaseNbTrainedLayer()
                             private$status = TRUE
                           } else {
                             # The training layer has been trained before.
@@ -163,7 +163,7 @@ TrainLayer <- R6Class("TrainLayer",
                           } else {
                             stop("The new layer ID does not match with the current layer ID.")
                           }
-                          new_data = new_layer$getNewData()
+                          new_data = new_layer$getTestData()
                           # Predicting: Data and model exist on this layer.
 
                           model = self$getModel()
@@ -231,7 +231,7 @@ TrainLayer <- R6Class("TrainLayer",
                             # Searching for layer specific new dataset
                             data_key = layer_kc[layer_kc$class == "TrainData" ,
                                                 "key"]
-                            current_data = self$getNewData()
+                            current_data = self$getTestData()
                           } else {
                             stop(sprintf("No data on layer %s.", self$getId()))
                           }
@@ -243,15 +243,15 @@ TrainLayer <- R6Class("TrainLayer",
                         #' Getter of the new data.
                         #'
                         #' @return
-                        #' The stored [NewData] object is returned.
-                        # A TrainLayer plays the role of NewLayer when creating meta data.
-                        getNewData = function () {
+                        #' The stored [TestData] object is returned.
+                        # A TrainLayer plays the role of TestLayer when creating meta data.
+                        getTestData = function () {
                           layer_kc = self$getKeyClass()
-                          if (any(c("NewData", "TrainData") %in% layer_kc[ , "class"])) {
-                            if ("NewData" %in% layer_kc[ , "class"]) {
+                          if (any(c("TestData", "TrainData") %in% layer_kc[ , "class"])) {
+                            if ("TestData" %in% layer_kc[ , "class"]) {
                               # nocov start
                               # TODO: This part of the code will never be executed. Check it and maybe remove it
-                              new_data_key = layer_kc[layer_kc$class == "NewData" ,
+                              new_data_key = layer_kc[layer_kc$class == "TestData" ,
                                                       "key"]
                               new_data = self$getFromHashTable(key = new_data_key[1L])
                               # nocov end
@@ -388,7 +388,7 @@ TrainLayer <- R6Class("TrainLayer",
                         }
                       ),
                       private = list(
-                        train_study = NULL,
+                        training = NULL,
                         status = FALSE
                       ),
                       # TODO: define a deep_clone function for this class.

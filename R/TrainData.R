@@ -7,7 +7,7 @@
 #' @export
 #'
 #' @importFrom R6 R6Class
-#' @seealso [TrainLayer], [Lrner], [Model], [ParamLrner], [NewData]
+#' @seealso [TrainLayer], [Lrner], [Model], [ParamLrner], [TestData]
 TrainData <- R6Class("TrainData",
                      inherit = Data,
                      public = list(
@@ -28,11 +28,11 @@ TrainData <- R6Class("TrainData",
                          }
                          target_obj = train_layer$getTargetObj()
                          target_df = target_obj$getData()
-                         ind_col = train_layer$getTrainStudy()$getIndCol()
+                         ind_col = train_layer$getTraining()$getIndCol()
                          if (!(ind_col %in% colnames(data_frame))) {
                            stop("Individual column ID not found in the provided data.frame.\n")
                          }
-                         target = train_layer$getTrainStudy()$getTarget()
+                         target = train_layer$getTraining()$getTarget()
                          if ((target %in% colnames(data_frame))) {
                            if ("TrainLayer" %in% class(train_layer)) {
                              warning("The target variable must be set using the Target class, so the one in this data.frame will be ignored.\n")
@@ -59,9 +59,9 @@ TrainData <- R6Class("TrainData",
                            data_frame = data_frame[!missing_target, ]
                          }
                          super$initialize(id = id,
-                                          ind_col = train_layer$getTrainStudy()$getIndCol(),
+                                          ind_col = train_layer$getTraining()$getIndCol(),
                                           data_frame = data_frame)
-                         private$target = train_layer$getTrainStudy()$getTarget()
+                         private$target = train_layer$getTraining()$getTarget()
                          # Add to object to ht
                          if ("TrainMetaLayer" %in% class(train_layer)) {
                            if (train_layer$getAccess()) {
@@ -166,12 +166,12 @@ TrainData <- R6Class("TrainData",
                        #' Getter of the current layer.
                        #'
                        #' @return
-                       #' The layer (from class [NewLayer]) on which the current train data are stored
+                       #' The layer (from class [TestLayer]) on which the current train data are stored
                        #' is returned.
                        #' @export
                        #'
-                       #TODO: Maybe rename getNewLayer, getTrainLayer and getPredictLayer as getLayer?
-                       getNewLayer = function () {
+                       #TODO: Maybe rename getTestLayer, getTrainLayer and getPredictLayer as getLayer?
+                       getTestLayer = function () {
                          return(private$train_layer)
                        }
                      ),
