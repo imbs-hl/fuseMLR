@@ -85,12 +85,11 @@ individual IDs. In total, $70$ individuals with $50$ individuals pro
 layer have been simulated for training, and $23$ ($20$ per layer) for
 testing. Individuals do not necessarily overlapped. Effects have been
 introduced for gene expression and methylation by shifting the means by
-$0.5$ to create case-control study with $50\%$ prevalence. Individuals
-do not necessarily overlap. Effects were introduced in gene expression
-and methylation by shifting the means by 0.5 to create a case-control
-study. For illustration, the number of variables was kept smaller than
-what is typically expected in reality. The data simulation code is
-available
+$0.5$ to create case-control study with $50$% prevalence. Individuals do
+not necessarily overlap. Effects were introduced in gene expression and
+methylation by shifting the means by 0.5 to create a case-control study.
+For illustration, the number of variables was kept smaller than what is
+typically expected in reality. The data simulation code is available
 [here](https://github.com/imbs-hl/fuseMLR/blob/master/test_code/build_data.R).
 
 ``` r
