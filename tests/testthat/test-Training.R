@@ -101,8 +101,14 @@ test_that("Training: all tests", {
   # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   expect_no_error({
     tl_ge <- TrainLayer$new(id = "geneexpr", training = training)
+    tl_ge <- training$getLayer(id = "geneexpr")
     tl_pr <- TrainLayer$new(id = "proteinexpr", training = training)
+    tl_methy <- TrainLayer$new(id = "methylation", training = training)
+    training$removeLayer(id = "methylation")
     # We also prepare the meta layer for the meta analysis.
+    tl_meta <- TrainMetaLayer$new(id = "meta_layer", training = training)
+    # Test to remove and re-add
+    training$removeTrainMetaLayer()
     tl_meta <- TrainMetaLayer$new(id = "meta_layer", training = training)
   })
   # Expected errors on training empty layers

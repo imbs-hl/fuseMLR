@@ -22,7 +22,7 @@ A layer can make predictions for a new layer passed as argument to its predict f
 \link{Training}, \link{Lrner}, \link{TrainData}, \link{TestData} and \link{Model}
 }
 \section{Super class}{
-\code{\link[fuseMLR:HashTable]{fuseMLR::HashTable}} -> \code{TrainLayer}
+\code{fuseMLR::HashTable} -> \code{TrainLayer}
 }
 \section{Methods}{
 \subsection{Public methods}{

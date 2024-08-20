@@ -31,7 +31,7 @@ Use the function \code{train} for training and \code{predict} for predicting.
 \link{Testing} and \link{Predicting}
 }
 \section{Super class}{
-\code{\link[fuseMLR:HashTable]{fuseMLR::HashTable}} -> \code{Training}
+\code{fuseMLR::HashTable} -> \code{Training}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -46,7 +46,10 @@ Use the function \code{train} for training and \code{predict} for predicting.
 \item \href{#method-Training-varSelection}{\code{Training$varSelection()}}
 \item \href{#method-Training-getTargetValues}{\code{Training$getTargetValues()}}
 \item \href{#method-Training-getIndIDs}{\code{Training$getIndIDs()}}
+\item \href{#method-Training-getLayer}{\code{Training$getLayer()}}
 \item \href{#method-Training-getTrainMetaLayer}{\code{Training$getTrainMetaLayer()}}
+\item \href{#method-Training-removeLayer}{\code{Training$removeLayer()}}
+\item \href{#method-Training-removeTrainMetaLayer}{\code{Training$removeTrainMetaLayer()}}
 \item \href{#method-Training-getIndCol}{\code{Training$getIndCol()}}
 \item \href{#method-Training-getTarget}{\code{Training$getTarget()}}
 \item \href{#method-Training-increaseNbTrainedLayer}{\code{Training$increaseNbTrainedLayer()}}
@@ -298,6 +301,27 @@ A \code{data.frame} containing individuals IDs.
 }
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Training-getLayer"></a>}}
+\if{latex}{\out{\hypertarget{method-Training-getLayer}{}}}
+\subsection{Method \code{getLayer()}}{
+Get a layer of a given ID.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Training$getLayer(id)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{id}}{\code{character(1)} \cr
+The ID of the layer to be returned.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+The \link{TrainLayer} object is returned for the given ID.
+}
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Training-getTrainMetaLayer"></a>}}
 \if{latex}{\out{\hypertarget{method-Training-getTrainMetaLayer}{}}}
 \subsection{Method \code{getTrainMetaLayer()}}{
@@ -309,6 +333,37 @@ Getter of the meta layer.
 \subsection{Returns}{
 Object from class \link{TrainMetaLayer}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Training-removeLayer"></a>}}
+\if{latex}{\out{\hypertarget{method-Training-removeLayer}{}}}
+\subsection{Method \code{removeLayer()}}{
+Remove a layer of a given ID.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Training$removeLayer(id)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{id}}{\code{character(1)} \cr
+The ID of the layer to be removed.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+The \link{TrainLayer} object is returned for the given ID.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Training-removeTrainMetaLayer"></a>}}
+\if{latex}{\out{\hypertarget{method-Training-removeTrainMetaLayer}{}}}
+\subsection{Method \code{removeTrainMetaLayer()}}{
+Remove the meta layer from the current \link{Training} object.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Training$removeTrainMetaLayer()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Training-getIndCol"></a>}}

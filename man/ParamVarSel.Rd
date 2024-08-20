@@ -7,7 +7,7 @@
 Implement the list of parameters to be passed to the \link{VarSel} object.
 }
 \section{Super class}{
-\code{\link[fuseMLR:Param]{fuseMLR::Param}} -> \code{ParamVarSel}
+\code{fuseMLR::Param} -> \code{ParamVarSel}
 }
 \section{Methods}{
 \subsection{Public methods}{

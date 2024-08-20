@@ -423,6 +423,20 @@ Training <- R6Class("Training",
                           return(ids_data)
                         },
                         #' @description
+                        #' Get a layer of a given ID.
+                        #'
+                        #' @param id `character(1)` \cr
+                        #' The ID of the layer to be returned.
+                        #'
+                        #' @return
+                        #' The [TrainLayer] object is returned for the given ID.
+                        #' @export
+                        #'
+                        getLayer = function(id) {
+                          layer = self$getFromHashTable(key = id)
+                          return(layer)
+                        },
+                        #' @description
                         #' Getter of the meta layer.
                         #'
                         #' @return
@@ -431,9 +445,34 @@ Training <- R6Class("Training",
                         #'
                         getTrainMetaLayer = function () {
                           layers = self$getKeyClass()
-                          meta_layer_key = layers[layers$class == "TrainMetaLayer" , "key"]
+                          meta_layer_key = layers[layers$class == "TrainMetaLayer", "key"]
                           meta_layer = self$getFromHashTable(key = meta_layer_key)
                           return(meta_layer)
+                        },
+                        #' @description
+                        #' Remove a layer of a given ID.
+                        #'
+                        #' @param id `character(1)` \cr
+                        #' The ID of the layer to be removed.
+                        #'
+                        #' @return
+                        #' The [TrainLayer] object is returned for the given ID.
+                        #' @export
+                        #'
+                        removeLayer = function(id) {
+                          self$removeFromHashTable(key = id)
+                          invisible(TRUE)
+                        },
+                        #' @description
+                        #' Remove the meta layer from the current [Training] object.
+                        #'
+                        #' @export
+                        #'
+                        removeTrainMetaLayer = function() {
+                          layers = self$getKeyClass()
+                          meta_layer_key = layers[layers$class == "TrainMetaLayer", "key"]
+                          self$removeFromHashTable(key = meta_layer_key)
+                          invisible(TRUE)
                         },
                         #' @description
                         #' Getter of the individual column name.
