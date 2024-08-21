@@ -46,6 +46,10 @@ knitr::include_graphics("README_files/figure-gfm/fuseMLR_4_blue_bgr.png")
 
 The general architecture of `fuseMLR` includes the storage classes `Training`, `Layer`, and `MetaLayer`. `Layer` and `MetaLayer` are stored within a `Training` instance, while `Data`, `Learner`, and `Varselect` (for variable selection) are stored within a `Layer` instance. These components can be used to automatically build and store the `Model` or `MetaModel`.
 
+```{r cheatsheet, echo=FALSE, out.width="70%", out.height="100%"}
+knitr::include_graphics("README_files/figure-gfm/fusemlrcheatsheet.png")
+```
+
 ### Usage example
 
 The following example is based on simulated data available in `fuseMLR`. Data have been simulated using the R package `InterSIM`, version 2.2.0. 
