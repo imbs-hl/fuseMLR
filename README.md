@@ -57,7 +57,7 @@ devtools::install_github("imbs-hl/fuseMLR")
 
 The following figure illustrates the general architecture of `fuseMLR`:
 
-<img src="README_files/figure-gfm/fuseMLR_4_blue_bgr.png" width="70%" height="100%" />
+<img src="README_files/figure-gfm/structure.png" width="70%" height="100%" />
 
 The general architecture of `fuseMLR` includes the storage classes
 `Training`, `Layer`, and `MetaLayer`. `Layer` and `MetaLayer` are stored

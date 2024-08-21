@@ -41,7 +41,7 @@ devtools::install_github("imbs-hl/fuseMLR")
 The following figure illustrates the general architecture of `fuseMLR`:
 
 ```{r, echo=FALSE, out.width="70%", out.height="100%"}
-knitr::include_graphics("README_files/figure-gfm/fuseMLR_4_blue_bgr.png")
+knitr::include_graphics("README_files/figure-gfm/structure.png")
 ```
 
 The general architecture of `fuseMLR` includes the storage classes `Training`, `Layer`, and `MetaLayer`. `Layer` and `MetaLayer` are stored within a `Training` instance, while `Data`, `Learner`, and `Varselect` (for variable selection) are stored within a `Layer` instance. These components can be used to automatically build and store the `Model` or `MetaModel`.
