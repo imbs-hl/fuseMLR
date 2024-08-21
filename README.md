@@ -63,7 +63,9 @@ within a `Training` instance, while `Data`, `Learner`, and `Varselect`
 components can be used to automatically build and store the `Model` or
 `MetaModel`.
 
-<img src="README_files/figure-gfm/fusemlrcheatsheet.png" width="70%" height="100%" />
+Refer to our [cheat
+sheet](https://github.com/imbs-hl/fuseMLR/blob/master/README_files/figure-gfm/fusemlrcheatsheet.pdf)
+for a quick overview of classes and functionalities.
 
 ### Usage example
 
