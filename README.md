@@ -41,6 +41,9 @@ selection at the layer level and makes predictions for new data
 entities.
 
 `fuseMLR` is an object-oriented package based on `R6` version 2.5.1.
+Refer to our [cheat
+sheet](https://github.com/imbs-hl/fuseMLR/blob/master/README_files/figure-gfm/fusemlrcheatsheet.pdf)
+for a quick overview of classes and functionalities.
 
 ### Installation
 
@@ -62,10 +65,6 @@ within a `Training` instance, while `Data`, `Learner`, and `Varselect`
 (for variable selection) are stored within a `Layer` instance. These
 components can be used to automatically build and store the `Model` or
 `MetaModel`.
-
-Refer to our [cheat
-sheet](https://github.com/imbs-hl/fuseMLR/blob/master/README_files/figure-gfm/fusemlrcheatsheet.pdf)
-for a quick overview of classes and functionalities.
 
 ### Usage example
 
