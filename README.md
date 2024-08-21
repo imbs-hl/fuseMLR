@@ -33,9 +33,9 @@ flexibility.
 
 We introduce the fuseMLR package for late integration prediction
 modeling in R. This package allows users to define studies with multiple
-layers, data entities, and layer-specific machine learning methods.
-FuseMLR is user-friendly, enables training of different models across
-layers and automatically performs aggregation once layer-specific
+layers, data entities, and layer-specific machine learning methods. The
+package fuseMLR is user-friendly, enables training of different models
+across layers and automatically performs aggregation once layer-specific
 training is completed. Additionally, fuseMLR allows for variable
 selection at the layer level and makes predictions for new data
 entities.
