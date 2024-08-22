@@ -77,7 +77,7 @@ Training <- R6Class("Training",
                           private$ind_col = ind_col
                           private$target = target
                           private$target_obj = Target$new(id = "target",
-                                                          data_frame = target_df,
+                                                          data_frame = target_df[ , c(ind_col, target)],
                                                           training = self)
                           private$status = FALSE
                         },
@@ -222,7 +222,8 @@ Training <- R6Class("Training",
                                                   replacement = "",
                                                   x = names(predicted_values_wide))
                             names(predicted_values_wide) = colname_vector
-                            target_df = self$getTargetValues()
+                            # target_df = self$getTargetValues()
+                            target_df = private$target_obj$getData()
                             predicted_values_wide = merge(x = target_df,
                                                           y = predicted_values_wide,
                                                           by = colnames(target_df)[1],
