@@ -112,7 +112,7 @@ str(object = entities, max.level = 2L)
     ##   ..$ geneexpr   :'data.frame':  20 obs. of  132 variables:
     ##   ..$ proteinexpr:'data.frame':  20 obs. of  161 variables:
     ##   ..$ methylation:'data.frame':  20 obs. of  368 variables:
-    ##   ..$ target     :'data.frame':  23 obs. of  2 variables:
+    ##   ..$ target     :'data.frame':  30 obs. of  2 variables:
 
 Variable selection, training and prediction are the main functionalities
 of `fuseMLR`. We can perform variable selection, train and fuse models
@@ -484,29 +484,35 @@ print(predictions)
     ## 
     ## $predicted_values
     ##          IDS  geneexpr proteinexpr methylation meta_layer
-    ## 1  patient23 0.4066226  0.59039563  0.15416111  0.4086700
-    ## 2  patient43 0.3204345          NA          NA  0.3204345
-    ## 3   patient8 0.7283837  0.85136032  0.83154603  0.8071713
-    ## 4  patient29 0.3765401  0.44897460  0.29004206  0.3810487
-    ## 5  patient17 0.4029615  0.31254802          NA  0.3521623
-    ## 6  patient25 0.2794885  0.46890833  0.08669206  0.3007815
-    ## 7  patient54 0.8010825  0.50165238  0.84085476  0.6920279
-    ## 8  patient44 0.3812123  0.55725198  0.52064246  0.4916499
-    ## 9   patient3 0.7326147  0.60180675  0.56772579  0.6331168
-    ## 10  patient1 0.8132333  0.93826706  0.83673373  0.8701829
-    ## 11 patient58 0.5584369  0.75391905  0.78681071  0.7019961
-    ## 12 patient59 0.3436560  0.14348016  0.37254722  0.2714056
-    ## 13 patient16 0.6695210  0.91772063  0.65919841  0.7663599
-    ## 14 patient27 0.3560107          NA  0.19385952  0.2788631
-    ## 15 patient52 0.4704524  0.13166706          NA  0.2801044
-    ## 16 patient57 0.5567968  0.52980675  0.27338810  0.4653129
-    ## 17 patient31 0.3753893  0.27787698  0.41471984  0.3473796
-    ## 18 patient10 0.2658341  0.77500992  0.11330437  0.4271250
-    ## 19 patient46 0.8891377  0.22666706  0.49346349  0.5102504
-    ## 20 patient60 0.7464111          NA  0.79673889  0.7703559
-    ## 24 patient39        NA  0.09239167  0.83040794  0.3982512
-    ## 28 patient62        NA  0.96848254  0.33514444  0.7060053
-    ## 32  patient2        NA  0.54899484  0.81064603  0.6574322
+    ## 1  patient23 0.4066226  0.59039563  0.15416111 0.40867002
+    ## 2  patient77 0.4723008  0.48607738  0.13143770 0.38085834
+    ## 3  patient62 0.7903321  0.96848254          NA 0.89042670
+    ## 4  patient43 0.3204345          NA          NA 0.32043452
+    ## 5   patient8 0.7283837  0.85136032  0.83154603 0.80717132
+    ## 6  patient74 0.5480369  0.71174921  0.53741508 0.61082692
+    ## 7  patient29 0.3765401  0.44897460  0.29004206 0.38104867
+    ## 8  patient17 0.4029615  0.31254802          NA 0.35216230
+    ## 9  patient25 0.2794885  0.46890833  0.08669206 0.30078151
+    ## 10 patient54 0.8010825          NA  0.84085476 0.82000521
+    ## 11 patient60 0.7464111  0.84661310  0.79673889 0.80101115
+    ## 12 patient44 0.3812123          NA          NA 0.38121230
+    ## 13  patient1 0.8132333  0.93826706          NA 0.88348407
+    ## 14 patient76 0.6725758          NA  0.64178889 0.65792812
+    ## 15 patient16 0.6695210          NA  0.65919841 0.66460978
+    ## 16 patient27 0.3560107          NA  0.19385952 0.27886306
+    ## 17 patient58 0.5584369  0.75391905  0.78681071 0.70199615
+    ## 18 patient52 0.4704524  0.13166706          NA 0.28010441
+    ## 19 patient10 0.2658341          NA          NA 0.26583413
+    ## 20 patient72 0.6804016  0.94305873  0.62568056 0.77042038
+    ## 21 patient39        NA  0.09239167          NA 0.09239167
+    ## 25 patient46        NA  0.22666706  0.49346349 0.33723674
+    ## 26 patient97        NA  0.71532579  0.86267421 0.77639208
+    ## 27 patient31        NA  0.27787698          NA 0.27787698
+    ## 31 patient87        NA  0.29450754  0.26970952 0.28423038
+    ## 33 patient59        NA  0.14348016  0.37254722 0.23841348
+    ## 34  patient2        NA  0.54899484  0.81064603 0.65743216
+    ## 53 patient85        NA          NA  0.15869206 0.15869206
+    ## 60  patient3        NA          NA  0.56772579 0.56772579
 
 - Prediction performances for layer-specific available patients, and all
   patients on the meta layer.
@@ -529,7 +535,7 @@ print(perf_estimated)
 ```
 
     ##    geneexpr proteinexpr methylation  meta_layer 
-    ##   0.1191953   0.2150522   0.1027889   0.1263461
+    ##  0.12058651  0.16047024  0.08220819  0.12624550
 
 - Prediction performances for overlapping individuals.
 
@@ -545,7 +551,7 @@ print(perf_overlapping)
 ```
 
     ##    geneexpr proteinexpr methylation  meta_layer 
-    ##   0.1137649   0.2105247   0.0980155   0.1269612
+    ##  0.13864230  0.13319993  0.06688031  0.10194224
 
 - Prediction performances for non-overlapping individuals.
 
@@ -562,7 +568,7 @@ print(perf_not_overlapping)
 ```
 
     ##    geneexpr proteinexpr methylation  meta_layer 
-    ##          NA          NA          NA   0.1251929
+    ##          NA          NA          NA          NA
 
 © 2024 Institute of Medical Biometry and Statistics (IMBS). All rights
 reserved.

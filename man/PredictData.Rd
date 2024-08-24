@@ -11,7 +11,7 @@ A \link{PredictData} object can only exist as a component of a \link{PredictLaye
 \link{TrainData}, \link{TestData}
 }
 \section{Super class}{
-\code{fuseMLR::Data} -> \code{PredictData}
+\code{\link[fuseMLR:Data]{fuseMLR::Data}} -> \code{PredictData}
 }
 \section{Methods}{
 \subsection{Public methods}{

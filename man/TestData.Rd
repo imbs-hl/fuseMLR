@@ -11,7 +11,7 @@ A \link{TestData} object can only exist as a component of a \link{TestLayer} or 
 \link{TrainData}
 }
 \section{Super class}{
-\code{fuseMLR::Data} -> \code{TestData}
+\code{\link[fuseMLR:Data]{fuseMLR::Data}} -> \code{TestData}
 }
 \section{Methods}{
 \subsection{Public methods}{

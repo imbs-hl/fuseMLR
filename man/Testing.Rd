@@ -17,7 +17,7 @@ A Testing object is structured as followed:
 \link{TrainLayer}
 }
 \section{Super class}{
-\code{fuseMLR::HashTable} -> \code{Testing}
+\code{\link[fuseMLR:HashTable]{fuseMLR::HashTable}} -> \code{Testing}
 }
 \section{Methods}{
 \subsection{Public methods}{
