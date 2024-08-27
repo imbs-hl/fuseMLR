@@ -44,7 +44,7 @@ The following figure illustrates the general architecture of `fuseMLR`:
 knitr::include_graphics("README_files/figure-gfm/structure.png")
 ```
 
-The general architecture of `fuseMLR` includes the storage classes `Training`, `Layer`, and `MetaLayer`. `Layer` and `MetaLayer` are stored within a `Training` instance, while `Data`, `Learner`, and `Varselect` (for variable selection) are stored within a `Layer` instance. These components can be used to automatically build and store the `Model` or `MetaModel`.
+The general architecture of `fuseMLR` includes the collection classes `Training`, `TrainLayer`, and `TrainMetaLayer`. `TrainLayer` and `TrainMetaLayer` are stored within a `Training` instance, while `TrainData`, `Lrnr`, and `VarSel` (for variable selection) are stored within a `TrainLayer` or `MetaTrainLayer` instance. An `Training` object can be used to automatically conduct layer-specific variable selection and train layer-specfic and meta models.
 
 ### Usage example
 
