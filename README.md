@@ -554,5 +554,8 @@ print(perf_overlapping)
     ##    geneexpr proteinexpr methylation  meta_layer 
     ##  0.12551583  0.13679344  0.06749516  0.09629256
 
+Note that our example is based on simulated data for usage illustration;
+only one run is not enough to appreciate the performances of our models.
+
 © 2024 Institute of Medical Biometry and Statistics (IMBS). All rights
 reserved.

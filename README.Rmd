@@ -310,5 +310,6 @@ perf_overlapping <- sapply(X = actual_pred[complete.cases(actual_pred),
 print(perf_overlapping)
 ```
 
+Note that our example is based on simulated data for usage illustration; only one run is not enough to appreciate the performances of our models.
 
 &copy; 2024 Institute of Medical Biometry and Statistics (IMBS). All rights reserved.
