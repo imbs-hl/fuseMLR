@@ -293,6 +293,7 @@ Training <- R6Class("Training",
                         #' The predicted object. All layers and the meta layer are predicted. This is the final predicted object.
                         #' @export
                         #'
+                        # TODO: Mention that our predictions based on cross-validation are different from that coming from the original learning method; e.g. that coming from ranger.
                         predict = function (testing,
                                             ind_subset = NULL) {
                           # 1) Layer predictions

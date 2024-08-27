@@ -16,29 +16,30 @@ Cesaire J. K. Fouodo
 
 ### Introduction
 
-Recent technological advances have enabled the simultaneous targeting of
-multiple pathways to enhance therapies for complex diseases. This often
-results in the collection of numerous data entities across various
-layers of patient groups, posing a challenge for integrating all data
-into a single analysis. Ideally, data of the different layers are
-measured in the same individuals, allowing for early or intermediate
-integrative techniques. However, these techniques are challenging when
-patient data only partially overlap. Additionally, the internal
-structure of each data entity may necessitate specific statistical
-methods rather than applying the same method across all layers. Late
-integration modeling addresses this by analyzing each data entity
-separately to obtain layer-specific results, which are then integrated
-using aggregation methods. Currently, no R package offers this
-flexibility.
+Recent technological advances have enabled the simultaneous collection
+of multi-omics data, i.e., different types or modalities of molecular
+data across various organ tissues of patients. For integrative
+predictive modeling, the analysis of such data is particularly
+challenging. Ideally, data from the different modalities are measured in
+the same individuals, allowing for early or intermediate integrative
+techniques. However, they are often not applicable when patient data
+only partially overlap, which requires either reducing the datasets or
+imputing missing values. Additionally, the characteristics of each data
+modality may necessitate specific statistical methods rather than
+applying the same method across all modalities. Late integration
+modeling approaches analyze each data modality separately to obtain
+modality-specific predictions. These predictions are then integrated to
+train aggregative models like Lasso, random forests, or compute the
+weighted mean of modality-specific predictions.
 
-We introduce the fuseMLR package for late integration prediction
-modeling in R. This package allows users to define studies with multiple
-layers, data entities, and layer-specific machine learning methods. The
-package fuseMLR is user-friendly, enables training of different models
-across layers and automatically performs aggregation once layer-specific
-training is completed. Additionally, fuseMLR allows for variable
-selection at the layer level and makes predictions for new data
-entities.
+We introduce the R package fuseMLR for late integration prediction
+modeling. This comprehensive package enables users to define a training
+process with multiple data modalities and modality-specific machine
+learning methods. The package is user-friendly, facilitates variable
+selection and training of different models across modalities, and
+automatically performs aggregation once modality-specific training is
+completed. We simulated multi-omics data to illustrate the usage of our
+new package for conducting late-stage multi-omics integrative modeling.
 
 `fuseMLR` is an object-oriented package based on `R6` version 2.5.1.
 Refer to our [cheat
@@ -363,7 +364,7 @@ set.seed(5462)
 disease <- training$getTargetValues()$disease
 trained <- training$train(resampling_method = "caret::createFolds",
                                    resampling_arg = list(y = disease,
-                                                         k = 2L),
+                                                         k = 10L),
                                    use_var_sel = TRUE)
 # Let us now check the status of our training resources.
 print(trained)
@@ -392,13 +393,12 @@ print(tl_ge)
 
 ``` r
 ## On the meta model
-# TODO: Remove me after testing.
 tmp_model <- tl_meta$getModel()
 print(tmp_model$getBaseModel())
 ```
 
     ##    geneexpr proteinexpr methylation 
-    ##   0.3134868   0.4019984   0.2845149 
+    ##   0.2336235   0.4249688   0.3414078 
     ## attr(,"class")
     ## [1] "weightedMeanLearner"
 
@@ -484,35 +484,35 @@ print(predictions)
     ## 
     ## $predicted_values
     ##          IDS  geneexpr proteinexpr methylation meta_layer
-    ## 1  patient23 0.4066226  0.59039563  0.15416111 0.40867002
-    ## 2  patient77 0.4723008  0.48607738  0.13143770 0.38085834
-    ## 3  patient62 0.7903321  0.96848254          NA 0.89042670
-    ## 4  patient43 0.3204345          NA          NA 0.32043452
-    ## 5   patient8 0.7283837  0.85136032  0.83154603 0.80717132
-    ## 6  patient74 0.5480369  0.71174921  0.53741508 0.61082692
-    ## 7  patient29 0.3765401  0.44897460  0.29004206 0.38104867
-    ## 8  patient17 0.4029615  0.31254802          NA 0.35216230
-    ## 9  patient25 0.2794885  0.46890833  0.08669206 0.30078151
-    ## 10 patient54 0.8010825          NA  0.84085476 0.82000521
-    ## 11 patient60 0.7464111  0.84661310  0.79673889 0.80101115
-    ## 12 patient44 0.3812123          NA          NA 0.38121230
-    ## 13  patient1 0.8132333  0.93826706          NA 0.88348407
-    ## 14 patient76 0.6725758          NA  0.64178889 0.65792812
-    ## 15 patient16 0.6695210          NA  0.65919841 0.66460978
-    ## 16 patient27 0.3560107          NA  0.19385952 0.27886306
-    ## 17 patient58 0.5584369  0.75391905  0.78681071 0.70199615
-    ## 18 patient52 0.4704524  0.13166706          NA 0.28010441
-    ## 19 patient10 0.2658341          NA          NA 0.26583413
-    ## 20 patient72 0.6804016  0.94305873  0.62568056 0.77042038
-    ## 21 patient39        NA  0.09239167          NA 0.09239167
-    ## 25 patient46        NA  0.22666706  0.49346349 0.33723674
-    ## 26 patient97        NA  0.71532579  0.86267421 0.77639208
-    ## 27 patient31        NA  0.27787698          NA 0.27787698
-    ## 31 patient87        NA  0.29450754  0.26970952 0.28423038
-    ## 33 patient59        NA  0.14348016  0.37254722 0.23841348
-    ## 34  patient2        NA  0.54899484  0.81064603 0.65743216
-    ## 53 patient85        NA          NA  0.15869206 0.15869206
-    ## 60  patient3        NA          NA  0.56772579 0.56772579
+    ## 1  patient23 0.3899925  0.59490714  0.17449127 0.40350102
+    ## 2  patient77 0.4222480  0.49866468  0.14058889 0.35856210
+    ## 3  patient62 0.7736817  0.96993571          NA 0.90031823
+    ## 4  patient43 0.3301254          NA          NA 0.33012540
+    ## 5   patient8 0.7346532  0.85212024  0.83084960 0.81741522
+    ## 6  patient74 0.5555329  0.69613294  0.54980476 0.61332790
+    ## 7  patient29 0.3362905  0.46632857  0.27474444 0.37054031
+    ## 8  patient17 0.3997508  0.34566627          NA 0.36485176
+    ## 9  patient25 0.2778349  0.45710040  0.09602103 0.29194448
+    ## 10 patient54 0.7863302          NA  0.84842857 0.82319925
+    ## 11 patient60 0.7415452  0.84184524  0.79166865 0.80128213
+    ## 12 patient44 0.3717952          NA          NA 0.37179524
+    ## 13  patient1 0.8211250  0.93648373          NA 0.89556234
+    ## 14 patient76 0.6840357          NA  0.60861508 0.63925695
+    ## 15 patient16 0.6923929          NA  0.69758968 0.69547832
+    ## 16 patient27 0.3699286          NA  0.20396786 0.27139431
+    ## 17 patient58 0.5648032  0.75506071  0.76331349 0.71342965
+    ## 18 patient52 0.4850317  0.13170119          NA 0.25703870
+    ## 19 patient10 0.2517774          NA          NA 0.25177738
+    ## 20 patient72 0.7087675  0.94573135  0.62339762 0.78032379
+    ## 21 patient39        NA  0.08271032          NA 0.08271032
+    ## 25 patient46        NA  0.22185635  0.51994405 0.35464937
+    ## 26 patient97        NA  0.70887738  0.86840476 0.77994413
+    ## 27 patient31        NA  0.28228095          NA 0.28228095
+    ## 31 patient87        NA  0.29549603  0.26039048 0.27985710
+    ## 33 patient59        NA  0.14183968  0.38772183 0.25137601
+    ## 34  patient2        NA  0.55434325  0.79045437 0.65952675
+    ## 53 patient85        NA          NA  0.15880913 0.15880913
+    ## 60  patient3        NA          NA  0.57764881 0.57764881
 
 - Prediction performances for layer-specific available patients, and all
   patients on the meta layer.
@@ -535,7 +535,7 @@ print(perf_estimated)
 ```
 
     ##    geneexpr proteinexpr methylation  meta_layer 
-    ##  0.12058651  0.16047024  0.08220819  0.12624550
+    ##   0.1147740   0.1645159   0.0815040   0.1231755
 
 - Prediction performances for overlapping individuals.
 
@@ -551,24 +551,7 @@ print(perf_overlapping)
 ```
 
     ##    geneexpr proteinexpr methylation  meta_layer 
-    ##  0.13864230  0.13319993  0.06688031  0.10194224
-
-- Prediction performances for non-overlapping individuals.
-
-``` r
-# On non-overlapping patients
-perf_not_overlapping <- sapply(X = actual_pred[!complete.cases(actual_pred),
-                                               2L:5L],
-                         FUN = function (my_pred) {
-  bs <- BrierScore(x = x[!complete.cases(actual_pred)],
-                   pred = my_pred, na.rm = TRUE)
-  return(bs)
-})
-print(perf_not_overlapping)
-```
-
-    ##    geneexpr proteinexpr methylation  meta_layer 
-    ##          NA          NA          NA          NA
+    ##  0.12551583  0.13679344  0.06749516  0.09629256
 
 © 2024 Institute of Medical Biometry and Statistics (IMBS). All rights
 reserved.
