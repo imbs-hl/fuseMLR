@@ -173,7 +173,7 @@ Model <- R6Class("Model",
                      } else {
                        predict_fct = sprintf('%s:::%s',
                                              lrn_package,
-                                             sprintf("predict.%s", class(self$getBaseModel())))
+                                             sprintf("predict.%s", class(self$getBaseModel())[1]))
                      }
                      predicted_obj = do.call(eval(parse(text = predict_fct)),
                                              pred_param)
