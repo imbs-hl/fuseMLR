@@ -35,7 +35,7 @@ from this class.
 \subsection{Method \code{new()}}{
 constructor
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ParamLrner$new(id, param_list, hyperparam_list)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ParamLrner$new(id, param_list, hyperparam_list = list())}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -48,7 +48,7 @@ See class Param}
 See class Param}
 
 \item{\code{hyperparam_list}}{(\code{list(1)})\cr
-List of hyperparameters}
+List of hyperparameters. Default is an empty list.}
 }
 \if{html}{\out{</div>}}
 }

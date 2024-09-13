@@ -96,6 +96,7 @@ Training <- R6Class("Training",
                           cat(sprintf("Training        : %s\n", private$id))
                           cat(sprintf("Status          : %s\n", status))
                           cat(sprintf("Number of layers: %s\n", nb_layers))
+                          # TODO: Fix the number of layer trained.
                           cat(sprintf("Layers trained  : %s\n", private$nb_trained_layer))
                           cat(sprintf("n               : %s\n", nrow(private$target_obj$getData())))
                         },
@@ -296,6 +297,7 @@ Training <- R6Class("Training",
                         # TODO: Mention that our predictions based on cross-validation are different from that coming from the original learning method; e.g. that coming from ranger.
                         predict = function (testing,
                                             ind_subset = NULL) {
+                          # TODO: Maybe first check layer name consistency here?
                           # 1) Layer predictions
                           predicting = self$predictLayer(testing = testing,
                                                               ind_subset = ind_subset)

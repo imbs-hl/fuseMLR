@@ -195,10 +195,10 @@ Lrner <- R6Class("Lrner",
                      return(private$ind_subset)
                    },
                    #' @description
-                   #' Getter of the learner package implementing the learn function.
+                   #' Getter of the variable subset used for training.
                    #'
                    #' @return
-                   #' The name of the package implementing the learn function.
+                   #' The list of variables used for training is returned.
                    #'
                    getVarSubset = function () {
                      return(private$ind_subset)

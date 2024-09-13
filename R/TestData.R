@@ -20,6 +20,7 @@ TestData <- R6Class("TestData",
                      #' \code{data.frame} containing data.
                      #' @param new_layer (`TestLayer(1)`) \cr
                      #' Layer where to store the current object.
+                     # TODO: rename new_layer by test_layer
                      initialize = function (id,
                                            data_frame,
                                            new_layer) {

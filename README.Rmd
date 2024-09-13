@@ -77,9 +77,9 @@ We need to set up training resources.
 
 ```{r training, include=TRUE, eval=TRUE}
 training <- Training$new(id = "training",
-                              ind_col = "IDS",
-                              target = "disease",
-                              target_df = entities$training$target)
+                         ind_col = "IDS",
+                         target = "disease",
+                         target_df = entities$training$target)
 # See also training$summary()
 print(training)
 ```
@@ -213,9 +213,9 @@ set.seed(5462)
 # fuseMLR to generate meta data.
 disease <- training$getTargetValues()$disease
 trained <- training$train(resampling_method = "caret::createFolds",
-                                   resampling_arg = list(y = disease,
-                                                         k = 10L),
-                                   use_var_sel = TRUE)
+                          resampling_arg = list(y = disease,
+                                                k = 10L),
+                          use_var_sel = TRUE)
 # Let us now check the status of our training resources.
 print(trained)
 # Let us check the status of a layer as well.
@@ -255,14 +255,14 @@ nl_me <- TestLayer$new(id = "methylation", testing = testing)
 
 ```{r new_data, include=TRUE, eval=TRUE}
 new_data_ge <- TestData$new(id = "geneexpr",
-                           new_layer = nl_ge,
-                           data_frame = entities$testing$geneexpr)
+                            new_layer = nl_ge,
+                            data_frame = entities$testing$geneexpr)
 new_data_pr <- TestData$new(id = "proteinexpr",
-                           new_layer = nl_pr,
-                           data_frame = entities$testing$proteinexpr)
+                            new_layer = nl_pr,
+                            data_frame = entities$testing$proteinexpr)
 new_data_me <- TestData$new(id = "methylation",
-                           new_layer = nl_me,
-                           data_frame = entities$testing$methylation)
+                            new_layer = nl_me,
+                            data_frame = entities$testing$methylation)
 ```
 
 - An upset plot of the training data: Visualize patient overlap across layers.
@@ -303,10 +303,10 @@ print(perf_estimated)
 # On overlapping patients
 perf_overlapping <- sapply(X = actual_pred[complete.cases(actual_pred),
                                            2L:5L],
-                         FUN = function (my_pred) {
-  bs <- BrierScore(x = x[complete.cases(actual_pred)], pred = my_pred)
-  return(bs)
-})
+                           FUN = function (my_pred) {
+                             bs <- BrierScore(x = x[complete.cases(actual_pred)], pred = my_pred)
+                             return(bs)
+                           })
 print(perf_overlapping)
 ```
 

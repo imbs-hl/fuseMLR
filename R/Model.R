@@ -144,6 +144,7 @@ Model <- R6Class("Model",
                      }
                      # Incomplete data are removed if required.
                      new_data = new_data$clone(deep = FALSE)
+                     # Restrict variables to the subset used for training
                      if (tmp_lrner$getNaRm()) {
                        complete_data = new_data$getCompleteData()
                        new_data$setDataFrame(data_frame = complete_data)
@@ -166,7 +167,9 @@ Model <- R6Class("Model",
                      }
                      pred_param <- list(...)
                      pred_param$object = self$getBaseModel()
-                     pred_param$data = new_data$getData()
+                     # Predict using the subset of variables utilized for training
+                     training_var = colnames(private$train_data$getData())
+                     pred_param$data = new_data$getData()[ , training_var, drop = TRUE]
                      lrn_package = private$lrner$getPackage()
                      if (is.null(lrn_package)) {
                        predict_fct = "predict"

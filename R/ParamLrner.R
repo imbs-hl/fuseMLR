@@ -18,11 +18,11 @@ ParamLrner <- R6Class("ParamLrner",
                           #' @param param_list (`list(1)`)\cr
                           #' See class Param
                           #' @param hyperparam_list (`list(1)`)\cr
-                          #' List of hyperparameters
+                          #' List of hyperparameters. Default is an empty list.
                           #'
                           initialize = function (id,
                                                 param_list,
-                                                hyperparam_list) {
+                                                hyperparam_list = list()) {
                             super$initialize(id = id, param_list = param_list)
                             private$hyperparam = hyperparam_list
                             param = c(private$param_list, hyperparam_list)

@@ -180,13 +180,13 @@ The name of the package implementing the learn function.
 \if{html}{\out{<a id="method-Lrner-getVarSubset"></a>}}
 \if{latex}{\out{\hypertarget{method-Lrner-getVarSubset}{}}}
 \subsection{Method \code{getVarSubset()}}{
-Getter of the learner package implementing the learn function.
+Getter of the variable subset used for training.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Lrner$getVarSubset()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-The name of the package implementing the learn function.
+The list of variables used for training is returned.
 }
 }
 }
