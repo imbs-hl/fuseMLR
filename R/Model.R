@@ -175,7 +175,6 @@ Model <- R6Class("Model",
                          var_sel_obj = private$train_layer$getVarSel()
                          var_sel = var_sel_obj$getVarSubSet()
                          if (!is.null(var_sel)) {
-                           print(var_sel)
                            restricted_new_data = restricted_new_data[, var_sel, drop = FALSE]
                          }
                        }
