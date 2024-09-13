@@ -169,7 +169,17 @@ Model <- R6Class("Model",
                      pred_param$object = self$getBaseModel()
                      # Predict using the subset of variables utilized for training
                      training_var = colnames(private$train_data$getData())
-                     pred_param$data = new_data$getData()[ , training_var, drop = TRUE]
+                     restricted_new_data = new_data$getData()
+                     if ("TrainLayer" %in% class(private$train_layer)) {
+                       if (private$train_layer$checkVarSelExist()) {
+                         var_sel_obj = private$train_layer$getVarSel()
+                         var_sel = var_sel_obj$getVarSubSet()
+                         if (!is.null(var_sel)) {
+                           restricted_new_data = restricted_new_data[, var_sel, drop = FALSE]
+                         }
+                       }
+                     }
+                     pred_param$data = restricted_new_data
                      lrn_package = private$lrner$getPackage()
                      if (is.null(lrn_package)) {
                        predict_fct = "predict"
