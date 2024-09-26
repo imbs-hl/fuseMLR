@@ -96,7 +96,7 @@ Printer
 \subsection{Method \code{train()}}{
 Tains the current learner (from class \link{Lrner}) on the current training data (from class \link{TrainData}).
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Lrner$train(ind_subset = NULL, use_var_sel = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Lrner$train(ind_subset = NULL, use_var_sel = FALSE, verbose = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -107,6 +107,9 @@ Individual ID subset on which the training will be performed.}
 
 \item{\code{use_var_sel}}{\code{boolean(1)} \cr
 If TRUE, variable selection is performed before training.}
+
+\item{\code{verbose}}{(\code{boolean}) \cr
+Warning messages will be displayed if set to TRUE.}
 }
 \if{html}{\out{</div>}}
 }

@@ -73,12 +73,15 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                             #'
                             #' @param ind_subset `vector(1)` \cr
                             #' ID subset of individuals to be used for training.
+                            #' @param verbose (`boolean`) \cr
+                            #' Warning messages will be displayed if set to TRUE.
                             #'
                             #' @return
                             #' The current layer is returned with the resulting model.
                             #' @export
                             #'
-                            train = function (ind_subset = NULL) {
+                            train = function (ind_subset = NULL,
+                                              verbose = TRUE) {
                               layer_kc = self$getKeyClass()
                               # Stop if either learner of data is missing on this layer.
                               if (!("Lrner" %in% layer_kc[ , "class"])){
@@ -239,6 +242,11 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                                                      ind_col,
                                                      data_frame,
                                                      target) {
+                              # nocov start
+                              if (sum(!complete.cases(data_frame)) == nrow(data_frame)) {
+                                warning("No individual fully overlaps across all layers.")
+                              }
+                              # nocov end
                               TrainData$new(id = id,
                                             data_frame = data_frame,
                                             train_layer = self)

@@ -82,12 +82,16 @@ TrainLayer <- R6Class("TrainLayer",
                         #' ID subset of individuals to be used for training.
                         #' @param use_var_sel `boolean(1)` \cr
                         #' If TRUE, variable selection is performed before training.
+                        #' @param verbose (`boolean`) \cr
+                        #' Warning messages will be displayed if set to TRUE.
                         #'
                         #' @return
                         #' The current layer is returned with the resulting model.
                         #' @export
                         #'
-                        train = function (ind_subset = NULL, use_var_sel = FALSE) {
+                        train = function (ind_subset = NULL,
+                                          use_var_sel = FALSE,
+                                          verbose = TRUE) {
                           layer_kc = self$getKeyClass()
                           # Stop if either learner of data is missing on this layer.
                           if (!("Lrner" %in% layer_kc[ , "class"])){
@@ -101,11 +105,20 @@ TrainLayer <- R6Class("TrainLayer",
                           lrner_key = layer_kc[layer_kc$class == "Lrner" , "key"]
                           lrner = self$getFromHashTable(key = lrner_key[1L])
                           if (use_var_sel & (!self$checkVarSelExist())) {
-                            warning(sprintf("No var. sel. on layer %s.", self$getId()))
+                            if (verbose) {
+                              warning(sprintf("No var. sel. on layer %s.", self$getId()))
+                            }
                             use_var_sel = FALSE
                           }
+                          if (verbose) {
+                            message(sprintf("Training on layer %s started.\n", self$getId()))
+                          }
                           model = lrner$train(ind_subset = ind_subset,
-                                              use_var_sel = use_var_sel)
+                                              use_var_sel = use_var_sel,
+                                              verbose = verbose)
+                          if (verbose) {
+                            message(sprintf("Training on layer %s done.\n", self$getId()))
+                          }
                           # Updating the training status.
                           if (!private$status) {
                             # The training layer has not been trained before.
@@ -122,16 +135,21 @@ TrainLayer <- R6Class("TrainLayer",
                         #'
                         #' @param ind_subset `vector(1)` \cr
                         #' ID subset of individuals to be used for variable selection.
+                        #' @param verbose (`boolean`) \cr
+                        #' Warning messages will be displayed if set to TRUE.
                         #'
                         #' @return
                         #' The current layer is returned with the resulting model.
                         #' @export
                         #'
-                        varSelection = function (ind_subset = NULL) {
+                        varSelection = function (ind_subset = NULL,
+                                                 verbose = TRUE) {
                           layer_kc = self$getKeyClass()
                           # Stop if either selector or data is missing on this layer.
                           if (!("VarSel" %in% layer_kc[ , "class"])) {
-                            warning(sprintf("No var. sel. method on layer %s.", self$getId()))
+                            if (verbose) {
+                              warning(sprintf("No var. sel. method on layer %s.", self$getId()))
+                            }
                             return(NULL)
                           } else {
                             if (!("TrainData" %in% layer_kc[ , "class"])) {
@@ -141,7 +159,13 @@ TrainLayer <- R6Class("TrainLayer",
                           # The learner is trained on the current dataset
                           varsel_key = layer_kc[layer_kc$class == "VarSel" , "key"]
                           varsel = self$getFromHashTable(key = varsel_key[1L])
+                          if (verbose) {
+                            message(sprintf("Variable selection on layer %s started.\n", self$getId()))
+                          }
                           selected = varsel$varSelection(ind_subset = ind_subset)
+                          if (verbose) {
+                            message(sprintf("Variable selection on layer %s done.\n", self$getId()))
+                          }
                           return(selected)
                         },
                         #' @description

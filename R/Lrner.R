@@ -87,12 +87,16 @@ Lrner <- R6Class("Lrner",
                    #' Individual ID subset on which the training will be performed.
                    #' @param use_var_sel `boolean(1)` \cr
                    #' If TRUE, variable selection is performed before training.
+                   #' @param verbose (`boolean`) \cr
+                   #' Warning messages will be displayed if set to TRUE.
                    #'
                    #' @return
                    #' The resulting model, from class [Model], is returned.
                    #' @export
                    #'
-                   train = function (ind_subset = NULL, use_var_sel = FALSE) {
+                   train = function (ind_subset = NULL,
+                                     use_var_sel = FALSE,
+                                     verbose = TRUE) {
                      train_data = private$train_layer$getTrainData()
                      # Train only on complete data
                      train_data = train_data$clone(deep = FALSE)
@@ -127,7 +131,9 @@ Lrner <- R6Class("Lrner",
                          private$var_subset = selected_var
                        } else {
                          # nocov start
-                         warning("No selected variable found, so all variables have been used for training.\n")
+                         if (verbose) {
+                           warning("No selected variable found, so all variables have been used for training.\n")
+                         }
                          private$var_subset = "ALL"
                          # nocov end
                        }

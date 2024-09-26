@@ -127,7 +127,7 @@ Getter of the target object.
 \subsection{Method \code{train()}}{
 Trains the current layer.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TrainLayer$train(ind_subset = NULL, use_var_sel = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TrainLayer$train(ind_subset = NULL, use_var_sel = FALSE, verbose = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -138,6 +138,9 @@ ID subset of individuals to be used for training.}
 
 \item{\code{use_var_sel}}{\code{boolean(1)} \cr
 If TRUE, variable selection is performed before training.}
+
+\item{\code{verbose}}{(\code{boolean}) \cr
+Warning messages will be displayed if set to TRUE.}
 }
 \if{html}{\out{</div>}}
 }
@@ -151,7 +154,7 @@ The current layer is returned with the resulting model.
 \subsection{Method \code{varSelection()}}{
 Variable selection on the current layer.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TrainLayer$varSelection(ind_subset = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TrainLayer$varSelection(ind_subset = NULL, verbose = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -159,6 +162,9 @@ Variable selection on the current layer.
 \describe{
 \item{\code{ind_subset}}{\code{vector(1)} \cr
 ID subset of individuals to be used for variable selection.}
+
+\item{\code{verbose}}{(\code{boolean}) \cr
+Warning messages will be displayed if set to TRUE.}
 }
 \if{html}{\out{</div>}}
 }

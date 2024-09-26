@@ -1,4 +1,4 @@
-#' @title The weighted mean super learner
+#' @title The weighted mean meta learner
 #'
 #' @description
 #' Layer weights are estimated for each layer based on Brier score.
@@ -15,7 +15,7 @@
 #'
 #' @examples
 #' set.seed(20240624L)
-#' x = data.frame(x1 = rnorm(50L))
+#' x = data.frame(x1 = runif(n = 50L, min = 0, max = 1))
 #' y = sample(x = 0L:1L, size = 50L, replace = TRUE)
 #' my_model = weightedMeanLearner(x = x, y = y)
 #'

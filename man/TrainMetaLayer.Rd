@@ -122,7 +122,7 @@ Getter of the target object.
 \subsection{Method \code{train()}}{
 Trains the current layer.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TrainMetaLayer$train(ind_subset = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TrainMetaLayer$train(ind_subset = NULL, verbose = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -130,6 +130,9 @@ Trains the current layer.
 \describe{
 \item{\code{ind_subset}}{\code{vector(1)} \cr
 ID subset of individuals to be used for training.}
+
+\item{\code{verbose}}{(\code{boolean}) \cr
+Warning messages will be displayed if set to TRUE.}
 }
 \if{html}{\out{</div>}}
 }

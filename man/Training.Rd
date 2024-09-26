@@ -79,7 +79,14 @@ Use the function \code{train} for training and \code{predict} for predicting.
 \subsection{Method \code{new()}}{
 constructor
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Training$new(id, ind_col, target, target_df, problem_type = "classification")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Training$new(
+  id,
+  ind_col,
+  target,
+  target_df,
+  problem_type = "classification",
+  verbose = TRUE
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -98,6 +105,9 @@ Data frame with two columns: individual IDs and response variable values.}
 
 \item{\code{problem_type}}{(\code{character}) \cr
 Either "classification" or "regression".}
+
+\item{\code{verbose}}{(\code{boolean}) \cr
+Warning messages will be displayed if set to TRUE.}
 }
 \if{html}{\out{</div>}}
 }
@@ -125,7 +135,7 @@ Printer
 \subsection{Method \code{trainLayer()}}{
 Train each layer of the current Training.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Training$trainLayer(ind_subset = NULL, use_var_sel = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Training$trainLayer(ind_subset = NULL, use_var_sel = FALSE, verbose = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -136,6 +146,9 @@ Subset of individuals IDs to be used for training.}
 
 \item{\code{use_var_sel}}{\code{boolean(1)} \cr
 If TRUE, selected variables available at each layer are used.}
+
+\item{\code{verbose}}{(\code{boolean}) \cr
+Warning messages will be displayed if set to TRUE.}
 }
 \if{html}{\out{</div>}}
 }
@@ -173,7 +186,12 @@ A new \link{Training} with predicted values for each layer.
 \subsection{Method \code{createMetaTrainData()}}{
 Creates a meta training dataset and assigns it to the meta layer.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Training$createMetaTrainData(resampling_method, resampling_arg, use_var_sel)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Training$createMetaTrainData(
+  resampling_method,
+  resampling_arg,
+  use_var_sel,
+  verbose = TRUE
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -187,6 +205,9 @@ List of arguments to be passed to the function.}
 
 \item{\code{use_var_sel}}{\code{boolean(1)} \cr
 If TRUE, selected variables available at each layer are used.}
+
+\item{\code{verbose}}{(\code{boolean}) \cr
+Warning messages will be displayed if set to TRUE.}
 }
 \if{html}{\out{</div>}}
 }
@@ -204,7 +225,8 @@ Trains the current object. All leaners and the meta learner are trained.
   ind_subset = NULL,
   use_var_sel = FALSE,
   resampling_method,
-  resampling_arg
+  resampling_arg,
+  verbose = TRUE
 )}\if{html}{\out{</div>}}
 }
 
@@ -222,6 +244,9 @@ Function for internal validation.}
 
 \item{\code{resampling_arg}}{(\code{list(1)}) \cr
 List of arguments to be passed to the function.}
+
+\item{\code{verbose}}{(\code{boolean}) \cr
+Warning messages will be displayed if set to TRUE.}
 }
 \if{html}{\out{</div>}}
 }
@@ -259,7 +284,7 @@ The predicted object. All layers and the meta layer are predicted. This is the f
 \subsection{Method \code{varSelection()}}{
 Variable selection on the current training object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Training$varSelection(ind_subset = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Training$varSelection(ind_subset = NULL, verbose = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -267,6 +292,9 @@ Variable selection on the current training object.
 \describe{
 \item{\code{ind_subset}}{\code{vector(1)} \cr
 ID subset of individuals to be used for variable selection.}
+
+\item{\code{verbose}}{(\code{boolean}) \cr
+Warning messages will be displayed if set to TRUE.}
 }
 \if{html}{\out{</div>}}
 }
