@@ -125,14 +125,14 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                                 stop("The new layer ID does not match with the current layer ID.")
                                 # nocov end
                               }
-                              new_data = new_layer$getTestData()
+                              testing_data = new_layer$getTestData()
                               # Predicting: Data and model exist on this layer.
                               # Initialize a layer to store predictions
                               # pred_layer = HashTable$new(id = self$getId())
                               pred_layer = PredictLayer$new(id = self$getId())
                               model = self$getModel()
                               # Layer specific prediction
-                              pred = model$predict(new_data = new_data,
+                              pred = model$predict(testing_data = testing_data,
                                                    ind_subset = ind_subset)
                               # Store predictions
 

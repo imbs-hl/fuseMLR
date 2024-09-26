@@ -163,11 +163,11 @@ TrainLayer <- R6Class("TrainLayer",
                           } else {
                             stop("The new layer ID does not match with the current layer ID.")
                           }
-                          new_data = new_layer$getTestData()
+                          testing_data = new_layer$getTestData()
                           # Predicting: Data and model exist on this layer.
 
                           model = self$getModel()
-                          pred_data = model$predict(new_data = new_data,
+                          pred_data = model$predict(testing_data = testing_data,
                                                     ind_subset = ind_subset)
                           # Initialize a predicted layer to store predictions
                           pred_layer = PredictLayer$new(
@@ -251,17 +251,17 @@ TrainLayer <- R6Class("TrainLayer",
                             if ("TestData" %in% layer_kc[ , "class"]) {
                               # nocov start
                               # TODO: This part of the code will never be executed. Check it and maybe remove it
-                              new_data_key = layer_kc[layer_kc$class == "TestData" ,
+                              testing_data_key = layer_kc[layer_kc$class == "TestData" ,
                                                       "key"]
-                              new_data = self$getFromHashTable(key = new_data_key[1L])
+                              testing_data = self$getFromHashTable(key = testing_data_key[1L])
                               # nocov end
                             } else {
-                              new_data = self$getTrainData()
+                              testing_data = self$getTrainData()
                             }
                           } else {
                             stop(sprintf("No new data on layer %s.", self$getId()))
                           }
-                          return(new_data)
+                          return(testing_data)
                         },
                         #' @description
                         #' Getter of the learner.

@@ -161,13 +161,13 @@ ID value}
 Predict target values for the new data
 (from class \link{TestData}) taken as into.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Model$predict(new_data, ind_subset = NULL, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Model$predict(testing_data, ind_subset = NULL, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{new_data}}{\code{TestData(1)} \cr
+\item{\code{testing_data}}{\code{TestData(1)} \cr
 An object from class \link{TestData}.}
 
 \item{\code{ind_subset}}{\code{vector(1)} \cr

@@ -124,7 +124,7 @@ Model <- R6Class("Model",
                    #' Predict target values for the new data
                    #' (from class [TestData]) taken as into.
                    #'
-                   #' @param new_data `TestData(1)` \cr
+                   #' @param testing_data `TestData(1)` \cr
                    #' An object from class [TestData].
                    #' @param ind_subset `vector(1)` \cr
                    #' Subset of individual IDs to be predicted.
@@ -137,49 +137,49 @@ Model <- R6Class("Model",
                    #'
                    #' @export
                    #'
-                   predict = function (new_data, ind_subset = NULL, ...) {
+                   predict = function (testing_data, ind_subset = NULL, ...) {
                      tmp_lrner = self$getLrner()
-                     if(tmp_lrner$getTrainLayer()$getId() != new_data$getTestLayer()$getId()) {
+                     if(tmp_lrner$getTrainLayer()$getId() != testing_data$getTestLayer()$getId()) {
                        stop("Learner and data must belong to the same layer.")
                      }
                      # Incomplete data are removed if required.
-                     new_data = new_data$clone(deep = FALSE)
+                     testing_data = testing_data$clone(deep = FALSE)
                      # Restrict variables to the subset used for training
                      if (tmp_lrner$getNaRm()) {
-                       complete_data = new_data$getCompleteData()
-                       new_data$setDataFrame(data_frame = complete_data)
+                       complete_data = testing_data$getCompleteData()
+                       testing_data$setDataFrame(data_frame = complete_data)
                      }
                      # Prepare new dataset
                      if (is.null(ind_subset)) {
                        missing_ind = NULL
-                       new_data = new_data
-                       ind_subset = new_data$getDataFrame()[ , new_data$getIndCol()]
+                       testing_data = testing_data
+                       ind_subset = testing_data$getDataFrame()[ , testing_data$getIndCol()]
                      } else {
                        # Filter individuals with missing values on this layer
-                       missing_ind = new_data$getSetDiff(
-                         var_name = new_data$getIndCol(),
+                       missing_ind = testing_data$getSetDiff(
+                         var_name = testing_data$getIndCol(),
                          value = ind_subset)
                        # Keeping only individuals with observations
                        ind_subset = setdiff(ind_subset, missing_ind)
-                       new_data = new_data$getIndSubset(
-                         var_name = new_data$getIndCol(),
+                       testing_data = testing_data$getIndSubset(
+                         var_name = testing_data$getIndCol(),
                          value = ind_subset)
                      }
                      pred_param <- list(...)
                      pred_param$object = self$getBaseModel()
                      # Predict using the subset of variables utilized for training
                      training_var = colnames(private$train_data$getData())
-                     restricted_new_data = new_data$getData()
+                     restricted_testing_data = testing_data$getData()
                      if ("TrainLayer" %in% class(private$train_layer)) {
                        if (private$train_layer$checkVarSelExist()) {
                          var_sel_obj = private$train_layer$getVarSel()
                          var_sel = var_sel_obj$getVarSubSet()
                          if (!is.null(var_sel)) {
-                           restricted_new_data = restricted_new_data[, var_sel, drop = FALSE]
+                           restricted_testing_data = restricted_testing_data[, var_sel, drop = FALSE]
                          }
                        }
                      }
-                     pred_param$data = restricted_new_data
+                     pred_param$data = restricted_testing_data
                      lrn_package = private$lrner$getPackage()
                      if (is.null(lrn_package)) {
                        predict_fct = "predict"
@@ -198,7 +198,7 @@ Model <- R6Class("Model",
                          id = ind_subset,
                          pred = predicted_obj)
                        pred_colnames = c("Layer",
-                                         new_data$getIndCol(),
+                                         testing_data$getIndCol(),
                                          "Prediction")
                        names(predicted_obj) = pred_colnames
                      } else {
@@ -240,8 +240,8 @@ Model <- R6Class("Model",
                        rbind(predicted_obj,
                              predicted_obj_missing))
                      predicted_data = PredictData$new(
-                       id = new_data$getId(),
-                       ind_col = new_data$getIndCol(),
+                       id = testing_data$getId(),
+                       ind_col = testing_data$getIndCol(),
                        data_frame = predicted_obj
                      )
                      return(predicted_data)

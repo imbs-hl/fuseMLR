@@ -31,10 +31,10 @@ test_that("Model: all tests", {
 
   testing <- Testing$new(id = "testing", ind_col = "IDS")
   nl_ge <- TestLayer$new(id = "wrong_id", testing = testing)
-  new_data_ge <- TestData$new(id = "geneexpr",
+  testing_data_ge <- TestData$new(id = "geneexpr",
                              new_layer = nl_ge,
                              data_frame = entities$testing$geneexpr)
   expect_error({
-    my_model$predict(new_data_ge)
+    my_model$predict(testing_data_ge)
   })
 })

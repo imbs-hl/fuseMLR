@@ -82,7 +82,7 @@ test_that("TrainLayer: all tests", {
   expect_error({
     tl_ge$predict(nl_ge)
   })
-  new_data_ge <- TestData$new(id = "geneexpr",
+  testing_data_ge <- TestData$new(id = "geneexpr",
                              new_layer = nl_ge,
                              data_frame = entities$testing$geneexpr)
   expect_no_error({

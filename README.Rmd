@@ -253,7 +253,7 @@ nl_me <- TestLayer$new(id = "methylation", testing = testing)
 
 - Instantiate and add new training data to new layers.
 
-```{r new_data, include=TRUE, eval=TRUE}
+```{r testing_data, include=TRUE, eval=TRUE}
 new_data_ge <- TestData$new(id = "geneexpr",
                             new_layer = nl_ge,
                             data_frame = entities$testing$geneexpr)

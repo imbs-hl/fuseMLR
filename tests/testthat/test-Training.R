@@ -263,10 +263,10 @@ test_that("Training: all tests", {
   })
 
   expect_no_error({
-    new_data_ge <- TestData$new(id = "geneexpr",
+    testing_data_ge <- TestData$new(id = "geneexpr",
                                new_layer = nl_ge,
                                data_frame = entities$testing$geneexpr)
-    new_data_pr <- TestData$new(id = "proteinexpr",
+    testing_data_pr <- TestData$new(id = "proteinexpr",
                                new_layer = nl_pr,
                                data_frame = entities$testing$proteinexpr)
     testing$summary()
