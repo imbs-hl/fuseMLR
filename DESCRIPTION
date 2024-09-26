@@ -23,6 +23,7 @@ Depends: R (>= 3.6.0)
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Collate: 
+    'BestSpecificLearner.R'
     'Data.R'
     'HashTable.R'
     'Lrner.R'
@@ -46,4 +47,5 @@ Collate:
     'VarSel.R'
     'entities.R'
     'weightedMeanLearner.R'
+    'predict.bestSpecificLearner.R'
     'predict.weightedMeanLearner.R'
