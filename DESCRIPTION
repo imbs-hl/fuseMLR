@@ -11,7 +11,8 @@ Encoding: UTF-8
 Imports: 
     R6,
     stats,
-    digest
+    digest,
+    checkmate
 Suggests: 
     testthat (>= 3.0.0),
     UpSetR (>= 1.4.0),
@@ -23,7 +24,7 @@ Suggests:
 Config/testthat/edition: 3
 Depends: R (>= 3.6.0)
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 Collate: 
     'BestSpecificLearner.R'
     'Data.R'
@@ -47,8 +48,15 @@ Collate:
     'TrainMetaLayer.R'
     'Training.R'
     'VarSel.R'
+    'build.calib.weights.R'
+    'build.dif.R'
+    'build.risk.R'
+    'build.weights.R'
+    'cobra.R'
     'entities.R'
     'weightedMeanLearner.R'
     'predict.bestSpecificLearner.R'
+    'predict.cobra.R'
     'predict.weightedMeanLearner.R'
+    'wrapper.cobra.R'
 VignetteBuilder: knitr
