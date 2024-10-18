@@ -32,7 +32,7 @@ target_df$IDS <- gsub(pattern = "subject",
 
 index_split <- caret::createDataPartition(y = disease, p = 0.7)
 index_split$Fold1 <- index_split$Resample1
-index_split$Fold2 <- setdiff(1L:length(index_split$Fold1), index_split$Fold1)
+index_split$Fold2 <- setdiff(1L:length(disease), index_split$Fold1)
 train_disease <- disease[index_split$Fold1]
 
 target_df_train <- target_df[index_split$Fold1, ]

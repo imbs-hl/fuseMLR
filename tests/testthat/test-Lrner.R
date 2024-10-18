@@ -59,3 +59,4 @@ test_that("Lrner instantiates correctly", {
 test_that("Lrner cannot be trained without a training data", {
   expect_error(lrner_geneexpr$train())
 })
+

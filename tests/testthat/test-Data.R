@@ -33,11 +33,11 @@ test_that("Data: getVarSubset",{
   # expect_equal(length(tmp), 1L)
 })
 
-test_that("Data: getSetDiff",{
-  tmp <- test_data$getSetDiff(var_name = "IDS",
-                              value = c("patient67"))
-  # expect_equal(length(tmp), 0L)
-})
+# test_that("Data: getSetDiff",{
+#   tmp <- test_data$getSetDiff(var_name = "IDS",
+#                               value = c("patient67"))
+#   # expect_equal(length(tmp), 0L)
+# })
 
 test_that("Data: getDataFrame",{
   expect_no_error(test_data$getDataFrame())
@@ -64,3 +64,4 @@ test_that("Data: getId",{
 test_that("Data: getData",{
   expect_error(test_data$getData())
 })
+

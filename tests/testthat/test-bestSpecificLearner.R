@@ -34,3 +34,4 @@ test_that("bestSpecificLearner works", {
     my_model = bestSpecificLearner(x = x, y = factor(y))
   })
 })
+

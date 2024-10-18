@@ -43,3 +43,4 @@ test_that("HashTable: getHashTable", {
 test_that("HashTable: checkClassExist", {
   expect_no_error(hashtable$checkClassExist(.class = "notexists"))
 })
+

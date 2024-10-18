@@ -14,7 +14,7 @@ bestSpecificLearner(x, y, perf = NULL)
 Target observations. Either binary or two level factor variable.}
 
 \item{perf}{\verb{function(1)} \cr
-Function to compute layer-specific performance of learners. If NULL, the Brier Score is used by default.
+Function to compute layer-specific performance of learners. If NULL, the Brier Score is used by default as performance measure.
 Otherwise, the performance function must accept two parameters: \code{observed} (observed values) and \code{predicted} (predicted values).}
 }
 \value{

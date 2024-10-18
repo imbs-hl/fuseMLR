@@ -90,7 +90,7 @@ Training <- R6Class("Training",
                         #' @param ... (any) \cr
                         #'
                         print = function (...) {
-                          nb_layers = length(private$hash_table)
+                          nb_layers = length(private$hash_table) - 1L
                           if (!private$status) {
                             status = "Not trained"
                           } else {

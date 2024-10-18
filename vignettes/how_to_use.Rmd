@@ -1,10 +1,10 @@
 ---
-title: "How does fuseMLR work anyway?"
+title: "How does fuseMLR work?"
 author: "Cesaire Fouodo"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{vignette}
+  %\VignetteIndexEntry{How does fuseMLR work?}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -22,6 +22,37 @@ library(fuseMLR)
 
 # Introduction #
 
-#Runing a training procedure#
+Recent technological advances have enabled the simultaneous collection of multi-omics data, i.e., different types or modalities of molecular data across various organ tissues of patients. For integrative predictive modeling, the analysis of such data is particularly challenging. Ideally, data from the different modalities are measured in the same individuals, allowing for early or intermediate integrative techniques. However, they are often not applicable when patient data only partially overlap, which requires either reducing the datasets or imputing missing values. Additionally, the characteristics of each data modality may necessitate specific statistical methods rather than applying the same method across all modalities. Late integration modeling approaches address this problematic by analyzing each data modality separately to obtain modality-specific predictions. These predictions are then integrated to train aggregative models like Lasso, random forests, or compute the weighted mean of modality-specific predictions. 
 
-#Runing a testing procedure#
+The R package **fuseMLR** offers a framework for late integrative predictive modeling using multi-omics data. 
+This vignette serves as a user guide for effectively using the package.
+Three key functionalities are provided: variable selection for modality-specific data, late integrative multi-omics training, and predictions for testing multi-omics datasets. 
+
+# Package structure #
+
+Firstly, we present the package structure to facilitate its usage. The training process is handled in **fuseMLR** by the **Training** class, while the prediction process is managed by the **Testing** class. We will use ```training``` (resp. ```testing```) to refer to an instance, i.e. an object from the **Training** (resp. **Testing**) class that can be created by a user.
+
+A ```training``` can contain training layers, implemented by the class **TrainLayer** and a meta training layer, implemented by the class **TrainMetaLayer**. The training layers and the meta training layer are set up by the user. 
+
+The object ```train_layer```, from the **TrainLayer** class, is designed to hold a training data modality, a layer-specific learner, and a layer-specific variable selection method. The training data modality is managed by the **TrainData** class, the layer-specific learner by the **Lrnr** class, and the variable selection method by the **VarSel** class.
+
+An object ```meta_train_layer``` from the class **MetaTrainLayer** is designed to hold modality-specific predictions obtained by training the layer-specific learners on their corresponding training data. These predictions are internally computed by **fuseMLR** using cross-validation and cannot be set by the user. However, the meta learner, which uses these layer-specific predictions to predict the response variable, is user-defined. Strictly speaking, a meta learner is simple a learner designed for meta data. Therefore, a meta learner is also an object from the **Lrnr** class.
+
+A ```testing```has the same structure as ```training```; apart from not requiring the meta training layer, the learners and the variable selection methods. To make a similitude to ```training```, a ```testing``` contains the testing layers and the corresponding testing data modalities. The testing layers are managed by the **TestLayer** class, and data modalities are managed by the **TestData** class.
+
+Here are the main steps to conduct a training procedure with **fuseMLR**:
+
+
+1. Instantiate a "Training" object
+2. Set up layers
+3. Set up training data
+4. Set up learning method
+5. Set up variable selection method
+6. Optionally set up variable selection method
+7. Optionally perform variable selection
+8. Train
+
+
+# Runing a training procedure #
+
+# Runing a testing procedure #

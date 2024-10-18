@@ -72,13 +72,13 @@ new_proteinexpr <- TestLayer$new(id = "proteinexpr", testing = testing)
 new_methylation <- TestLayer$new(id = "methylation", testing = testing)
 
 # TestData are required at each layers
-new_data_geneexpr <- TestData$new(id = "geneexpr",
+testing_data_geneexpr <- TestData$new(id = "geneexpr",
                                  new_layer = new_geneexpr,
                                  data_frame = entities$testing$geneexpr)
-new_data_proteinexpr <- TestData$new(id = "proteinexpr",
+testing_data_proteinexpr <- TestData$new(id = "proteinexpr",
                                     new_layer = new_proteinexpr,
                                     data_frame = entities$testing$proteinexpr)
-new_data_methylation <- TestData$new(id = "methylation",
+testing_data_methylation <- TestData$new(id = "methylation",
                                     new_layer = new_methylation,
                                     data_frame = entities$testing$methylation)
 

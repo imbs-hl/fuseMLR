@@ -38,3 +38,4 @@ test_that("Model: all tests", {
     my_model$predict(testing_data_ge)
   })
 })
+
