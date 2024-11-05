@@ -22,7 +22,7 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                             #' constructor
                             #'
                             #' @param id (`character(1)`)\cr
-                            #' See class Param
+                            #' Id of training meta-layer.
                             #' @param training (`Training(1)`)\cr
                             #'
                             initialize = function (id, training) {

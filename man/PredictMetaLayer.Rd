@@ -49,8 +49,7 @@ constructor
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{(\code{character(1)})\cr
-See class Param}
+\item{\code{id}}{(\code{character(1)})\cr}
 
 \item{\code{predicting}}{(\code{Predicting(1)})\cr}
 }

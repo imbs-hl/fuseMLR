@@ -24,7 +24,7 @@ TrainLayer <- R6Class("TrainLayer",
                         #' constructor
                         #'
                         #' @param id (`character(1)`)\cr
-                        #' See class Param
+                        #' Training layer id.
                         #' @param training (`Training(1)`)\cr
                         #'
                         initialize = function (id, training) {

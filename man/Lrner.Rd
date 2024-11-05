@@ -20,6 +20,7 @@ This class implements a learner. A \link{Lrner} object can only exist as a compo
 \item \href{#method-Lrner-getPackage}{\code{Lrner$getPackage()}}
 \item \href{#method-Lrner-getIndSubset}{\code{Lrner$getIndSubset()}}
 \item \href{#method-Lrner-getVarSubset}{\code{Lrner$getVarSubset()}}
+\item \href{#method-Lrner-getParamPred}{\code{Lrner$getParamPred()}}
 }
 }
 \if{html}{\out{<hr>}}
@@ -28,7 +29,15 @@ This class implements a learner. A \link{Lrner} object can only exist as a compo
 \subsection{Method \code{new()}}{
 Initialize a default parameters list.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Lrner$new(id, package = NULL, lrn_fct, param, train_layer, na_rm = TRUE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Lrner$new(
+  id,
+  package = NULL,
+  lrn_fct,
+  param_train_list,
+  param_pred_list = list(),
+  train_layer,
+  na_rm = TRUE
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -38,13 +47,16 @@ Initialize a default parameters list.
 Learner ID.}
 
 \item{\code{package}}{(\code{character(1)}) \cr
-Package that implements the learn function. If NULL, the
-learn function is called from the current environment.}
+Package that implements the learn function. If NULL, the}
 
 \item{\code{lrn_fct}}{(\code{character(1)}) \cr
-Learn function name.}
+learn function is called from the current environment.}
 
-\item{\code{param}}{(\code{ParamLrner(1)}) \cr
+\item{\code{param_train_list}}{\cr
+List of parameter for training.}
+
+\item{\code{param_pred_list}}{\cr
+List of parameter for testing.
 Learn parameters.}
 
 \item{\code{train_layer}}{(\code{TrainLayer(1)}) \cr
@@ -190,6 +202,19 @@ Getter of the variable subset used for training.
 
 \subsection{Returns}{
 The list of variables used for training is returned.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Lrner-getParamPred"></a>}}
+\if{latex}{\out{\hypertarget{method-Lrner-getParamPred}{}}}
+\subsection{Method \code{getParamPred()}}{
+Getter predicting parameter list.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Lrner$getParamPred()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+The list of predicting parameters.
 }
 }
 }

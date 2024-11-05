@@ -51,7 +51,7 @@ constructor
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{id}}{(\code{character(1)})\cr
-See class Param}
+Testing meta-layer id.}
 
 \item{\code{testing}}{(\code{Testing(1)})\cr}
 }

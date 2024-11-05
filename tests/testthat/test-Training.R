@@ -139,13 +139,11 @@ test_that("Training: all tests", {
   # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   # Variable selection works
   expect_warning({
-    same_param_varsel <- ParamVarSel$new(id = "ParamVarSel",
-                                         param_list = list(num.trees = 50L,
-                                                           mtry = 3L))
     varsel_ge <- VarSel$new(id = "varsel_geneexpr",
                             package = "Boruta",
                             varsel_fct = "Boruta",
-                            param = same_param_varsel,
+                            varsel_param = list(num.trees = 50L,
+                                                mtry = 3L),
                             train_layer = tl_ge)
 
     # varsel_pr <- VarSel$new(id = "varsel_proteinexpr",
@@ -161,29 +159,23 @@ test_that("Training: all tests", {
   # Tests for training with loaded learners.                 +
   # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   # Lrner parameters
-  expect_no_error({
-    same_param <- ParamLrner$new(id = "ParamRanger",
-                                 param_list = list(probability = TRUE,
-                                                   mtry = 2L),
-                                 hyperparam_list = list(num.trees = 25L))
-  })
   # Lrner
   expect_no_error({
     lrner_ge <- Lrner$new(id = "ranger",
                           package = "ranger",
                           lrn_fct = "ranger",
-                          param = same_param,
+                          param_train_list = list(probability = TRUE,
+                                       mtry = 2L, num.trees = 25L),
                           train_layer = tl_ge)
     lrner_pr <- Lrner$new(id = "ranger",
                           package = "ranger",
                           lrn_fct = "ranger",
-                          param = same_param,
+                          param_train_list = list(probability = TRUE,
+                                                  mtry = 2L, num.trees = 25L),
                           train_layer = tl_pr)
     lrner_meta <- Lrner$new(id = "weighted",
                             lrn_fct = "weightedMeanLearner",
-                            param = ParamLrner$new(id = "ParamWeighted",
-                                                   param_list = list(),
-                                                   hyperparam_list = list()),
+                            param_train_list = list(),
                             na_rm = FALSE,
                             train_layer = tl_meta)
   })
@@ -192,10 +184,6 @@ test_that("Training: all tests", {
   # Tests for training with for training.                    +
   # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   expect_no_error({
-    same_param <- ParamLrner$new(id = "ParamRanger",
-                                 param_list = list(probability = TRUE,
-                                                   mtry = 1L),
-                                 hyperparam_list = list(num.trees = 10L))
 
     disease <- training$getTargetValues()$disease
   })
@@ -212,11 +200,6 @@ test_that("Training: all tests", {
     expect_equal(length(three_warning), 3L)
 
   expect_error({
-    same_param <- ParamLrner$new(id = "ParamRanger",
-                                 param_list = list(probability = TRUE,
-                                                   mtry = 2L),
-                                 hyperparam_list = list(num.trees = 10L))
-
     disease <- training$getTargetValues()$disease
     trained <- training$train(resampling_method = "stats::rnorm",
                                        resampling_arg = list(n = 10L),

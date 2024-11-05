@@ -16,7 +16,7 @@ TestLayer <- R6Class("TestLayer",
                           #' constructor
                           #'
                           #' @param id (`character(1)`)\cr
-                          #' See class Param
+                          #' Testing layer id.
                           #' @param testing (`Testing(1)`)\cr
                           #'
                           initialize = function (id, testing) {

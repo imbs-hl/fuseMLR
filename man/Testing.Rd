@@ -57,7 +57,7 @@ constructor
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{id}}{(\code{character(1)})\cr
-See class Param}
+Testing id.}
 
 \item{\code{ind_col}}{(\code{character(1)})
 Name of column of individuals IDS}

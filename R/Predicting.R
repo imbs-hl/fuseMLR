@@ -1,13 +1,12 @@
 #' @title Predicting Class
 #'
 #' @description
-#' This class is the basic class of the present package. An object from this class
-#' is designed to contain multiple layers, but only one meta layer.
+#' This class is designed for predictions.
 #'
 #'  The Predicting is structured as followed:
-#' * [PredictLayer]: Can be clinical, gene expression, etc.
-#'    - [PredictData]: Specific to each layer, it must be set up by the user.
-#' * [PredictMetaLayer]: Basically a [PredictLayer], but with some specific properties.
+#' * [PredictLayer]: Exists for each modality.
+#'    - [PredictData]: Related class for modality-specific predictions.
+#' * [PredictMetaLayer]: Related class for meta predictions.
 #'    - [PredictData]: Specific to the meta layer, it is set up internally after cross-validation.
 #'
 #' Use the function \code{train} for training and \code{predict} for predicting.
@@ -25,7 +24,7 @@ Predicting <- R6Class("Predicting",
                       #' constructor
                       #'
                       #' @param id (`character(1)`)\cr
-                      #' See class Param
+                      #' Predicting id.
                       #' @param ind_col (`character(1L)`)
                       #' Name of column of individuals IDS
                       initialize = function (id, ind_col) {
@@ -55,15 +54,13 @@ Predicting <- R6Class("Predicting",
                         key_class_predicting = self$getKeyClass()
                         predicted_values = NULL
                         for (k in key_class_predicting[ , "key"]) {
-                          # FIXME: Maybe define a class Prediction instead of
-                          #        using Hashtable?
                           pred_layer = self$getFromHashTable(key = k)
                           pred_data = pred_layer$getPredictData()
                           pred_values = pred_data$getPredictData()
                           predicted_values = data.frame(rbind(predicted_values,
                                                               pred_values))
                         }
-                        # Will transform meta data.frame into wide format
+                        # Will transform meta data.frame into wide format. In case of data.frame, only the first column is considered.
                         predicted_values_wide = reshape(predicted_values,
                                                         idvar = colnames(predicted_values)[2L],
                                                         timevar = colnames(predicted_values)[1L],

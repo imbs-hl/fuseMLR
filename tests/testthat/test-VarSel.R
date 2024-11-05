@@ -7,21 +7,20 @@ test_that("VarSel: with package for variable selection", {
   train_data_ge <- TrainData$new(id = "geneexpr",
                                  train_layer = tl_ge,
                                  data_frame = entities$training$geneexpr)
-  same_param_varsel <- ParamVarSel$new(id = "ParamVarSel",
-                                       param_list = list(num.trees = 50L,
-                                                         mtry = 3L))
   expect_error({
     var_sel <- VarSel$new(id = "varsel_geneexpr",
                           package = "Boruta",
                           varsel_fct = "Boruta",
-                          param = same_param_varsel,
+                          varsel_param = list(num.trees = 50L,
+                                              mtry = 3L),
                           train_layer = "not_a_Train_layer")
   })
   expect_no_error({
     varsel_ge <- VarSel$new(id = "varsel_geneexpr",
                             package = "Boruta",
                             varsel_fct = "Boruta",
-                            param = same_param_varsel,
+                            varsel_param = list(num.trees = 50L,
+                                                mtry = 3L),
                             train_layer = tl_ge)
     print(varsel_ge)
   })
@@ -36,7 +35,8 @@ test_that("VarSel: with package for variable selection", {
     varsel_ge <- VarSel$new(id = "varsel_geneexpr",
                             package = "Boruta",
                             varsel_fct = "Boruta",
-                            param = same_param_varsel,
+                            varsel_param = list(num.trees = 50L,
+                                                mtry = 3L),
                             train_layer = tl_ge)
   })
   expect_no_error({
@@ -51,14 +51,12 @@ test_that("VarSel: with function for variable selection", {
                                 target = "disease",
                                 target_df = entities$training$target)
   tl_ge <- TrainLayer$new(id = "geneexpr", training = training)
-  same_param_varsel <- ParamVarSel$new(id = "ParamVarSel",
-                                       param_list = list())
   train_data_ge <- TrainData$new(id = "geneexpr",
                                  train_layer = tl_ge,
                                  data_frame = entities$training$geneexpr)
   var_sel <- VarSel$new(id = "varsel_geneexpr",
                         varsel_fct = "test_var_sel",
-                        param = same_param_varsel,
+                        varsel_param = list(),
                         train_layer = tl_ge)
   expect_error({
     #TODO: check why it only works in interactiv mode

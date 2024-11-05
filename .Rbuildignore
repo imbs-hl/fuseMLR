@@ -5,3 +5,5 @@
 ^README.Rmd
 ^README.files
 ^\.covrignore
+^doc$
+^Meta$

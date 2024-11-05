@@ -46,8 +46,7 @@ PredictData <- R6Class("PredictData",
                          #' @export
                          #'
                          getPredictData = function () {
-                           tmp_data <- private$data_frame
-                           return(tmp_data)
+                           return(private$data_frame)
                          },
                          #' @description
                          #' Getter of the current layer.

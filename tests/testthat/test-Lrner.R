@@ -7,20 +7,15 @@ training <- Training$new(id = "training",
 tl_geneexpr <- TrainLayer$new(id = "geneexpr",
                               training = training)
 
-# Parameters
-ranger_param_lrner <- ParamLrner$new(id = "ParamRanger",
-                                     param_list = list(seed = 421L),
-                                     hyperparam_list = list(probability = TRUE,
-                                                            mtry = 1L,
-                                                            num.trees = 1000L))
-
 # Learner
 
 expect_error({
   lrner_geneexpr <- Lrner$new(id = "ranger",
                               package = "ranger",
                               lrn_fct = "ranger",
-                              param = ranger_param_lrner,
+                              param_train_list = list(probability = TRUE,
+                                                      mtry = 1L,
+                                                      num.trees = 1000L),
                               train_layer = "not_a_train_layer")
 })
 
@@ -28,7 +23,9 @@ expect_error({
   lrner_geneexpr <- Lrner$new(id = "ranger",
                               package = "ranger",
                               lrn_fct = "ranger",
-                              param = ranger_param_lrner,
+                              param_train_list = list(probability = TRUE,
+                                                      mtry = 1L,
+                                                      num.trees = 1000L),
                               na_rm = "not_logical",
                               train_layer = tl_geneexpr)
 })
@@ -36,7 +33,9 @@ expect_error({
 lrner_geneexpr <- Lrner$new(id = "ranger",
                             package = "ranger",
                             lrn_fct = "ranger",
-                            param = ranger_param_lrner,
+                            param_train_list = list(probability = TRUE,
+                                                    mtry = 1L,
+                                                    num.trees = 1000L),
                             train_layer = tl_geneexpr)
 
 expect_no_error({
@@ -45,7 +44,9 @@ expect_no_error({
   lrner_geneexpr <- Lrner$new(id = "ranger",
                               package = "ranger",
                               lrn_fct = "ranger",
-                              param = ranger_param_lrner,
+                              param_train_list = list(probability = TRUE,
+                                                      mtry = 1L,
+                                                      num.trees = 1000L),
                               train_layer = tl_geneexpr)
 })
 

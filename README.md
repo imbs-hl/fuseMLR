@@ -1,3 +1,12 @@
+---
+title: "fuseMLR"
+author: Cesaire J. K. Fouodo
+output: 
+  md_document:
+    variant: gfm
+    preserve_yaml: true
+---
+
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/imbs-hl/fuseMLR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/imbs-hl/fuseMLR/actions/workflows/R-CMD-check.yaml)
@@ -135,7 +144,7 @@ print(training)
 
     ## Training        : training
     ## Status          : Not trained
-    ## Number of layers: 1
+    ## Number of layers: 0
     ## Layers trained  : 0
     ## n               : 70
 
@@ -194,7 +203,7 @@ print(training)
 
     ## Training        : training
     ## Status          : Not trained
-    ## Number of layers: 5
+    ## Number of layers: 4
     ## Layers trained  : 0
     ## n               : 70
 
@@ -213,46 +222,30 @@ We need to set up variable selection methods to our training resources.
 Note that this can be the same method or different layer-specific
 methods. For simplicity, we will set up the same method on all layers.
 
-- Preparation parameters of the variable selection method.
-
-``` r
-same_param_varsel <- ParamVarSel$new(id = "ParamVarSel",
-                                     param_list = list(num.trees = 1000L,
-                                                       mtry = 3L,
-                                                       probability = TRUE))
-print(same_param_varsel)
-```
-
-    ## Class: ParamVarSel
-    ## id   : ParamVarSel
-    ## Parameter combination
-    ## $num.trees
-    ## [1] 1000
-    ## 
-    ## $mtry
-    ## [1] 3
-    ## 
-    ## $probability
-    ## [1] TRUE
-
 - Instantiate the variable selection method and assign training layers.
 
 ``` r
 varsel_ge <- VarSel$new(id = "varsel_geneexpr",
                         package = "Boruta",
                         varsel_fct = "Boruta",
-                        param = same_param_varsel,
+                        varsel_param = list(num.trees = 1000L,
+                                            mtry = 3L,
+                                            probability = TRUE),
                         train_layer = tl_ge)
 
 varsel_pr <- VarSel$new(id = "varsel_proteinexpr",
                         package = "Boruta",
                         varsel_fct = "Boruta",
-                        param = same_param_varsel,
+                        varsel_param = list(num.trees = 1000L,
+                                            mtry = 3L,
+                                            probability = TRUE),
                         train_layer = tl_pr)
 varsel_me <- VarSel$new(id = "varsel_methylation",
                         package = "Boruta",
                         varsel_fct = "Boruta",
-                        param = same_param_varsel,
+                        varsel_param = list(num.trees = 1000L,
+                                            mtry = 3L,
+                                            probability = TRUE),
                         train_layer = tl_me)
 ```
 
@@ -261,6 +254,21 @@ varsel_me <- VarSel$new(id = "varsel_methylation",
 ``` r
 set.seed(5467)
 var_sel_res <- training$varSelection()
+```
+
+    ## Variable selection on layer geneexpr started.
+
+    ## Variable selection on layer geneexpr done.
+
+    ## Variable selection on layer proteinexpr started.
+
+    ## Variable selection on layer proteinexpr done.
+
+    ## Variable selection on layer methylation started.
+
+    ## Variable selection on layer methylation done.
+
+``` r
 print(var_sel_res)
 ```
 
@@ -319,15 +327,6 @@ We can now train our models using the subset of selected variables.
 Users can choose to set up layer-specific learners, but for
 illustration, we will use the same learner for all layers.
 
-- Set up the same leaner parameters.
-
-``` r
-same_param <- ParamLrner$new(id = "ParamRanger",
-                             param_list = list(probability = TRUE,
-                                               mtry = 1L),
-                             hyperparam_list = list(num.trees = 1000L))
-```
-
 - Set up learners for each layer. We will use a weighted sum,
   implemented internally by `fuseMLR`, for the meta-analysis.
 
@@ -335,23 +334,24 @@ same_param <- ParamLrner$new(id = "ParamRanger",
 lrner_ge <- Lrner$new(id = "ranger",
                       package = "ranger",
                       lrn_fct = "ranger",
-                      param = same_param,
+                      param_train_list = list(probability = TRUE,
+                                               mtry = 1L),
                       train_layer = tl_ge)
 lrner_pr <- Lrner$new(id = "ranger",
                       package = "ranger",
                       lrn_fct = "ranger",
-                      param = same_param,
+                      param_train_list = list(probability = TRUE,
+                                               mtry = 1L),
                       train_layer = tl_pr)
 lrner_me <- Lrner$new(id = "ranger",
                       package = "ranger",
                       lrn_fct = "ranger",
-                      param = same_param,
+                      param_train_list = list(probability = TRUE,
+                                               mtry = 1L),
                       train_layer = tl_me)
 lrner_meta <- Lrner$new(id = "weighted",
                         lrn_fct = "weightedMeanLearner",
-                        param = ParamLrner$new(id = "ParamWeighted",
-                                               param_list = list(),
-                                               hyperparam_list = list()),
+                        param_train_list = list(),
                         na_rm = FALSE,
                         train_layer = tl_meta)
 ```
@@ -366,14 +366,15 @@ disease <- training$getTargetValues()$disease
 trained <- training$train(resampling_method = "caret::createFolds",
                           resampling_arg = list(y = disease,
                                                 k = 10L),
-                          use_var_sel = TRUE)
+                          use_var_sel = TRUE,
+                          verbose = FALSE)
 # Let us now check the status of our training resources.
 print(trained)
 ```
 
     ## Training        : training
     ## Status          : Trained
-    ## Number of layers: 5
+    ## Number of layers: 4
     ## Layers trained  : 4
     ## n               : 70
 
@@ -399,7 +400,7 @@ print(tmp_model$getBaseModel())
 ```
 
     ##    geneexpr proteinexpr methylation 
-    ##   0.2336235   0.4249688   0.3414078 
+    ##   0.2326579   0.4241035   0.3432386 
     ## attr(,"class")
     ## [1] "weightedMeanLearner"
 
@@ -485,35 +486,35 @@ print(predictions)
     ## 
     ## $predicted_values
     ##          IDS  geneexpr proteinexpr methylation meta_layer
-    ## 1  patient23 0.3899925  0.59490714  0.17449127 0.40350102
-    ## 2  patient77 0.4222480  0.49866468  0.14058889 0.35856210
-    ## 3  patient62 0.7736817  0.96993571          NA 0.90031823
-    ## 4  patient43 0.3301254          NA          NA 0.33012540
-    ## 5   patient8 0.7346532  0.85212024  0.83084960 0.81741522
-    ## 6  patient74 0.5555329  0.69613294  0.54980476 0.61332790
-    ## 7  patient29 0.3362905  0.46632857  0.27474444 0.37054031
-    ## 8  patient17 0.3997508  0.34566627          NA 0.36485176
-    ## 9  patient25 0.2778349  0.45710040  0.09602103 0.29194448
-    ## 10 patient54 0.7863302          NA  0.84842857 0.82319925
-    ## 11 patient60 0.7415452  0.84184524  0.79166865 0.80128213
-    ## 12 patient44 0.3717952          NA          NA 0.37179524
-    ## 13  patient1 0.8211250  0.93648373          NA 0.89556234
-    ## 14 patient76 0.6840357          NA  0.60861508 0.63925695
-    ## 15 patient16 0.6923929          NA  0.69758968 0.69547832
-    ## 16 patient27 0.3699286          NA  0.20396786 0.27139431
-    ## 17 patient58 0.5648032  0.75506071  0.76331349 0.71342965
-    ## 18 patient52 0.4850317  0.13170119          NA 0.25703870
-    ## 19 patient10 0.2517774          NA          NA 0.25177738
-    ## 20 patient72 0.7087675  0.94573135  0.62339762 0.78032379
-    ## 21 patient39        NA  0.08271032          NA 0.08271032
-    ## 25 patient46        NA  0.22185635  0.51994405 0.35464937
-    ## 26 patient97        NA  0.70887738  0.86840476 0.77994413
-    ## 27 patient31        NA  0.28228095          NA 0.28228095
-    ## 31 patient87        NA  0.29549603  0.26039048 0.27985710
-    ## 33 patient59        NA  0.14183968  0.38772183 0.25137601
-    ## 34  patient2        NA  0.55434325  0.79045437 0.65952675
-    ## 53 patient85        NA          NA  0.15880913 0.15880913
-    ## 60  patient3        NA          NA  0.57764881 0.57764881
+    ## 1  patient23 0.3955167   0.6035587  0.17541746  0.4082015
+    ## 2  patient77 0.4194508   0.4910333  0.12029762  0.3471283
+    ## 3  patient62 0.7698508   0.9696040          NA  0.8988413
+    ## 4  patient43 0.3206127          NA          NA  0.3206127
+    ## 5   patient8 0.7545587   0.8471222  0.83950000  0.8229704
+    ## 6  patient74 0.5489651   0.6835690  0.53626667  0.6016925
+    ## 7  patient29 0.3272770   0.4641143  0.28055873  0.3692746
+    ## 8  patient17 0.4088706   0.3569238          NA  0.3753260
+    ## 9  patient25 0.2823317   0.4480825  0.09887937  0.2896593
+    ## 10 patient54 0.8051635          NA  0.84849444  0.8309891
+    ## 11 patient60 0.7333056   0.8435198  0.80658413  0.8051999
+    ## 12 patient44 0.3889190          NA          NA  0.3889190
+    ## 13  patient1 0.8166127   0.9415270          NA  0.8972761
+    ## 14 patient76 0.6997905          NA  0.62434603  0.6548250
+    ## 15 patient16 0.7076770          NA  0.69410000  0.6995850
+    ## 16 patient27 0.3591865          NA  0.22121032  0.2769517
+    ## 17 patient58 0.5753381   0.7549960  0.76922857  0.7180823
+    ## 18 patient52 0.4747833   0.1256032          NA  0.2493004
+    ## 19 patient10 0.2418214          NA          NA  0.2418214
+    ## 20 patient72 0.7309365   0.9540413  0.61715873  0.7865031
+    ## 21 patient39        NA   0.0834881          NA  0.0834881
+    ## 25 patient46        NA   0.2154611  0.53634524  0.3589953
+    ## 26 patient97        NA   0.7014659  0.86992143  0.7768175
+    ## 27 patient31        NA   0.2656349          NA  0.2656349
+    ## 31 patient87        NA   0.2897254  0.25276032  0.2731906
+    ## 33 patient59        NA   0.1475627  0.39242143  0.2570901
+    ## 34  patient2        NA   0.5379889  0.81212460  0.6606121
+    ## 53 patient85        NA          NA  0.15531746  0.1553175
+    ## 60  patient3        NA          NA  0.58667143  0.5866714
 
 - Prediction performances for layer-specific available patients, and all
   patients on the meta layer.
@@ -536,7 +537,7 @@ print(perf_estimated)
 ```
 
     ##    geneexpr proteinexpr methylation  meta_layer 
-    ##   0.1147740   0.1645159   0.0815040   0.1231755
+    ##  0.11205017  0.16567829  0.07991965  0.12184525
 
 - Prediction performances for overlapping individuals.
 
@@ -552,7 +553,7 @@ print(perf_overlapping)
 ```
 
     ##    geneexpr proteinexpr methylation  meta_layer 
-    ##  0.12551583  0.13679344  0.06749516  0.09629256
+    ##  0.12296962  0.13685581  0.06797495  0.09559852
 
 Note that our example is based on simulated data for usage illustration;
 only one run is not enough to appreciate the performances of our models.

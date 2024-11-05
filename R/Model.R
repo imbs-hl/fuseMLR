@@ -129,7 +129,7 @@ Model <- R6Class("Model",
                    #' @param ind_subset `vector(1)` \cr
                    #' Subset of individual IDs to be predicted.
                    #' @param ...
-                   #' Further parameters.
+                   #' Further parameters to be passed to the basic predict function.
                    #'
                    #' @return
                    #' The predicted object are returned. The predicted object must be either a vector or a list
@@ -137,7 +137,7 @@ Model <- R6Class("Model",
                    #'
                    #' @export
                    #'
-                   predict = function (testing_data, ind_subset = NULL, ...) {
+                   predict = function (testing_data, ind_subset = NULL) {
                      tmp_lrner = self$getLrner()
                      if(tmp_lrner$getTrainLayer()$getId() != testing_data$getTestLayer()$getId()) {
                        stop("Learner and data must belong to the same layer.")
@@ -165,7 +165,7 @@ Model <- R6Class("Model",
                          var_name = testing_data$getIndCol(),
                          value = ind_subset)
                      }
-                     pred_param <- list(...)
+                     pred_param <- private$lrner$getParamPred()
                      pred_param$object = self$getBaseModel()
                      # Predict using the subset of variables utilized for training
                      training_var = colnames(private$train_data$getData())

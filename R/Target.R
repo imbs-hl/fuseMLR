@@ -7,7 +7,7 @@
 #' @export
 #'
 #' @importFrom R6 R6Class
-#' @seealso [TrainLayer], [Lrner], [Model], [ParamLrner], [TestData]
+#' @seealso [TrainLayer], [Lrner], [Model], [TestData]
 Target <- R6Class("Target",
                      inherit = Data,
                      public = list(

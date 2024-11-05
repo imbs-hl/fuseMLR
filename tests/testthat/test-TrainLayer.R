@@ -23,14 +23,12 @@ test_that("TrainLayer: all tests", {
   expect_error({
     tl_ge$getLrner()
   })
-  same_param <- ParamLrner$new(id = "ParamRanger",
-                               param_list = list(probability = TRUE,
-                                                 mtry = 2L),
-                               hyperparam_list = list(num.trees = 10L))
   lrner_ge <- Lrner$new(id = "ranger",
                         package = "ranger",
                         lrn_fct = "ranger",
-                        param = same_param,
+                        param_train_list = list(probability = TRUE,
+                                                mtry = 2L,
+                                                num.trees = 10L),
                         train_layer = tl_ge)
   expect_no_error({
     tl_ge$getLrner()
@@ -42,13 +40,11 @@ test_that("TrainLayer: all tests", {
   expect_warning({tl_ge$varSelection()})
   expect_error({tl_ge$getVarSel()})
   expect_error({tl_ge$getPredictions()})
-  same_param_varsel <- ParamVarSel$new(id = "ParamVarSel",
-                                       param_list = list(num.trees = 50L,
-                                                         mtry = 3L))
   varsel_ge <- VarSel$new(id = "varsel_geneexpr",
                           package = "Boruta",
                           varsel_fct = "Boruta",
-                          param = same_param_varsel,
+                          varsel_param = list(num.trees = 50L,
+                                              mtry = 3L),
                           train_layer = tl_ge)
   # Must fail because of not existing training data
   expect_error({tl_ge$varSelection()})

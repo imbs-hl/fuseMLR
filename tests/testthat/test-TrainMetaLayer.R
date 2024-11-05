@@ -22,9 +22,7 @@ test_that("TrainLayer: all tests", {
   })
   lrner_meta <- Lrner$new(id = "weighted",
                           lrn_fct = "weightedMeanLearner",
-                          param = ParamLrner$new(id = "ParamWeighted",
-                                                 param_list = list(),
-                                                 hyperparam_list = list()),
+                          param_train_list = list(),
                           train_layer = tl_meta)
   # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   # Tests for training empty meta layer                      +
@@ -33,15 +31,13 @@ test_that("TrainLayer: all tests", {
   # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   # Tests for training empty not meta layer                  +
   # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  same_param <- ParamLrner$new(id = "ParamRanger",
-                               param_list = list(probability = TRUE,
-                                                 mtry = 2L),
-                               hyperparam_list = list(num.trees = 10L))
   tl_ge <- TrainLayer$new(id = "geneexpr", training = training)
   lrner_ge <- Lrner$new(id = "ranger",
                         package = "ranger",
                         lrn_fct = "ranger",
-                        param = same_param,
+                        param_train_list = list(probability = TRUE,
+                                     mtry = 2L,
+                                     num.trees = 10L),
                         train_layer = tl_ge)
   train_data_ge <- TrainData$new(id = "geneexpr",
                                  train_layer = tl_ge,

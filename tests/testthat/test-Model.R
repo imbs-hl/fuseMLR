@@ -6,14 +6,12 @@ test_that("Model: all tests", {
                                 target = "disease",
                                 target_df = entities$training$target)
   tl_ge <- TrainLayer$new(id = "geneexpr", training = training)
-  same_param <- ParamLrner$new(id = "ParamRanger",
-                               param_list = list(probability = TRUE,
-                                                 mtry = 2L),
-                               hyperparam_list = list(num.trees = 10L))
   lrner_ge <- Lrner$new(id = "ranger",
                         package = "ranger",
                         lrn_fct = "ranger",
-                        param = same_param,
+                        param_train_list = list(probability = TRUE,
+                                                mtry = 2L,
+                                                num.trees = 10L),
                         train_layer = tl_ge)
   train_data_ge <- TrainData$new(id = "geneexpr",
                                  train_layer = tl_ge,

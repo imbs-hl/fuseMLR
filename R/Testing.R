@@ -20,7 +20,7 @@ Testing <- R6Class("Testing",
                    #' constructor
                    #'
                    #' @param id (`character(1)`)\cr
-                   #' See class Param
+                   #' Testing id.
                    #' @param ind_col (`character(1)`)
                    #' Name of column of individuals IDS
                    initialize = function (id, ind_col) {

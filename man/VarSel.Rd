@@ -28,7 +28,7 @@ Variable selection parameter list.
 
 Learner ID.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{VarSel$new(id, package = NULL, varsel_fct, param, train_layer)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{VarSel$new(id, package = NULL, varsel_fct, varsel_param, train_layer)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -45,7 +45,7 @@ Variable selection function name. Note: Variable selection functions, except \co
 \item{\code{varsel_fct}}{(\code{character(1)}) \cr
 Variable selection parameters.}
 
-\item{\code{param}}{(\code{ParamVarSel(1)}) \cr
+\item{\code{varsel_param}}{(\code{list(1)}) \cr
 Layer on which the learner is stored.}
 
 \item{\code{train_layer}}{(\code{TrainLayer(1)}) \cr

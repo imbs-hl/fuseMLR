@@ -4,16 +4,15 @@
 \alias{Predicting}
 \title{Predicting Class}
 \description{
-This class is the basic class of the present package. An object from this class
-is designed to contain multiple layers, but only one meta layer.
+This class is designed for predictions.
 
 The Predicting is structured as followed:
 \itemize{
-\item \link{PredictLayer}: Can be clinical, gene expression, etc.
+\item \link{PredictLayer}: Exists for each modality.
 \itemize{
-\item \link{PredictData}: Specific to each layer, it must be set up by the user.
+\item \link{PredictData}: Related class for modality-specific predictions.
 }
-\item \link{PredictMetaLayer}: Basically a \link{PredictLayer}, but with some specific properties.
+\item \link{PredictMetaLayer}: Related class for meta predictions.
 \itemize{
 \item \link{PredictData}: Specific to the meta layer, it is set up internally after cross-validation.
 }
@@ -66,7 +65,7 @@ constructor
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{id}}{(\code{character(1)})\cr
-See class Param}
+Predicting id.}
 
 \item{\code{ind_col}}{(\code{character(1L)})
 Name of column of individuals IDS}

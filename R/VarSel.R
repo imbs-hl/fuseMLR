@@ -22,19 +22,19 @@ VarSel <- R6Class("VarSel",
                     #' Variable selection function name. Note: Variable selection functions, except \code{Boruta}, must return a vector of selected variables.
                     #' @param varsel_fct (`character(1)`) \cr
                     #' Variable selection parameters.
-                    #' @param param (`ParamVarSel(1)`) \cr
+                    #' @param varsel_param (`list(1)`) \cr
                     #' Layer on which the learner is stored.
                     #' @param train_layer (`TrainLayer(1)`) \cr
                     #'  The training layer where to store the learner.
                     initialize = function (id,
                                            package = NULL,
                                            varsel_fct,
-                                           param,
+                                           varsel_param,
                                            train_layer) {
                       private$id = id
                       private$package = package
                       private$varsel_fct = varsel_fct
-                      private$param = param
+                      private$param = varsel_param
                       if (!any(c("TrainLayer") %in% class(train_layer))) {
                         stop("A variable selection tool can only belong to object of class TrainLayer.")
                       }
@@ -92,7 +92,7 @@ VarSel <- R6Class("VarSel",
                         varsel = sprintf('%s::%s', private$package,
                                          private$varsel_fct)
                       }
-                      varsel_param = private$param$getParamVarSel()
+                      varsel_param = private$param
                       # Prepare training dataset
                       if (!is.null(ind_subset)) {
                         train_data = train_data$getIndSubset(
@@ -188,7 +188,7 @@ VarSel <- R6Class("VarSel",
                     package = NULL,
                     # Learn function name (like \code{ranger}).
                     varsel_fct = NULL,
-                    # Parameters (from class [Param]) of the learn function.
+                    # Parameters of the variable selection function.
                     param = NULL,
                     # Training layer (from class [TainLayer] or [TrainMetaLayer]) of the current learner.
                     train_layer = NULL,

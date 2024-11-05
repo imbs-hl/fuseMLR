@@ -8,7 +8,7 @@ This class implements the target object. A \link{Target} object can only
 exist as a component of a \link{Training} object.
 }
 \seealso{
-\link{TrainLayer}, \link{Lrner}, \link{Model}, \link{ParamLrner}, \link{TestData}
+\link{TrainLayer}, \link{Lrner}, \link{Model}, \link{TestData}
 }
 \section{Super class}{
 \code{\link[fuseMLR:Data]{fuseMLR::Data}} -> \code{Target}
