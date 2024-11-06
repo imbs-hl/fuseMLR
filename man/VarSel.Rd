@@ -13,11 +13,13 @@ This class implements a learner. A \link{VarSel} object can only exist as a comp
 \item \href{#method-VarSel-new}{\code{VarSel$new()}}
 \item \href{#method-VarSel-print}{\code{VarSel$print()}}
 \item \href{#method-VarSel-summary}{\code{VarSel$summary()}}
+\item \href{#method-VarSel-interface}{\code{VarSel$interface()}}
 \item \href{#method-VarSel-varSelection}{\code{VarSel$varSelection()}}
 \item \href{#method-VarSel-getTrainLayer}{\code{VarSel$getTrainLayer()}}
 \item \href{#method-VarSel-getId}{\code{VarSel$getId()}}
 \item \href{#method-VarSel-getPackage}{\code{VarSel$getPackage()}}
 \item \href{#method-VarSel-getVarSubSet}{\code{VarSel$getVarSubSet()}}
+\item \href{#method-VarSel-getParamInterface}{\code{VarSel$getParamInterface()}}
 }
 }
 \if{html}{\out{<hr>}}
@@ -84,6 +86,35 @@ Summary
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{...}}{(any) \cr}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-VarSel-interface"></a>}}
+\if{latex}{\out{\hypertarget{method-VarSel-interface}{}}}
+\subsection{Method \code{interface()}}{
+Learner and prediction parameter interface. Use this function
+to provide how the following parameters are named in the learning
+function (\code{lrn_fct}) you provided when creating the learner, or in the predicting function.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{VarSel$interface(x = "x", y = "y", object = "object", data = "data")}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{x}}{(\code{string}(1)) \cr
+Name of the argument to pass the matrix of independent variables in the original learning function.}
+
+\item{\code{y}}{(\code{string}(1)) \cr
+Name of the argument to pass the response variable in the original learning function.}
+
+\item{\code{object}}{(\code{string}(1)) \cr
+Name of the argument to pass the model in the original predicting function.}
+
+\item{\code{data}}{\cr
+Name of the argument to pass new data in the original predicting function.}
 }
 \if{html}{\out{</div>}}
 }
@@ -159,6 +190,19 @@ Getter of the list of selected variables.
 
 \subsection{Returns}{
 List of selected variables..
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-VarSel-getParamInterface"></a>}}
+\if{latex}{\out{\hypertarget{method-VarSel-getParamInterface}{}}}
+\subsection{Method \code{getParamInterface()}}{
+The current parameter interface is returned.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{VarSel$getParamInterface()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+A data.frame of interface.
 }
 }
 }

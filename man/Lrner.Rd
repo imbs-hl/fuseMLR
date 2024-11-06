@@ -13,6 +13,7 @@ This class implements a learner. A \link{Lrner} object can only exist as a compo
 \item \href{#method-Lrner-new}{\code{Lrner$new()}}
 \item \href{#method-Lrner-print}{\code{Lrner$print()}}
 \item \href{#method-Lrner-summary}{\code{Lrner$summary()}}
+\item \href{#method-Lrner-interface}{\code{Lrner$interface()}}
 \item \href{#method-Lrner-train}{\code{Lrner$train()}}
 \item \href{#method-Lrner-getTrainLayer}{\code{Lrner$getTrainLayer()}}
 \item \href{#method-Lrner-getNaRm}{\code{Lrner$getNaRm()}}
@@ -21,6 +22,7 @@ This class implements a learner. A \link{Lrner} object can only exist as a compo
 \item \href{#method-Lrner-getIndSubset}{\code{Lrner$getIndSubset()}}
 \item \href{#method-Lrner-getVarSubset}{\code{Lrner$getVarSubset()}}
 \item \href{#method-Lrner-getParamPred}{\code{Lrner$getParamPred()}}
+\item \href{#method-Lrner-getParamInterface}{\code{Lrner$getParamInterface()}}
 }
 }
 \if{html}{\out{<hr>}}
@@ -98,6 +100,35 @@ Printer
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{...}}{(any) \cr}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Lrner-interface"></a>}}
+\if{latex}{\out{\hypertarget{method-Lrner-interface}{}}}
+\subsection{Method \code{interface()}}{
+Learner and prediction parameter interface. Use this function
+to provide how the following parameters are named in the learning
+function (\code{lrn_fct}) you provided when creating the learner, or in the predicting function.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Lrner$interface(x = "x", y = "y", object = "object", data = "data")}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{x}}{(\code{string}(1)) \cr
+Name of the argument to pass the matrix of independent variables in the original learning function.}
+
+\item{\code{y}}{(\code{string}(1)) \cr
+Name of the argument to pass the response variable in the original learning function.}
+
+\item{\code{object}}{(\code{string}(1)) \cr
+Name of the argument to pass the model in the original predicting function.}
+
+\item{\code{data}}{\cr
+Name of the argument to pass new data in the original predicting function.}
 }
 \if{html}{\out{</div>}}
 }
@@ -215,6 +246,19 @@ Getter predicting parameter list.
 
 \subsection{Returns}{
 The list of predicting parameters.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Lrner-getParamInterface"></a>}}
+\if{latex}{\out{\hypertarget{method-Lrner-getParamInterface}{}}}
+\subsection{Method \code{getParamInterface()}}{
+The current parameter interface is returned.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Lrner$getParamInterface()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+A data.frame of interface.
 }
 }
 }

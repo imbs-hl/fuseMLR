@@ -89,6 +89,42 @@ Lrner <- R6Class("Lrner",
                      }
                    },
                    #' @description
+                   #' Learner and prediction parameter interface. Use this function
+                   #' to provide how the following parameters are named in the learning
+                   #' function (\code{lrn_fct}) you provided when creating the learner, or in the predicting function.
+                   #'
+                   #' @param x (`string`(1)) \cr
+                   #' Name of the argument to pass the matrix of independent variables in the original learning function.
+                   #' @param y (`string`(1)) \cr
+                   #' Name of the argument to pass the response variable in the original learning function.
+                   #' @param object (`string`(1)) \cr
+                   #' Name of the argument to pass the model in the original predicting function.
+                   #' @param data \cr
+                   #' Name of the argument to pass new data in the original predicting function.
+                   #'
+                   #' @export
+                   #'
+                   interface = function (x = "x",
+                                         y = "y",
+                                         object = "object",
+                                         data = "data") {
+                     if (!is.character(x)) {
+                       stop("String expected for x.")
+                     }
+                     if (!is.character(y)) {
+                       stop("String expected for y.")
+                     }
+                     if (!is.character(object)) {
+                       stop("String expected for object.")
+                     }
+                     if (!is.character(data)) {
+                       stop("String expected for data.")
+                     }
+                     param_interface = data.frame(standard = c(x_name, y_name, object_name, data_name),
+                                               original = c(x, y, object, data))
+                     private$param_interface = param_interface
+                   },
+                   #' @description
                    #' Tains the current learner (from class [Lrner]) on the current training data (from class [TrainData]).
                    #'
                    #' @param ind_subset `vector(1)` \cr
@@ -147,8 +183,16 @@ Lrner <- R6Class("Lrner",
                      } else {
                        private$var_subset = "ALL"
                      }
-                     lrn_param$x = train_data$getData()
-                     lrn_param$y = train_data$getTargetValues()
+                     # Set x and y parameters.
+                     if (is.null(private$param_interface)) {
+                       lrn_param$x = train_data$getData()
+                       lrn_param$y = train_data$getTargetValues()
+                     } else {
+                       x_name = private$param_interface[private$param_interface$standard == "x", "original"]
+                       y_name = private$param_interface[private$param_interface$standard == "y", "original"]
+                       lrn_param[[x_name]] = train_data$getData()
+                       lrn_param[[y_name]] = train_data$getTargetValues()
+                     }
                      base_model = do.call(eval(parse(text = lrn)), lrn_param)
                      model = Model$new(lrner = self,
                                        train_data = train_data,
@@ -224,6 +268,15 @@ Lrner <- R6Class("Lrner",
                    #'
                    getParamPred = function () {
                      return(private$param_pred)
+                   },
+                   #' @description
+                   #' The current parameter interface is returned.
+                   #'
+                   #' @return
+                   #' A data.frame of interface.
+                   #'
+                   getParamInterface = function () {
+                     return(private$param_interface)
                    }
                  ),
                  private = list(
@@ -237,6 +290,8 @@ Lrner <- R6Class("Lrner",
                    param_train = list(0L),
                    # Parameters of the predict function.
                    param_pred = list(0L),
+                   # Parameter interface to original names of arguments in original learning and predict function.
+                   param_interface = NULL,
                    na_rm = NULL,
                    # Training layer (from class [TainLayer] or [TrainMetaLayer]) of the current learner.
                    train_layer = NULL,

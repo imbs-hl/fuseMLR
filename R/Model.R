@@ -166,7 +166,7 @@ Model <- R6Class("Model",
                          value = ind_subset)
                      }
                      pred_param <- private$lrner$getParamPred()
-                     pred_param$object = self$getBaseModel()
+                     pred_param_object = self$getBaseModel()
                      # Predict using the subset of variables utilized for training
                      training_var = colnames(private$train_data$getData())
                      restricted_testing_data = testing_data$getData()
@@ -179,7 +179,20 @@ Model <- R6Class("Model",
                          }
                        }
                      }
-                     pred_param$data = restricted_testing_data
+                     pred_param_data = restricted_testing_data
+                     # Use parameter interface to predict.
+                     param_interface = private$lrner$getParamInterface()
+                     print(param_interface)
+                     # Set object and data parameters.
+                     if (is.null(param_interface)) {
+                       pred_param[["object"]] = pred_param_object
+                       pred_param[["data"]] = pred_param_data
+                     } else {
+                       object_name = param_interface[param_interface$standard == "object", "original"]
+                       data_name = param_interface[param_interface$standard == "data", "original"]
+                       pred_param[[object_name]] = pred_param_object
+                       pred_param[[data_name]] = pred_param_data
+                     }
                      lrn_package = private$lrner$getPackage()
                      if (is.null(lrn_package)) {
                        predict_fct = "predict"
