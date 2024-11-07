@@ -224,8 +224,8 @@ Trains the current object. All leaners and the meta learner are trained.
 \if{html}{\out{<div class="r">}}\preformatted{Training$train(
   ind_subset = NULL,
   use_var_sel = FALSE,
-  resampling_method,
-  resampling_arg,
+  resampling_method = NULL,
+  resampling_arg = list(),
   verbose = TRUE
 )}\if{html}{\out{</div>}}
 }
@@ -240,7 +240,7 @@ ID subset to be used for training.}
 If TRUE, variable selection is performed before training.}
 
 \item{\code{resampling_method}}{(\verb{function(1)}) \cr
-Function for internal validation.}
+Function for internal validation. If not specify, the \code{resampling} function from the package \code{caret} is used for a 10-folds cross-validation.}
 
 \item{\code{resampling_arg}}{(\code{list(1)}) \cr
 List of arguments to be passed to the function.}

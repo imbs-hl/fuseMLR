@@ -262,7 +262,7 @@ Training <- R6Class("Training",
                         #' @param use_var_sel `boolean(1)` \cr
                         #' If TRUE, variable selection is performed before training.
                         #' @param resampling_method (`function(1)`) \cr
-                        #' Function for internal validation.
+                        #' Function for internal validation. If not specify, the \code{resampling} function from the package \code{caret} is used for a 10-folds cross-validation.
                         #' @param resampling_arg (`list(1)`) \cr
                         #' List of arguments to be passed to the function.
                         #' @param verbose (`boolean`) \cr
@@ -274,14 +274,19 @@ Training <- R6Class("Training",
                         #'
                         train = function (ind_subset = NULL,
                                           use_var_sel = FALSE,
-                                          resampling_method,
-                                          resampling_arg,
+                                          resampling_method = NULL,
+                                          resampling_arg = list(),
                                           verbose = TRUE) {
                           # Test that the training object contains ovelapping individuals
                           if (!self$testOverlap()) {
                             stop("This Training object does not contain overlapping individuals.") #nocov
                           }
                           # 1) Create meta training data
+                          if (is.null(resampling_method)) {
+                            resampling_method = "caret::createFolds"
+                            resampling_arg = list(y = self$getTargetValues(),
+                                                  k = 10L)
+                          }
                           self$createMetaTrainData(resampling_method,
                                                    resampling_arg,
                                                    use_var_sel = use_var_sel,
