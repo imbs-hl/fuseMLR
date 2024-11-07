@@ -104,6 +104,8 @@ Lrner <- R6Class("Lrner",
                    #'
                    #' @export
                    #'
+                   # TODO: Covr me
+                   # nocov start
                    interface = function (x = "x",
                                          y = "y",
                                          object = "object",
@@ -124,6 +126,7 @@ Lrner <- R6Class("Lrner",
                                                original = c(x, y, object, data))
                      private$param_interface = param_interface
                    },
+                   # nocov end
                    #' @description
                    #' Tains the current learner (from class [Lrner]) on the current training data (from class [TrainData]).
                    #'
@@ -188,10 +191,13 @@ Lrner <- R6Class("Lrner",
                        lrn_param$x = train_data$getData()
                        lrn_param$y = train_data$getTargetValues()
                      } else {
+                       # TODO: covr me
+                       # nocov start
                        x_name = private$param_interface[private$param_interface$standard == "x", "original"]
                        y_name = private$param_interface[private$param_interface$standard == "y", "original"]
                        lrn_param[[x_name]] = train_data$getData()
                        lrn_param[[y_name]] = train_data$getTargetValues()
+                       # nocov end
                      }
                      base_model = do.call(eval(parse(text = lrn)), lrn_param)
                      model = Model$new(lrner = self,

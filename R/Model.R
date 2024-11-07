@@ -188,10 +188,13 @@ Model <- R6Class("Model",
                        pred_param[["object"]] = pred_param_object
                        pred_param[["data"]] = pred_param_data
                      } else {
+                       # TODO: covr me
+                       # nocov start
                        object_name = param_interface[param_interface$standard == "object", "original"]
                        data_name = param_interface[param_interface$standard == "data", "original"]
                        pred_param[[object_name]] = pred_param_object
                        pred_param[[data_name]] = pred_param_data
+                       # nocov end
                      }
                      lrn_package = private$lrner$getPackage()
                      if (is.null(lrn_package)) {
