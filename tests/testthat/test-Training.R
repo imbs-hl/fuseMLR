@@ -188,7 +188,9 @@ test_that("Training: all tests", {
     disease <- training$getTargetValues()$disease
   })
 
-
+    no_resampling <- capture_warning(
+      training$train(use_var_sel = TRUE)
+    )
     three_warning <- capture_warnings(
       trained <- training$train(resampling_method = "caret::createFolds",
                                          resampling_arg = list(y = disease,
