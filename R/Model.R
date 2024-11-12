@@ -208,7 +208,7 @@ Model <- R6Class("Model",
                                              pred_param)
                      # The predicted object must be either a vector or a list
                      # containing a field predictions with predictions.
-                     if (is.vector(predicted_obj)) {
+                     if (is.vector(predicted_obj)|is.factor(predicted_obj)) {
                        predicted_obj = data.frame(
                          layer = private$lrner$getTrainLayer()$getId(),
                          id = ind_subset,
