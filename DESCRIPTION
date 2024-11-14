@@ -44,6 +44,8 @@ Collate:
     'TrainMetaLayer.R'
     'Training.R'
     'VarSel.R'
+    'createTesting.R'
+    'createTraining.R'
     'entities.R'
     'weightedMeanLearner.R'
     'predict.bestSpecificLearner.R'

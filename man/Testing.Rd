@@ -60,7 +60,7 @@ constructor
 Testing id.}
 
 \item{\code{ind_col}}{(\code{character(1)})
-Name of column of individuals IDS}
+Name of column of individuals IDS in testing data.frame.}
 }
 \if{html}{\out{</div>}}
 }

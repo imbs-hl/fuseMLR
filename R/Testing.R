@@ -22,7 +22,7 @@ Testing <- R6Class("Testing",
                    #' @param id (`character(1)`)\cr
                    #' Testing id.
                    #' @param ind_col (`character(1)`)
-                   #' Name of column of individuals IDS
+                   #' Name of column of individuals IDS in testing data.frame.
                    initialize = function (id, ind_col) {
                      super$initialize(id = id)
                      private$ind_col = ind_col

@@ -63,7 +63,7 @@ The following figure illustrates the general architecture of `fuseMLR`:
 The general architecture of `fuseMLR` includes the collection classes
 `Training`, `TrainLayer`, and `TrainMetaLayer`. `TrainLayer` and
 `TrainMetaLayer` are stored within a `Training` instance, while
-`TrainData`, `Lrnr`, and `VarSel` (for variable selection) are stored
+`TrainData`, `Lrner`, and `VarSel` (for variable selection) are stored
 within a `TrainLayer` or `MetaTrainLayer` instance. An `Training` object
 can be used to automatically conduct layer-specific variable selection
 and train layer-specfic and meta models.
@@ -125,11 +125,11 @@ for training studies, and predict new studies.
 We need to set up training resources.
 
 ``` r
-training <- Training$new(id = "training",
-                         ind_col = "IDS",
-                         target = "disease",
-                         target_df = entities$training$target)
-# See also training$summary()
+training <- createTraining(id = "training",
+                           ind_col = "IDS",
+                           target = "disease",
+                           target_df = entities$training$target,
+                           verbose = FALSE)
 print(training)
 ```
 
@@ -139,57 +139,97 @@ print(training)
     ## Layers trained  : 0
     ## n               : 70
 
-- Prepare new training layers: Training layers are components of a study
-  and represent the second component of a `fuseMLR` object.
+- Prepare training layers: Training layers contain `TrainData`, `Lrner`
+  and `VarSel` objects. Therefore arguments to instantiate those object
+  are provided when creating training layers. Users can choose to set up
+  layer-specific learners, but for illustration, we will use the same
+  learner for all layers. A `data.frame` of training data is required to
+  instantiate a `TrainData` object. For `Lrner` and `VarSel` objects
+  package and function names, and list of arguments are required.
 
 ``` r
-tl_ge <- TrainLayer$new(id = "geneexpr", training = training)
-tl_pr <- TrainLayer$new(id = "proteinexpr", training = training)
-tl_me <- TrainLayer$new(id = "methylation", training = training)
-# We also prepare the meta layer for the meta analysis.
-tl_meta <- TrainMetaLayer$new(id = "meta_layer", training = training)
+# Create gene expression layer
+createTrainLayer(training = training,
+                 train_layer_id = "geneexpr",
+                 train_data = entities$training$geneexpr,
+                 varsel_package = "Boruta",
+                 varsel_fct = "Boruta",
+                 varsel_param = list(num.trees = 1000L,
+                                     mtry = 3L,
+                                     probability = TRUE),
+                 lrner_package = "ranger",
+                 lrn_fct = "ranger",
+                 param_train_list = list(probability = TRUE,
+                                         mtry = 1L),
+                 param_pred_list = list(),
+                 na_rm = TRUE)
 ```
 
-- Add training data (entities) to layers: Exclude the meta layer, as it
-  is modified internally after the training phase.
+    ## Training        : training
+    ## Status          : Not trained
+    ## Number of layers: 1
+    ## Layers trained  : 0
+    ## n               : 70
 
 ``` r
-train_data_ge <- TrainData$new(id = "geneexpr",
-                               train_layer = tl_ge,
-                               data_frame = entities$training$geneexpr)
-train_data_pr <- TrainData$new(id = "proteinexpr",
-                               train_layer = tl_pr,
-                               data_frame = entities$training$proteinexpr)
-train_data_me <- TrainData$new(id = "methylation",
-                               train_layer = tl_me,
-                               data_frame = entities$training$methylation)
-# An overview of the gene expression training data
-print(train_data_ge)
+# Create gene protein abundance layer
+createTrainLayer(training = training,
+                 train_layer_id = "proteinexpr",
+                 train_data = entities$training$proteinexpr,
+                 varsel_package = "Boruta",
+                 varsel_fct = "Boruta",
+                 varsel_param = list(num.trees = 1000L,
+                                     mtry = 3L,
+                                     probability = TRUE),
+                 lrner_package = "ranger",
+                 lrn_fct = "ranger",
+                 param_train_list = list(probability = TRUE,
+                                         mtry = 1L),
+                 param_pred_list = list(),
+                 na_rm = TRUE)
 ```
 
-    ## TrainData : geneexpr
-    ## Layer     : geneexpr
-    ## ind. id.  : IDS
-    ## target    : disease
-    ## n         : 50
-    ## Missing   : 0
-    ## p         : 133
+    ## Training        : training
+    ## Status          : Not trained
+    ## Number of layers: 2
+    ## Layers trained  : 0
+    ## n               : 70
 
 ``` r
-# An overview of the gene expression training layer
-print(tl_ge)
+# Create methylation layer
+createTrainLayer(training = training,
+                 train_layer_id = "methylation",
+                 train_data = entities$training$proteinexpr,
+                 varsel_package = "Boruta",
+                 varsel_fct = "Boruta",
+                 varsel_param = list(num.trees = 1000L,
+                                     mtry = 3L,
+                                     probability = TRUE),
+                 lrner_package = "ranger",
+                 lrn_fct = "ranger",
+                 param_train_list = list(probability = TRUE,
+                                         mtry = 1L),
+                 param_pred_list = list(),
+                 na_rm = TRUE)
 ```
 
-    ## TrainLayer            : geneexpr
-    ## Status                : Not trained
-    ## Nb. of objects stored : 1
-    ## -----------------------
-    ##        key     class
-    ## 1 geneexpr TrainData
+    ## Training        : training
+    ## Status          : Not trained
+    ## Number of layers: 3
+    ## Layers trained  : 0
+    ## n               : 70
+
+- Also add a meta layer: a meta layer contains a `Lrner` object.
 
 ``` r
-# An overview of the training resources
-print(training)
+# Create meta layer
+createTrainMetaLayer(training = training,
+                     meta_layer_id = "meta_layer",
+                     lrner_package = NULL,
+                     lrn_fct = "weightedMeanLearner",
+                     param_train_list = list(),
+                     param_pred_list = list(),
+                     na_rm = FALSE)
 ```
 
     ## Training        : training
@@ -202,49 +242,20 @@ print(training)
   layers.
 
 ``` r
-training$upset(order.by = "freq")
+fuseMLR::upsetplot(object = training, order.by = "freq")
 ```
 
 ![](README_files/figure-gfm/upsetplot-1.png)<!-- -->
 
 #### C) Variable selection
 
-We need to set up variable selection methods to our training resources.
-Note that this can be the same method or different layer-specific
-methods. For simplicity, we will set up the same method on all layers.
-
-- Instantiate the variable selection method and assign training layers.
-
-``` r
-varsel_ge <- VarSel$new(id = "varsel_geneexpr",
-                        package = "Boruta",
-                        varsel_fct = "Boruta",
-                        varsel_param = list(num.trees = 1000L,
-                                            mtry = 3L,
-                                            probability = TRUE),
-                        train_layer = tl_ge)
-
-varsel_pr <- VarSel$new(id = "varsel_proteinexpr",
-                        package = "Boruta",
-                        varsel_fct = "Boruta",
-                        varsel_param = list(num.trees = 1000L,
-                                            mtry = 3L,
-                                            probability = TRUE),
-                        train_layer = tl_pr)
-varsel_me <- VarSel$new(id = "varsel_methylation",
-                        package = "Boruta",
-                        varsel_fct = "Boruta",
-                        varsel_param = list(num.trees = 1000L,
-                                            mtry = 3L,
-                                            probability = TRUE),
-                        train_layer = tl_me)
-```
-
 - Perform variable selection on our training resources
 
 ``` r
+# Variable selection
 set.seed(5467)
-var_sel_res <- training$varSelection(verbose = FALSE)
+var_sel_res <- varSelection(training = training,
+                            verbose = FALSE)
 print(var_sel_res)
 ```
 
@@ -269,29 +280,7 @@ print(var_sel_res)
     ## 18    geneexpr       YAP1
     ## 19 proteinexpr Caveolin.1
     ## 20 proteinexpr     Rab.25
-    ## 21 methylation cg09637363
-    ## 22 methylation cg25060573
-    ## 23 methylation cg23989635
-    ## 24 methylation cg22679003
-    ## 25 methylation cg01663570
-    ## 26 methylation cg09186685
-    ## 27 methylation cg20253551
-    ## 28 methylation cg03386722
-    ## 29 methylation cg00241355
-    ## 30 methylation cg26187237
-    ## 31 methylation cg24991452
-    ## 32 methylation cg20042228
-    ## 33 methylation cg23641145
-    ## 34 methylation cg01228636
-    ## 35 methylation cg17489897
-    ## 36 methylation cg21573601
-    ## 37 methylation cg00059930
-    ## 38 methylation cg19427472
-    ## 39 methylation cg16925486
-    ## 40 methylation cg00239419
-    ## 41 methylation cg23323671
-    ## 42 methylation cg07160163
-    ## 43 methylation cg12507125
+    ## 21 methylation Caveolin.1
 
 For each layer, the variable selection results show the chosen
 variables. In this example, we perform variable selection. Users can opt
@@ -300,52 +289,19 @@ to conduct variable selection on individual layers if desired.
 #### D) Training
 
 We can now train our models using the subset of selected variables.
-Users can choose to set up layer-specific learners, but for
-illustration, we will use the same learner for all layers.
-
-- Set up learners for each layer. We will use a weighted sum,
-  implemented internally by `fuseMLR`, for the meta-analysis.
-
-``` r
-lrner_ge <- Lrner$new(id = "ranger",
-                      package = "ranger",
-                      lrn_fct = "ranger",
-                      param_train_list = list(probability = TRUE,
-                                               mtry = 1L),
-                      train_layer = tl_ge)
-lrner_pr <- Lrner$new(id = "ranger",
-                      package = "ranger",
-                      lrn_fct = "ranger",
-                      param_train_list = list(probability = TRUE,
-                                               mtry = 1L),
-                      train_layer = tl_pr)
-lrner_me <- Lrner$new(id = "ranger",
-                      package = "ranger",
-                      lrn_fct = "ranger",
-                      param_train_list = list(probability = TRUE,
-                                               mtry = 1L),
-                      train_layer = tl_me)
-lrner_meta <- Lrner$new(id = "weighted",
-                        lrn_fct = "weightedMeanLearner",
-                        param_train_list = list(),
-                        na_rm = FALSE,
-                        train_layer = tl_meta)
-```
 
 - Train the models with the selected variables.
 
 ``` r
 set.seed(5462)
-# Retrieve the target variable for resampling reasons. Resampling will be used by
-# fuseMLR to generate meta data.
-disease <- training$getTargetValues()$disease
-trained <- training$train(resampling_method = "caret::createFolds",
-                          resampling_arg = list(y = disease,
-                                                k = 10L),
-                          use_var_sel = TRUE,
-                          verbose = FALSE)
-# Let us now check the status of our training resources.
-print(trained)
+training <- fusemlr(training = training,
+                    use_var_sel = TRUE,
+                    resampling_method = NULL,
+                    resampling_arg = list(y = entities$training$target$disease,
+                                          k = 10L),
+                    verbose = FALSE)
+
+print(training)
 ```
 
     ## Training        : training
@@ -354,36 +310,11 @@ print(trained)
     ## Layers trained  : 4
     ## n               : 70
 
-``` r
-# Let us check the status of a layer as well.
-print(tl_ge)
-```
-
-    ## TrainLayer            : geneexpr
-    ## Status                : Trained
-    ## Nb. of objects stored : 4
-    ## -----------------------
-    ##               key     class
-    ## 1        geneexpr TrainData
-    ## 2 varsel_geneexpr    VarSel
-    ## 3          ranger     Lrner
-    ## 4        rangerMo     Model
-
-``` r
-## On the meta model
-tmp_model <- tl_meta$getModel()
-print(tmp_model$getBaseModel())
-```
-
-    ##    geneexpr proteinexpr methylation 
-    ##   0.2326579   0.4241035   0.3432386 
-    ## attr(,"class")
-    ## [1] "weightedMeanLearner"
-
 - Retrieve the basic model of a specific layer.
 
 ``` r
-model_ge <- tl_ge$getModel()
+lay_genexpr <- training$getLayer(id = "geneexpr")
+model_ge <- lay_genexpr$getModel()
 print(model_ge)
 ```
 
@@ -391,14 +322,14 @@ print(model_ge)
     ## 
     ## Learner info.   
     ## -----------------------
-    ## Learner          : ranger
+    ## Learner          : geneexpr_lrner
     ## TrainLayer       : geneexpr
     ## Package          : ranger
     ## Learn function   : ranger
     ## 
     ## Train data info.      
     ## -----------------------
-    ## TrainData : geneexpr
+    ## TrainData : geneexpr_data
     ## Layer     : geneexpr
     ## ind. id.  : IDS
     ## target    : disease
@@ -415,36 +346,44 @@ create testing resources and make predictions for new data.
 - Create the testing object.
 
 ``` r
-testing <- Testing$new(id = "testing", ind_col = "IDS")
+# Create testing for predcitions
+testing <- createTesting(id = "testing",
+                           ind_col = "IDS")
+
+# Create gene expression layer
+createTestLayer(testing = testing,
+                test_layer_id = "geneexpr",
+                 test_data = entities$testing$geneexpr)
 ```
 
-- Create new layers.
+    ## Testing         : testing
+    ## Number of layers: 1
 
 ``` r
-nl_ge <- TestLayer$new(id = "geneexpr", testing = testing)
-nl_pr <- TestLayer$new(id = "proteinexpr", testing = testing)
-nl_me <- TestLayer$new(id = "methylation", testing = testing)
+# Create gene protein abundance layer
+createTestLayer(testing = testing,
+                 test_layer_id = "proteinexpr",
+                 test_data = entities$testing$proteinexpr)
 ```
 
-- Instantiate and add new training data to new layers.
+    ## Testing         : testing
+    ## Number of layers: 2
 
 ``` r
-new_data_ge <- TestData$new(id = "geneexpr",
-                            new_layer = nl_ge,
-                            data_frame = entities$testing$geneexpr)
-new_data_pr <- TestData$new(id = "proteinexpr",
-                            new_layer = nl_pr,
-                            data_frame = entities$testing$proteinexpr)
-new_data_me <- TestData$new(id = "methylation",
-                            new_layer = nl_me,
-                            data_frame = entities$testing$methylation)
+# Create methylation layer
+createTestLayer(testing = testing,
+                 test_layer_id = "methylation",
+                 test_data = entities$testing$proteinexpr)
 ```
+
+    ## Testing         : testing
+    ## Number of layers: 3
 
 - An upset plot of the training data: Visualize patient overlap across
   layers.
 
 ``` r
-testing$upset(order.by = "freq")
+upsetplot(object = testing, order.by = "freq")
 ```
 
 ![](README_files/figure-gfm/upsetplot_new-1.png)<!-- -->
@@ -452,7 +391,7 @@ testing$upset(order.by = "freq")
 - Predict the testing object.
 
 ``` r
-predictions <- training$predict(testing = testing)
+predictions <- predict(object = training, testing = testing)
 print(predictions)
 ```
 
@@ -461,36 +400,34 @@ print(predictions)
     ## Nb. layers   : 4
     ## 
     ## $predicted_values
-    ##          IDS  geneexpr proteinexpr methylation meta_layer
-    ## 1  patient23 0.3955167   0.6035587  0.17541746  0.4082015
-    ## 2  patient77 0.4194508   0.4910333  0.12029762  0.3471283
-    ## 3  patient62 0.7698508   0.9696040          NA  0.8988413
-    ## 4  patient43 0.3206127          NA          NA  0.3206127
-    ## 5   patient8 0.7545587   0.8471222  0.83950000  0.8229704
-    ## 6  patient74 0.5489651   0.6835690  0.53626667  0.6016925
-    ## 7  patient29 0.3272770   0.4641143  0.28055873  0.3692746
-    ## 8  patient17 0.4088706   0.3569238          NA  0.3753260
-    ## 9  patient25 0.2823317   0.4480825  0.09887937  0.2896593
-    ## 10 patient54 0.8051635          NA  0.84849444  0.8309891
-    ## 11 patient60 0.7333056   0.8435198  0.80658413  0.8051999
-    ## 12 patient44 0.3889190          NA          NA  0.3889190
-    ## 13  patient1 0.8166127   0.9415270          NA  0.8972761
-    ## 14 patient76 0.6997905          NA  0.62434603  0.6548250
-    ## 15 patient16 0.7076770          NA  0.69410000  0.6995850
-    ## 16 patient27 0.3591865          NA  0.22121032  0.2769517
-    ## 17 patient58 0.5753381   0.7549960  0.76922857  0.7180823
-    ## 18 patient52 0.4747833   0.1256032          NA  0.2493004
-    ## 19 patient10 0.2418214          NA          NA  0.2418214
-    ## 20 patient72 0.7309365   0.9540413  0.61715873  0.7865031
-    ## 21 patient39        NA   0.0834881          NA  0.0834881
-    ## 25 patient46        NA   0.2154611  0.53634524  0.3589953
-    ## 26 patient97        NA   0.7014659  0.86992143  0.7768175
-    ## 27 patient31        NA   0.2656349          NA  0.2656349
-    ## 31 patient87        NA   0.2897254  0.25276032  0.2731906
-    ## 33 patient59        NA   0.1475627  0.39242143  0.2570901
-    ## 34  patient2        NA   0.5379889  0.81212460  0.6606121
-    ## 53 patient85        NA          NA  0.15531746  0.1553175
-    ## 60  patient3        NA          NA  0.58667143  0.5866714
+    ##          IDS geneexpr proteinexpr methylation meta_layer
+    ## 1  patient23 1.476367    1.568467    1.930067   1.676138
+    ## 2  patient77 1.471433    1.444500    1.583533   1.503905
+    ## 3  patient62 1.847333    1.991567    1.975600   1.943983
+    ## 4  patient43 1.283000          NA          NA         NA
+    ## 5   patient8 1.687400    1.907100    1.570900   1.718811
+    ## 6  patient74 1.525300    1.690933    1.033100   1.398830
+    ## 7  patient29 1.254267    1.421767    1.207500   1.293830
+    ## 8  patient17 1.344233    1.365300    1.179300   1.290150
+    ## 9  patient25 1.246167    1.413467    1.517533   1.403792
+    ## 10 patient54 1.776800          NA          NA         NA
+    ## 11 patient60 1.780100    1.846467    1.708000   1.775884
+    ## 12 patient44 1.397133          NA          NA         NA
+    ## 13  patient1 1.799467    1.970900    1.930067   1.906227
+    ## 14 patient76 1.602833          NA          NA         NA
+    ## 15 patient16 1.733467          NA          NA         NA
+    ## 16 patient27 1.310033          NA          NA         NA
+    ## 17 patient58 1.593933    1.803167    1.499233   1.629882
+    ## 18 patient52 1.480200    1.102133    1.023733   1.182209
+    ## 19 patient10 1.261400          NA          NA         NA
+    ## 20 patient72 1.736700    1.976733    1.982100   1.909404
+    ## 21 patient39       NA    1.068833    1.023733         NA
+    ## 25 patient46       NA    1.171067    1.517533         NA
+    ## 26 patient97       NA    1.708133    1.346467         NA
+    ## 27 patient31       NA    1.264567    1.079367         NA
+    ## 31 patient87       NA    1.291867    1.015900         NA
+    ## 33 patient59       NA    1.087867    1.182267         NA
+    ## 34  patient2       NA    1.610933    1.709833         NA
 
 - Prediction performances for layer-specific available patients, and all
   patients on the meta layer.
@@ -513,7 +450,7 @@ print(perf_estimated)
 ```
 
     ##    geneexpr proteinexpr methylation  meta_layer 
-    ##  0.11205017  0.16567829  0.07991965  0.12184525
+    ##    1.174433    1.127329    1.038924    1.230136
 
 - Prediction performances for overlapping individuals.
 
@@ -529,7 +466,7 @@ print(perf_overlapping)
 ```
 
     ##    geneexpr proteinexpr methylation  meta_layer 
-    ##  0.12296962  0.13685581  0.06797495  0.09559852
+    ##    1.159882    1.322029    1.253180    1.230136
 
 Note that our example is based on simulated data for usage illustration;
 only one run is not enough to appreciate the performances of our models.

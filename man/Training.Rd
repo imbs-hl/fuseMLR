@@ -470,7 +470,7 @@ UpSet plot to show an overview of the overlap of individuals across various laye
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{...}}{\cr
-Further parameters to be passed to the the \code{upset} function from package \code{UpSetR}.}
+Further parameters to be passed to the \code{upset} function from package \code{UpSetR}.}
 }
 \if{html}{\out{</div>}}
 }

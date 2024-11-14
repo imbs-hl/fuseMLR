@@ -44,7 +44,7 @@ The following figure illustrates the general architecture of `fuseMLR`:
 knitr::include_graphics("README_files/figure-gfm/structure.png")
 ```
 
-The general architecture of `fuseMLR` includes the collection classes `Training`, `TrainLayer`, and `TrainMetaLayer`. `TrainLayer` and `TrainMetaLayer` are stored within a `Training` instance, while `TrainData`, `Lrnr`, and `VarSel` (for variable selection) are stored within a `TrainLayer` or `MetaTrainLayer` instance. An `Training` object can be used to automatically conduct layer-specific variable selection and train layer-specfic and meta models.
+The general architecture of `fuseMLR` includes the collection classes `Training`, `TrainLayer`, and `TrainMetaLayer`. `TrainLayer` and `TrainMetaLayer` are stored within a `Training` instance, while `TrainData`, `Lrner`, and `VarSel` (for variable selection) are stored within a `TrainLayer` or `MetaTrainLayer` instance. An `Training` object can be used to automatically conduct layer-specific variable selection and train layer-specfic and meta models.
 
 ### Usage example
 
@@ -76,86 +76,94 @@ Variable selection, training and prediction are the main functionalities of `fus
 We need to set up training resources.
 
 ```{r training, include=TRUE, eval=TRUE}
-training <- Training$new(id = "training",
-                         ind_col = "IDS",
-                         target = "disease",
-                         target_df = entities$training$target)
-# See also training$summary()
+training <- createTraining(id = "training",
+                           ind_col = "IDS",
+                           target = "disease",
+                           target_df = entities$training$target,
+                           verbose = FALSE)
 print(training)
 ```
 
-- Prepare new training layers: Training layers are components of a study and represent the second component of a `fuseMLR` object.
+- Prepare training layers: Training layers contain `TrainData`, `Lrner` and `VarSel` objects. Therefore arguments to instantiate those object are provided when creating training layers. Users can choose to set up layer-specific learners, but for illustration, we will use the same learner for all layers. A `data.frame` of training data is required to instantiate a `TrainData` object. For `Lrner` and `VarSel` objects package and function names, and list of arguments are required.
 
 ```{r training_layers, include=TRUE, eval=TRUE}
-tl_ge <- TrainLayer$new(id = "geneexpr", training = training)
-tl_pr <- TrainLayer$new(id = "proteinexpr", training = training)
-tl_me <- TrainLayer$new(id = "methylation", training = training)
-# We also prepare the meta layer for the meta analysis.
-tl_meta <- TrainMetaLayer$new(id = "meta_layer", training = training)
+# Create gene expression layer
+createTrainLayer(training = training,
+                 train_layer_id = "geneexpr",
+                 train_data = entities$training$geneexpr,
+                 varsel_package = "Boruta",
+                 varsel_fct = "Boruta",
+                 varsel_param = list(num.trees = 1000L,
+                                     mtry = 3L,
+                                     probability = TRUE),
+                 lrner_package = "ranger",
+                 lrn_fct = "ranger",
+                 param_train_list = list(probability = TRUE,
+                                         mtry = 1L),
+                 param_pred_list = list(),
+                 na_rm = TRUE)
+
+# Create gene protein abundance layer
+createTrainLayer(training = training,
+                 train_layer_id = "proteinexpr",
+                 train_data = entities$training$proteinexpr,
+                 varsel_package = "Boruta",
+                 varsel_fct = "Boruta",
+                 varsel_param = list(num.trees = 1000L,
+                                     mtry = 3L,
+                                     probability = TRUE),
+                 lrner_package = "ranger",
+                 lrn_fct = "ranger",
+                 param_train_list = list(probability = TRUE,
+                                         mtry = 1L),
+                 param_pred_list = list(),
+                 na_rm = TRUE)
+
+# Create methylation layer
+createTrainLayer(training = training,
+                 train_layer_id = "methylation",
+                 train_data = entities$training$proteinexpr,
+                 varsel_package = "Boruta",
+                 varsel_fct = "Boruta",
+                 varsel_param = list(num.trees = 1000L,
+                                     mtry = 3L,
+                                     probability = TRUE),
+                 lrner_package = "ranger",
+                 lrn_fct = "ranger",
+                 param_train_list = list(probability = TRUE,
+                                         mtry = 1L),
+                 param_pred_list = list(),
+                 na_rm = TRUE)
 ```
 
-- Add training data (entities) to layers: Exclude the meta layer, as it is modified internally after the training phase.
+- Also add a meta layer: a meta layer contains a `Lrner` object.
 
-```{r training_data, include=TRUE, eval=TRUE}
-train_data_ge <- TrainData$new(id = "geneexpr",
-                               train_layer = tl_ge,
-                               data_frame = entities$training$geneexpr)
-train_data_pr <- TrainData$new(id = "proteinexpr",
-                               train_layer = tl_pr,
-                               data_frame = entities$training$proteinexpr)
-train_data_me <- TrainData$new(id = "methylation",
-                               train_layer = tl_me,
-                               data_frame = entities$training$methylation)
-# An overview of the gene expression training data
-print(train_data_ge)
-# An overview of the gene expression training layer
-print(tl_ge)
-# An overview of the training resources
-print(training)
+```{r training_meta_layers, include=TRUE, eval=TRUE}
+# Create meta layer
+createTrainMetaLayer(training = training,
+                     meta_layer_id = "meta_layer",
+                     lrner_package = NULL,
+                     lrn_fct = "weightedMeanLearner",
+                     param_train_list = list(),
+                     param_pred_list = list(),
+                     na_rm = FALSE)
 ```
 
 - An upset plot of the training data: Visualize patient overlap across layers.
 
 ```{r upsetplot, include=TRUE, eval=TRUE, }
-training$upset(order.by = "freq")
+fuseMLR::upsetplot(object = training, order.by = "freq")
 ```
 
 #### C) Variable selection
 
-We need to set up variable selection methods to our training resources. Note that this can be the same method or different layer-specific methods. For simplicity, we will set up the same method on all layers.
-
-- Instantiate the variable selection method and assign training layers.
-
-```{r varsel_object, include=TRUE, eval=TRUE}
-varsel_ge <- VarSel$new(id = "varsel_geneexpr",
-                        package = "Boruta",
-                        varsel_fct = "Boruta",
-                        varsel_param = list(num.trees = 1000L,
-                                            mtry = 3L,
-                                            probability = TRUE),
-                        train_layer = tl_ge)
-
-varsel_pr <- VarSel$new(id = "varsel_proteinexpr",
-                        package = "Boruta",
-                        varsel_fct = "Boruta",
-                        varsel_param = list(num.trees = 1000L,
-                                            mtry = 3L,
-                                            probability = TRUE),
-                        train_layer = tl_pr)
-varsel_me <- VarSel$new(id = "varsel_methylation",
-                        package = "Boruta",
-                        varsel_fct = "Boruta",
-                        varsel_param = list(num.trees = 1000L,
-                                            mtry = 3L,
-                                            probability = TRUE),
-                        train_layer = tl_me)
-```
-
 - Perform variable selection on our training resources
 
 ```{r varsel, include=TRUE, eval=TRUE}
+# Variable selection
 set.seed(5467)
-var_sel_res <- training$varSelection(verbose = FALSE)
+var_sel_res <- varSelection(training = training,
+                            verbose = FALSE)
 print(var_sel_res)
 ```
 
@@ -163,62 +171,27 @@ For each layer, the variable selection results show the chosen variables. In thi
 
 #### D) Training
 
-We can now train our models using the subset of selected variables. Users can choose to set up layer-specific learners, but for illustration, we will use the same learner for all layers.
-
-- Set up learners for each layer. We will use a weighted sum, implemented internally by `fuseMLR`, for the meta-analysis.
-
-```{r lrner, include=TRUE, eval=TRUE}
-lrner_ge <- Lrner$new(id = "ranger",
-                      package = "ranger",
-                      lrn_fct = "ranger",
-                      param_train_list = list(probability = TRUE,
-                                               mtry = 1L),
-                      train_layer = tl_ge)
-lrner_pr <- Lrner$new(id = "ranger",
-                      package = "ranger",
-                      lrn_fct = "ranger",
-                      param_train_list = list(probability = TRUE,
-                                               mtry = 1L),
-                      train_layer = tl_pr)
-lrner_me <- Lrner$new(id = "ranger",
-                      package = "ranger",
-                      lrn_fct = "ranger",
-                      param_train_list = list(probability = TRUE,
-                                               mtry = 1L),
-                      train_layer = tl_me)
-lrner_meta <- Lrner$new(id = "weighted",
-                        lrn_fct = "weightedMeanLearner",
-                        param_train_list = list(),
-                        na_rm = FALSE,
-                        train_layer = tl_meta)
-```
+We can now train our models using the subset of selected variables.
 
 - Train the models with the selected variables.
 
 ```{r lrner_train, include=TRUE, eval=TRUE}
 set.seed(5462)
-# Retrieve the target variable for resampling reasons. Resampling will be used by
-# fuseMLR to generate meta data.
-disease <- training$getTargetValues()$disease
-trained <- training$train(resampling_method = "caret::createFolds",
-                          resampling_arg = list(y = disease,
-                                                k = 10L),
-                          use_var_sel = TRUE,
-                          verbose = FALSE)
-# Let us now check the status of our training resources.
-print(trained)
-# Let us check the status of a layer as well.
-print(tl_ge)
+training <- fusemlr(training = training,
+                    use_var_sel = TRUE,
+                    resampling_method = NULL,
+                    resampling_arg = list(y = entities$training$target$disease,
+                                          k = 10L),
+                    verbose = FALSE)
 
-## On the meta model
-tmp_model <- tl_meta$getModel()
-print(tmp_model$getBaseModel())
+print(training)
 ```
 
 - Retrieve the basic model of a specific layer.
 
 ```{r basic_lrnr, include=TRUE, eval=TRUE}
-model_ge <- tl_ge$getModel()
+lay_genexpr <- training$getLayer(id = "geneexpr")
+model_ge <- lay_genexpr$getModel()
 print(model_ge)
 ```
 
@@ -229,41 +202,36 @@ Now, we have created training resources, performed variable selection and traine
 - Create the testing object.
 
 ```{r testing, include=TRUE, eval=TRUE}
-testing <- Testing$new(id = "testing", ind_col = "IDS")
-```
+# Create testing for predcitions
+testing <- createTesting(id = "testing",
+                           ind_col = "IDS")
 
-- Create new layers.
+# Create gene expression layer
+createTestLayer(testing = testing,
+                test_layer_id = "geneexpr",
+                 test_data = entities$testing$geneexpr)
 
-```{r new_layer, include=TRUE, eval=TRUE}
-nl_ge <- TestLayer$new(id = "geneexpr", testing = testing)
-nl_pr <- TestLayer$new(id = "proteinexpr", testing = testing)
-nl_me <- TestLayer$new(id = "methylation", testing = testing)
-```
+# Create gene protein abundance layer
+createTestLayer(testing = testing,
+                 test_layer_id = "proteinexpr",
+                 test_data = entities$testing$proteinexpr)
 
-- Instantiate and add new training data to new layers.
-
-```{r testing_data, include=TRUE, eval=TRUE}
-new_data_ge <- TestData$new(id = "geneexpr",
-                            new_layer = nl_ge,
-                            data_frame = entities$testing$geneexpr)
-new_data_pr <- TestData$new(id = "proteinexpr",
-                            new_layer = nl_pr,
-                            data_frame = entities$testing$proteinexpr)
-new_data_me <- TestData$new(id = "methylation",
-                            new_layer = nl_me,
-                            data_frame = entities$testing$methylation)
+# Create methylation layer
+createTestLayer(testing = testing,
+                 test_layer_id = "methylation",
+                 test_data = entities$testing$proteinexpr)
 ```
 
 - An upset plot of the training data: Visualize patient overlap across layers.
 
 ```{r upsetplot_new, include=TRUE, eval=TRUE, }
-testing$upset(order.by = "freq")
+upsetplot(object = testing, order.by = "freq")
 ```
 
 - Predict the testing object.
 
 ```{r new_pred, include=TRUE, eval=TRUE}
-predictions <- training$predict(testing = testing)
+predictions <- predict(object = training, testing = testing)
 print(predictions)
 ```
 

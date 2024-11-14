@@ -249,7 +249,7 @@ Training <- R6Class("Training",
                             meta_layer$setTrainData(id = "predicted20242806",
                                                     ind_col = names(predicted_values_wide)[1L],
                                                     data_frame = predicted_values_wide)
-                            meta_layer$set2NotTrained()
+                            # meta_layer$set2NotTrained()
                             meta_layer$closeAccess()
                             return(predicted_values_wide)
                           }
@@ -284,7 +284,7 @@ Training <- R6Class("Training",
                           # 1) Create meta training data
                           if (is.null(resampling_method)) {
                             resampling_method = "caret::createFolds"
-                            resampling_arg = list(y = self$getTargetValues(),
+                            resampling_arg = list(y = self$getTargetValues()[ , self$getTarget()],
                                                   k = 10L)
                           }
                           self$createMetaTrainData(resampling_method,
@@ -582,7 +582,7 @@ Training <- R6Class("Training",
                         #' UpSet plot to show an overview of the overlap of individuals across various layers.
                         #'
                         #' @param ... \cr
-                        #' Further parameters to be passed to the the \code{upset} function from package \code{UpSetR}.
+                        #' Further parameters to be passed to the \code{upset} function from package \code{UpSetR}.
                         #'
                         #' @export
                         #'
