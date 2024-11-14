@@ -4,3 +4,5 @@
 ./R/PredictLayer.R
 ./R/PredictMetaLayer.R
 ./R/Predicting.R
+./R/createTraining.R
+./R/createTesting.R
