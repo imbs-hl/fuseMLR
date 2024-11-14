@@ -1,4 +1,6 @@
-#' @title Creates a [Training] object.
+#' @title createTraining
+#' @description
+#' Creates a [Training] object.
 #'
 #' @param id (`character(1)`) \cr
 #' @param ind_col (`character(1)`) \cr
@@ -31,8 +33,9 @@ createTraining = function (id,
   return(training)
 }
 
-
-#' @title Creates and store a [TrainLayer] on the [Training] object passed as argument.
+#' @title createTrainLayer
+#' @description
+#' Creates and store a [TrainLayer] on the [Training] object passed as argument.
 #'
 #' @param training (`Training(1)`) \cr
 #' Training object where the created layer will be stored.
@@ -102,7 +105,9 @@ createTrainLayer = function (training,
 
 
 
-#' @title Creates and store a [TrainMetaLayer] on the [Training] object passed as argument.
+#' @title createTrainMetaLayer
+#' @description
+#' Creates and store a [TrainMetaLayer] on the [Training] object passed as argument.
 #'
 #' @param training (`Training(1)`) \cr
 #' Training object where the created layer will be stored.
@@ -146,7 +151,9 @@ createTrainMetaLayer = function (training,
   return(training)
 }
 
-#' @title Variable selection on the current training object.
+#' @title varSelection
+#' @description
+#' Variable selection on the current training object.
 #'
 #' @param training (`Training(1)`) \cr
 #' Training object where the created layer will be stored.
@@ -166,7 +173,9 @@ varSelection = function (training,
   return(selected)
 }
 
-#' @title Trains the [Training] object passed as argument. All leaners and the meta learner are trained.
+#' @title fusemlr
+#' @description
+#' Trains the [Training] object passed as argument. All leaners and the meta learner are trained.
 #'
 #' @param training (`Training(1)`) \cr
 #' Training object where the created layer will be stored.
@@ -201,7 +210,9 @@ fusemlr = function (training,
 
 
 
-#' @title Computes predictions for the [Testing] object passed as argument.
+#' @title predict.Training
+#' @description
+#' Computes predictions for the [Testing] object passed as argument.
 #'
 #' @param object (`Training(1)`) \cr
 #' Training object to be used to compute predictions.
@@ -221,7 +232,9 @@ predict.Training = function (object,
   return(predictions)
 }
 
-#' @title An upset plot of overlapping individuals.
+#' @title upsetplot
+#' @description
+#' An upset plot of overlapping individuals.
 #'
 #' @param object (`Training(1) or Testing(1)`) \cr
 #' Training or testing object for each the upset plot will be created.

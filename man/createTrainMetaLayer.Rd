@@ -2,7 +2,7 @@
 % Please edit documentation in R/createTraining.R
 \name{createTrainMetaLayer}
 \alias{createTrainMetaLayer}
-\title{Creates and store a \link{TrainMetaLayer} on the \link{Training} object passed as argument.}
+\title{createTrainMetaLayer}
 \usage{
 createTrainMetaLayer(
   training,

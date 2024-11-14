@@ -5,14 +5,14 @@
 #'
 #' A training layer is structured as followed:
 #'
-#' * [Lrner]: It is set by the user to be trained on the training data.
-#' * [TrainData]: It is set by the user to be used to train the learner.
-#' * [Model]: The result of training the learner on the training data, and therefore, not set by the user.
-#' * [TestData]: It is set by the user implements new data to be predicted.
+#' * [TrainData]: Data to be used to train the learner.
+#' * [Lrner]: Includes a learning function and the package implementing the function.
+#' * [Model]: The result of training the learner on the training data.
+#' * [VarSel]: Includes a variable selection function and the package implementing the function.
 #'
-#' A layer can train its learner on its training data and store the resulting model. See the public function \code{Layer$train()} below.
+#' A training layer can train its learner on its training data and store the resulting model. See the public function \code{Layer$train()} below.
 #'
-#' A layer can make predictions for a new layer passed as argument to its predict function. See the public function \code{Layer$predict()} below.
+#' A training layer can make predictions for a new layer passed as argument to its predict function. See the public function \code{Layer$predict()} below.
 #'
 #' @export
 #' @importFrom R6 R6Class

@@ -8,15 +8,15 @@ This class implements a traning layer. A \link{TrainLayer} object can only exist
 
 A training layer is structured as followed:
 \itemize{
-\item \link{Lrner}: It is set by the user to be trained on the training data.
-\item \link{TrainData}: It is set by the user to be used to train the learner.
-\item \link{Model}: The result of training the learner on the training data, and therefore, not set by the user.
-\item \link{TestData}: It is set by the user implements new data to be predicted.
+\item \link{TrainData}: Data to be used to train the learner.
+\item \link{Lrner}: Includes a learning function and the package implementing the function.
+\item \link{Model}: The result of training the learner on the training data.
+\item \link{VarSel}: Includes a variable selection function and the package implementing the function.
 }
 
-A layer can train its learner on its training data and store the resulting model. See the public function \code{Layer$train()} below.
+A training layer can train its learner on its training data and store the resulting model. See the public function \code{Layer$train()} below.
 
-A layer can make predictions for a new layer passed as argument to its predict function. See the public function \code{Layer$predict()} below.
+A training layer can make predictions for a new layer passed as argument to its predict function. See the public function \code{Layer$predict()} below.
 }
 \seealso{
 \link{Training}, \link{Lrner}, \link{TrainData}, \link{TestData} and \link{Model}

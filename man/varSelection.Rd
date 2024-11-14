@@ -2,7 +2,7 @@
 % Please edit documentation in R/createTraining.R
 \name{varSelection}
 \alias{varSelection}
-\title{Variable selection on the current training object.}
+\title{varSelection}
 \usage{
 varSelection(training, ind_subset = NULL, verbose = TRUE)
 }

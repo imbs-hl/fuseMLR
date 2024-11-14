@@ -2,7 +2,7 @@
 % Please edit documentation in R/createTraining.R
 \name{fusemlr}
 \alias{fusemlr}
-\title{Trains the \link{Training} object passed as argument. All leaners and the meta learner are trained.}
+\title{fusemlr}
 \usage{
 fusemlr(
   training,

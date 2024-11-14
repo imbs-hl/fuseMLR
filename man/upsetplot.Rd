@@ -2,7 +2,7 @@
 % Please edit documentation in R/createTraining.R
 \name{upsetplot}
 \alias{upsetplot}
-\title{An upset plot of overlapping individuals.}
+\title{upsetplot}
 \usage{
 upsetplot(object, ...)
 }

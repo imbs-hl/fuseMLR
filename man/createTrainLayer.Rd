@@ -2,7 +2,7 @@
 % Please edit documentation in R/createTraining.R
 \name{createTrainLayer}
 \alias{createTrainLayer}
-\title{Creates and store a \link{TrainLayer} on the \link{Training} object passed as argument.}
+\title{createTrainLayer}
 \usage{
 createTrainLayer(
   training,

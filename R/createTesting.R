@@ -1,4 +1,6 @@
-#' @title Creates a [Testing] object.
+#' @title createTesting
+#' @description
+#' Creates a [Testing] object.
 #'
 #' @param id (`character(1)`) \cr
 #' Testing id.
@@ -17,7 +19,9 @@ createTesting = function (id,
 }
 
 
-#' @title Creates and store a [TestLayer] on the [Testing] object passed as argument.
+#' @title createTestLayer
+#' @description
+#' Creates and store a [TestLayer] on the [Testing] object passed as argument.
 #'
 #' @param testing (`Testing(1)`) \cr
 #' Testing object where the created layer will be stored.

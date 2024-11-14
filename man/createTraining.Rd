@@ -2,7 +2,7 @@
 % Please edit documentation in R/createTraining.R
 \name{createTraining}
 \alias{createTraining}
-\title{Creates a \link{Training} object.}
+\title{createTraining}
 \usage{
 createTraining(
   id,

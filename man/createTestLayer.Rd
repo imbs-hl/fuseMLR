@@ -2,7 +2,7 @@
 % Please edit documentation in R/createTesting.R
 \name{createTestLayer}
 \alias{createTestLayer}
-\title{Creates and store a \link{TestLayer} on the \link{Testing} object passed as argument.}
+\title{createTestLayer}
 \usage{
 createTestLayer(testing, test_layer_id, test_data)
 }

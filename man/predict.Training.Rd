@@ -2,7 +2,7 @@
 % Please edit documentation in R/createTraining.R
 \name{predict.Training}
 \alias{predict.Training}
-\title{Computes predictions for the \link{Testing} object passed as argument.}
+\title{predict.Training}
 \usage{
 \method{predict}{Training}(object, testing, ind_subset = NULL)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/createTesting.R
 \name{createTesting}
 \alias{createTesting}
-\title{Creates a \link{Testing} object.}
+\title{createTesting}
 \usage{
 createTesting(id, ind_col)
 }
