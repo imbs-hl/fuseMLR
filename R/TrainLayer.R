@@ -189,7 +189,6 @@ TrainLayer <- R6Class("TrainLayer",
                           }
                           testing_data = new_layer$getTestData()
                           # Predicting: Data and model exist on this layer.
-
                           model = self$getModel()
                           pred_data = model$predict(testing_data = testing_data,
                                                     ind_subset = ind_subset)

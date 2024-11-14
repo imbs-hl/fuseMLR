@@ -244,22 +244,7 @@ varsel_me <- VarSel$new(id = "varsel_methylation",
 
 ``` r
 set.seed(5467)
-var_sel_res <- training$varSelection()
-```
-
-    ## Variable selection on layer geneexpr started.
-
-    ## Variable selection on layer geneexpr done.
-
-    ## Variable selection on layer proteinexpr started.
-
-    ## Variable selection on layer proteinexpr done.
-
-    ## Variable selection on layer methylation started.
-
-    ## Variable selection on layer methylation done.
-
-``` r
+var_sel_res <- training$varSelection(verbose = FALSE)
 print(var_sel_res)
 ```
 

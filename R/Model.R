@@ -182,7 +182,6 @@ Model <- R6Class("Model",
                      pred_param_data = restricted_testing_data
                      # Use parameter interface to predict.
                      param_interface = private$lrner$getParamInterface()
-                     print(param_interface)
                      # Set object and data parameters.
                      if (is.null(param_interface)) {
                        pred_param[["object"]] = pred_param_object

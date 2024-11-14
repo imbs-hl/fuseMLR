@@ -155,7 +155,7 @@ varsel_me <- VarSel$new(id = "varsel_methylation",
 
 ```{r varsel, include=TRUE, eval=TRUE}
 set.seed(5467)
-var_sel_res <- training$varSelection()
+var_sel_res <- training$varSelection(verbose = FALSE)
 print(var_sel_res)
 ```
 
