@@ -46,3 +46,18 @@ createTestLayer = function (testing,
                            new_layer = test_layer)
   return(testing)
 }
+
+#' @title Testing object Summaries
+#' @description
+#' Summaries a fuseMLR [Testing] object.
+#'
+#' @param object (`Testing(1)`) \cr
+#' The [Testing] object of interest.
+#' @param ... \cr
+#' Further arguments.
+#'
+#' @export
+#'
+summary.Testing = function (object, ...) {
+  return(object$summary())
+}

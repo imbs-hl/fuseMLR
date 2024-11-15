@@ -108,16 +108,16 @@ TrainData <- R6Class("TrainData",
                        #'
                        summary = function (...) {
                          if ("TrainMetaLayer" %in% class(private$train_layer)) {
-                           cat(sprintf("TrainData : %s\n", "meta data"))
+                           cat(sprintf("      TrainData : %s\n", "meta data"))
                          } else {
-                           cat(sprintf("TrainData : %s\n", private$id))
+                           cat(sprintf("      TrainData : %s\n", private$id))
                          }
-                         cat(sprintf("      Layer     : %s\n", private$train_layer$getId()))
-                         cat(sprintf("      Ind. id.  : %s\n", private$ind_col))
-                         cat(sprintf("      Target    : %s\n", private$target))
-                         cat(sprintf("      n         : %s\n", nrow(private$data_frame)))
-                         cat(sprintf("      Missing   : %s\n", sum(!complete.cases(private$data_frame))))
-                         cat(sprintf("      p         : %s\n", ncol(private$data_frame)))
+                         cat(sprintf("      Layer      : %s\n", private$train_layer$getId()))
+                         cat(sprintf("      Ind. id.   : %s\n", private$ind_col))
+                         cat(sprintf("      Target     : %s\n", private$target))
+                         cat(sprintf("      n          : %s\n", nrow(private$data_frame)))
+                         cat(sprintf("      Missing    : %s\n", sum(!complete.cases(private$data_frame))))
+                         cat(sprintf("      p          : %s\n", ncol(private$data_frame)))
                        },
                        #' @description
                        #' Getter of the current \code{data.frame} wihtout individual

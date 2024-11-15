@@ -185,14 +185,14 @@ training <- fusemlr(training = training,
                     verbose = FALSE)
 
 print(training)
+# See also summary(training)
 ```
 
-- Retrieve the basic model of a specific layer.
+- Use `extractModel` to retrieve the list of stored models and `extractData` to retrieve training data.
 
 ```{r basic_lrnr, include=TRUE, eval=TRUE}
-lay_genexpr <- training$getLayer(id = "geneexpr")
-model_ge <- lay_genexpr$getModel()
-print(model_ge)
+models_list <- extractModel(training = training)
+data_list <- extractData(training = training)
 ```
 
 #### E) Predicting

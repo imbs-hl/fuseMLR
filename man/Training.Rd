@@ -48,6 +48,8 @@ Use the function \code{train} for training and \code{predict} for predicting.
 \item \href{#method-Training-getIndIDs}{\code{Training$getIndIDs()}}
 \item \href{#method-Training-getLayer}{\code{Training$getLayer()}}
 \item \href{#method-Training-getTrainMetaLayer}{\code{Training$getTrainMetaLayer()}}
+\item \href{#method-Training-getModel}{\code{Training$getModel()}}
+\item \href{#method-Training-getData}{\code{Training$getData()}}
 \item \href{#method-Training-removeLayer}{\code{Training$removeLayer()}}
 \item \href{#method-Training-removeTrainMetaLayer}{\code{Training$removeTrainMetaLayer()}}
 \item \href{#method-Training-getIndCol}{\code{Training$getIndCol()}}
@@ -360,6 +362,32 @@ Getter of the meta layer.
 
 \subsection{Returns}{
 Object from class \link{TrainMetaLayer}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Training-getModel"></a>}}
+\if{latex}{\out{\hypertarget{method-Training-getModel}{}}}
+\subsection{Method \code{getModel()}}{
+Retrieve models from all layer.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Training$getModel()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+A \code{list} containing all (base and meta) models.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Training-getData"></a>}}
+\if{latex}{\out{\hypertarget{method-Training-getData}{}}}
+\subsection{Method \code{getData()}}{
+Retrieve meta data.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Training$getData()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+A \code{list} containing all (base and meta) models.
 }
 }
 \if{html}{\out{<hr>}}

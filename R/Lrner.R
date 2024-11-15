@@ -81,12 +81,6 @@ Lrner <- R6Class("Lrner",
                      cat(sprintf("      TrainLayer       : %s\n", private$train_layer$getId()))
                      cat(sprintf("      Package          : %s\n", private$package))
                      cat(sprintf("      Learn function   : %s\n", private$lrn_fct))
-                     cat("Predicting parameter\n")
-                     print(expand.grid(private$param_train))
-                     if (!length(private$param_pred)) {
-                       cat("Predicting parameter\n")
-                       print(expand.grid(private$param_pred))
-                     }
                    },
                    #' @description
                    #' Learner and prediction parameter interface. Use this function

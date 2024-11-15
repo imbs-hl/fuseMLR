@@ -232,6 +232,51 @@ predict.Training = function (object,
   return(predictions)
 }
 
+#' @title extractModel
+#' @description
+#' Extracts models stored on each layers; base and meta models are extracted.
+#'
+#' @param training (`Training(1)`) \cr
+#' The [Training] object of interest.
+#'
+#' @return
+#' A list of models is returned.
+#' @export
+#'
+extractModel = function (training) {
+  return(training$getModel())
+}
+
+#' @title extractData
+#' @description
+#' Extracts data stored on each layers; base and meta data are extracted.
+#'
+#' @param training (`Training(1)`) \cr
+#' The [Training] object of interest.
+#'
+#' @return
+#' A list of data is returned.
+#' @export
+#'
+extractData = function (training) {
+  return(training$getData())
+}
+
+#' @title Training object Summaries
+#' @description
+#' Summaries a fuseMLR [Training] object.
+#'
+#' @param object (`Training(1)`) \cr
+#' The [Training] object of interest.
+#' @param ... \cr
+#' Further arguments.
+#'
+#' @export
+#'
+summary.Training = function (object, ...) {
+  return(object$summary())
+}
+
 #' @title upsetplot
 #' @description
 #' An upset plot of overlapping individuals.

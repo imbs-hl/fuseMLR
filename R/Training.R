@@ -487,6 +487,44 @@ Training <- R6Class("Training",
                           return(meta_layer)
                         },
                         #' @description
+                        #' Retrieve models from all layer.
+                        #'
+                        #' @return
+                        #' A \code{list} containing all (base and meta) models.
+                        #' @export
+                        #'
+                        getModel = function() {
+                          layers = self$getKeyClass()
+                          # This code accesses each layer (except TrainMetaLayer) level
+                          # and get the individual IDs.
+                          layers = layers[layers$class %in% c("TrainLayer", "TrainMetaLayer"), ]
+                          current_model = NULL
+                          models = list()
+                          for (k in layers$key) {
+                            layer = self$getFromHashTable(key = k)
+                            models[[layer$getId()]] = layer$getModel()$getBaseModel()
+                          }
+                          return(models)
+                        },
+                        #' @description
+                        #' Retrieve meta data.
+                        #'
+                        #' @return
+                        #' A \code{list} containing all (base and meta) models.
+                        #' @export
+                        #'
+                        getData = function() {
+                          layers = self$getKeyClass()
+                          layers = layers[layers$class %in% c("TrainLayer", "TrainMetaLayer"), ]
+                          current_model = NULL
+                          all_data = list()
+                          for (k in layers$key) {
+                            layer = self$getFromHashTable(key = k)
+                            all_data[[layer$getId()]] = layer$getTrainData()$getDataFrame()
+                          }
+                          return(all_data)
+                        },
+                        #' @description
                         #' Remove a layer of a given ID.
                         #'
                         #' @param id `character(1)` \cr
@@ -619,6 +657,7 @@ Training <- R6Class("Training",
                           cat("----------------\n")
                           cat("\n")
                           layers = self$getKeyClass()
+                          layers = layers[layers$class %in% c("TrainLayer", "TrainMetaLayer"), ]
                           for (k in layers$key) {
                             layer = self$getFromHashTable(key = k)
                             layer$summary()
