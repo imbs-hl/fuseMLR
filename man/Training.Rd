@@ -4,7 +4,7 @@
 \alias{Training}
 \title{Training Class}
 \description{
-This class is the basic class of the present package. An object from this class
+This is one of the two primary classes of fuseMLR. An object from this class
 is designed to contain multiple training layers, but only one meta training layer.
 
 The Training class is structured as followed:
