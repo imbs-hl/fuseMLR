@@ -1,7 +1,7 @@
 #' @title Testing Class
 #'
 #' @description
-#' This class is the basic class of the present package. An object from this class
+#' This is a primary classes of fuseMLR. An object from this class
 #' is designed to contain multiple layers, but only one new meta layer.
 #'
 #'  A Testing object is structured as followed:
