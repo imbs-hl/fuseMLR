@@ -152,7 +152,7 @@ createTrainMetaLayer(training = training,
 - An upset plot of the training data: Visualize patient overlap across layers.
 
 ```{r upsetplot, include=TRUE, eval=TRUE, }
-fuseMLR::upsetplot(object = training, order.by = "freq")
+upsetplot(object = training, order.by = "freq")
 ```
 
 #### C) Variable selection

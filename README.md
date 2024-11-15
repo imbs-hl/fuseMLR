@@ -242,7 +242,7 @@ createTrainMetaLayer(training = training,
   layers.
 
 ``` r
-fuseMLR::upsetplot(object = training, order.by = "freq")
+upsetplot(object = training, order.by = "freq")
 ```
 
 ![](README_files/figure-gfm/upsetplot-1.png)<!-- -->
@@ -310,32 +310,17 @@ print(training)
     ## Layers trained  : 4
     ## n               : 70
 
-- Retrieve the basic model of a specific layer.
-
 ``` r
-lay_genexpr <- training$getLayer(id = "geneexpr")
-model_ge <- lay_genexpr$getModel()
-print(model_ge)
+# See also summary(training)
 ```
 
-    ## Class           : Model
-    ## 
-    ## Learner info.   
-    ## -----------------------
-    ## Learner          : geneexpr_lrner
-    ## TrainLayer       : geneexpr
-    ## Package          : ranger
-    ## Learn function   : ranger
-    ## 
-    ## Train data info.      
-    ## -----------------------
-    ## TrainData : geneexpr_data
-    ## Layer     : geneexpr
-    ## ind. id.  : IDS
-    ## target    : disease
-    ## n         : 50
-    ## Missing   : 0
-    ## p         : 19
+- Use `extractModel` to retrieve the list of stored models and
+  `extractData` to retrieve training data.
+
+``` r
+models_list <- extractModel(training = training)
+data_list <- extractData(training = training)
+```
 
 #### E) Predicting
 
