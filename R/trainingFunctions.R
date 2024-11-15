@@ -59,7 +59,18 @@ createTraining = function (id,
 #' List of arguments to be passed to \code{predict} when computing predictions.
 #' @param na_rm \cr
 #' If \code{TRUE}, the individuals with missing predictor values will be removed from the training dataset.
-#'
+#' @param x (`character(1)`) \cr
+#' If the name of the argument used by the provided original functions to pass
+#' the matrix of independent variable is not \code{x}, use this argument to specify how it is callled in the provided function.
+#' @param y (`character(1)`) \cr
+#' If the name of the argument used by the provided original functions to pass
+#' the target variable is not \code{y}, use this argument to specify how it is callled in the provided function.
+#' @param object (`character(1)`) \cr
+#' The generic function \code{predict} uses a parameter \code{object} to pass a model.
+#' If the corresponding argument is named differently in your predict function, specify the name.
+#' @param data (`character(1)`) \cr
+#' The generic function \code{predict} uses a parameter \code{data} to pass new data.
+#' If the corresponding argument is named differently in your predict function, specify the name.
 #' @return
 #' The updated [Training] object (with the new layer) is returned.
 #' @export
@@ -74,7 +85,11 @@ createTrainLayer = function (training,
                              lrn_fct,
                              param_train_list = list(),
                              param_pred_list = list(),
-                             na_rm = TRUE) {
+                             na_rm = TRUE,
+                             x = "x",
+                             y = "y",
+                             object = "object",
+                             data = "data") {
   # Instantiate a layer
   train_layer = TrainLayer$new(id = train_layer_id,
                                training = training)
@@ -90,6 +105,7 @@ createTrainLayer = function (training,
     varsel_param = varsel_param,
     train_layer
   )
+  var_sel$interface(x = x, y = y, object = object, data = data)
   # Instantiate a Lrner object
   lrner = Lrner$new(
     id = sprintf("%s_lrner", train_layer_id),
@@ -100,6 +116,7 @@ createTrainLayer = function (training,
     train_layer = train_layer,
     na_rm = TRUE
   )
+  lrner$interface(x = x, y = y, object = object, data = data)
   return(training)
 }
 
@@ -123,6 +140,18 @@ createTrainLayer = function (training,
 #' List of arguments to be passed to \code{predict} when computing predictions.
 #' @param na_rm \cr
 #' If \code{TRUE}, the individuals with missing predictor values will be removed from the training dataset.
+#' @param x (`character(1)`) \cr
+#' If the name of the argument used by the provided original functions to pass
+#' the matrix of independent variable is not \code{x}, use this argument to specify how it is callled in the provided function.
+#' @param y (`character(1)`) \cr
+#' If the name of the argument used by the provided original functions to pass
+#' the target variable is not \code{y}, use this argument to specify how it is callled in the provided function.
+#' @param object (`character(1)`) \cr
+#' The generic function \code{predict} uses a parameter \code{object} to pass a model.
+#' If the corresponding argument is named differently in your predict function, specify the name.
+#' @param data (`character(1)`) \cr
+#' The generic function \code{predict} uses a parameter \code{data} to pass new data.
+#' If the corresponding argument is named differently in your predict function, specify the name.
 #'
 #' @return
 #' The updated [Training] object (with the new layer) is returned.
@@ -134,7 +163,11 @@ createTrainMetaLayer = function (training,
                                  lrn_fct,
                                  param_train_list = list(),
                                  param_pred_list = list(),
-                                 na_rm = TRUE) {
+                                 na_rm = TRUE,
+                                 x = "x",
+                                 y = "y",
+                                 object = "object",
+                                 data = "data") {
   # Instantiate a layer
   train_meta_layer = TrainMetaLayer$new(id = meta_layer_id,
                                training = training)
@@ -148,6 +181,7 @@ createTrainMetaLayer = function (training,
     train_layer = train_meta_layer,
     na_rm = TRUE
   )
+  meta_lrner$interface(x = x, y = y, object = object, data = data)
   return(training)
 }
 

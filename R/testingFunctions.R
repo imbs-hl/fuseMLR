@@ -61,3 +61,4 @@ createTestLayer = function (testing,
 summary.Testing = function (object, ...) {
   return(object$summary())
 }
+

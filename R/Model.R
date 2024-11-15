@@ -189,8 +189,8 @@ Model <- R6Class("Model",
                      } else {
                        # TODO: covr me
                        # nocov start
-                       object_name = param_interface[param_interface$standard == "object", "original"]
-                       data_name = param_interface[param_interface$standard == "data", "original"]
+                       object_name = param_interface[param_interface$standard == "object_name", "original"]
+                       data_name = param_interface[param_interface$standard == "data_name", "original"]
                        pred_param[[object_name]] = pred_param_object
                        pred_param[[data_name]] = pred_param_data
                        # nocov end

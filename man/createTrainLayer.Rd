@@ -15,7 +15,11 @@ createTrainLayer(
   lrn_fct,
   param_train_list = list(),
   param_pred_list = list(),
-  na_rm = TRUE
+  na_rm = TRUE,
+  x = "x",
+  y = "y",
+  object = "object",
+  data = "data"
 )
 }
 \arguments{
@@ -51,6 +55,22 @@ List of arguments to be passed to \code{predict} when computing predictions.}
 
 \item{na_rm}{\cr
 If \code{TRUE}, the individuals with missing predictor values will be removed from the training dataset.}
+
+\item{x}{(\code{character(1)}) \cr
+If the name of the argument used by the provided original functions to pass
+the matrix of independent variable is not \code{x}, use this argument to specify how it is callled in the provided function.}
+
+\item{y}{(\code{character(1)}) \cr
+If the name of the argument used by the provided original functions to pass
+the target variable is not \code{y}, use this argument to specify how it is callled in the provided function.}
+
+\item{object}{(\code{character(1)}) \cr
+The generic function \code{predict} uses a parameter \code{object} to pass a model.
+If the corresponding argument is named differently in your predict function, specify the name.}
+
+\item{data}{(\code{character(1)}) \cr
+The generic function \code{predict} uses a parameter \code{data} to pass new data.
+If the corresponding argument is named differently in your predict function, specify the name.}
 }
 \value{
 The updated \link{Training} object (with the new layer) is returned.

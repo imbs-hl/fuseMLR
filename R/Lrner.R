@@ -116,7 +116,7 @@ Lrner <- R6Class("Lrner",
                      if (!is.character(data)) {
                        stop("String expected for data.")
                      }
-                     param_interface = data.frame(standard = c(x_name, y_name, object_name, data_name),
+                     param_interface = data.frame(standard = c("x_name", "y_name", "object_name", "data_name"),
                                                original = c(x, y, object, data))
                      private$param_interface = param_interface
                    },
@@ -187,8 +187,8 @@ Lrner <- R6Class("Lrner",
                      } else {
                        # TODO: covr me
                        # nocov start
-                       x_name = private$param_interface[private$param_interface$standard == "x", "original"]
-                       y_name = private$param_interface[private$param_interface$standard == "y", "original"]
+                       x_name = private$param_interface[private$param_interface$standard == "x_name", "original"]
+                       y_name = private$param_interface[private$param_interface$standard == "y_name", "original"]
                        lrn_param[[x_name]] = train_data$getData()
                        lrn_param[[y_name]] = train_data$getTargetValues()
                        # nocov end
