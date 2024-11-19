@@ -34,6 +34,6 @@ predict.bestSpecificLearner = function (object, data, na.rm = TRUE) {
     })
     return(list(predictions = unlist(pred)))
   } else {
-    stop("Names of weights do not match with name columns in data")
+    stop("Names of weights do not match with name columns in data.")
   }
 }

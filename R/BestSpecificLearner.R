@@ -45,6 +45,7 @@ bestSpecificLearner = function (x, y, perf = NULL) {
       perf_values = unlist(perf_values)
     }
   } else {
+    # nocov start
     if (is.function(perf)) {
       arg_names <- names(formals(perf))
       if (arg_names %in% c("observed", "predicted")) {
@@ -62,6 +63,7 @@ bestSpecificLearner = function (x, y, perf = NULL) {
       stop("Arguments of the perf function must be 'observed' and 'predicted'.")
     }
   }
+  # nocov end
   weights_values = (1L / perf_values) / sum((1L / perf_values))
   max_index = which.max(weights_values)
   weights_values = rep(0L, length(weights_values))

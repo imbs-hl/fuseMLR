@@ -4,7 +4,7 @@
 \alias{weightedMeanLearner}
 \title{The weighted mean meta learner}
 \usage{
-weightedMeanLearner(x, y)
+weightedMeanLearner(x, y, weighted = TRUE)
 }
 \arguments{
 \item{x}{\code{data.frame(1)} \cr
@@ -12,6 +12,9 @@ weightedMeanLearner(x, y)
 
 \item{y}{\code{vector(1)} \cr
 Target observations. Either binary or two level factor variable.}
+
+\item{weighted}{\cr
+If TRUE, the weighted sum is computed.}
 }
 \value{
 A model object of class \code{weightedMeanLeaner}.

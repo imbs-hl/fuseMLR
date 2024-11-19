@@ -7,6 +7,8 @@
 #' \code{data.frame} of predictors.
 #' @param y `vector(1)` \cr
 #' Target observations. Either binary or two level factor variable.
+#' @param weighted \cr
+#' If TRUE, the weighted sum is computed.
 #'
 #' @return
 #' A model object of class \code{weightedMeanLeaner}.
@@ -19,7 +21,7 @@
 #' y = sample(x = 0L:1L, size = 50L, replace = TRUE)
 #' my_model = weightedMeanLearner(x = x, y = y)
 #'
-weightedMeanLearner = function (x, y) {
+weightedMeanLearner = function (x, y, weighted = TRUE) {
   # y must be binomial. If dichotomy, first category (case) = 1 and
   # second (control) = 0
   if ((length(unique(y)) > 2) | is.character(y)) {
@@ -39,7 +41,11 @@ weightedMeanLearner = function (x, y) {
     })
     brier_values = unlist(brier_values)
     # weights_values = (1 - brier_values) / sum((1 - brier_values))
-    weights_values = (1 / brier_values) / sum((1 / brier_values))
+    if (weighted) {
+      weights_values = (1 / brier_values) / sum((1 / brier_values))
+    } else {
+      weights_values <- 1 / length(brier_values)
+    }
     names(weights_values) = names(x)
     class(weights_values) = "weightedMeanLearner"
     return(weights_values)
