@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Cesaire Fouodo" />
+
+<meta name="date" content="2024-11-19" />
+
+<title>How does fuseMLR work?</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">How does fuseMLR work?</h1>
+<h4 class="author">Cesaire Fouodo</h4>
+<h4 class="date">2024-11-19</h4>
+
+
+
+<div id="a---introduction" class="section level2">
+<h2>A - Introduction</h2>
+<p>The R package <strong>fuseMLR</strong> offers a framework for late
+integrative predictive modeling using multi-omics data. This vignette
+serves as a user guide to use the package effectively. Three key
+functionalities are provided: variable selection for modality-specific
+data, late integrative multi-omics training, and predictions for testing
+multi-omics datasets.</p>
+</div>
+<div id="b---data" class="section level2">
+<h2>B - Data</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(fuseMLR)</span></code></pre></div>
+<p>The following example is based on simulated data available in
+<code>fuseMLR</code>. Data have been simulated using the R package
+<code>InterSIM</code>, version 2.2.0. Two types of data were simulated:
+training and testing datasets. Each consists of four
+<code>data.frame</code>s—gene expression, protein expression,
+methylation data, and target variable observations. Individuals are
+organized in rows, variables in columns, with an additional column for
+individual IDs. In total, <span class="math inline">\(70\)</span>
+individuals with <span class="math inline">\(50\)</span> individuals pro
+layer have been simulated for training, and <span class="math inline">\(23\)</span> (<span class="math inline">\(20\)</span> per layer) for testing. Individuals do
+not necessarily overlapped. Effects have been introduced for gene
+expression and methylation by shifting the means by <span class="math inline">\(0.5\)</span> to create case-control study with
+<span class="math inline">\(50\)</span>% prevalence. Individuals do not
+necessarily overlap. Effects were introduced in gene expression and
+methylation by shifting the means by 0.5 to create a case-control study.
+For illustration, the number of variables was kept smaller than what is
+typically expected in reality. The data simulation code is available <a href="https://github.com/imbs-hl/fuseMLR/blob/master/test_code/build_data.R">here</a>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;entities&quot;</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co"># This is a list containing two lists of data: training and test.</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co"># Each sublist contains three entities.</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="fu">str</span>(<span class="at">object =</span> entities, <span class="at">max.level =</span> 2L)</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="co">#&gt; List of 2</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="co">#&gt;  $ training:List of 4</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="co">#&gt;   ..$ geneexpr   :&#39;data.frame&#39;:  50 obs. of  132 variables:</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="co">#&gt;   ..$ proteinexpr:&#39;data.frame&#39;:  50 obs. of  161 variables:</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="co">#&gt;   ..$ methylation:&#39;data.frame&#39;:  50 obs. of  368 variables:</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="co">#&gt;   ..$ target     :&#39;data.frame&#39;:  70 obs. of  2 variables:</span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="co">#&gt;  $ testing :List of 4</span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="co">#&gt;   ..$ geneexpr   :&#39;data.frame&#39;:  20 obs. of  132 variables:</span></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="co">#&gt;   ..$ proteinexpr:&#39;data.frame&#39;:  20 obs. of  161 variables:</span></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="co">#&gt;   ..$ methylation:&#39;data.frame&#39;:  20 obs. of  368 variables:</span></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="co">#&gt;   ..$ target     :&#39;data.frame&#39;:  30 obs. of  2 variables:</span></span></code></pre></div>
+</div>
+<div id="c---training" class="section level2">
+<h2>C - Training</h2>
+<p>The training process is handled in <strong>fuseMLR</strong> by a
+class called <strong>Training</strong>. We will use
+<code>training</code> to refer to an instance from this class. Function
+<code>createTraining</code> is available to create an empty (without
+layers) <code>training</code>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>training <span class="ot">&lt;-</span> <span class="fu">createTraining</span>(<span class="at">id =</span> <span class="st">&quot;training&quot;</span>,</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>                           <span class="at">ind_col =</span> <span class="st">&quot;IDS&quot;</span>,</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>                           <span class="at">target =</span> <span class="st">&quot;disease&quot;</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>                           <span class="at">target_df =</span> entities<span class="sc">$</span>training<span class="sc">$</span>target,</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>                           <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="fu">print</span>(training)</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co">#&gt; Training        : training</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="co">#&gt; Status          : Not trained</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="co">#&gt; Number of layers: 0</span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="co">#&gt; Layers trained  : 0</span></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="co">#&gt; n               : 70</span></span></code></pre></div>
+<p>A <code>training</code> contains modality-specific training layers
+(instances of the <strong>TrainLayer</strong> class) and a meta-layer
+(instance of the <strong>TrainMetaLayer</strong> class). The
+modality-specific training layers encapsulate training data modalities,
+variable selection functions and learners (i.e. <code>R</code> functions
+implementing statistical predicting methods). The meta-layer
+encapsulates the meta-learner.</p>
+</div>
+<div id="c.1---creating-a-training" class="section level2">
+<h2>C.1 - Creating a training</h2>
+<p>We will use <code>training</code> (resp. <code>testing</code>) to
+refer to an instance from the <strong>Training</strong> (resp.
+<strong>Testing</strong>) class. A <code>training</code> contains
+modality-specific training layers (instances of the
+<strong>TrainLayer</strong> class) and a meta-layer (instance of the
+<strong>TrainMetaLayer</strong> class). The modality-specific training
+layers encapsulate training data modalities, variable selection
+functions and learners (i.e. <code>R</code> functions implementing
+statistical predicting methods). The meta-layer encapsulates the
+meta-learner.</p>
+<p>Three main functions are necessary to create <code>training</code>:
+<code>createTraining()</code>, <code>createTrainLayer()</code> and
+<code>createTrainMetaLayer()</code>. <code>createTraining()</code>
+creates an empty <code>training</code>, on which modalitity-specific
+training layers can be add using the function
+<code>createTrainLayer()</code>. Function
+<code>createTrainMetaLayer()</code> is used to add meta-layer to
+<code>training</code>.</p>
+<p>The following code adds a gene expression, a protein abundance, and a
+methylation layer to <code>training</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Create gene expression layer</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="fu">createTrainLayer</span>(<span class="at">training =</span> training,</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>                 <span class="at">train_layer_id =</span> <span class="st">&quot;geneexpr&quot;</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>                 <span class="at">train_data =</span> entities<span class="sc">$</span>training<span class="sc">$</span>geneexpr,</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>                 <span class="at">varsel_package =</span> <span class="st">&quot;Boruta&quot;</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>                 <span class="at">varsel_fct =</span> <span class="st">&quot;Boruta&quot;</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>                 <span class="at">varsel_param =</span> <span class="fu">list</span>(<span class="at">num.trees =</span> 1000L,</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>                                     <span class="at">mtry =</span> 3L,</span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>                                     <span class="at">probability =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>                 <span class="at">lrner_package =</span> <span class="st">&quot;ranger&quot;</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>                 <span class="at">lrn_fct =</span> <span class="st">&quot;ranger&quot;</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>                 <span class="at">param_train_list =</span> <span class="fu">list</span>(<span class="at">probability =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>                                         <span class="at">mtry =</span> 1L),</span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>                 <span class="at">param_pred_list =</span> <span class="fu">list</span>(),</span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>                 <span class="at">na_rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="co">#&gt; Training        : training</span></span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="co">#&gt; Status          : Not trained</span></span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="co">#&gt; Number of layers: 1</span></span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a><span class="co">#&gt; Layers trained  : 0</span></span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a><span class="co">#&gt; n               : 70</span></span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a></span>
+<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a><span class="co"># Create gene protein abundance layer</span></span>
+<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a><span class="fu">createTrainLayer</span>(<span class="at">training =</span> training,</span>
+<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a>                 <span class="at">train_layer_id =</span> <span class="st">&quot;proteinexpr&quot;</span>,</span>
+<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a>                 <span class="at">train_data =</span> entities<span class="sc">$</span>training<span class="sc">$</span>proteinexpr,</span>
+<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a>                 <span class="at">varsel_package =</span> <span class="st">&quot;Boruta&quot;</span>,</span>
+<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a>                 <span class="at">varsel_fct =</span> <span class="st">&quot;Boruta&quot;</span>,</span>
+<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a>                 <span class="at">varsel_param =</span> <span class="fu">list</span>(<span class="at">num.trees =</span> 1000L,</span>
+<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a>                                     <span class="at">mtry =</span> 3L,</span>
+<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a>                                     <span class="at">probability =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb4-31"><a href="#cb4-31" tabindex="-1"></a>                 <span class="at">lrner_package =</span> <span class="st">&quot;ranger&quot;</span>,</span>
+<span id="cb4-32"><a href="#cb4-32" tabindex="-1"></a>                 <span class="at">lrn_fct =</span> <span class="st">&quot;ranger&quot;</span>,</span>
+<span id="cb4-33"><a href="#cb4-33" tabindex="-1"></a>                 <span class="at">param_train_list =</span> <span class="fu">list</span>(<span class="at">probability =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb4-34"><a href="#cb4-34" tabindex="-1"></a>                                         <span class="at">mtry =</span> 1L),</span>
+<span id="cb4-35"><a href="#cb4-35" tabindex="-1"></a>                 <span class="at">param_pred_list =</span> <span class="fu">list</span>(<span class="at">type =</span> <span class="st">&quot;response&quot;</span>),</span>
+<span id="cb4-36"><a href="#cb4-36" tabindex="-1"></a>                 <span class="at">na_rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-37"><a href="#cb4-37" tabindex="-1"></a><span class="co">#&gt; Training        : training</span></span>
+<span id="cb4-38"><a href="#cb4-38" tabindex="-1"></a><span class="co">#&gt; Status          : Not trained</span></span>
+<span id="cb4-39"><a href="#cb4-39" tabindex="-1"></a><span class="co">#&gt; Number of layers: 2</span></span>
+<span id="cb4-40"><a href="#cb4-40" tabindex="-1"></a><span class="co">#&gt; Layers trained  : 0</span></span>
+<span id="cb4-41"><a href="#cb4-41" tabindex="-1"></a><span class="co">#&gt; n               : 70</span></span>
+<span id="cb4-42"><a href="#cb4-42" tabindex="-1"></a></span>
+<span id="cb4-43"><a href="#cb4-43" tabindex="-1"></a><span class="co"># Create methylation layer</span></span>
+<span id="cb4-44"><a href="#cb4-44" tabindex="-1"></a><span class="fu">createTrainLayer</span>(<span class="at">training =</span> training,</span>
+<span id="cb4-45"><a href="#cb4-45" tabindex="-1"></a>                 <span class="at">train_layer_id =</span> <span class="st">&quot;methylation&quot;</span>,</span>
+<span id="cb4-46"><a href="#cb4-46" tabindex="-1"></a>                 <span class="at">train_data =</span> entities<span class="sc">$</span>training<span class="sc">$</span>proteinexpr,</span>
+<span id="cb4-47"><a href="#cb4-47" tabindex="-1"></a>                 <span class="at">varsel_package =</span> <span class="st">&quot;Boruta&quot;</span>,</span>
+<span id="cb4-48"><a href="#cb4-48" tabindex="-1"></a>                 <span class="at">varsel_fct =</span> <span class="st">&quot;Boruta&quot;</span>,</span>
+<span id="cb4-49"><a href="#cb4-49" tabindex="-1"></a>                 <span class="at">varsel_param =</span> <span class="fu">list</span>(<span class="at">num.trees =</span> 1000L,</span>
+<span id="cb4-50"><a href="#cb4-50" tabindex="-1"></a>                                     <span class="at">mtry =</span> 3L,</span>
+<span id="cb4-51"><a href="#cb4-51" tabindex="-1"></a>                                     <span class="at">probability =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb4-52"><a href="#cb4-52" tabindex="-1"></a>                 <span class="at">lrner_package =</span> <span class="st">&quot;ranger&quot;</span>,</span>
+<span id="cb4-53"><a href="#cb4-53" tabindex="-1"></a>                 <span class="at">lrn_fct =</span> <span class="st">&quot;ranger&quot;</span>,</span>
+<span id="cb4-54"><a href="#cb4-54" tabindex="-1"></a>                 <span class="at">param_train_list =</span> <span class="fu">list</span>(<span class="at">probability =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb4-55"><a href="#cb4-55" tabindex="-1"></a>                                         <span class="at">mtry =</span> 1L),</span>
+<span id="cb4-56"><a href="#cb4-56" tabindex="-1"></a>                 <span class="at">param_pred_list =</span> <span class="fu">list</span>(),</span>
+<span id="cb4-57"><a href="#cb4-57" tabindex="-1"></a>                 <span class="at">na_rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-58"><a href="#cb4-58" tabindex="-1"></a><span class="co">#&gt; Training        : training</span></span>
+<span id="cb4-59"><a href="#cb4-59" tabindex="-1"></a><span class="co">#&gt; Status          : Not trained</span></span>
+<span id="cb4-60"><a href="#cb4-60" tabindex="-1"></a><span class="co">#&gt; Number of layers: 3</span></span>
+<span id="cb4-61"><a href="#cb4-61" tabindex="-1"></a><span class="co">#&gt; Layers trained  : 0</span></span>
+<span id="cb4-62"><a href="#cb4-62" tabindex="-1"></a><span class="co">#&gt; n               : 70</span></span></code></pre></div>
+<p>Also add a meta layer.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Create meta layer</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="fu">createTrainMetaLayer</span>(<span class="at">training =</span> training,</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>                     <span class="at">meta_layer_id =</span> <span class="st">&quot;meta_layer&quot;</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>                     <span class="at">lrner_package =</span> <span class="cn">NULL</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>                     <span class="at">lrn_fct =</span> <span class="st">&quot;weightedMeanLearner&quot;</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>                     <span class="at">param_train_list =</span> <span class="fu">list</span>(),</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>                     <span class="at">param_pred_list =</span> <span class="fu">list</span>(),</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>                     <span class="at">na_rm =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; Training        : training</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt; Status          : Not trained</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt; Number of layers: 4</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt; Layers trained  : 0</span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt; n               : 70</span></span></code></pre></div>
+<p>Function <code>upsetplot()</code> is available to generate an upset
+of the training data, i.e. an overview how patients overlap across
+layers.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">upsetplot</span>(<span class="at">object =</span> training, <span class="at">order.by =</span> <span class="st">&quot;freq&quot;</span>)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+<div id="c.2---variable-selection" class="section level2">
+<h2>C.2 - Variable selection</h2>
+<p>Function <code>varSelection()</code> performs modality-specific
+variable selection.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># Variable selection</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">5467</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>var_sel_res <span class="ot">&lt;-</span> <span class="fu">varSelection</span>(<span class="at">training =</span> training,</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>                            <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="fu">print</span>(var_sel_res)</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="co">#&gt;          Layer   variable</span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="co">#&gt; 1     geneexpr     ACVRL1</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co">#&gt; 2     geneexpr     AKT1S1</span></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="co">#&gt; 3     geneexpr        BAX</span></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="co">#&gt; 4     geneexpr     BCL2L1</span></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="co">#&gt; 5     geneexpr     CDKN1A</span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a><span class="co">#&gt; 6     geneexpr     CTNNB1</span></span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a><span class="co">#&gt; 7     geneexpr       EEF2</span></span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a><span class="co">#&gt; 8     geneexpr      EEF2K</span></span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a><span class="co">#&gt; 9     geneexpr   EIF4EBP1</span></span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a><span class="co">#&gt; 10    geneexpr     MAPK14</span></span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a><span class="co">#&gt; 11    geneexpr      NFKB1</span></span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a><span class="co">#&gt; 12    geneexpr      PREX1</span></span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a><span class="co">#&gt; 13    geneexpr      PRKCD</span></span>
+<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a><span class="co">#&gt; 14    geneexpr        PXN</span></span>
+<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a><span class="co">#&gt; 15    geneexpr       SHC1</span></span>
+<span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a><span class="co">#&gt; 16    geneexpr        SRC</span></span>
+<span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a><span class="co">#&gt; 17    geneexpr      XRCC5</span></span>
+<span id="cb7-24"><a href="#cb7-24" tabindex="-1"></a><span class="co">#&gt; 18    geneexpr       YAP1</span></span>
+<span id="cb7-25"><a href="#cb7-25" tabindex="-1"></a><span class="co">#&gt; 19 proteinexpr Caveolin.1</span></span>
+<span id="cb7-26"><a href="#cb7-26" tabindex="-1"></a><span class="co">#&gt; 20 proteinexpr     Rab.25</span></span>
+<span id="cb7-27"><a href="#cb7-27" tabindex="-1"></a><span class="co">#&gt; 21 methylation Caveolin.1</span></span></code></pre></div>
+<p>For each layer, the variable selection results show the chosen
+variables. In this example, we perform variable selection. Users can opt
+to conduct variable selection on individual layers if desired.</p>
+</div>
+<div id="c.2---training" class="section level2">
+<h2>C.2 - Training</h2>
+<p>We use the function <code>fusemlr()</code> to train our models using
+the subset of selected variables.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">5462</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="fu">fusemlr</span>(<span class="at">training =</span> training,</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>        <span class="at">use_var_sel =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>        <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">#&gt; Training        : training</span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="co">#&gt; Status          : Trained</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt; Number of layers: 4</span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co">#&gt; Layers trained  : 4</span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co">#&gt; n               : 70</span></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="fu">print</span>(training)</span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="co">#&gt; Training        : training</span></span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a><span class="co">#&gt; Status          : Trained</span></span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a><span class="co">#&gt; Number of layers: 4</span></span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a><span class="co">#&gt; Layers trained  : 4</span></span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a><span class="co">#&gt; n               : 70</span></span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a><span class="co"># See also summary(training)</span></span></code></pre></div>
+<p>We use <code>extractModel()</code> to retrieve the list of stored
+models and <code>extractData()</code> to retrieve training data.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>models_list <span class="ot">&lt;-</span> <span class="fu">extractModel</span>(<span class="at">training =</span> training)</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>data_list <span class="ot">&lt;-</span> <span class="fu">extractData</span>(<span class="at">training =</span> training)</span></code></pre></div>
+</div>
+<div id="d---predicting" class="section level1">
+<h1>D - Predicting</h1>
+<p>In this section, we create a <code>testing</code> instance (from the
+<em>Testing</em> class) and make predictions for new data. This is done
+analogously to <code>training</code>. The only difference that only the
+testing data modalities are required. Relevant functions are
+<code>createTesting()</code> and <code>createTestLayer()</code>.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="co"># Create testing for predcitions</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>testing <span class="ot">&lt;-</span> <span class="fu">createTesting</span>(<span class="at">id =</span> <span class="st">&quot;testing&quot;</span>,</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>                         <span class="at">ind_col =</span> <span class="st">&quot;IDS&quot;</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="co"># Create gene expression layer</span></span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="fu">createTestLayer</span>(<span class="at">testing =</span> testing,</span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>                <span class="at">test_layer_id =</span> <span class="st">&quot;geneexpr&quot;</span>,</span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a>                <span class="at">test_data =</span> entities<span class="sc">$</span>testing<span class="sc">$</span>geneexpr)</span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a><span class="co">#&gt; Testing         : testing</span></span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a><span class="co">#&gt; Number of layers: 1</span></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a><span class="co"># Create gene protein abundance layer</span></span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a><span class="fu">createTestLayer</span>(<span class="at">testing =</span> testing,</span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a>                <span class="at">test_layer_id =</span> <span class="st">&quot;proteinexpr&quot;</span>,</span>
+<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a>                <span class="at">test_data =</span> entities<span class="sc">$</span>testing<span class="sc">$</span>proteinexpr)</span>
+<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a><span class="co">#&gt; Testing         : testing</span></span>
+<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a><span class="co">#&gt; Number of layers: 2</span></span>
+<span id="cb10-18"><a href="#cb10-18" tabindex="-1"></a></span>
+<span id="cb10-19"><a href="#cb10-19" tabindex="-1"></a><span class="co"># Create methylation layer</span></span>
+<span id="cb10-20"><a href="#cb10-20" tabindex="-1"></a><span class="fu">createTestLayer</span>(<span class="at">testing =</span> testing,</span>
+<span id="cb10-21"><a href="#cb10-21" tabindex="-1"></a>                <span class="at">test_layer_id =</span> <span class="st">&quot;methylation&quot;</span>,</span>
+<span id="cb10-22"><a href="#cb10-22" tabindex="-1"></a>                <span class="at">test_data =</span> entities<span class="sc">$</span>testing<span class="sc">$</span>proteinexpr)</span>
+<span id="cb10-23"><a href="#cb10-23" tabindex="-1"></a><span class="co">#&gt; Testing         : testing</span></span>
+<span id="cb10-24"><a href="#cb10-24" tabindex="-1"></a><span class="co">#&gt; Number of layers: 3</span></span></code></pre></div>
+<p>We can also generate an upset plot to visualize patient overlap
+across testing layers.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">upsetplot</span>(<span class="at">object =</span> testing, <span class="at">order.by =</span> <span class="st">&quot;freq&quot;</span>)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>Function <code>predict()</code> is available for predicting.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>predictions <span class="ot">&lt;-</span> <span class="fu">predict</span>(<span class="at">object =</span> training, <span class="at">testing =</span> testing)</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="fu">print</span>(predictions)</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="co">#&gt; $predicting</span></span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a><span class="co">#&gt; Predicting   : testing</span></span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a><span class="co">#&gt; Nb. layers   : 4</span></span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a><span class="co">#&gt; $predicted_values</span></span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a><span class="co">#&gt;          IDS  geneexpr proteinexpr methylation meta_layer</span></span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a><span class="co">#&gt; 1  patient23 0.4298159  0.63428413  0.92495794  0.7136764</span></span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a><span class="co">#&gt; 2  patient77 0.4781778  0.45292381  0.57492778  0.5110424</span></span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a><span class="co">#&gt; 3  patient62 0.7837778  0.96909206  0.95261508  0.9206364</span></span>
+<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a><span class="co">#&gt; 4  patient43 0.3011865          NA          NA         NA</span></span>
+<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a><span class="co">#&gt; 5   patient8 0.7393611  0.87369683  0.51296032  0.6885350</span></span>
+<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a><span class="co">#&gt; 6  patient74 0.5458302  0.68164921  0.13405079  0.4157759</span></span>
+<span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a><span class="co">#&gt; 7  patient29 0.3765897  0.45992778  0.24329444  0.3481374</span></span>
+<span id="cb12-16"><a href="#cb12-16" tabindex="-1"></a><span class="co">#&gt; 8  patient17 0.3817786  0.30925873  0.36974444  0.3514659</span></span>
+<span id="cb12-17"><a href="#cb12-17" tabindex="-1"></a><span class="co">#&gt; 9  patient25 0.2796373  0.40415000  0.48941032  0.4130304</span></span>
+<span id="cb12-18"><a href="#cb12-18" tabindex="-1"></a><span class="co">#&gt; 10 patient54 0.7875341          NA          NA         NA</span></span>
+<span id="cb12-19"><a href="#cb12-19" tabindex="-1"></a><span class="co">#&gt; 11 patient60 0.7329190  0.83852619  0.65352381  0.7353710</span></span>
+<span id="cb12-20"><a href="#cb12-20" tabindex="-1"></a><span class="co">#&gt; 12 patient44 0.4087905          NA          NA         NA</span></span>
+<span id="cb12-21"><a href="#cb12-21" tabindex="-1"></a><span class="co">#&gt; 13  patient1 0.8001571  0.93959762  0.92495794  0.9021728</span></span>
+<span id="cb12-22"><a href="#cb12-22" tabindex="-1"></a><span class="co">#&gt; 14 patient76 0.6821508          NA          NA         NA</span></span>
+<span id="cb12-23"><a href="#cb12-23" tabindex="-1"></a><span class="co">#&gt; 15 patient16 0.6811413          NA          NA         NA</span></span>
+<span id="cb12-24"><a href="#cb12-24" tabindex="-1"></a><span class="co">#&gt; 16 patient27 0.3638444          NA          NA         NA</span></span>
+<span id="cb12-25"><a href="#cb12-25" tabindex="-1"></a><span class="co">#&gt; 17 patient58 0.5329587  0.77942222  0.59402937  0.6446556</span></span>
+<span id="cb12-26"><a href="#cb12-26" tabindex="-1"></a><span class="co">#&gt; 18 patient52 0.5085119  0.12568889  0.04742698  0.1774818</span></span>
+<span id="cb12-27"><a href="#cb12-27" tabindex="-1"></a><span class="co">#&gt; 19 patient10 0.2715532          NA          NA         NA</span></span>
+<span id="cb12-28"><a href="#cb12-28" tabindex="-1"></a><span class="co">#&gt; 20 patient72 0.6949579  0.94951984  0.95594841  0.8954590</span></span>
+<span id="cb12-29"><a href="#cb12-29" tabindex="-1"></a><span class="co">#&gt; 21 patient39        NA  0.08805476  0.04742698         NA</span></span>
+<span id="cb12-30"><a href="#cb12-30" tabindex="-1"></a><span class="co">#&gt; 25 patient46        NA  0.21791667  0.48941032         NA</span></span>
+<span id="cb12-31"><a href="#cb12-31" tabindex="-1"></a><span class="co">#&gt; 26 patient97        NA  0.74017381  0.34702778         NA</span></span>
+<span id="cb12-32"><a href="#cb12-32" tabindex="-1"></a><span class="co">#&gt; 27 patient31        NA  0.27210000  0.15999683         NA</span></span>
+<span id="cb12-33"><a href="#cb12-33" tabindex="-1"></a><span class="co">#&gt; 31 patient87        NA  0.30864365  0.04329365         NA</span></span>
+<span id="cb12-34"><a href="#cb12-34" tabindex="-1"></a><span class="co">#&gt; 33 patient59        NA  0.13636111  0.22532778         NA</span></span>
+<span id="cb12-35"><a href="#cb12-35" tabindex="-1"></a><span class="co">#&gt; 34  patient2        NA  0.56663333  0.66165238         NA</span></span></code></pre></div>
+<ul>
+<li>Prediction performances for layer-specific available patients, and
+all patients on the meta layer.</li>
+</ul>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>pred_values <span class="ot">&lt;-</span> predictions<span class="sc">$</span>predicted_values</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>actual_pred <span class="ot">&lt;-</span> <span class="fu">merge</span>(<span class="at">x =</span> pred_values,</span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>                     <span class="at">y =</span> entities<span class="sc">$</span>testing<span class="sc">$</span>target,</span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>                     <span class="at">by =</span> <span class="st">&quot;IDS&quot;</span>,</span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>                     <span class="at">all.y =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(actual_pred<span class="sc">$</span>disease <span class="sc">==</span> 2L)</span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a><span class="co"># On all patients</span></span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a>perf_estimated <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="at">X =</span> actual_pred[ , 2L<span class="sc">:</span>5L], <span class="at">FUN =</span> <span class="cf">function</span> (my_pred) {</span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a>  bs <span class="ot">&lt;-</span> bs <span class="ot">&lt;-</span> <span class="fu">mean</span>((x[<span class="fu">complete.cases</span>(my_pred)] <span class="sc">-</span> my_pred[<span class="fu">complete.cases</span>(my_pred)])<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a>  <span class="fu">return</span>(bs)</span>
+<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a>})</span>
+<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a><span class="fu">print</span>(perf_estimated)</span>
+<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a><span class="co">#&gt;    geneexpr proteinexpr methylation  meta_layer </span></span>
+<span id="cb13-15"><a href="#cb13-15" tabindex="-1"></a><span class="co">#&gt;   0.1246471   0.1589727   0.2346355   0.1445188</span></span></code></pre></div>
+<ul>
+<li>Prediction performances for overlapping individuals.</li>
+</ul>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="co"># On overlapping patients</span></span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>perf_overlapping <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="at">X =</span> actual_pred[<span class="fu">complete.cases</span>(actual_pred),</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>                                           2L<span class="sc">:</span>5L],</span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>                           <span class="at">FUN =</span> <span class="cf">function</span> (my_pred) {</span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>                             bs <span class="ot">&lt;-</span> <span class="fu">mean</span>((x[<span class="fu">complete.cases</span>(actual_pred)] <span class="sc">-</span> my_pred)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>                             <span class="fu">return</span>(bs)</span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>                           })</span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a><span class="fu">print</span>(perf_overlapping)</span>
+<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a><span class="co">#&gt;    geneexpr proteinexpr methylation  meta_layer </span></span>
+<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a><span class="co">#&gt;  0.13701187  0.09945737  0.22350114  0.14451877</span></span></code></pre></div>
+<p>Note that our example is based on simulated data for usage
+illustration; only one run is not enough to appreciate the performances
+of our models.</p>
+</div>
+<div id="e---interface-and-wrapping" class="section level1">
+<h1>E - Interface and wrapping</h1>
+<p>We distinguish common supervised learning arguments from method
+specific arguments. The common arguments are a matrix <code>x</code> of
+independent variables and <code>y</code> representing a response
+variable. These arguments are handled by <code>fuseMLR</code>, so users
+do not need to make any adjustments themselves. We also define standard
+argument names for predicting. The arguments <code>object</code> and
+<code>data</code> (used by the generic <code>R</code> function
+<code>predict</code> to pass model and the data for which prediction are
+needed) are also stanard in <code>fuseMLR</code>. If the original
+learning or predicting function do not use these names as arguments,
+either an interface or a wrapping of the original function can be done
+to solve name discepancies.</p>
+<div id="interface" class="section level2">
+<h2>Interface</h2>
+<p>The interface approach leverages the arguments in
+<code>createTrainLayer()</code> to map the argument names of the
+original learning function. In the example below, the gene expression
+layer is re-created using the <code>svm</code> (Support Vector Machine)
+function from the <code>e1071</code> package as the learner. A
+discrepancy arises in the argument names of the <code>predict.svm</code>
+function, which uses <code>object</code> and <code>newdata</code>.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="co"># Remove the current gene expression layer from training</span></span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="fu">removeLayer</span>(<span class="at">training =</span> training, <span class="at">layer_id =</span> <span class="st">&quot;geneexpr&quot;</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a><span class="co">#&gt; Warning in training$removeLayer(id = layer_id): training was already trained.</span></span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a><span class="co">#&gt; Do not forget to train it again to update its meta layer.</span></span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a><span class="co">#&gt; Training        : training</span></span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a><span class="co">#&gt; Status          : Trained</span></span>
+<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a><span class="co">#&gt; Number of layers: 3</span></span>
+<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a><span class="co">#&gt; Layers trained  : 3</span></span>
+<span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a><span class="co">#&gt; n               : 70</span></span>
+<span id="cb15-10"><a href="#cb15-10" tabindex="-1"></a><span class="co"># Re-create the gene expression layer with support vector machine as learner.</span></span>
+<span id="cb15-11"><a href="#cb15-11" tabindex="-1"></a><span class="fu">createTrainLayer</span>(<span class="at">training =</span> training,</span>
+<span id="cb15-12"><a href="#cb15-12" tabindex="-1"></a>                 <span class="at">train_layer_id =</span> <span class="st">&quot;geneexpr&quot;</span>,</span>
+<span id="cb15-13"><a href="#cb15-13" tabindex="-1"></a>                 <span class="at">train_data =</span> entities<span class="sc">$</span>training<span class="sc">$</span>geneexpr,</span>
+<span id="cb15-14"><a href="#cb15-14" tabindex="-1"></a>                 <span class="at">varsel_package =</span> <span class="st">&quot;Boruta&quot;</span>,</span>
+<span id="cb15-15"><a href="#cb15-15" tabindex="-1"></a>                 <span class="at">varsel_fct =</span> <span class="st">&quot;Boruta&quot;</span>,</span>
+<span id="cb15-16"><a href="#cb15-16" tabindex="-1"></a>                 <span class="at">varsel_param =</span> <span class="fu">list</span>(<span class="at">num.trees =</span> 1000L,</span>
+<span id="cb15-17"><a href="#cb15-17" tabindex="-1"></a>                                     <span class="at">mtry =</span> 3L,</span>
+<span id="cb15-18"><a href="#cb15-18" tabindex="-1"></a>                                     <span class="at">probability =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb15-19"><a href="#cb15-19" tabindex="-1"></a>                 <span class="at">lrner_package =</span> <span class="st">&quot;e1071&quot;</span>,</span>
+<span id="cb15-20"><a href="#cb15-20" tabindex="-1"></a>                 <span class="at">lrn_fct =</span> <span class="st">&quot;svm&quot;</span>,</span>
+<span id="cb15-21"><a href="#cb15-21" tabindex="-1"></a>                 <span class="at">param_train_list =</span> <span class="fu">list</span>(<span class="at">type =</span> <span class="st">&#39;C-classification&#39;</span>,</span>
+<span id="cb15-22"><a href="#cb15-22" tabindex="-1"></a>                                         <span class="at">kernel =</span> <span class="st">&#39;radial&#39;</span>,</span>
+<span id="cb15-23"><a href="#cb15-23" tabindex="-1"></a>                                         <span class="at">probability =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb15-24"><a href="#cb15-24" tabindex="-1"></a>                 <span class="at">param_pred_list =</span> <span class="fu">list</span>(<span class="at">probability =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb15-25"><a href="#cb15-25" tabindex="-1"></a>                 <span class="at">na_rm =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb15-26"><a href="#cb15-26" tabindex="-1"></a>                 <span class="at">x =</span> <span class="st">&quot;x&quot;</span>,</span>
+<span id="cb15-27"><a href="#cb15-27" tabindex="-1"></a>                 <span class="at">y =</span> <span class="st">&quot;y&quot;</span>,</span>
+<span id="cb15-28"><a href="#cb15-28" tabindex="-1"></a>                 <span class="at">object =</span> <span class="st">&quot;object&quot;</span>,</span>
+<span id="cb15-29"><a href="#cb15-29" tabindex="-1"></a>                 <span class="at">data =</span> <span class="st">&quot;newdata&quot;</span>, <span class="co"># Name discrepancy resolved.</span></span>
+<span id="cb15-30"><a href="#cb15-30" tabindex="-1"></a>                 <span class="at">extract_pred_fct =</span> <span class="cf">function</span> (pred) { </span>
+<span id="cb15-31"><a href="#cb15-31" tabindex="-1"></a>                   pred <span class="ot">&lt;-</span> <span class="fu">attr</span>(pred, <span class="st">&quot;probabilities&quot;</span>)</span>
+<span id="cb15-32"><a href="#cb15-32" tabindex="-1"></a>                   <span class="fu">return</span>(pred[ , 1L])</span>
+<span id="cb15-33"><a href="#cb15-33" tabindex="-1"></a>                 }</span>
+<span id="cb15-34"><a href="#cb15-34" tabindex="-1"></a>)</span>
+<span id="cb15-35"><a href="#cb15-35" tabindex="-1"></a><span class="co">#&gt; Training        : training</span></span>
+<span id="cb15-36"><a href="#cb15-36" tabindex="-1"></a><span class="co">#&gt; Status          : Trained</span></span>
+<span id="cb15-37"><a href="#cb15-37" tabindex="-1"></a><span class="co">#&gt; Number of layers: 4</span></span>
+<span id="cb15-38"><a href="#cb15-38" tabindex="-1"></a><span class="co">#&gt; Layers trained  : 3</span></span>
+<span id="cb15-39"><a href="#cb15-39" tabindex="-1"></a><span class="co">#&gt; n               : 70</span></span>
+<span id="cb15-40"><a href="#cb15-40" tabindex="-1"></a><span class="co"># Variable selection</span></span>
+<span id="cb15-41"><a href="#cb15-41" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">5467</span>)</span>
+<span id="cb15-42"><a href="#cb15-42" tabindex="-1"></a>var_sel_res <span class="ot">&lt;-</span> <span class="fu">varSelection</span>(<span class="at">training =</span> training,</span>
+<span id="cb15-43"><a href="#cb15-43" tabindex="-1"></a>                            <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb15-44"><a href="#cb15-44" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">5462</span>)</span>
+<span id="cb15-45"><a href="#cb15-45" tabindex="-1"></a>training <span class="ot">&lt;-</span> <span class="fu">fusemlr</span>(<span class="at">training =</span> training,</span>
+<span id="cb15-46"><a href="#cb15-46" tabindex="-1"></a>                    <span class="at">use_var_sel =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb15-47"><a href="#cb15-47" tabindex="-1"></a>                    <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb15-48"><a href="#cb15-48" tabindex="-1"></a></span>
+<span id="cb15-49"><a href="#cb15-49" tabindex="-1"></a><span class="fu">print</span>(training)</span>
+<span id="cb15-50"><a href="#cb15-50" tabindex="-1"></a><span class="co">#&gt; Training        : training</span></span>
+<span id="cb15-51"><a href="#cb15-51" tabindex="-1"></a><span class="co">#&gt; Status          : Trained</span></span>
+<span id="cb15-52"><a href="#cb15-52" tabindex="-1"></a><span class="co">#&gt; Number of layers: 4</span></span>
+<span id="cb15-53"><a href="#cb15-53" tabindex="-1"></a><span class="co">#&gt; Layers trained  : 4</span></span>
+<span id="cb15-54"><a href="#cb15-54" tabindex="-1"></a><span class="co">#&gt; n               : 70</span></span></code></pre></div>
+</div>
+<div id="wrapping" class="section level2">
+<h2>Wrapping</h2>
+<p>In the wrapping approach we re-define the function
+<code>mylasso</code> to run a Lasso regression from the
+<code>glmnet</code> package as the meta-leaner.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="co"># We wrap the original functions</span></span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>mylasso <span class="ot">&lt;-</span> <span class="cf">function</span> (x, y,</span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>                     <span class="at">nlambda =</span> <span class="dv">25</span>,</span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>                     <span class="at">nfolds =</span> <span class="dv">5</span>) {</span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a>  <span class="co"># Perform cross-validation to find the optimal lambda</span></span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a>  cv_lasso <span class="ot">&lt;-</span> <span class="fu">cv.glmnet</span>(<span class="at">x =</span> <span class="fu">as.matrix</span>(x), <span class="at">y =</span> y,</span>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a>                        <span class="at">family =</span> <span class="st">&quot;binomial&quot;</span>,</span>
+<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a>                        <span class="at">type.measure =</span> <span class="st">&quot;deviance&quot;</span>,</span>
+<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a>                        <span class="at">nfolds =</span> nfolds)</span>
+<span id="cb16-10"><a href="#cb16-10" tabindex="-1"></a>  best_lambda <span class="ot">&lt;-</span> cv_lasso<span class="sc">$</span>lambda.min</span>
+<span id="cb16-11"><a href="#cb16-11" tabindex="-1"></a>  lasso_best <span class="ot">&lt;-</span> <span class="fu">glmnet</span>(<span class="at">x =</span> <span class="fu">as.matrix</span>(x), <span class="at">y =</span> y,</span>
+<span id="cb16-12"><a href="#cb16-12" tabindex="-1"></a>                       <span class="at">family =</span> <span class="st">&quot;binomial&quot;</span>,</span>
+<span id="cb16-13"><a href="#cb16-13" tabindex="-1"></a>                       <span class="at">alpha =</span> <span class="dv">1</span>,</span>
+<span id="cb16-14"><a href="#cb16-14" tabindex="-1"></a>                       <span class="at">lambda =</span> best_lambda</span>
+<span id="cb16-15"><a href="#cb16-15" tabindex="-1"></a>  )</span>
+<span id="cb16-16"><a href="#cb16-16" tabindex="-1"></a>  lasso_model <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">model =</span> lasso_best)</span>
+<span id="cb16-17"><a href="#cb16-17" tabindex="-1"></a>  <span class="fu">class</span>(lasso_model) <span class="ot">&lt;-</span> <span class="st">&quot;mylasso&quot;</span></span>
+<span id="cb16-18"><a href="#cb16-18" tabindex="-1"></a>  <span class="fu">return</span>(lasso_model)</span>
+<span id="cb16-19"><a href="#cb16-19" tabindex="-1"></a>}</span>
+<span id="cb16-20"><a href="#cb16-20" tabindex="-1"></a></span>
+<span id="cb16-21"><a href="#cb16-21" tabindex="-1"></a>predict.mylasso <span class="ot">&lt;-</span> <span class="cf">function</span>(object, data) {</span>
+<span id="cb16-22"><a href="#cb16-22" tabindex="-1"></a>  glmnet_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(<span class="at">object =</span> object<span class="sc">$</span>model,</span>
+<span id="cb16-23"><a href="#cb16-23" tabindex="-1"></a>                         <span class="at">newx =</span> <span class="fu">as.matrix</span>(data),</span>
+<span id="cb16-24"><a href="#cb16-24" tabindex="-1"></a>                         <span class="at">type =</span> <span class="st">&quot;response&quot;</span>,</span>
+<span id="cb16-25"><a href="#cb16-25" tabindex="-1"></a>                         <span class="at">s =</span> object<span class="sc">$</span>model<span class="sc">$</span>lambda)</span>
+<span id="cb16-26"><a href="#cb16-26" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">as.vector</span>(glmnet_pred))</span>
+<span id="cb16-27"><a href="#cb16-27" tabindex="-1"></a>}</span>
+<span id="cb16-28"><a href="#cb16-28" tabindex="-1"></a></span>
+<span id="cb16-29"><a href="#cb16-29" tabindex="-1"></a><span class="co"># Remove the current gene expression layer from training</span></span>
+<span id="cb16-30"><a href="#cb16-30" tabindex="-1"></a><span class="fu">removeLayer</span>(<span class="at">training =</span> training, <span class="at">layer_id =</span> <span class="st">&quot;meta_layer&quot;</span>)</span>
+<span id="cb16-31"><a href="#cb16-31" tabindex="-1"></a><span class="co"># Re-create the gene expression layer with support vector machine as learner.</span></span>
+<span id="cb16-32"><a href="#cb16-32" tabindex="-1"></a><span class="fu">createTrainMetaLayer</span>(<span class="at">training =</span> training,</span>
+<span id="cb16-33"><a href="#cb16-33" tabindex="-1"></a>                     <span class="at">meta_layer_id =</span> <span class="st">&quot;meta_layer&quot;</span>,</span>
+<span id="cb16-34"><a href="#cb16-34" tabindex="-1"></a>                     <span class="at">lrner_package =</span> <span class="cn">NULL</span>,</span>
+<span id="cb16-35"><a href="#cb16-35" tabindex="-1"></a>                     <span class="at">lrn_fct =</span> <span class="st">&quot;mylasso&quot;</span>,</span>
+<span id="cb16-36"><a href="#cb16-36" tabindex="-1"></a>                     <span class="at">param_train_list =</span> <span class="fu">list</span>(<span class="at">nlambda =</span> 100L),</span>
+<span id="cb16-37"><a href="#cb16-37" tabindex="-1"></a>                     <span class="at">na_rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-38"><a href="#cb16-38" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">5462</span>)</span>
+<span id="cb16-39"><a href="#cb16-39" tabindex="-1"></a>training <span class="ot">&lt;-</span> <span class="fu">fusemlr</span>(<span class="at">training =</span> training,</span>
+<span id="cb16-40"><a href="#cb16-40" tabindex="-1"></a>                    <span class="at">use_var_sel =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb16-41"><a href="#cb16-41" tabindex="-1"></a>                    <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb16-42"><a href="#cb16-42" tabindex="-1"></a><span class="fu">print</span>(training)</span></code></pre></div>
+<div id="appendix" class="section level3">
+<h3>Appendix</h3>
+<p>In addition to any pre-existing learner in R as a meta-learner, we
+have implemented the following ones.</p>
+<table>
+<colgroup>
+<col width="15%" />
+<col width="84%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Leaner</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">weightedMeanLearner</td>
+<td align="left">The weighted mean meta learner. It uses meta data to
+estimate the weights of the modality-specific models</td>
+</tr>
+<tr class="even">
+<td align="left">bestSpecificLearner</td>
+<td align="left">The best layer-specific model is used as meta
+model.</td>
+</tr>
+</tbody>
+</table>
+<p>© 2024 Institute of Medical Biometry and Statistics (IMBS). All
+rights reserved.</p>
+</div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
