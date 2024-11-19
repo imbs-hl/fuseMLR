@@ -7,6 +7,14 @@ test_that("weightedMeanLearner works", {
     x_new <- data.frame(x1 = rnorm(10))
     my_predictions <- predict(object = my_model, data = x_new)
   })
+  expect_no_error({
+    set.seed(20240624L)
+    x = data.frame(x1 = rnorm(50L))
+    y = sample(x = 0L:1L, size = 50L, replace = TRUE)
+    my_model = weightedMeanLearner(x = x, y = y, weighted = FALSE)
+    x_new <- data.frame(x1 = rnorm(10))
+    my_predictions <- predict(object = my_model, data = x_new)
+  })
   expect_error({
     set.seed(20240624L)
     x = data.frame(x1 = rnorm(50L))
