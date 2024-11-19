@@ -16,43 +16,339 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+## A - Introduction #
+
+The R package **fuseMLR** offers a framework for late integrative predictive modeling using multi-omics data. 
+This vignette serves as a user guide to use the package effectively.
+Three key functionalities are provided: variable selection for modality-specific data, late integrative multi-omics training, and predictions for testing multi-omics datasets. 
+
+## B - Data
+
+```{r libraries, warning = FALSE}
 library(fuseMLR)
 ```
 
-# Introduction #
+The following example is based on simulated data available in `fuseMLR`. Data have been simulated using the R package `InterSIM`, version 2.2.0. Two types of data were simulated: training and testing datasets. Each consists of four `data.frame`s—gene expression, protein expression, methylation data, and target variable observations. Individuals are organized in rows, variables in columns, with an additional column for individual IDs. In total, $70$ individuals with $50$ individuals pro layer have been simulated for training, and $23$ ($20$ per layer) for testing. Individuals do not necessarily overlapped. Effects have been introduced for gene expression and methylation by shifting the means by $0.5$ to create case-control study with $50$% prevalence. Individuals do not necessarily overlap. Effects were introduced in gene expression and methylation by shifting the means by 0.5 to create a case-control study. For illustration, the number of variables was kept smaller than what is typically expected in reality. The data simulation code is available [here](https://github.com/imbs-hl/fuseMLR/blob/master/test_code/build_data.R).
 
-Recent technological advances have enabled the simultaneous collection of multi-omics data, i.e., different types or modalities of molecular data across various organ tissues of patients. For integrative predictive modeling, the analysis of such data is particularly challenging. Ideally, data from the different modalities are measured in the same individuals, allowing for early or intermediate integrative techniques. However, they are often not applicable when patient data only partially overlap, which requires either reducing the datasets or imputing missing values. Additionally, the characteristics of each data modality may necessitate specific statistical methods rather than applying the same method across all modalities. Late integration modeling approaches address this problematic by analyzing each data modality separately to obtain modality-specific predictions. These predictions are then integrated to train aggregative models like Lasso, random forests, or compute the weighted mean of modality-specific predictions. 
+```{r data_exam, include=TRUE, eval=TRUE}
+data("entities")
+# This is a list containing two lists of data: training and test.
+# Each sublist contains three entities.
+str(object = entities, max.level = 2L)
+```
 
-The R package **fuseMLR** offers a framework for late integrative predictive modeling using multi-omics data. 
-This vignette serves as a user guide for effectively using the package.
-Three key functionalities are provided: variable selection for modality-specific data, late integrative multi-omics training, and predictions for testing multi-omics datasets. 
+## C - Training #
 
-# Package structure #
+The training process is handled in **fuseMLR** by a class called **Training**. We will use ```training``` to refer to an instance from this class. Function ```createTraining``` is available to create an empty (without layers) ```training```.
 
-Firstly, we present the package structure to facilitate its usage. The training process is handled in **fuseMLR** by the **Training** class, while the prediction process is managed by the **Testing** class. We will use ```training``` (resp. ```testing```) to refer to an instance, i.e. an object from the **Training** (resp. **Testing**) class that can be created by a user.
+```{r training, include=TRUE, eval=TRUE}
+training <- createTraining(id = "training",
+                           ind_col = "IDS",
+                           target = "disease",
+                           target_df = entities$training$target,
+                           verbose = FALSE)
+print(training)
+```
 
-A ```training``` can contain training layers, implemented by the class **TrainLayer** and a meta training layer, implemented by the class **TrainMetaLayer**. The training layers and the meta training layer are set up by the user. 
+A ```training``` contains modality-specific training layers (instances of the **TrainLayer** class) and a meta-layer (instance of the **TrainMetaLayer** class). The modality-specific training layers encapsulate training data modalities, variable selection functions and learners (i.e. ```R``` functions implementing statistical predicting methods). The meta-layer encapsulates the meta-learner.
 
-The object ```train_layer```, from the **TrainLayer** class, is designed to hold a training data modality, a layer-specific learner, and a layer-specific variable selection method. The training data modality is managed by the **TrainData** class, the layer-specific learner by the **Lrnr** class, and the variable selection method by the **VarSel** class.
+## C.1 - Creating a training ##
 
-An object ```meta_train_layer``` from the class **MetaTrainLayer** is designed to hold modality-specific predictions obtained by training the layer-specific learners on their corresponding training data. These predictions are internally computed by **fuseMLR** using cross-validation and cannot be set by the user. However, the meta learner, which uses these layer-specific predictions to predict the response variable, is user-defined. Strictly speaking, a meta learner is simple a learner designed for meta data. Therefore, a meta learner is also an object from the **Lrnr** class.
+We will use ```training``` (resp. ```testing```) to refer to an instance from the **Training** (resp. **Testing**) class. A ```training``` contains modality-specific training layers (instances of the **TrainLayer** class) and a meta-layer (instance of the **TrainMetaLayer** class). The modality-specific training layers encapsulate training data modalities, variable selection functions and learners (i.e. ```R``` functions implementing statistical predicting methods). The meta-layer encapsulates the meta-learner.
 
-A ```testing```has the same structure as ```training```; apart from not requiring the meta training layer, the learners and the variable selection methods. To make a similitude to ```training```, a ```testing``` contains the testing layers and the corresponding testing data modalities. The testing layers are managed by the **TestLayer** class, and data modalities are managed by the **TestData** class.
+Three main functions are necessary to create ```training```: ```createTraining()```, ```createTrainLayer()``` and ```createTrainMetaLayer()```. ```createTraining()``` creates an empty ```training```, on which modalitity-specific training layers can be add using the function ```createTrainLayer()```. Function ```createTrainMetaLayer()``` is used to add meta-layer to ```training```. 
 
-Here are the main steps to conduct a training procedure with **fuseMLR**:
+The following code adds a gene expression, a protein abundance, and a methylation layer to ```training```.
+
+```{r training_layers, include=TRUE, eval=TRUE}
+# Create gene expression layer
+createTrainLayer(training = training,
+                 train_layer_id = "geneexpr",
+                 train_data = entities$training$geneexpr,
+                 varsel_package = "Boruta",
+                 varsel_fct = "Boruta",
+                 varsel_param = list(num.trees = 1000L,
+                                     mtry = 3L,
+                                     probability = TRUE),
+                 lrner_package = "ranger",
+                 lrn_fct = "ranger",
+                 param_train_list = list(probability = TRUE,
+                                         mtry = 1L),
+                 param_pred_list = list(),
+                 na_rm = TRUE)
+
+# Create gene protein abundance layer
+createTrainLayer(training = training,
+                 train_layer_id = "proteinexpr",
+                 train_data = entities$training$proteinexpr,
+                 varsel_package = "Boruta",
+                 varsel_fct = "Boruta",
+                 varsel_param = list(num.trees = 1000L,
+                                     mtry = 3L,
+                                     probability = TRUE),
+                 lrner_package = "ranger",
+                 lrn_fct = "ranger",
+                 param_train_list = list(probability = TRUE,
+                                         mtry = 1L),
+                 param_pred_list = list(type = "response"),
+                 na_rm = TRUE)
+
+# Create methylation layer
+createTrainLayer(training = training,
+                 train_layer_id = "methylation",
+                 train_data = entities$training$proteinexpr,
+                 varsel_package = "Boruta",
+                 varsel_fct = "Boruta",
+                 varsel_param = list(num.trees = 1000L,
+                                     mtry = 3L,
+                                     probability = TRUE),
+                 lrner_package = "ranger",
+                 lrn_fct = "ranger",
+                 param_train_list = list(probability = TRUE,
+                                         mtry = 1L),
+                 param_pred_list = list(),
+                 na_rm = TRUE)
+```
+
+Also add a meta layer.
+
+```{r training_meta_layers, include=TRUE, eval=TRUE}
+# Create meta layer
+createTrainMetaLayer(training = training,
+                     meta_layer_id = "meta_layer",
+                     lrner_package = NULL,
+                     lrn_fct = "weightedMeanLearner",
+                     param_train_list = list(),
+                     param_pred_list = list(),
+                     na_rm = FALSE)
+```
+
+Function ```upsetplot()``` is available to generate an upset of the training data, i.e. an overview how patients overlap across layers.
+
+```{r upsetplot, include=TRUE, eval=TRUE, }
+upsetplot(object = training, order.by = "freq")
+```
+
+## C.2 - Variable selection ##
+
+Function ```varSelection()``` performs modality-specific variable selection.
+
+```{r varsel, include=TRUE, eval=TRUE}
+# Variable selection
+set.seed(5467)
+var_sel_res <- varSelection(training = training,
+                            verbose = FALSE)
+print(var_sel_res)
+```
+
+For each layer, the variable selection results show the chosen variables. In this example, we perform variable selection. Users can opt to conduct variable selection on individual layers if desired.
+
+## C.2 - Training ##
+
+We use the function ```fusemlr()``` to train our models using the subset of selected variables.
+
+```{r lrner_train, include=TRUE, eval=TRUE}
+set.seed(5462)
+fusemlr(training = training,
+        use_var_sel = TRUE,
+        verbose = FALSE)
+
+print(training)
+# See also summary(training)
+```
+
+We use `extractModel()` to retrieve the list of stored models and `extractData()` to retrieve training data.
+
+```{r basic_lrnr, include=TRUE, eval=TRUE}
+models_list <- extractModel(training = training)
+data_list <- extractData(training = training)
+```
 
 
-1. Instantiate a "Training" object
-2. Set up layers
-3. Set up training data
-4. Set up learning method
-5. Set up variable selection method
-6. Optionally set up variable selection method
-7. Optionally perform variable selection
-8. Train
+# D - Predicting #
 
+In this section, we create a ```testing``` instance (from the *Testing* class) and make predictions for new data. This is done analogously to ```training```. The only difference that only the testing data modalities are required. Relevant functions are ```createTesting()``` and ```createTestLayer()```.
 
-# Runing a training procedure #
+```{r testing, include=TRUE, eval=TRUE}
+# Create testing for predcitions
+testing <- createTesting(id = "testing",
+                         ind_col = "IDS")
 
-# Runing a testing procedure #
+# Create gene expression layer
+createTestLayer(testing = testing,
+                test_layer_id = "geneexpr",
+                test_data = entities$testing$geneexpr)
+
+# Create gene protein abundance layer
+createTestLayer(testing = testing,
+                test_layer_id = "proteinexpr",
+                test_data = entities$testing$proteinexpr)
+
+# Create methylation layer
+createTestLayer(testing = testing,
+                test_layer_id = "methylation",
+                test_data = entities$testing$proteinexpr)
+```
+
+We can also generate an upset plot to visualize patient overlap across testing layers.
+
+```{r upsetplot_new, include=TRUE, eval=TRUE, }
+upsetplot(object = testing, order.by = "freq")
+```
+
+Function ```predict()``` is available for predicting.
+
+```{r new_pred, include=TRUE, eval=TRUE}
+predictions <- predict(object = training, testing = testing)
+print(predictions)
+```
+
+- Prediction performances for layer-specific available patients, and all patients on the meta layer.
+
+```{r performance_all, include=TRUE, eval=TRUE}
+pred_values <- predictions$predicted_values
+actual_pred <- merge(x = pred_values,
+                     y = entities$testing$target,
+                     by = "IDS",
+                     all.y = TRUE)
+x <- as.integer(actual_pred$disease == 2L)
+
+# On all patients
+perf_estimated <- sapply(X = actual_pred[ , 2L:5L], FUN = function (my_pred) {
+  bs <- bs <- mean((x[complete.cases(my_pred)] - my_pred[complete.cases(my_pred)])^2)
+  return(bs)
+})
+print(perf_estimated)
+```
+
+- Prediction performances for overlapping individuals.
+
+```{r performance_overlap, include=TRUE, eval=TRUE}
+# On overlapping patients
+perf_overlapping <- sapply(X = actual_pred[complete.cases(actual_pred),
+                                           2L:5L],
+                           FUN = function (my_pred) {
+                             bs <- mean((x[complete.cases(actual_pred)] - my_pred)^2)
+                             return(bs)
+                           })
+print(perf_overlapping)
+```
+
+Note that our example is based on simulated data for usage illustration; only one run is not enough to appreciate the performances of our models.
+
+# E - Interface and wrapping #
+
+We distinguish common supervised learning arguments from method specific arguments. The common arguments are a matrix ```x``` of independent variables and  ```y``` representing a response variable. These arguments are handled by ```fuseMLR```, so users do not need to make any adjustments themselves. We also define standard argument names for predicting. The arguments ```object``` and ```data``` (used by the generic ```R``` function ```predict``` to pass model and the data for which prediction are needed) are also stanard in ```fuseMLR```. If the original learning or predicting function do not use these names as arguments, either an interface or a wrapping of the original function can be done to solve name discepancies. 
+
+## Interface ##
+
+The interface approach leverages the arguments in ```createTrainLayer()``` to map the argument names of the original learning function. In the example below, the gene expression layer is re-created using the ```svm``` (Support Vector Machine) function from the ```e1071``` package as the learner. A discrepancy arises in the argument names of the ```predict.svm``` function, which uses ```object``` and ```newdata```.
+
+```{r interface, include=TRUE, eval=TRUE}
+# Remove the current gene expression layer from training
+removeLayer(training = training, layer_id = "geneexpr")
+# Re-create the gene expression layer with support vector machine as learner.
+createTrainLayer(training = training,
+                 train_layer_id = "geneexpr",
+                 train_data = entities$training$geneexpr,
+                 varsel_package = "Boruta",
+                 varsel_fct = "Boruta",
+                 varsel_param = list(num.trees = 1000L,
+                                     mtry = 3L,
+                                     probability = TRUE),
+                 lrner_package = "e1071",
+                 lrn_fct = "svm",
+                 param_train_list = list(type = 'C-classification',
+                                         kernel = 'radial',
+                                         probability = TRUE),
+                 param_pred_list = list(probability = TRUE),
+                 na_rm = TRUE,
+                 x = "x",
+                 y = "y",
+                 object = "object",
+                 data = "newdata", # Name discrepancy resolved.
+                 extract_pred_fct = function (pred) { 
+                   pred <- attr(pred, "probabilities")
+                   return(pred[ , 1L])
+                 }
+)
+# Variable selection
+set.seed(5467)
+var_sel_res <- varSelection(training = training,
+                            verbose = FALSE)
+set.seed(5462)
+training <- fusemlr(training = training,
+                    use_var_sel = TRUE,
+                    verbose = FALSE)
+
+print(training)
+```
+
+## Wrapping ##
+
+In the wrapping approach we re-define the function ```mylasso``` to run a Lasso regression from the ```glmnet``` package as the meta-leaner.
+
+```{r wrap, include=TRUE, eval=FALSE}
+# We wrap the original functions
+mylasso <- function (x, y,
+                     nlambda = 25,
+                     nfolds = 5) {
+  # Perform cross-validation to find the optimal lambda
+  cv_lasso <- cv.glmnet(x = as.matrix(x), y = y,
+                        family = "binomial",
+                        type.measure = "deviance",
+                        nfolds = nfolds)
+  best_lambda <- cv_lasso$lambda.min
+  lasso_best <- glmnet(x = as.matrix(x), y = y,
+                       family = "binomial",
+                       alpha = 1,
+                       lambda = best_lambda
+  )
+  lasso_model <- list(model = lasso_best)
+  class(lasso_model) <- "mylasso"
+  return(lasso_model)
+}
+
+predict.mylasso <- function(object, data) {
+  glmnet_pred <- predict(object = object$model,
+                         newx = as.matrix(data),
+                         type = "response",
+                         s = object$model$lambda)
+  return(as.vector(glmnet_pred))
+}
+
+# Remove the current gene expression layer from training
+removeLayer(training = training, layer_id = "meta_layer")
+# Re-create the gene expression layer with support vector machine as learner.
+createTrainMetaLayer(training = training,
+                     meta_layer_id = "meta_layer",
+                     lrner_package = NULL,
+                     lrn_fct = "mylasso",
+                     param_train_list = list(nlambda = 100L),
+                     na_rm = TRUE)
+set.seed(5462)
+training <- fusemlr(training = training,
+                    use_var_sel = TRUE,
+                    verbose = FALSE)
+print(training)
+```
+
+### Appendix
+
+In addition to any pre-existing learner in R as a meta-learner, we have implemented the following ones.
+
+```{r implemented_learners, include=TRUE, echo=FALSE}
+# Load knitr package
+library(knitr)
+
+# Create a data frame
+data <- data.frame(
+  Leaner = c("weightedMeanLearner", "bestSpecificLearner"),
+  Description = c("The weighted mean meta learner. It uses meta data to estimate the weights of the modality-specific models", "The best layer-specific model is used as meta model.")
+)
+
+# Generate the table
+kable(data, caption = "")
+```
+
+&copy; 2024 Institute of Medical Biometry and Statistics (IMBS). All rights reserved.

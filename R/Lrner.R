@@ -87,15 +87,18 @@ Lrner <- R6Class("Lrner",
                    #' to provide how the following parameters are named in the learning
                    #' function (\code{lrn_fct}) you provided when creating the learner, or in the predicting function.
                    #'
-                   #' @param x (`string`(1)) \cr
+                   #' @param x (`character(1)`) \cr
                    #' Name of the argument to pass the matrix of independent variables in the original learning function.
-                   #' @param y (`string`(1)) \cr
+                   #' @param y (`character(1)`) \cr
                    #' Name of the argument to pass the response variable in the original learning function.
-                   #' @param object (`string`(1)) \cr
+                   #' @param object (`character(1)`) \cr
                    #' Name of the argument to pass the model in the original predicting function.
                    #' @param data \cr
                    #' Name of the argument to pass new data in the original predicting function.
-                   #'
+                   #' @param extract_pred_fct (`character(1) or function(1)`) \cr
+                   #' If the predict function that is called for the model does not return a vector, then
+                   #' use this argument to specify a (or a name of a) function that can be used to extract vector of predictions.
+                   #' Default value is NULL, if predictions are in a column.
                    #' @export
                    #'
                    # TODO: Covr me
@@ -103,7 +106,8 @@ Lrner <- R6Class("Lrner",
                    interface = function (x = "x",
                                          y = "y",
                                          object = "object",
-                                         data = "data") {
+                                         data = "data",
+                                         extract_pred_fct = NULL) {
                      if (!is.character(x)) {
                        stop("String expected for x.")
                      }
@@ -116,9 +120,19 @@ Lrner <- R6Class("Lrner",
                      if (!is.character(data)) {
                        stop("String expected for data.")
                      }
+                     if (!is.character(extract_pred_fct) & !is.function(extract_pred_fct) & !is.null(extract_pred_fct)) {
+                       stop("String or function expected for extract_pred_fct.")
+                     } else {
+                       if (!is.null(extract_pred_fct)) {
+                         if (length(formals(extract_pred_fct)) > 1L) {
+                           stop("Only one argument expected for the function specified in extract_pred_fct.")
+                         }
+                       }
+                     }
                      param_interface = data.frame(standard = c("x_name", "y_name", "object_name", "data_name"),
                                                original = c(x, y, object, data))
                      private$param_interface = param_interface
+                     private$extract_pred_fct = extract_pred_fct
                    },
                    # nocov end
                    #' @description
@@ -277,6 +291,15 @@ Lrner <- R6Class("Lrner",
                    #'
                    getParamInterface = function () {
                      return(private$param_interface)
+                   },
+                   #' @description
+                   #' The current parameter interface is returned.
+                   #'
+                   #' @return
+                   #' A data.frame of interface.
+                   #'
+                   getExtractPred = function () {
+                     return(private$extract_pred_fct)
                    }
                  ),
                  private = list(
@@ -298,7 +321,9 @@ Lrner <- R6Class("Lrner",
                    # Individuals subset IDs.
                    ind_subset = NULL,
                    # Variable subset IDs.
-                   var_subset = NULL
+                   var_subset = NULL,
+                   # Function to extract predictions.
+                   extract_pred_fct = NULL
                  ),
                  cloneable = FALSE
 )

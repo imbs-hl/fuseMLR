@@ -219,7 +219,7 @@ createTrainLayer(training = training,
     ## Layers trained  : 0
     ## n               : 70
 
-- Also add a meta layer: a meta layer contains a `Lrner` object.
+- Also add a meta layer.
 
 ``` r
 # Create meta layer
@@ -249,7 +249,7 @@ upsetplot(object = training, order.by = "freq")
 
 #### C) Variable selection
 
-- Perform variable selection on our training resources
+Perform variable selection on our training resources
 
 ``` r
 # Variable selection
@@ -290,8 +290,6 @@ to conduct variable selection on individual layers if desired.
 
 We can now train our models using the subset of selected variables.
 
-- Train the models with the selected variables.
-
 ``` r
 set.seed(5462)
 training <- fusemlr(training = training,
@@ -314,8 +312,8 @@ print(training)
 # See also summary(training)
 ```
 
-- Use `extractModel` to retrieve the list of stored models and
-  `extractData` to retrieve training data.
+Use `extractModel` to retrieve the list of stored models and
+`extractData` to retrieve training data.
 
 ``` r
 models_list <- extractModel(training = training)
@@ -324,11 +322,11 @@ data_list <- extractData(training = training)
 
 #### E) Predicting
 
-Now, we have created training resources, performed variable selection
-and trained the models with the chosen variables. In this section, we
-create testing resources and make predictions for new data.
-
-- Create the testing object.
+In this section, we create a `testing` instance (from the *Testing*
+class) and make predictions for new data. This is done analogously to
+`training`. The only difference that only the testing data modalities
+are required. Relevant functions are `createTesting()` and
+`createTestLayer()`.
 
 ``` r
 # Create testing for predcitions
@@ -385,34 +383,34 @@ print(predictions)
     ## Nb. layers   : 4
     ## 
     ## $predicted_values
-    ##          IDS geneexpr proteinexpr methylation meta_layer
-    ## 1  patient23 1.476367    1.568467    1.930067   1.676138
-    ## 2  patient77 1.471433    1.444500    1.583533   1.503905
-    ## 3  patient62 1.847333    1.991567    1.975600   1.943983
-    ## 4  patient43 1.283000          NA          NA         NA
-    ## 5   patient8 1.687400    1.907100    1.570900   1.718811
-    ## 6  patient74 1.525300    1.690933    1.033100   1.398830
-    ## 7  patient29 1.254267    1.421767    1.207500   1.293830
-    ## 8  patient17 1.344233    1.365300    1.179300   1.290150
-    ## 9  patient25 1.246167    1.413467    1.517533   1.403792
-    ## 10 patient54 1.776800          NA          NA         NA
-    ## 11 patient60 1.780100    1.846467    1.708000   1.775884
-    ## 12 patient44 1.397133          NA          NA         NA
-    ## 13  patient1 1.799467    1.970900    1.930067   1.906227
-    ## 14 patient76 1.602833          NA          NA         NA
-    ## 15 patient16 1.733467          NA          NA         NA
-    ## 16 patient27 1.310033          NA          NA         NA
-    ## 17 patient58 1.593933    1.803167    1.499233   1.629882
-    ## 18 patient52 1.480200    1.102133    1.023733   1.182209
-    ## 19 patient10 1.261400          NA          NA         NA
-    ## 20 patient72 1.736700    1.976733    1.982100   1.909404
-    ## 21 patient39       NA    1.068833    1.023733         NA
-    ## 25 patient46       NA    1.171067    1.517533         NA
-    ## 26 patient97       NA    1.708133    1.346467         NA
-    ## 27 patient31       NA    1.264567    1.079367         NA
-    ## 31 patient87       NA    1.291867    1.015900         NA
-    ## 33 patient59       NA    1.087867    1.182267         NA
-    ## 34  patient2       NA    1.610933    1.709833         NA
+    ##          IDS  geneexpr proteinexpr methylation meta_layer
+    ## 1  patient23 0.4298159  0.63428413  0.92495794  0.7136764
+    ## 2  patient77 0.4781778  0.45292381  0.57492778  0.5110424
+    ## 3  patient62 0.7837778  0.96909206  0.95261508  0.9206364
+    ## 4  patient43 0.3011865          NA          NA         NA
+    ## 5   patient8 0.7393611  0.87369683  0.51296032  0.6885350
+    ## 6  patient74 0.5458302  0.68164921  0.13405079  0.4157759
+    ## 7  patient29 0.3765897  0.45992778  0.24329444  0.3481374
+    ## 8  patient17 0.3817786  0.30925873  0.36974444  0.3514659
+    ## 9  patient25 0.2796373  0.40415000  0.48941032  0.4130304
+    ## 10 patient54 0.7875341          NA          NA         NA
+    ## 11 patient60 0.7329190  0.83852619  0.65352381  0.7353710
+    ## 12 patient44 0.4087905          NA          NA         NA
+    ## 13  patient1 0.8001571  0.93959762  0.92495794  0.9021728
+    ## 14 patient76 0.6821508          NA          NA         NA
+    ## 15 patient16 0.6811413          NA          NA         NA
+    ## 16 patient27 0.3638444          NA          NA         NA
+    ## 17 patient58 0.5329587  0.77942222  0.59402937  0.6446556
+    ## 18 patient52 0.5085119  0.12568889  0.04742698  0.1774818
+    ## 19 patient10 0.2715532          NA          NA         NA
+    ## 20 patient72 0.6949579  0.94951984  0.95594841  0.8954590
+    ## 21 patient39        NA  0.08805476  0.04742698         NA
+    ## 25 patient46        NA  0.21791667  0.48941032         NA
+    ## 26 patient97        NA  0.74017381  0.34702778         NA
+    ## 27 patient31        NA  0.27210000  0.15999683         NA
+    ## 31 patient87        NA  0.30864365  0.04329365         NA
+    ## 33 patient59        NA  0.13636111  0.22532778         NA
+    ## 34  patient2        NA  0.56663333  0.66165238         NA
 
 - Prediction performances for layer-specific available patients, and all
   patients on the meta layer.
@@ -435,7 +433,7 @@ print(perf_estimated)
 ```
 
     ##    geneexpr proteinexpr methylation  meta_layer 
-    ##    1.174433    1.127329    1.038924    1.230136
+    ##   0.1246471   0.1589727   0.2346355   0.1445188
 
 - Prediction performances for overlapping individuals.
 
@@ -451,10 +449,160 @@ print(perf_overlapping)
 ```
 
     ##    geneexpr proteinexpr methylation  meta_layer 
-    ##    1.159882    1.322029    1.253180    1.230136
+    ##  0.13701187  0.09945737  0.22350114  0.14451877
 
 Note that our example is based on simulated data for usage illustration;
 only one run is not enough to appreciate the performances of our models.
+
+# E - Interface and wrapping
+
+We distinguish common supervised learning arguments from method specific
+arguments. The common arguments are a matrix `x` of independent
+variables and `y` representing a response variable. These arguments are
+handled by `fuseMLR`, so users do not need to make any adjustments
+themselves. We also define standard argument names for predicting. The
+arguments `object` and `data` (used by the generic `R` function
+`predict` to pass model and the data for which prediction are needed)
+are also stanard in `fuseMLR`. If the original learning or predicting
+function do not use these names as arguments, either an interface or a
+wrapping of the original function can be done to solve name
+discepancies.
+
+## Interface
+
+The interface approach leverages the arguments in `createTrainLayer()`
+to map the argument names of the original learning function. In the
+example below, the gene expression layer is re-created using the `svm`
+(Support Vector Machine) function from the `e1071` package as the
+learner. A discrepancy arises in the argument names of the `predict.svm`
+function, which uses `object` and `newdata`.
+
+``` r
+# Remove the current gene expression layer from training
+removeLayer(training = training, layer_id = "geneexpr")
+```
+
+    ## Warning in training$removeLayer(id = layer_id): training was already trained.
+    ## Do not forget to train it again to update its meta layer.
+
+    ## Training        : training
+    ## Status          : Trained
+    ## Number of layers: 3
+    ## Layers trained  : 3
+    ## n               : 70
+
+``` r
+# Re-create the gene expression layer with support vector machine as learner.
+createTrainLayer(training = training,
+                 train_layer_id = "geneexpr",
+                 train_data = entities$training$geneexpr,
+                 varsel_package = "Boruta",
+                 varsel_fct = "Boruta",
+                 varsel_param = list(num.trees = 1000L,
+                                     mtry = 3L,
+                                     probability = TRUE),
+                 lrner_package = "e1071",
+                 lrn_fct = "svm",
+                 param_train_list = list(type = 'C-classification',
+                                         kernel = 'radial',
+                                         probability = TRUE),
+                 param_pred_list = list(probability = TRUE),
+                 na_rm = TRUE,
+                 x = "x",
+                 y = "y",
+                 object = "object",
+                 data = "newdata", # Name discrepancy resolved.
+                 extract_pred_fct = function (pred) { 
+                   pred <- attr(pred, "probabilities")
+                   return(pred[ , 1L])
+                 }
+)
+```
+
+    ## Training        : training
+    ## Status          : Trained
+    ## Number of layers: 4
+    ## Layers trained  : 3
+    ## n               : 70
+
+``` r
+# Variable selection
+set.seed(5467)
+var_sel_res <- varSelection(training = training,
+                            verbose = FALSE)
+set.seed(5462)
+training <- fusemlr(training = training,
+                    use_var_sel = TRUE,
+                    verbose = FALSE)
+
+print(training)
+```
+
+    ## Training        : training
+    ## Status          : Trained
+    ## Number of layers: 4
+    ## Layers trained  : 4
+    ## n               : 70
+
+## Wrapping
+
+In the wrapping approach we re-define the function `mylasso` to run a
+Lasso regression from the `glmnet` package as the meta-leaner.
+
+``` r
+# We wrap the original functions
+mylasso <- function (x, y,
+                     nlambda = 25,
+                     nfolds = 5) {
+  # Perform cross-validation to find the optimal lambda
+  cv_lasso <- cv.glmnet(x = as.matrix(x), y = y,
+                        family = "binomial",
+                        type.measure = "deviance",
+                        nfolds = nfolds)
+  best_lambda <- cv_lasso$lambda.min
+  lasso_best <- glmnet(x = as.matrix(x), y = y,
+                       family = "binomial",
+                       alpha = 1,
+                       lambda = best_lambda
+  )
+  lasso_model <- list(model = lasso_best)
+  class(lasso_model) <- "mylasso"
+  return(lasso_model)
+}
+
+predict.mylasso <- function(object, data) {
+  glmnet_pred <- predict(object = object$model,
+                         newx = as.matrix(data),
+                         type = "response",
+                         s = object$model$lambda)
+  return(as.vector(glmnet_pred))
+}
+
+# Remove the current gene expression layer from training
+removeLayer(training = training, layer_id = "meta_layer")
+# Re-create the gene expression layer with support vector machine as learner.
+createTrainMetaLayer(training = training,
+                     meta_layer_id = "meta_layer",
+                     lrner_package = NULL,
+                     lrn_fct = "mylasso",
+                     param_train_list = list(nlambda = 100L),
+                     na_rm = TRUE)
+set.seed(5462)
+training <- fusemlr(training = training,
+                    use_var_sel = TRUE,
+                    verbose = FALSE)
+print(training)
+```
+
+### Appendix
+
+In addition to any pre-existing learner in R as a meta-learner, we have
+implemented the following ones.
+
+| Leaner              | Description                                                                                               |
+|:--------------------|:----------------------------------------------------------------------------------------------------------|
+| weightedMeanLearner | The weighted mean meta learner. It uses meta data to estimate the weights of the modality-specific models |
+| bestSpecificLearner | The best layer-specific model is used as meta model.                                                      |
 
 © 2024 Institute of Medical Biometry and Statistics (IMBS). All rights
 reserved.

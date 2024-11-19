@@ -71,6 +71,10 @@ createTraining = function (id,
 #' @param data (`character(1)`) \cr
 #' The generic function \code{predict} uses a parameter \code{data} to pass new data.
 #' If the corresponding argument is named differently in your predict function, specify the name.
+#' @param extract_pred_fct (`character(1) or function(1)`) \cr
+#' If the predict function that is called for the model does not return a vector, then
+#' use this argument to specify a (or a name of a) function that can be used to extract vector of predictions.
+#' Default value is NULL, if predictions are in a column.
 #' @return
 #' The updated [Training] object (with the new layer) is returned.
 #' @export
@@ -89,7 +93,8 @@ createTrainLayer = function (training,
                              x = "x",
                              y = "y",
                              object = "object",
-                             data = "data") {
+                             data = "data",
+                             extract_pred_fct = NULL) {
   # Instantiate a layer
   train_layer = TrainLayer$new(id = train_layer_id,
                                training = training)
@@ -105,18 +110,25 @@ createTrainLayer = function (training,
     varsel_param = varsel_param,
     train_layer
   )
-  var_sel$interface(x = x, y = y, object = object, data = data)
+  var_sel$interface(x = x,
+                    y = y,
+                    object = object,
+                    data = data)
   # Instantiate a Lrner object
   lrner = Lrner$new(
     id = sprintf("%s_lrner", train_layer_id),
     package = lrner_package,
     lrn_fct = lrn_fct,
-    param_train_list = list(),
-    param_pred_list = list(),
+    param_train_list = param_train_list,
+    param_pred_list = param_pred_list,
     train_layer = train_layer,
-    na_rm = TRUE
+    na_rm = na_rm
   )
-  lrner$interface(x = x, y = y, object = object, data = data)
+  lrner$interface(x = x,
+                  y = y,
+                  object = object,
+                  data = data,
+                  extract_pred_fct = extract_pred_fct)
   return(training)
 }
 
@@ -176,8 +188,8 @@ createTrainMetaLayer = function (training,
     id = sprintf("%s_lrner", meta_layer_id),
     package = lrner_package,
     lrn_fct = lrn_fct,
-    param_train_list = list(),
-    param_pred_list = list(),
+    param_train_list = param_train_list,
+    param_pred_list = param_pred_list,
     train_layer = train_meta_layer,
     na_rm = TRUE
   )
@@ -325,4 +337,22 @@ summary.Training = function (object, ...) {
 upsetplot = function (object, ...) {
   object$upset(...)
   invisible(TRUE)
+}
+
+#' @title removeLayer
+#' @description
+#' Remove a [TrainLayer] or a [TrainMetaLayer] from the [Training] object passed as argument.
+#'
+#' @param training (`Training(1)`) \cr
+#' Training object from which the layer will be removed.
+#' @param layer_id (`character(1)`) \cr
+#' ID of the layer to be removed.
+#' @export
+#'
+removeLayer = function (training, layer_id = NULL) {
+  if (is.null(layer_id)) {
+    stop("Please provide the ID of the layer to be removed.")
+  }
+  training$removeLayer(id = layer_id)
+  return(training)
 }

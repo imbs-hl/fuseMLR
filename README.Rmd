@@ -136,7 +136,7 @@ createTrainLayer(training = training,
                  na_rm = TRUE)
 ```
 
-- Also add a meta layer: a meta layer contains a `Lrner` object.
+- Also add a meta layer.
 
 ```{r training_meta_layers, include=TRUE, eval=TRUE}
 # Create meta layer
@@ -157,7 +157,7 @@ upsetplot(object = training, order.by = "freq")
 
 #### C) Variable selection
 
-- Perform variable selection on our training resources
+Perform variable selection on our training resources
 
 ```{r varsel, include=TRUE, eval=TRUE}
 # Variable selection
@@ -173,8 +173,6 @@ For each layer, the variable selection results show the chosen variables. In thi
 
 We can now train our models using the subset of selected variables.
 
-- Train the models with the selected variables.
-
 ```{r lrner_train, include=TRUE, eval=TRUE}
 set.seed(5462)
 training <- fusemlr(training = training,
@@ -188,7 +186,7 @@ print(training)
 # See also summary(training)
 ```
 
-- Use `extractModel` to retrieve the list of stored models and `extractData` to retrieve training data.
+Use `extractModel` to retrieve the list of stored models and `extractData` to retrieve training data.
 
 ```{r basic_lrnr, include=TRUE, eval=TRUE}
 models_list <- extractModel(training = training)
@@ -197,9 +195,7 @@ data_list <- extractData(training = training)
 
 #### E) Predicting
 
-Now, we have created training resources, performed variable selection and trained the models with the chosen variables. In this section, we create testing resources and make predictions for new data.
-
-- Create the testing object.
+In this section, we create a ```testing``` instance (from the *Testing* class) and make predictions for new data. This is done analogously to ```training```. The only difference that only the testing data modalities are required. Relevant functions are ```createTesting()``` and ```createTestLayer()```.
 
 ```{r testing, include=TRUE, eval=TRUE}
 # Create testing for predcitions
@@ -268,5 +264,121 @@ print(perf_overlapping)
 ```
 
 Note that our example is based on simulated data for usage illustration; only one run is not enough to appreciate the performances of our models.
+
+# E - Interface and wrapping #
+
+We distinguish common supervised learning arguments from method specific arguments. The common arguments are a matrix ```x``` of independent variables and  ```y``` representing a response variable. These arguments are handled by ```fuseMLR```, so users do not need to make any adjustments themselves. We also define standard argument names for predicting. The arguments ```object``` and ```data``` (used by the generic ```R``` function ```predict``` to pass model and the data for which prediction are needed) are also stanard in ```fuseMLR```. If the original learning or predicting function do not use these names as arguments, either an interface or a wrapping of the original function can be done to solve name discepancies. 
+
+## Interface ##
+
+The interface approach leverages the arguments in ```createTrainLayer()``` to map the argument names of the original learning function. In the example below, the gene expression layer is re-created using the ```svm``` (Support Vector Machine) function from the ```e1071``` package as the learner. A discrepancy arises in the argument names of the ```predict.svm``` function, which uses ```object``` and ```newdata```.
+
+```{r interface, include=TRUE, eval=TRUE}
+# Remove the current gene expression layer from training
+removeLayer(training = training, layer_id = "geneexpr")
+# Re-create the gene expression layer with support vector machine as learner.
+createTrainLayer(training = training,
+                 train_layer_id = "geneexpr",
+                 train_data = entities$training$geneexpr,
+                 varsel_package = "Boruta",
+                 varsel_fct = "Boruta",
+                 varsel_param = list(num.trees = 1000L,
+                                     mtry = 3L,
+                                     probability = TRUE),
+                 lrner_package = "e1071",
+                 lrn_fct = "svm",
+                 param_train_list = list(type = 'C-classification',
+                                         kernel = 'radial',
+                                         probability = TRUE),
+                 param_pred_list = list(probability = TRUE),
+                 na_rm = TRUE,
+                 x = "x",
+                 y = "y",
+                 object = "object",
+                 data = "newdata", # Name discrepancy resolved.
+                 extract_pred_fct = function (pred) { 
+                   pred <- attr(pred, "probabilities")
+                   return(pred[ , 1L])
+                 }
+)
+# Variable selection
+set.seed(5467)
+var_sel_res <- varSelection(training = training,
+                            verbose = FALSE)
+set.seed(5462)
+training <- fusemlr(training = training,
+                    use_var_sel = TRUE,
+                    verbose = FALSE)
+
+print(training)
+```
+
+## Wrapping ##
+
+In the wrapping approach we re-define the function ```mylasso``` to run a Lasso regression from the ```glmnet``` package as the meta-leaner.
+
+```{r wrap, include=TRUE, eval=FALSE}
+# We wrap the original functions
+mylasso <- function (x, y,
+                     nlambda = 25,
+                     nfolds = 5) {
+  # Perform cross-validation to find the optimal lambda
+  cv_lasso <- cv.glmnet(x = as.matrix(x), y = y,
+                        family = "binomial",
+                        type.measure = "deviance",
+                        nfolds = nfolds)
+  best_lambda <- cv_lasso$lambda.min
+  lasso_best <- glmnet(x = as.matrix(x), y = y,
+                       family = "binomial",
+                       alpha = 1,
+                       lambda = best_lambda
+  )
+  lasso_model <- list(model = lasso_best)
+  class(lasso_model) <- "mylasso"
+  return(lasso_model)
+}
+
+predict.mylasso <- function(object, data) {
+  glmnet_pred <- predict(object = object$model,
+                         newx = as.matrix(data),
+                         type = "response",
+                         s = object$model$lambda)
+  return(as.vector(glmnet_pred))
+}
+
+# Remove the current gene expression layer from training
+removeLayer(training = training, layer_id = "meta_layer")
+# Re-create the gene expression layer with support vector machine as learner.
+createTrainMetaLayer(training = training,
+                     meta_layer_id = "meta_layer",
+                     lrner_package = NULL,
+                     lrn_fct = "mylasso",
+                     param_train_list = list(nlambda = 100L),
+                     na_rm = TRUE)
+set.seed(5462)
+training <- fusemlr(training = training,
+                    use_var_sel = TRUE,
+                    verbose = FALSE)
+print(training)
+```
+
+### Appendix
+
+In addition to any pre-existing learner in R as a meta-learner, we have implemented the following ones.
+
+```{r implemented_learners, include=TRUE, echo=FALSE}
+# Load knitr package
+library(knitr)
+
+# Create a data frame
+data <- data.frame(
+  Leaner = c("weightedMeanLearner", "bestSpecificLearner"),
+  Description = c("The weighted mean meta learner. It uses meta data to estimate the weights of the modality-specific models", "The best layer-specific model is used as meta model.")
+)
+
+# Generate the table
+kable(data, caption = "")
+```
+
 
 &copy; 2024 Institute of Medical Biometry and Statistics (IMBS). All rights reserved.

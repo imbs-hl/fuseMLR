@@ -205,6 +205,17 @@ Model <- R6Class("Model",
                      }
                      predicted_obj = do.call(eval(parse(text = predict_fct)),
                                              pred_param)
+                     # Extract predictions if necessary.
+                     extract_pred_fct = private$lrner$getExtractPred()
+                     if (!is.null(extract_pred_fct)) {
+                       if (is.character(extract_pred_fct)) {
+                         extract_pred_fct = eval(parse(text = extract_pred_fct))
+                       }
+                       param_extract = list()
+                       param_extract[[names(formals(extract_pred_fct))]] = predicted_obj
+                       predicted_obj = do.call(what = extract_pred_fct,
+                                               args = param_extract)
+                     }
                      # The predicted object must be either a vector or a list
                      # containing a field predictions with predictions.
                      if (is.vector(predicted_obj)|is.factor(predicted_obj)) {

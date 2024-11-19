@@ -535,6 +535,10 @@ Training <- R6Class("Training",
                         #' @export
                         #'
                         removeLayer = function(id) {
+                          if (private$nb_trained_layer > 0L) {
+                            private$nb_trained_layer = private$nb_trained_layer - 1L
+                            warning(sprintf("%s was already trained. Do not forget to train it again to update its meta layer.", private$id))
+                          }
                           self$removeFromHashTable(key = id)
                           invisible(TRUE)
                         },

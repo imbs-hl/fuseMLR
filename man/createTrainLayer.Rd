@@ -19,7 +19,8 @@ createTrainLayer(
   x = "x",
   y = "y",
   object = "object",
-  data = "data"
+  data = "data",
+  extract_pred_fct = NULL
 )
 }
 \arguments{
@@ -71,6 +72,11 @@ If the corresponding argument is named differently in your predict function, spe
 \item{data}{(\code{character(1)}) \cr
 The generic function \code{predict} uses a parameter \code{data} to pass new data.
 If the corresponding argument is named differently in your predict function, specify the name.}
+
+\item{extract_pred_fct}{(\verb{character(1) or function(1)}) \cr
+If the predict function that is called for the model does not return a vector, then
+use this argument to specify a (or a name of a) function that can be used to extract vector of predictions.
+Default value is NULL, if predictions are in a column.}
 }
 \value{
 The updated \link{Training} object (with the new layer) is returned.
