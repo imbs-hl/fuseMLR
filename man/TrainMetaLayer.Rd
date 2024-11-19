@@ -18,7 +18,7 @@ A meta layer can train its meta learner on the meta training data and store the 
 The meta layer can predict values given a new meta layer.
 }
 \section{Super class}{
-\code{\link[fuseMLR:HashTable]{fuseMLR::HashTable}} -> \code{TrainMetaLayer}
+\code{fuseMLR::HashTable} -> \code{TrainMetaLayer}
 }
 \section{Methods}{
 \subsection{Public methods}{

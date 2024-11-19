@@ -9,7 +9,7 @@ This class implement a predicted meta layer. A \link{TestMetaLayer} can only exi
 A predicted meta layer can only contain a \link{TestData} object.
 }
 \section{Super class}{
-\code{\link[fuseMLR:HashTable]{fuseMLR::HashTable}} -> \code{TestMetaLayer}
+\code{fuseMLR::HashTable} -> \code{TestMetaLayer}
 }
 \section{Methods}{
 \subsection{Public methods}{

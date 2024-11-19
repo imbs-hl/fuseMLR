@@ -26,7 +26,7 @@ TODO: Do not export me.
 \link{TrainLayer}
 }
 \section{Super class}{
-\code{\link[fuseMLR:HashTable]{fuseMLR::HashTable}} -> \code{Predicting}
+\code{fuseMLR::HashTable} -> \code{Predicting}
 }
 \section{Methods}{
 \subsection{Public methods}{

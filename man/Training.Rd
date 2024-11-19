@@ -31,7 +31,7 @@ Use the function \code{train} for training and \code{predict} for predicting.
 \link{Testing} and \link{Predicting}
 }
 \section{Super class}{
-\code{\link[fuseMLR:HashTable]{fuseMLR::HashTable}} -> \code{Training}
+\code{fuseMLR::HashTable} -> \code{Training}
 }
 \section{Methods}{
 \subsection{Public methods}{
