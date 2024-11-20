@@ -151,6 +151,7 @@ We use the function ```fusemlr()``` to train our models using the subset of sele
 set.seed(5462)
 fusemlr(training = training,
         use_var_sel = TRUE,
+        impute = TRUE,
         verbose = FALSE)
 
 print(training)
@@ -244,7 +245,7 @@ We distinguish common supervised learning arguments from method specific argumen
 
 The interface approach leverages the arguments in ```createTrainLayer()``` to map the argument names of the original learning function. In the example below, the gene expression layer is re-created using the ```svm``` (Support Vector Machine) function from the ```e1071``` package as the learner. A discrepancy arises in the argument names of the ```predict.svm``` function, which uses ```object``` and ```newdata```.
 
-```{r interface, include=TRUE, eval=TRUE}
+```{r interface, include=TRUE, eval=FALSE}
 # Remove the current gene expression layer from training
 removeLayer(training = training, layer_id = "geneexpr")
 # Re-create the gene expression layer with support vector machine as learner.
