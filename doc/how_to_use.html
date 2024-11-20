@@ -12,7 +12,7 @@
 
 <meta name="author" content="Cesaire Fouodo" />
 
-<meta name="date" content="2024-11-19" />
+<meta name="date" content="2024-11-20" />
 
 <title>How does fuseMLR work?</title>
 
@@ -340,7 +340,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">How does fuseMLR work?</h1>
 <h4 class="author">Cesaire Fouodo</h4>
-<h4 class="date">2024-11-19</h4>
+<h4 class="date">2024-11-20</h4>
 
 
 
@@ -624,33 +624,33 @@ across testing layers.</p>
 <span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a><span class="co">#&gt; $predicted_values</span></span>
 <span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a><span class="co">#&gt;          IDS  geneexpr proteinexpr methylation meta_layer</span></span>
-<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a><span class="co">#&gt; 1  patient23 0.4298159  0.63428413  0.92495794  0.7136764</span></span>
-<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a><span class="co">#&gt; 2  patient77 0.4781778  0.45292381  0.57492778  0.5110424</span></span>
-<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a><span class="co">#&gt; 3  patient62 0.7837778  0.96909206  0.95261508  0.9206364</span></span>
-<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a><span class="co">#&gt; 4  patient43 0.3011865          NA          NA         NA</span></span>
-<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a><span class="co">#&gt; 5   patient8 0.7393611  0.87369683  0.51296032  0.6885350</span></span>
-<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a><span class="co">#&gt; 6  patient74 0.5458302  0.68164921  0.13405079  0.4157759</span></span>
-<span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a><span class="co">#&gt; 7  patient29 0.3765897  0.45992778  0.24329444  0.3481374</span></span>
-<span id="cb12-16"><a href="#cb12-16" tabindex="-1"></a><span class="co">#&gt; 8  patient17 0.3817786  0.30925873  0.36974444  0.3514659</span></span>
-<span id="cb12-17"><a href="#cb12-17" tabindex="-1"></a><span class="co">#&gt; 9  patient25 0.2796373  0.40415000  0.48941032  0.4130304</span></span>
-<span id="cb12-18"><a href="#cb12-18" tabindex="-1"></a><span class="co">#&gt; 10 patient54 0.7875341          NA          NA         NA</span></span>
-<span id="cb12-19"><a href="#cb12-19" tabindex="-1"></a><span class="co">#&gt; 11 patient60 0.7329190  0.83852619  0.65352381  0.7353710</span></span>
-<span id="cb12-20"><a href="#cb12-20" tabindex="-1"></a><span class="co">#&gt; 12 patient44 0.4087905          NA          NA         NA</span></span>
-<span id="cb12-21"><a href="#cb12-21" tabindex="-1"></a><span class="co">#&gt; 13  patient1 0.8001571  0.93959762  0.92495794  0.9021728</span></span>
-<span id="cb12-22"><a href="#cb12-22" tabindex="-1"></a><span class="co">#&gt; 14 patient76 0.6821508          NA          NA         NA</span></span>
-<span id="cb12-23"><a href="#cb12-23" tabindex="-1"></a><span class="co">#&gt; 15 patient16 0.6811413          NA          NA         NA</span></span>
-<span id="cb12-24"><a href="#cb12-24" tabindex="-1"></a><span class="co">#&gt; 16 patient27 0.3638444          NA          NA         NA</span></span>
-<span id="cb12-25"><a href="#cb12-25" tabindex="-1"></a><span class="co">#&gt; 17 patient58 0.5329587  0.77942222  0.59402937  0.6446556</span></span>
-<span id="cb12-26"><a href="#cb12-26" tabindex="-1"></a><span class="co">#&gt; 18 patient52 0.5085119  0.12568889  0.04742698  0.1774818</span></span>
-<span id="cb12-27"><a href="#cb12-27" tabindex="-1"></a><span class="co">#&gt; 19 patient10 0.2715532          NA          NA         NA</span></span>
-<span id="cb12-28"><a href="#cb12-28" tabindex="-1"></a><span class="co">#&gt; 20 patient72 0.6949579  0.94951984  0.95594841  0.8954590</span></span>
-<span id="cb12-29"><a href="#cb12-29" tabindex="-1"></a><span class="co">#&gt; 21 patient39        NA  0.08805476  0.04742698         NA</span></span>
-<span id="cb12-30"><a href="#cb12-30" tabindex="-1"></a><span class="co">#&gt; 25 patient46        NA  0.21791667  0.48941032         NA</span></span>
-<span id="cb12-31"><a href="#cb12-31" tabindex="-1"></a><span class="co">#&gt; 26 patient97        NA  0.74017381  0.34702778         NA</span></span>
-<span id="cb12-32"><a href="#cb12-32" tabindex="-1"></a><span class="co">#&gt; 27 patient31        NA  0.27210000  0.15999683         NA</span></span>
-<span id="cb12-33"><a href="#cb12-33" tabindex="-1"></a><span class="co">#&gt; 31 patient87        NA  0.30864365  0.04329365         NA</span></span>
-<span id="cb12-34"><a href="#cb12-34" tabindex="-1"></a><span class="co">#&gt; 33 patient59        NA  0.13636111  0.22532778         NA</span></span>
-<span id="cb12-35"><a href="#cb12-35" tabindex="-1"></a><span class="co">#&gt; 34  patient2        NA  0.56663333  0.66165238         NA</span></span></code></pre></div>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a><span class="co">#&gt; 1   patient1 0.8001571  0.93959762  0.92495794  0.6890614</span></span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a><span class="co">#&gt; 2  patient10 0.2715532  0.51328056  0.48941032  0.5052011</span></span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a><span class="co">#&gt; 3  patient16 0.6811413  0.51328056  0.48941032  0.9140717</span></span>
+<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a><span class="co">#&gt; 4  patient17 0.3817786  0.30925873  0.36974444  0.4484350</span></span>
+<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a><span class="co">#&gt; 5   patient2 0.5207353  0.56663333  0.66165238  0.7033941</span></span>
+<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a><span class="co">#&gt; 6  patient23 0.4298159  0.63428413  0.92495794  0.4410852</span></span>
+<span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a><span class="co">#&gt; 7  patient25 0.2796373  0.40415000  0.48941032  0.3569530</span></span>
+<span id="cb12-16"><a href="#cb12-16" tabindex="-1"></a><span class="co">#&gt; 8  patient27 0.3638444  0.51328056  0.48941032  0.3509955</span></span>
+<span id="cb12-17"><a href="#cb12-17" tabindex="-1"></a><span class="co">#&gt; 9  patient29 0.3765897  0.45992778  0.24329444  0.4032013</span></span>
+<span id="cb12-18"><a href="#cb12-18" tabindex="-1"></a><span class="co">#&gt; 10 patient31 0.5207353  0.27210000  0.15999683  0.5766641</span></span>
+<span id="cb12-19"><a href="#cb12-19" tabindex="-1"></a><span class="co">#&gt; 11 patient39 0.5207353  0.08805476  0.04742698  0.7415073</span></span>
+<span id="cb12-20"><a href="#cb12-20" tabindex="-1"></a><span class="co">#&gt; 12 patient43 0.3011865  0.51328056  0.48941032  0.4768056</span></span>
+<span id="cb12-21"><a href="#cb12-21" tabindex="-1"></a><span class="co">#&gt; 13 patient44 0.4087905  0.51328056  0.48941032  0.8973592</span></span>
+<span id="cb12-22"><a href="#cb12-22" tabindex="-1"></a><span class="co">#&gt; 14 patient46 0.5207353  0.21791667  0.48941032  0.5488790</span></span>
+<span id="cb12-23"><a href="#cb12-23" tabindex="-1"></a><span class="co">#&gt; 15 patient52 0.5085119  0.12568889  0.04742698  0.5486128</span></span>
+<span id="cb12-24"><a href="#cb12-24" tabindex="-1"></a><span class="co">#&gt; 16 patient54 0.7875341  0.51328056  0.48941032  0.4649553</span></span>
+<span id="cb12-25"><a href="#cb12-25" tabindex="-1"></a><span class="co">#&gt; 17 patient58 0.5329587  0.77942222  0.59402937  0.6451195</span></span>
+<span id="cb12-26"><a href="#cb12-26" tabindex="-1"></a><span class="co">#&gt; 18 patient59 0.5207353  0.13636111  0.22532778  0.1973598</span></span>
+<span id="cb12-27"><a href="#cb12-27" tabindex="-1"></a><span class="co">#&gt; 19 patient60 0.7329190  0.83852619  0.65352381  0.4406220</span></span>
+<span id="cb12-28"><a href="#cb12-28" tabindex="-1"></a><span class="co">#&gt; 20 patient62 0.7837778  0.96909206  0.95261508  0.8848065</span></span>
+<span id="cb12-29"><a href="#cb12-29" tabindex="-1"></a><span class="co">#&gt; 21 patient72 0.6949579  0.94951984  0.95594841  0.1869428</span></span>
+<span id="cb12-30"><a href="#cb12-30" tabindex="-1"></a><span class="co">#&gt; 25 patient74 0.5458302  0.68164921  0.13405079  0.3992720</span></span>
+<span id="cb12-31"><a href="#cb12-31" tabindex="-1"></a><span class="co">#&gt; 26 patient76 0.6821508  0.51328056  0.48941032  0.5353148</span></span>
+<span id="cb12-32"><a href="#cb12-32" tabindex="-1"></a><span class="co">#&gt; 27 patient77 0.4781778  0.45292381  0.57492778  0.2957376</span></span>
+<span id="cb12-33"><a href="#cb12-33" tabindex="-1"></a><span class="co">#&gt; 31  patient8 0.7393611  0.87369683  0.51296032  0.2653453</span></span>
+<span id="cb12-34"><a href="#cb12-34" tabindex="-1"></a><span class="co">#&gt; 33 patient87 0.5207353  0.30864365  0.04329365  0.2709699</span></span>
+<span id="cb12-35"><a href="#cb12-35" tabindex="-1"></a><span class="co">#&gt; 34 patient97 0.5207353  0.74017381  0.34702778  0.5900609</span></span></code></pre></div>
 <ul>
 <li>Prediction performances for layer-specific available patients, and
 all patients on the meta layer.</li>
@@ -669,7 +669,7 @@ all patients on the meta layer.</li>
 <span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a>})</span>
 <span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a><span class="fu">print</span>(perf_estimated)</span>
 <span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a><span class="co">#&gt;    geneexpr proteinexpr methylation  meta_layer </span></span>
-<span id="cb13-15"><a href="#cb13-15" tabindex="-1"></a><span class="co">#&gt;   0.1246471   0.1589727   0.2346355   0.1445188</span></span></code></pre></div>
+<span id="cb13-15"><a href="#cb13-15" tabindex="-1"></a><span class="co">#&gt;   0.1564895   0.1831100   0.2382557   0.2250521</span></span></code></pre></div>
 <ul>
 <li>Prediction performances for overlapping individuals.</li>
 </ul>
@@ -682,7 +682,7 @@ all patients on the meta layer.</li>
 <span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>                           })</span>
 <span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a><span class="fu">print</span>(perf_overlapping)</span>
 <span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a><span class="co">#&gt;    geneexpr proteinexpr methylation  meta_layer </span></span>
-<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a><span class="co">#&gt;  0.13701187  0.09945737  0.22350114  0.14451877</span></span></code></pre></div>
+<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a><span class="co">#&gt;   0.1564895   0.1831100   0.2382557   0.2250521</span></span></code></pre></div>
 <p>Note that our example is based on simulated data for usage
 illustration; only one run is not enough to appreciate the performances
 of our models.</p>

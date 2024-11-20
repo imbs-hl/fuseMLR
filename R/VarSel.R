@@ -83,7 +83,10 @@ VarSel <- R6Class("VarSel",
                     #' Name of the argument to pass the model in the original predicting function.
                     #' @param data \cr
                     #' Name of the argument to pass new data in the original predicting function.
-                    #'
+                    #' @param extract_var_fct (`character(1) or function(1)`) \cr
+                    #' If the variable selection function that is called does not return a vector, then
+                    #' use this argument to specify a (or a name of a) function that can be used to extract vector of selected variables.
+                    #' Default value is NULL, if selected variables are in a vector.
                     #' @export
                     #'
                     # TODO: Convr me
@@ -91,7 +94,8 @@ VarSel <- R6Class("VarSel",
                     interface = function (x = "x",
                                           y = "y",
                                           object = "object",
-                                          data = "data") {
+                                          data = "data",
+                                          extract_var_fct = NULL) {
                       if (!is.character(x)) {
                         stop("String expected for x.")
                       }
@@ -104,9 +108,19 @@ VarSel <- R6Class("VarSel",
                       if (!is.character(data)) {
                         stop("String expected for data.")
                       }
+                      if (!is.character(extract_var_fct) & !is.function(extract_var_fct) & !is.null(extract_var_fct)) {
+                        stop("String or function expected for extract_var_fct.")
+                      } else {
+                        if (!is.null(extract_var_fct)) {
+                          if (length(formals(extract_var_fct)) > 1L) {
+                            stop("Only one argument expected for the function specified in extract_var_fct.")
+                          }
+                        }
+                      }
                       param_interface = data.frame(standard = c("x_name", "y_name", "object_name", "data_name"),
                                                    original = c(x, y, object, data))
                       private$param_interface = param_interface
+                      private$extract_var_fct = extract_var_fct
                     },
                     # nocov end
                     #' @description
@@ -167,6 +181,21 @@ VarSel <- R6Class("VarSel",
                           # Get selected variables as vector
                           varselected = do.call(eval(parse(text = get_varsel)),
                                                 tmp_param)
+                        } else {
+                          # Extract selected variables using function provided by user.
+                          # TODO: cover me
+                          # nocov start
+                          extract_var_fct = self$getExtractVar()
+                          if (!is.null(extract_var_fct)) {
+                            if (is.character(extract_var_fct)) {
+                              extract_var_fct = eval(parse(text = extract_var_fct))
+                            }
+                            param_extract = list()
+                            param_extract[[names(formals(extract_var_fct))]] = varselected
+                            varselected = do.call(what = extract_var_fct,
+                                                    args = param_extract)
+                          }
+                          # nocov end
                         }
                       } else {
                         # Systematic test is challenging for external variable
@@ -240,6 +269,15 @@ VarSel <- R6Class("VarSel",
                     #'
                     getParamInterface = function () {
                       return(private$param_interface)
+                    },
+                    #' @description
+                    #' The function to extract selected variables is returned.
+                    #'
+                    #' @return
+                    #' A data.frame of interface.
+                    #'
+                    getExtractVar = function () {
+                      return(private$extract_var_fct)
                     }
                   ),
                   private = list(
@@ -258,7 +296,9 @@ VarSel <- R6Class("VarSel",
                     # Individuals subset IDs.
                     ind_subset = NULL,
                     # Variable subset IDs.
-                    var_subset = NULL
+                    var_subset = NULL,
+                    # Function to extract selected variables.
+                    extract_var_fct = NULL
                   ),
                   cloneable = FALSE
 )

@@ -297,6 +297,7 @@ training <- fusemlr(training = training,
                     resampling_method = NULL,
                     resampling_arg = list(y = entities$training$target$disease,
                                           k = 10L),
+                    impute = TRUE,
                     verbose = FALSE)
 
 print(training)
@@ -384,33 +385,33 @@ print(predictions)
     ## 
     ## $predicted_values
     ##          IDS  geneexpr proteinexpr methylation meta_layer
-    ## 1  patient23 0.4298159  0.63428413  0.92495794  0.7136764
-    ## 2  patient77 0.4781778  0.45292381  0.57492778  0.5110424
-    ## 3  patient62 0.7837778  0.96909206  0.95261508  0.9206364
-    ## 4  patient43 0.3011865          NA          NA         NA
-    ## 5   patient8 0.7393611  0.87369683  0.51296032  0.6885350
-    ## 6  patient74 0.5458302  0.68164921  0.13405079  0.4157759
-    ## 7  patient29 0.3765897  0.45992778  0.24329444  0.3481374
-    ## 8  patient17 0.3817786  0.30925873  0.36974444  0.3514659
-    ## 9  patient25 0.2796373  0.40415000  0.48941032  0.4130304
-    ## 10 patient54 0.7875341          NA          NA         NA
-    ## 11 patient60 0.7329190  0.83852619  0.65352381  0.7353710
-    ## 12 patient44 0.4087905          NA          NA         NA
-    ## 13  patient1 0.8001571  0.93959762  0.92495794  0.9021728
-    ## 14 patient76 0.6821508          NA          NA         NA
-    ## 15 patient16 0.6811413          NA          NA         NA
-    ## 16 patient27 0.3638444          NA          NA         NA
-    ## 17 patient58 0.5329587  0.77942222  0.59402937  0.6446556
-    ## 18 patient52 0.5085119  0.12568889  0.04742698  0.1774818
-    ## 19 patient10 0.2715532          NA          NA         NA
-    ## 20 patient72 0.6949579  0.94951984  0.95594841  0.8954590
-    ## 21 patient39        NA  0.08805476  0.04742698         NA
-    ## 25 patient46        NA  0.21791667  0.48941032         NA
-    ## 26 patient97        NA  0.74017381  0.34702778         NA
-    ## 27 patient31        NA  0.27210000  0.15999683         NA
-    ## 31 patient87        NA  0.30864365  0.04329365         NA
-    ## 33 patient59        NA  0.13636111  0.22532778         NA
-    ## 34  patient2        NA  0.56663333  0.66165238         NA
+    ## 1   patient1 0.8001571  0.93959762  0.92495794  0.6890614
+    ## 2  patient10 0.2715532  0.51328056  0.48941032  0.5052011
+    ## 3  patient16 0.6811413  0.51328056  0.48941032  0.9140717
+    ## 4  patient17 0.3817786  0.30925873  0.36974444  0.4484350
+    ## 5   patient2 0.5207353  0.56663333  0.66165238  0.7033941
+    ## 6  patient23 0.4298159  0.63428413  0.92495794  0.4410852
+    ## 7  patient25 0.2796373  0.40415000  0.48941032  0.3569530
+    ## 8  patient27 0.3638444  0.51328056  0.48941032  0.3509955
+    ## 9  patient29 0.3765897  0.45992778  0.24329444  0.4032013
+    ## 10 patient31 0.5207353  0.27210000  0.15999683  0.5766641
+    ## 11 patient39 0.5207353  0.08805476  0.04742698  0.7415073
+    ## 12 patient43 0.3011865  0.51328056  0.48941032  0.4768056
+    ## 13 patient44 0.4087905  0.51328056  0.48941032  0.8973592
+    ## 14 patient46 0.5207353  0.21791667  0.48941032  0.5488790
+    ## 15 patient52 0.5085119  0.12568889  0.04742698  0.5486128
+    ## 16 patient54 0.7875341  0.51328056  0.48941032  0.4649553
+    ## 17 patient58 0.5329587  0.77942222  0.59402937  0.6451195
+    ## 18 patient59 0.5207353  0.13636111  0.22532778  0.1973598
+    ## 19 patient60 0.7329190  0.83852619  0.65352381  0.4406220
+    ## 20 patient62 0.7837778  0.96909206  0.95261508  0.8848065
+    ## 21 patient72 0.6949579  0.94951984  0.95594841  0.1869428
+    ## 25 patient74 0.5458302  0.68164921  0.13405079  0.3992720
+    ## 26 patient76 0.6821508  0.51328056  0.48941032  0.5353148
+    ## 27 patient77 0.4781778  0.45292381  0.57492778  0.2957376
+    ## 31  patient8 0.7393611  0.87369683  0.51296032  0.2653453
+    ## 33 patient87 0.5207353  0.30864365  0.04329365  0.2709699
+    ## 34 patient97 0.5207353  0.74017381  0.34702778  0.5900609
 
 - Prediction performances for layer-specific available patients, and all
   patients on the meta layer.
@@ -433,7 +434,7 @@ print(perf_estimated)
 ```
 
     ##    geneexpr proteinexpr methylation  meta_layer 
-    ##   0.1246471   0.1589727   0.2346355   0.1445188
+    ##   0.1564895   0.1831100   0.2382557   0.2250521
 
 - Prediction performances for overlapping individuals.
 
@@ -449,7 +450,7 @@ print(perf_overlapping)
 ```
 
     ##    geneexpr proteinexpr methylation  meta_layer 
-    ##  0.13701187  0.09945737  0.22350114  0.14451877
+    ##   0.1564895   0.1831100   0.2382557   0.2250521
 
 Note that our example is based on simulated data for usage illustration;
 only one run is not enough to appreciate the performances of our models.

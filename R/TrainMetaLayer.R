@@ -29,15 +29,15 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                               super$initialize(id = id)
                               private$training = training
                               training$add2HashTable(key = id,
-                                                        value = self,
-                                                        .class = "TrainMetaLayer")
+                                                     value = self,
+                                                     .class = "TrainMetaLayer")
                               private$status = FALSE
                             },
                             #' @description
                             #' Printer
                             #' @param ... (any) \cr
                             #'
-                            print = function(...) {
+                            print = function (...) {
                               if (!private$status) {
                                 status = "Not trained"
                               } else {
@@ -144,6 +144,27 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                                                        .class = "PredictData")
 
                               return(pred_layer)
+                            },
+                            #' @description
+                            #' Imputes missing values in modality-specific predictions.
+                            #' Only mode and median based imputations are actually supported.
+                            #'
+                            #' @param impute_fct `character(1)` \cr
+                            #' An imputation function to use instead of median or mode imputation.
+                            #' This parameter is actually not used.
+                            #' This corresponds to median or mode based imputation.
+                            #' @param impute_param `list(1)` \cr
+                            #' The list of parameters to call the imputation function. Not yet implemented!
+                            #' @return
+                            #' A new object with the predicted values is returned.
+                            #' @export
+                            #'
+                            impute = function (impute_fct = NULL,
+                                               impute_param = NULL) {
+                              train_data = self$getTrainData()
+                              train_data$impute(impute_fct = impute_fct,
+                                                impute_param = impute_param)
+                              invisible(self)
                             },
                             #' @description
                             #' Getter of the training dataset stored on the current layer.

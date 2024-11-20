@@ -53,11 +53,53 @@ Data <- R6Class("Data",
                   #' @export
                   #'
                   getIndSubset = function (var_name, value) {
-                    subset_data <- self$clone(deep = FALSE)
+                    subset_data = self$clone(deep = FALSE)
                     index = which(subset_data$getDataFrame()[[var_name]] %in% value)
                     data_frame = subset_data$getDataFrame()[index, ]
                     subset_data$setDataFrame(data_frame = data_frame)
                     return(subset_data)
+                  },
+                  #' @description
+                  #' Imputes missing values in modality-specific predictions.
+                  #' Only mode and median based imputations are actually supported.
+                  #'
+                  #' @param impute_fct `character(1)` \cr
+                  #' An imputation function to use instead of median or mode imputation. Not yet implemented!
+                  #' @param impute_param `list(1)` \cr
+                  #' The list of parameters to call the imputation function.
+                  #' @return
+                  #' A new object with the predicted values is returned.
+                  #' @export
+                  #'
+                  impute = function (impute_fct,
+                                     impute_param) {
+                    current_data = private$data_frame
+                    current_data[ , private$ind_col] = NULL
+                    if (is.null(impute_fct)) {
+                      imputed_data = lapply(current_data, function(col_var) {
+                        if (is.factor(col_var) | is.character(col_var)) {
+                          col_no_na = na.omit(col_var)
+                          freq_table = table(col_no_na)
+                          mode = names(freq_table[freq_table == max(freq_table)])[1L]
+                          col_var[is.na(col_var)] = mode
+                          return(col_var)
+                        } else {
+                          if (is.numeric(col_var)) {
+                            col_median = median(col_var, na.rm = TRUE)
+                            col_var[is.na(col_var)] = col_median
+                            return(col_var)
+                          } else {
+                            warning("You try mode imputation for a non-categorical variable.")
+                          }
+                        }
+                      })
+                      imputed_data = as.data.frame(imputed_data)
+                      private$data_frame[ , names(current_data)] = imputed_data
+                    } else {
+                      # impute_fct has been set, but actually not implemented.
+                      warning("Only mode and median imputations are actually supported.")
+                    }
+                    invisible(self)
                   },
                   #' @description
                   #' Retrieve a subset of variables from data.

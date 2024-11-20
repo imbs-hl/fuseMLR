@@ -20,6 +20,7 @@ This class implements a learner. A \link{VarSel} object can only exist as a comp
 \item \href{#method-VarSel-getPackage}{\code{VarSel$getPackage()}}
 \item \href{#method-VarSel-getVarSubSet}{\code{VarSel$getVarSubSet()}}
 \item \href{#method-VarSel-getParamInterface}{\code{VarSel$getParamInterface()}}
+\item \href{#method-VarSel-getExtractVar}{\code{VarSel$getExtractVar()}}
 }
 }
 \if{html}{\out{<hr>}}
@@ -98,7 +99,13 @@ Learner and prediction parameter interface. Use this function
 to provide how the following parameters are named in the learning
 function (\code{lrn_fct}) you provided when creating the learner, or in the predicting function.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{VarSel$interface(x = "x", y = "y", object = "object", data = "data")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{VarSel$interface(
+  x = "x",
+  y = "y",
+  object = "object",
+  data = "data",
+  extract_var_fct = NULL
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -115,6 +122,11 @@ Name of the argument to pass the model in the original predicting function.}
 
 \item{\code{data}}{\cr
 Name of the argument to pass new data in the original predicting function.}
+
+\item{\code{extract_var_fct}}{(\verb{character(1) or function(1)}) \cr
+If the variable selection function that is called does not return a vector, then
+use this argument to specify a (or a name of a) function that can be used to extract vector of selected variables.
+Default value is NULL, if selected variables are in a vector.}
 }
 \if{html}{\out{</div>}}
 }
@@ -199,6 +211,19 @@ List of selected variables..
 The current parameter interface is returned.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{VarSel$getParamInterface()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+A data.frame of interface.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-VarSel-getExtractVar"></a>}}
+\if{latex}{\out{\hypertarget{method-VarSel-getExtractVar}{}}}
+\subsection{Method \code{getExtractVar()}}{
+The function to extract selected variables is returned.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{VarSel$getExtractVar()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{

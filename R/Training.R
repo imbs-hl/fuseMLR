@@ -179,6 +179,8 @@ Training <- R6Class("Training",
                         #' List of arguments to be passed to the function.
                         #' @param use_var_sel `boolean(1)` \cr
                         #' If TRUE, selected variables available at each layer are used.
+                        #' @param impute (`boolean`) \cr
+                        #' If TRUE, mode or median based imputation is performed on the modality-specific predictions.
                         #' @param verbose (`boolean`) \cr
                         #' Warning messages will be displayed if set to TRUE.
                         #'
@@ -189,6 +191,7 @@ Training <- R6Class("Training",
                         createMetaTrainData = function (resampling_method,
                                                         resampling_arg,
                                                         use_var_sel,
+                                                        impute = TRUE,
                                                         verbose = TRUE) {
                           layers = self$getKeyClass()
                           if (!("TrainMetaLayer" %in% layers$class)) {
@@ -249,6 +252,10 @@ Training <- R6Class("Training",
                             meta_layer$setTrainData(id = "predicted20242806",
                                                     ind_col = names(predicted_values_wide)[1L],
                                                     data_frame = predicted_values_wide)
+                            if (impute) {
+                              private$impute = impute
+                              meta_layer$impute()
+                            }
                             # meta_layer$set2NotTrained()
                             meta_layer$closeAccess()
                             return(predicted_values_wide)
@@ -265,6 +272,8 @@ Training <- R6Class("Training",
                         #' Function for internal validation. If not specify, the \code{resampling} function from the package \code{caret} is used for a 10-folds cross-validation.
                         #' @param resampling_arg (`list(1)`) \cr
                         #' List of arguments to be passed to the function.
+                        #' @param impute (`boolean`) \cr
+                        #' If TRUE, mode or median based imputation is performed on the modality-specific predictions.
                         #' @param verbose (`boolean`) \cr
                         #' Warning messages will be displayed if set to TRUE.
                         #'
@@ -276,6 +285,7 @@ Training <- R6Class("Training",
                                           use_var_sel = FALSE,
                                           resampling_method = NULL,
                                           resampling_arg = list(),
+                                          impute = TRUE,
                                           verbose = TRUE) {
                           # Test that the training object contains ovelapping individuals
                           if (!self$testOverlap()) {
@@ -290,6 +300,7 @@ Training <- R6Class("Training",
                           self$createMetaTrainData(resampling_method,
                                                    resampling_arg,
                                                    use_var_sel = use_var_sel,
+                                                   impute = impute,
                                                    verbose = verbose)
                           # 2) Train each layer
                           self$trainLayer(ind_subset = ind_subset,
@@ -335,14 +346,19 @@ Training <- R6Class("Training",
                           meta_layer_id = self$getTrainMetaLayer()$getId()
                           testing_meta_data = predicting$createMetaTestData(
                             meta_layer_id = meta_layer_id)
-                          # 3) Predict new meta layer by the trained meta layer
+                          if (private$impute) {
+                            # TODO: Can be moved into testMetaLayer; similarly to trainMetaLayer.
+                            testing_meta_data$impute(impute_fct = NULL,
+                                                     impute_param = NULL)
+                          }
+                          # 3) Predict new meta layer by the trained meta layer.
                           layers = self$getKeyClass()
                           meta_layer_key = layers[layers$class == "TrainMetaLayer", "key"]
                           meta_layer = self$getFromHashTable(key = meta_layer_key)
                           # TODO: getTestLayer maybe rename it getLayer?
                           predicted_layer = meta_layer$predict(new_layer = testing_meta_data$getTestLayer(),
                                                                ind_subset = ind_subset)
-                          # Store final meta predicted values on meta layer
+                          # Store final meta predicted values on meta layer.
                           predicting$removeFromHashTable(key = predicted_layer$getId())
                           predicting$add2HashTable(key = predicted_layer$getId(),
                                                         value = predicted_layer,
@@ -371,8 +387,13 @@ Training <- R6Class("Training",
                           colname_vector = gsub(pattern = "Prediction.",
                                                 replacement = "",
                                                 x = names(predicted_values_wide))
-                          names(predicted_values_wide) = colname_vector
 
+                          names(predicted_values_wide) = colname_vector
+                          if (private$impute) {
+                            # Update testing meta data if imputation has been performed.
+                            imputed_data = testing_meta_data$getDataFrame()
+                            predicted_values_wide[ , names(imputed_data)] = imputed_data
+                          }
                           return(list(predicting = predicting,
                                       predicted_values = predicted_values_wide))
                         },
@@ -674,6 +695,7 @@ Training <- R6Class("Training",
                         target = character(0L),
                         target_obj = NULL,
                         nb_trained_layer = 0L,
+                        impute = FALSE,
                         status = FALSE
                       ),
                       cloneable = FALSE

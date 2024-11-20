@@ -11,7 +11,7 @@ exist as a component of a \link{Training} object.
 \link{TrainLayer}, \link{Lrner}, \link{Model}, \link{TestData}
 }
 \section{Super class}{
-\code{fuseMLR::Data} -> \code{Target}
+\code{\link[fuseMLR:Data]{fuseMLR::Data}} -> \code{Target}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -36,6 +36,7 @@ exist as a component of a \link{Training} object.
 <li><span class="pkg-link" data-pkg="fuseMLR" data-topic="Data" data-id="getIndSubset"><a href='../../fuseMLR/html/Data.html#method-Data-getIndSubset'><code>fuseMLR::Data$getIndSubset()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="fuseMLR" data-topic="Data" data-id="getSetDiff"><a href='../../fuseMLR/html/Data.html#method-Data-getSetDiff'><code>fuseMLR::Data$getSetDiff()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="fuseMLR" data-topic="Data" data-id="getVarSubset"><a href='../../fuseMLR/html/Data.html#method-Data-getVarSubset'><code>fuseMLR::Data$getVarSubset()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="fuseMLR" data-topic="Data" data-id="impute"><a href='../../fuseMLR/html/Data.html#method-Data-impute'><code>fuseMLR::Data$impute()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="fuseMLR" data-topic="Data" data-id="setDataFrame"><a href='../../fuseMLR/html/Data.html#method-Data-setDataFrame'><code>fuseMLR::Data$setDataFrame()</code></a></span></li>
 </ul>
 </details>

@@ -16,6 +16,7 @@ As abstract, a \link{Data} object cannot be stored on any layer. Instead, extend
 \item \href{#method-Data-new}{\code{Data$new()}}
 \item \href{#method-Data-print}{\code{Data$print()}}
 \item \href{#method-Data-getIndSubset}{\code{Data$getIndSubset()}}
+\item \href{#method-Data-impute}{\code{Data$impute()}}
 \item \href{#method-Data-getVarSubset}{\code{Data$getVarSubset()}}
 \item \href{#method-Data-getSetDiff}{\code{Data$getSetDiff()}}
 \item \href{#method-Data-getDataFrame}{\code{Data$getDataFrame()}}
@@ -90,6 +91,31 @@ Values of interest.}
 }
 \subsection{Returns}{
 The data subset is returned.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Data-impute"></a>}}
+\if{latex}{\out{\hypertarget{method-Data-impute}{}}}
+\subsection{Method \code{impute()}}{
+Imputes missing values in modality-specific predictions.
+Only mode and median based imputations are actually supported.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Data$impute(impute_fct, impute_param)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{impute_fct}}{\code{character(1)} \cr
+An imputation function to use instead of median or mode imputation. Not yet implemented!}
+
+\item{\code{impute_param}}{\code{list(1)} \cr
+The list of parameters to call the imputation function.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+A new object with the predicted values is returned.
 }
 }
 \if{html}{\out{<hr>}}

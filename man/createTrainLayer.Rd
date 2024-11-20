@@ -20,7 +20,8 @@ createTrainLayer(
   y = "y",
   object = "object",
   data = "data",
-  extract_pred_fct = NULL
+  extract_pred_fct = NULL,
+  extract_var_fct = NULL
 )
 }
 \arguments{
@@ -77,6 +78,11 @@ If the corresponding argument is named differently in your predict function, spe
 If the predict function that is called for the model does not return a vector, then
 use this argument to specify a (or a name of a) function that can be used to extract vector of predictions.
 Default value is NULL, if predictions are in a column.}
+
+\item{extract_var_fct}{(\verb{character(1) or function(1)}) \cr
+If the variable selection function that is called does not return a vector, then
+use this argument to specify a (or a name of a) function that can be used to extract vector of selected variables.
+Default value is NULL, if selected variables are in a vector.}
 }
 \value{
 The updated \link{Training} object (with the new layer) is returned.

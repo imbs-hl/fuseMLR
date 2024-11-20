@@ -18,7 +18,7 @@ A meta layer can train its meta learner on the meta training data and store the 
 The meta layer can predict values given a new meta layer.
 }
 \section{Super class}{
-\code{fuseMLR::HashTable} -> \code{TrainMetaLayer}
+\code{\link[fuseMLR:HashTable]{fuseMLR::HashTable}} -> \code{TrainMetaLayer}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -29,6 +29,7 @@ The meta layer can predict values given a new meta layer.
 \item \href{#method-TrainMetaLayer-getTargetObj}{\code{TrainMetaLayer$getTargetObj()}}
 \item \href{#method-TrainMetaLayer-train}{\code{TrainMetaLayer$train()}}
 \item \href{#method-TrainMetaLayer-predict}{\code{TrainMetaLayer$predict()}}
+\item \href{#method-TrainMetaLayer-impute}{\code{TrainMetaLayer$impute()}}
 \item \href{#method-TrainMetaLayer-getTrainData}{\code{TrainMetaLayer$getTrainData()}}
 \item \href{#method-TrainMetaLayer-getLrner}{\code{TrainMetaLayer$getLrner()}}
 \item \href{#method-TrainMetaLayer-getModel}{\code{TrainMetaLayer$getModel()}}
@@ -155,6 +156,33 @@ Predicts values for the new layer taking as argument.
 \item{\code{new_layer}}{\code{TrainLayer(1)} \cr}
 
 \item{\code{ind_subset}}{\code{vector(1)} \cr}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+A new object with the predicted values is returned.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TrainMetaLayer-impute"></a>}}
+\if{latex}{\out{\hypertarget{method-TrainMetaLayer-impute}{}}}
+\subsection{Method \code{impute()}}{
+Imputes missing values in modality-specific predictions.
+Only mode and median based imputations are actually supported.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TrainMetaLayer$impute(impute_fct = NULL, impute_param = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{impute_fct}}{\code{character(1)} \cr
+An imputation function to use instead of median or mode imputation.
+This parameter is actually not used.
+This corresponds to median or mode based imputation.}
+
+\item{\code{impute_param}}{\code{list(1)} \cr
+The list of parameters to call the imputation function. Not yet implemented!}
 }
 \if{html}{\out{</div>}}
 }

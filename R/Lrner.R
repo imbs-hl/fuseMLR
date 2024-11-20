@@ -98,7 +98,7 @@ Lrner <- R6Class("Lrner",
                    #' @param extract_pred_fct (`character(1) or function(1)`) \cr
                    #' If the predict function that is called for the model does not return a vector, then
                    #' use this argument to specify a (or a name of a) function that can be used to extract vector of predictions.
-                   #' Default value is NULL, if predictions are in a column.
+                   #' Default value is NULL, if predictions are in a vector.
                    #' @export
                    #'
                    # TODO: Covr me
@@ -293,7 +293,7 @@ Lrner <- R6Class("Lrner",
                      return(private$param_interface)
                    },
                    #' @description
-                   #' The current parameter interface is returned.
+                   #' The function to extract predicted values is returned.
                    #'
                    #' @return
                    #' A data.frame of interface.

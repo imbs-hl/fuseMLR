@@ -31,7 +31,7 @@ Use the function \code{train} for training and \code{predict} for predicting.
 \link{Testing} and \link{Predicting}
 }
 \section{Super class}{
-\code{fuseMLR::HashTable} -> \code{Training}
+\code{\link[fuseMLR:HashTable]{fuseMLR::HashTable}} -> \code{Training}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -192,6 +192,7 @@ Creates a meta training dataset and assigns it to the meta layer.
   resampling_method,
   resampling_arg,
   use_var_sel,
+  impute = TRUE,
   verbose = TRUE
 )}\if{html}{\out{</div>}}
 }
@@ -207,6 +208,9 @@ List of arguments to be passed to the function.}
 
 \item{\code{use_var_sel}}{\code{boolean(1)} \cr
 If TRUE, selected variables available at each layer are used.}
+
+\item{\code{impute}}{(\code{boolean}) \cr
+If TRUE, mode or median based imputation is performed on the modality-specific predictions.}
 
 \item{\code{verbose}}{(\code{boolean}) \cr
 Warning messages will be displayed if set to TRUE.}
@@ -228,6 +232,7 @@ Trains the current object. All leaners and the meta learner are trained.
   use_var_sel = FALSE,
   resampling_method = NULL,
   resampling_arg = list(),
+  impute = TRUE,
   verbose = TRUE
 )}\if{html}{\out{</div>}}
 }
@@ -246,6 +251,9 @@ Function for internal validation. If not specify, the \code{resampling} function
 
 \item{\code{resampling_arg}}{(\code{list(1)}) \cr
 List of arguments to be passed to the function.}
+
+\item{\code{impute}}{(\code{boolean}) \cr
+If TRUE, mode or median based imputation is performed on the modality-specific predictions.}
 
 \item{\code{verbose}}{(\code{boolean}) \cr
 Warning messages will be displayed if set to TRUE.}

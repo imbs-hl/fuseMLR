@@ -10,6 +10,7 @@ fusemlr(
   use_var_sel = FALSE,
   resampling_method = NULL,
   resampling_arg = list(),
+  impute = TRUE,
   verbose = TRUE
 )
 }
@@ -28,6 +29,9 @@ Function for internal validation. If not specify, the \code{resampling} function
 
 \item{resampling_arg}{(\code{list(1)}) \cr
 List of arguments to be passed to the function.}
+
+\item{impute}{(\code{boolean}) \cr
+If TRUE, either mode or median based imputation is performed for modality-specific predictions.}
 
 \item{verbose}{(\code{boolean}) \cr
 Warning messages will be displayed if set to TRUE.}

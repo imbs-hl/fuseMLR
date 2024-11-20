@@ -180,6 +180,7 @@ training <- fusemlr(training = training,
                     resampling_method = NULL,
                     resampling_arg = list(y = entities$training$target$disease,
                                           k = 10L),
+                    impute = TRUE,
                     verbose = FALSE)
 
 print(training)

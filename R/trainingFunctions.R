@@ -75,6 +75,10 @@ createTraining = function (id,
 #' If the predict function that is called for the model does not return a vector, then
 #' use this argument to specify a (or a name of a) function that can be used to extract vector of predictions.
 #' Default value is NULL, if predictions are in a column.
+#' @param extract_var_fct (`character(1) or function(1)`) \cr
+#' If the variable selection function that is called does not return a vector, then
+#' use this argument to specify a (or a name of a) function that can be used to extract vector of selected variables.
+#' Default value is NULL, if selected variables are in a vector.
 #' @return
 #' The updated [Training] object (with the new layer) is returned.
 #' @export
@@ -94,7 +98,8 @@ createTrainLayer = function (training,
                              y = "y",
                              object = "object",
                              data = "data",
-                             extract_pred_fct = NULL) {
+                             extract_pred_fct = NULL,
+                             extract_var_fct = NULL) {
   # Instantiate a layer
   train_layer = TrainLayer$new(id = train_layer_id,
                                training = training)
@@ -113,7 +118,8 @@ createTrainLayer = function (training,
   var_sel$interface(x = x,
                     y = y,
                     object = object,
-                    data = data)
+                    data = data,
+                    extract_var_fct = extract_var_fct)
   # Instantiate a Lrner object
   lrner = Lrner$new(
     id = sprintf("%s_lrner", train_layer_id),
@@ -164,7 +170,10 @@ createTrainLayer = function (training,
 #' @param data (`character(1)`) \cr
 #' The generic function \code{predict} uses a parameter \code{data} to pass new data.
 #' If the corresponding argument is named differently in your predict function, specify the name.
-#'
+#' @param extract_pred_fct (`character(1) or function(1)`) \cr
+#' If the predict function that is called for the model does not return a vector, then
+#' use this argument to specify a (or a name of a) function that can be used to extract vector of predictions.
+#' Default value is NULL, if predictions are in a vector.
 #' @return
 #' The updated [Training] object (with the new layer) is returned.
 #' @export
@@ -179,7 +188,8 @@ createTrainMetaLayer = function (training,
                                  x = "x",
                                  y = "y",
                                  object = "object",
-                                 data = "data") {
+                                 data = "data",
+                                 extract_pred_fct = NULL) {
   # Instantiate a layer
   train_meta_layer = TrainMetaLayer$new(id = meta_layer_id,
                                training = training)
@@ -193,7 +203,11 @@ createTrainMetaLayer = function (training,
     train_layer = train_meta_layer,
     na_rm = TRUE
   )
-  meta_lrner$interface(x = x, y = y, object = object, data = data)
+  meta_lrner$interface(x = x,
+                       y = y,
+                       object = object,
+                       data = data,
+                       extract_pred_fct = extract_pred_fct)
   return(training)
 }
 
@@ -235,6 +249,8 @@ varSelection = function (training,
 #' List of arguments to be passed to the function.
 #' @param verbose (`boolean`) \cr
 #' Warning messages will be displayed if set to TRUE.
+#' @param impute (`boolean`) \cr
+#' If TRUE, either mode or median based imputation is performed for modality-specific predictions.
 #'
 #' @return
 #' The current object is returned, with each learner trained on each layer.
@@ -245,11 +261,13 @@ fusemlr = function (training,
                     use_var_sel = FALSE,
                     resampling_method = NULL,
                     resampling_arg = list(),
+                    impute = TRUE,
                     verbose = TRUE) {
   training$train(ind_subset = ind_subset,
                  use_var_sel = use_var_sel,
                  resampling_method = resampling_method,
                  resampling_arg = resampling_arg,
+                 impute = impute,
                  verbose = verbose)
   return(training)
 }

@@ -31,7 +31,7 @@ bestSpecificLearner = function (x, y, perf = NULL) {
       stop("y must be either binary or two level factor variable.")
     } else {
       if (!all(y %in% 0:1)) {
-        y = 2 - as.integer(y)
+        y = 1 - as.integer(y)
       } else {
         if (is.factor(y)) {
           y = as.integer(y) - 1

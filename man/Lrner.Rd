@@ -140,7 +140,7 @@ Name of the argument to pass new data in the original predicting function.}
 \item{\code{extract_pred_fct}}{(\verb{character(1) or function(1)}) \cr
 If the predict function that is called for the model does not return a vector, then
 use this argument to specify a (or a name of a) function that can be used to extract vector of predictions.
-Default value is NULL, if predictions are in a column.}
+Default value is NULL, if predictions are in a vector.}
 }
 \if{html}{\out{</div>}}
 }
@@ -277,7 +277,7 @@ A data.frame of interface.
 \if{html}{\out{<a id="method-Lrner-getExtractPred"></a>}}
 \if{latex}{\out{\hypertarget{method-Lrner-getExtractPred}{}}}
 \subsection{Method \code{getExtractPred()}}{
-The current parameter interface is returned.
+The function to extract predicted values is returned.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Lrner$getExtractPred()}\if{html}{\out{</div>}}
 }
