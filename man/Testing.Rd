@@ -27,6 +27,7 @@ A Testing object is structured as followed:
 \item \href{#method-Testing-getIndIDs}{\code{Testing$getIndIDs()}}
 \item \href{#method-Testing-getTestMetaLayer}{\code{Testing$getTestMetaLayer()}}
 \item \href{#method-Testing-getIndCol}{\code{Testing$getIndCol()}}
+\item \href{#method-Testing-getVerbose}{\code{Testing$getVerbose()}}
 \item \href{#method-Testing-upset}{\code{Testing$upset()}}
 \item \href{#method-Testing-summary}{\code{Testing$summary()}}
 }
@@ -50,7 +51,7 @@ A Testing object is structured as followed:
 \subsection{Method \code{new()}}{
 constructor
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Testing$new(id, ind_col)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Testing$new(id, ind_col, verbose = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -61,6 +62,9 @@ Testing id.}
 
 \item{\code{ind_col}}{(\code{character(1)})
 Name of column of individuals IDS in testing data.frame.}
+
+\item{\code{verbose}}{(\code{boolean}) \cr
+Warning messages will be displayed if set to TRUE.}
 }
 \if{html}{\out{</div>}}
 }
@@ -115,6 +119,16 @@ Object from class \link{TestMetaLayer}
 Getter of the individual column name.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Testing$getIndCol()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Testing-getVerbose"></a>}}
+\if{latex}{\out{\hypertarget{method-Testing-getVerbose}{}}}
+\subsection{Method \code{getVerbose()}}{
+Getter of the verbose setting.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Testing$getVerbose()}\if{html}{\out{</div>}}
 }
 
 }

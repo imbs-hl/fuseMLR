@@ -1,4 +1,4 @@
-./R/entities.R
+./R/multi_omics.R
 ./R/TestMetaLayer.R
 ./R/PredictData.R
 ./R/PredictLayer.R
