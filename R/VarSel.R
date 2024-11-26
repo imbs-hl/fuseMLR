@@ -26,17 +26,30 @@ VarSel <- R6Class("VarSel",
                     #' Layer on which the learner is stored.
                     #' @param train_layer (`TrainLayer(1)`) \cr
                     #'  The training layer where to store the learner.
+                    #' @param na_rm (`logical(1)`) \cr
+                    #' If \code{TRUE}, the individuals with missing predictor values will be removed from the training dataset.
                     initialize = function (id,
                                            package = NULL,
                                            varsel_fct,
                                            varsel_param,
-                                           train_layer) {
+                                           train_layer,
+                                           na_rm = TRUE) {
                       private$id = id
                       private$package = package
                       private$varsel_fct = varsel_fct
                       private$param = varsel_param
+                      if (is.null(package)) {
+                        if (!(exists(varsel_fct, envir = .GlobalEnv, inherits = TRUE) | is.function(get(varsel_fct, envir = .GlobalEnv)))) {
+                          stop(sprintf("Function %s does not exists.\n Maybe you forget to specify its package?", varsel_fct))
+                        }
+                      }
                       if (!any(c("TrainLayer") %in% class(train_layer))) {
                         stop("A variable selection tool can only belong to object of class TrainLayer.")
+                      }
+                      if (!is.logical(na_rm)) {
+                        stop("na.rm must be a logical value\n")
+                      } else {
+                        private$na_rm = na_rm
                       }
                       # Remove VarSel if already existing
                       if (train_layer$checkVarSelExist()) {
@@ -137,8 +150,10 @@ VarSel <- R6Class("VarSel",
                       train_data = private$train_layer$getTrainData()
                       # Variable selection only on complete data
                       train_data = train_data$clone(deep = FALSE)
-                      complete_data = train_data$getCompleteData()
-                      train_data$setDataFrame(data_frame = complete_data)
+                      if (private$na_rm) {
+                        complete_data = train_data$getCompleteData()
+                        train_data$setDataFrame(data_frame = complete_data)
+                      }
                       if (is.null(private$package)) {
                         varsel = private$varsel_fct
                       } else {
@@ -291,6 +306,7 @@ VarSel <- R6Class("VarSel",
                     param = NULL,
                     # Parameter interface to original names of arguments in original learning and predict function.
                     param_interface = NULL,
+                    na_rm = NULL,
                     # Training layer (from class [TainLayer] or [TrainMetaLayer]) of the current learner.
                     train_layer = NULL,
                     # Individuals subset IDs.

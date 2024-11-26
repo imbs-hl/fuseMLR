@@ -46,7 +46,7 @@ createTraining = function (id,
 #' @param varsel_package (`character(1)`) \cr
 #' Name of the package containing the function that implements the variable selection algorithm.\cr
 #' @param varsel_fct (`character(1)`) \cr
-#' Name of the function that performs variable selection.
+#' Name of the function that performs variable selection. For the default value NULL no variable selection will be performed.
 #' @param varsel_param (`list`) \cr
 #' List of arguments to be passed to \code{varsel_fct}.
 #' @param lrner_package (`character(1)`) \cr
@@ -87,7 +87,7 @@ createTrainLayer = function (training,
                              train_layer_id,
                              train_data,
                              varsel_package = NULL,
-                             varsel_fct,
+                             varsel_fct = NULL,
                              varsel_param = list(),
                              lrner_package,
                              lrn_fct,
@@ -108,18 +108,21 @@ createTrainLayer = function (training,
                              data_frame = train_data,
                              train_layer = train_layer)
   # Instantiate a VarSel object
-  var_sel = VarSel$new(
-    id = sprintf("%s_varsel", train_layer_id),
-    package = varsel_package,
-    varsel_fct = varsel_fct,
-    varsel_param = varsel_param,
-    train_layer
-  )
-  var_sel$interface(x = x,
-                    y = y,
-                    object = object,
-                    data = data,
-                    extract_var_fct = extract_var_fct)
+  if (!is.null(varsel_fct)) {
+    var_sel = VarSel$new(
+      id = sprintf("%s_varsel", train_layer_id),
+      package = varsel_package,
+      varsel_fct = varsel_fct,
+      varsel_param = varsel_param,
+      train_layer = train_layer,
+      na_rm = na_rm
+    )
+    var_sel$interface(x = x,
+                      y = y,
+                      object = object,
+                      data = data,
+                      extract_var_fct = extract_var_fct)
+  }
   # Instantiate a Lrner object
   lrner = Lrner$new(
     id = sprintf("%s_lrner", train_layer_id),
@@ -135,7 +138,11 @@ createTrainLayer = function (training,
                   object = object,
                   data = data,
                   extract_pred_fct = extract_pred_fct)
-  return(training)
+  if (training$getVerbose()) {
+    return(training)
+  } else {
+    invisible(TRUE)
+  }
 }
 
 
@@ -156,8 +163,8 @@ createTrainLayer = function (training,
 #' List of arguments to be passed to \code{lrn_fct}.
 #' @param param_pred_list   `(character(1)` \cr
 #' List of arguments to be passed to \code{predict} when computing predictions.
-#' @param na_rm \cr
-#' If \code{TRUE}, the individuals with missing predictor values will be removed from the training dataset.
+#' @param na_action \cr
+#' Handling of missing values in meta-data. Set to "na.keep" to keep missing values, "na.rm" to remove individuals with missing values or "na.impute" to impute missing values in meta-data. Only median and mode based imputations are actually handled. With the "na.keep" option, ensure that the provided meta-learner can handle missing values.
 #' @param x (`character(1)`) \cr
 #' If the name of the argument used by the provided original functions to pass
 #' the matrix of independent variable is not \code{x}, use this argument to specify how it is callled in the provided function.
@@ -184,7 +191,7 @@ createTrainMetaLayer = function (training,
                                  lrn_fct,
                                  param_train_list = list(),
                                  param_pred_list = list(),
-                                 na_rm = TRUE,
+                                 na_action = "na.impute",
                                  x = "x",
                                  y = "y",
                                  object = "object",
@@ -192,8 +199,24 @@ createTrainMetaLayer = function (training,
                                  extract_pred_fct = NULL) {
   # Instantiate a layer
   train_meta_layer = TrainMetaLayer$new(id = meta_layer_id,
-                               training = training)
+                                        training = training)
+  impute = FALSE
   # Instantiate a Lrner object
+  if (na_action == "na.keep") {
+    na_rm = FALSE
+  } else {
+    if (na_action == "na.rm") {
+      na_rm = TRUE
+    } else {
+      if (na_action == "na.impute") {
+        na_rm = FALSE
+        impute = TRUE
+      } else {
+        stop("na_action must be one of 'na.fails', 'na.rm' or 'na.impute'.")
+      }
+    }
+  }
+  training$setImpute(impute = impute)
   meta_lrner = Lrner$new(
     id = sprintf("%s_lrner", meta_layer_id),
     package = lrner_package,
@@ -201,7 +224,7 @@ createTrainMetaLayer = function (training,
     param_train_list = param_train_list,
     param_pred_list = param_pred_list,
     train_layer = train_meta_layer,
-    na_rm = TRUE
+    na_rm = na_rm
   )
   meta_lrner$interface(x = x,
                        y = y,
@@ -219,17 +242,15 @@ createTrainMetaLayer = function (training,
 #' Training object where the created layer will be stored.
 #' @param ind_subset `vector(1)` \cr
 #' ID subset of individuals to be used for variable selection.
-#' @param verbose (`boolean`) \cr
-#' Warning messages will be displayed if set to TRUE.
 #'
 #' @return
 #' The current layer is returned with the resulting model.
 #' @export
 #'
 varSelection = function (training,
-                         ind_subset = NULL,
-                         verbose = TRUE) {
-  selected = training$varSelection(ind_subset = ind_subset, verbose)
+                         ind_subset = NULL) {
+  selected = training$varSelection(ind_subset = ind_subset,
+                                   verbose = training$getVerbose())
   return(selected)
 }
 
@@ -247,10 +268,6 @@ varSelection = function (training,
 #' Function for internal validation. If not specify, the \code{resampling} function from the package \code{caret} is used for a 10-folds cross-validation.
 #' @param resampling_arg (`list(1)`) \cr
 #' List of arguments to be passed to the function.
-#' @param verbose (`boolean`) \cr
-#' Warning messages will be displayed if set to TRUE.
-#' @param impute (`boolean`) \cr
-#' If TRUE, either mode or median based imputation is performed for modality-specific predictions.
 #'
 #' @return
 #' The current object is returned, with each learner trained on each layer.
@@ -260,15 +277,11 @@ fusemlr = function (training,
                     ind_subset = NULL,
                     use_var_sel = FALSE,
                     resampling_method = NULL,
-                    resampling_arg = list(),
-                    impute = TRUE,
-                    verbose = TRUE) {
+                    resampling_arg = list()) {
   training$train(ind_subset = ind_subset,
                  use_var_sel = use_var_sel,
                  resampling_method = resampling_method,
-                 resampling_arg = resampling_arg,
-                 impute = impute,
-                 verbose = verbose)
+                 resampling_arg = resampling_arg)
   return(training)
 }
 
@@ -288,11 +301,12 @@ fusemlr = function (training,
 #' @return
 #' The predicted object. All layers and the meta layer are predicted. This is the final predicted object.
 #' @export
+#' @method predict Training
 predict.Training = function (object,
                              testing,
                              ind_subset = NULL) {
   predictions = object$predict(testing = testing,
-                   ind_subset = ind_subset)
+                               ind_subset = ind_subset)
   return(predictions)
 }
 
@@ -355,22 +369,4 @@ summary.Training = function (object, ...) {
 upsetplot = function (object, ...) {
   object$upset(...)
   invisible(TRUE)
-}
-
-#' @title removeLayer
-#' @description
-#' Remove a [TrainLayer] or a [TrainMetaLayer] from the [Training] object passed as argument.
-#'
-#' @param training (`Training(1)`) \cr
-#' Training object from which the layer will be removed.
-#' @param layer_id (`character(1)`) \cr
-#' ID of the layer to be removed.
-#' @export
-#'
-removeLayer = function (training, layer_id = NULL) {
-  if (is.null(layer_id)) {
-    stop("Please provide the ID of the layer to be removed.")
-  }
-  training$removeLayer(id = layer_id)
-  return(training)
 }

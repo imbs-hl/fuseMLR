@@ -4,7 +4,7 @@
 \alias{createTesting}
 \title{createTesting}
 \usage{
-createTesting(id, ind_col)
+createTesting(id, ind_col, verbose = TRUE)
 }
 \arguments{
 \item{id}{(\code{character(1)}) \cr
@@ -12,6 +12,9 @@ Testing id.}
 
 \item{ind_col}{(\code{character(1)}) \cr
 Name of column of individuals IDs in testing data.frame.}
+
+\item{verbose}{(\code{boolean}) \cr
+Warning messages will be displayed if set to TRUE.}
 }
 \value{
 A \link{Testing} object.

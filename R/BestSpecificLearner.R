@@ -23,27 +23,31 @@
 #' my_best_model = bestSpecificLearner(x = x, y = y)
 #'
 bestSpecificLearner = function (x, y, perf = NULL) {
+  if (!is.data.frame(x)) {
+    stop("x must be a data.frame.")
+  }
   if (is.null(perf)) {
-    # y must be binomial for Brier Score estimation.
-    # If dichotomy, first category (case) = 1 and
-    # second (control) = 0
-    if ((length(unique(y)) > 2) | is.character(y)) {
-      stop("y must be either binary or two level factor variable.")
+    if (is.numeric(y) & (length(unique(y)) > 2)) {
+      perf_values = lapply(X = x, FUN = function (predicted) {
+        mean(x = (predicted - y)^2, na.rm = TRUE)
+      })
     } else {
-      if (!all(y %in% 0:1)) {
-        y = 1 - as.integer(y)
+      if ((length(unique(y)) > 2) | is.character(y)) {
+        stop("y must be either binary or two level factor variable.\n")
       } else {
         if (is.factor(y)) {
           y = as.integer(y) - 1
         } else {
-          y = y
+          if (!all(y %in% 0:1)) {
+            stop("y must take its values between 0 and 1.\n")
+          }
         }
+        perf_values = lapply(X = x, FUN = function (predicted) {
+          mean(x = (predicted - y)^2, na.rm = TRUE)
+        })
       }
-      perf_values = lapply(X = x, FUN = function (predicted) {
-        mean(x = (predicted - y)^2L, na.rm = TRUE)
-      })
-      perf_values = unlist(perf_values)
     }
+    perf_values = unlist(perf_values)
   } else {
     # nocov start
     if (is.function(perf)) {

@@ -31,7 +31,14 @@ Variable selection parameter list.
 
 Learner ID.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{VarSel$new(id, package = NULL, varsel_fct, varsel_param, train_layer)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{VarSel$new(
+  id,
+  package = NULL,
+  varsel_fct,
+  varsel_param,
+  train_layer,
+  na_rm = TRUE
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -53,6 +60,9 @@ Layer on which the learner is stored.}
 
 \item{\code{train_layer}}{(\code{TrainLayer(1)}) \cr
 The training layer where to store the learner.}
+
+\item{\code{na_rm}}{(\code{logical(1)}) \cr
+If \code{TRUE}, the individuals with missing predictor values will be removed from the training dataset.}
 }
 \if{html}{\out{</div>}}
 }

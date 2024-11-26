@@ -2,7 +2,7 @@
 training <- Training$new(id = "training",
                               ind_col = "IDS",
                               target = "disease",
-                              target_df = entities$training$target)
+                              target_df = multi_omics$training$target)
 # Training layers
 tl_geneexpr <- TrainLayer$new(id = "geneexpr",
                               training = training)

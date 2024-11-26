@@ -4,7 +4,7 @@
 \alias{HashTable}
 \title{Class HashTable}
 \description{
-Hashtable to contain object entities. Storage objects like \link{Training} and \link{TrainLayer} are extensions of this class.
+Hashtable to contain object modalities. Storage objects like \link{Training} and \link{TrainLayer} are extensions of this class.
 }
 \section{Methods}{
 \subsection{Public methods}{

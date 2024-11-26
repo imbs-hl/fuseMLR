@@ -1,10 +1,10 @@
-data("entities")
+data("multi_omics")
 test_that("Model: all tests", {
   # Prepare training object and layers
   training <- Training$new(id = "training",
                                 ind_col = "IDS",
                                 target = "disease",
-                                target_df = entities$training$target)
+                                target_df = multi_omics$training$target)
   tl_ge <- TrainLayer$new(id = "geneexpr", training = training)
   lrner_ge <- Lrner$new(id = "ranger",
                         package = "ranger",
@@ -15,7 +15,7 @@ test_that("Model: all tests", {
                         train_layer = tl_ge)
   train_data_ge <- TrainData$new(id = "geneexpr",
                                  train_layer = tl_ge,
-                                 data_frame = entities$training$geneexpr)
+                                 data_frame = multi_omics$training$geneexpr)
   expect_no_error({
     tl_ge$train()
   })
@@ -31,7 +31,7 @@ test_that("Model: all tests", {
   nl_ge <- TestLayer$new(id = "wrong_id", testing = testing)
   testing_data_ge <- TestData$new(id = "geneexpr",
                              new_layer = nl_ge,
-                             data_frame = entities$testing$geneexpr)
+                             data_frame = multi_omics$testing$geneexpr)
   expect_error({
     my_model$predict(testing_data_ge)
   })

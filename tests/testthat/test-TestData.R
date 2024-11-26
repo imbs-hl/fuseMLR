@@ -1,4 +1,4 @@
-data("entities")
+data("multi_omics")
 test_that("TestData: complement tests", {
   # Testing and layers with wrong ID column
   testing_wrong_id <- Testing$new(id = "testing", ind_col = "IDSS")
@@ -6,7 +6,7 @@ test_that("TestData: complement tests", {
   expect_error({
     testing_data_ge <- TestData$new(id = "geneexpr",
                                new_layer = nl_ge,
-                               data_frame = entities$testing$geneexpr)
+                               data_frame = multi_omics$testing$geneexpr)
   })
   # Prepare testing and layers with correct ID column
   testing <- Testing$new(id = "testing", ind_col = "IDS")
@@ -14,15 +14,15 @@ test_that("TestData: complement tests", {
   expect_error({
     testing_data_ge <- TestData$new(id = "geneexpr",
                                new_layer = "layer",
-                               data_frame = entities$testing$geneexpr)
+                               data_frame = multi_omics$testing$geneexpr)
   })
   expect_no_error({
     testing_data_ge <- TestData$new(id = "geneexpr",
                                new_layer = nl_ge,
-                               data_frame = entities$testing$geneexpr)
+                               data_frame = multi_omics$testing$geneexpr)
     testing_data_ge <- TestData$new(id = "geneexpr",
                                new_layer = nl_ge,
-                               data_frame = entities$testing$geneexpr)
+                               data_frame = multi_omics$testing$geneexpr)
   })
 })
 

@@ -1,17 +1,17 @@
-data("entities")
+data("multi_omics")
 test_that("TrainData: all tests", {
   # Testing and layers
   training <- Training$new(id = "training",
                                 ind_col = "IDS",
                                 target = "disease",
-                                target_df = entities$training$target)
+                                target_df = multi_omics$training$target)
   # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
   # Start testing training data with empty layer                                #
   # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
   expect_error({
     train_data_ge <- TrainData$new(id = "geneexpr",
                                    train_layer = training,
-                                   data_frame = entities$training$geneexpr)
+                                   data_frame = multi_omics$training$geneexpr)
   })
   tl_ge <- TrainLayer$new(id = "geneexpr", training = training)
   tl_pr <- TrainLayer$new(id = "proteinexpr", training = training)
@@ -26,13 +26,13 @@ test_that("TrainData: all tests", {
   expect_no_error({
     train_data_ge <- TrainData$new(id = "geneexpr",
                                    train_layer = tl_ge,
-                                   data_frame = entities$training$geneexpr)
+                                   data_frame = multi_omics$training$geneexpr)
     train_data_pr <- TrainData$new(id = "proteinexpr",
                                    train_layer = tl_pr,
-                                   data_frame = entities$training$proteinexpr)
+                                   data_frame = multi_omics$training$proteinexpr)
     train_data_me <- TrainData$new(id = "methylation",
                                    train_layer = tl_me,
-                                   data_frame = entities$training$methylation)
+                                   data_frame = multi_omics$training$methylation)
     train_data_me$getTrainLayer()
     print(train_data_me)
   })
@@ -42,7 +42,7 @@ test_that("TrainData: all tests", {
     ts_wrong_target <- Training$new(id = "training",
                                       ind_col = "IDS",
                                       target = "diseases",
-                                      target_df = entities$training$target)
+                                      target_df = multi_omics$training$target)
   })
   expect_error({
     tl_ge_wrong_target <- TrainLayer$new(id = "geneexpr",
@@ -51,18 +51,18 @@ test_that("TrainData: all tests", {
   expect_error({
     TrainData$new(id = "geneexpr",
                   train_layer = tl_ge_wrong_target,
-                  data_frame = entities$training$geneexpr)
+                  data_frame = multi_omics$training$geneexpr)
   })
 
   # No target variable
   ts_missing_target <- Training$new(id = "training",
                                     ind_col = "IDS",
                                     target = "disease",
-                                    target_df = entities$training$target)
+                                    target_df = multi_omics$training$target)
   tl_ge_missing_target <- TrainLayer$new(id = "geneexpr",
                                        training = ts_missing_target)
   expect_no_error({
-    tmp <- entities$training$geneexpr
+    tmp <- multi_omics$training$geneexpr
     # Re-build this test case
     # tmp$disease[1] <- NA
     TrainData$new(id = "geneexpr",
@@ -86,10 +86,10 @@ test_that("TrainData: all tests", {
     ts_not_bin_target <- Training$new(id = "training",
                                         ind_col = "IDS",
                                         target = "disease",
-                                        target_df = entities$training$target)
+                                        target_df = multi_omics$training$target)
     tl_ge_not_bin_target <- TrainLayer$new(id = "geneexpr_no_bin",
                                            training = ts_not_bin_target)
-    tmp <- entities$training$geneexpr
+    tmp <- multi_omics$training$geneexpr
     tmp$disease <- sample(x = letters[1L:3L],
                           size = length(tmp$disease),
                           replace = TRUE)

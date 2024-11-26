@@ -26,6 +26,9 @@ TrainData <- R6Class("TrainData",
                          if (!any(c("TrainLayer", "TrainMetaLayer") %in% class(train_layer))) {
                            stop("A Traindata can only belong a TrainLayer or a TrainMetaLayer object.\n")
                          }
+                         if (!is.data.frame(data_frame)) {
+                           stop("data_frame must be a data.frame.\n")
+                         }
                          target_obj = train_layer$getTargetObj()
                          target_df = target_obj$getData()
                          ind_col = train_layer$getTraining()$getIndCol()
@@ -38,6 +41,19 @@ TrainData <- R6Class("TrainData",
                              warning("The target variable must be set using the Target class, so the one in this data.frame will be ignored.\n")
                            }
                            data_frame[ , target] = NULL
+                         }
+                         if (!all(data_frame[ , ind_col] %in% target_df[ , ind_col])) {
+                           cat("The following IDs do not exist in target:\n")
+                           id_not_in = !(data_frame[ , ind_col] %in% target_df[ , ind_col])
+                           cat(data_frame[id_not_in , ind_col], "\n")
+                           if (length(id_not_in) == nrow(data_frame)) {
+                             stop("None of the provided IDs have a match in the target.\n")
+                           } else {
+                             if (length(id_not_in) <= nrow(data_frame)) {
+                               data_frame = data_frame[!(data_frame[ , ind_col] %in% id_not_in), ]
+                               warning("Not matching ID(s) removed:\n")
+                             }
+                           }
                          }
                          if (train_layer$checkTrainDataExist()) {
                            # Remove TrainData if already existing
@@ -77,7 +93,7 @@ TrainData <- R6Class("TrainData",
                                                      .class = "TrainData")
                          }
                          if (any(missing_target)) {
-                           warning(sprintf("%s individual(s) with missing target value(s) recognized and removed\n",
+                           warning(sprintf("%s individual(s) with missing target value(s) recognized and removed.\n",
                                            sum(missing_target)))
                          }
                          if (any(missing_id)) {

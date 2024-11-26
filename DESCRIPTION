@@ -44,7 +44,7 @@ Collate:
     'TrainMetaLayer.R'
     'Training.R'
     'VarSel.R'
-    'entities.R'
+    'multi_omics.R'
     'weightedMeanLearner.R'
     'predict.bestSpecificLearner.R'
     'predict.weightedMeanLearner.R'

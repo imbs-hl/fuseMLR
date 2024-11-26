@@ -15,7 +15,7 @@ test_that("bestSpecificLearner works", {
     x_new <- data.frame(x2 = rnorm(10))
     my_predictions <- predict(object = my_model, data = x_new)
   })
-  expect_error({
+  expect_no_error({
     set.seed(20240624L)
     x = data.frame(x1 = runif(n = 50L, min = 0, max = 1))
     y = sample(x = 0L:2L, size = 50L, replace = TRUE)

@@ -1,7 +1,7 @@
-data("entities")
+data("multi_omics")
 test_data <- Data$new(id = "geneexpr",
                       ind_col = "IDS",
-                      data_frame = entities$training$geneexpr[-11L, ])
+                      data_frame = multi_omics$training$geneexpr[-11L, ])
 
 test_that("Data: initialize is correct", {
   expect_true(R6::is.R6(test_data))

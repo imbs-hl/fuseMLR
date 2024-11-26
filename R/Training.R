@@ -45,6 +45,9 @@ Training <- R6Class("Training",
                                                target_df,
                                                problem_type = "classification",
                                                verbose = TRUE) {
+                          if (!is.logical(verbose)) {
+                            stop("'verbose' must be bolean.")
+                          }
                           if (!is.character(id)) {
                             stop("id must be a string")
                           }
@@ -68,17 +71,18 @@ Training <- R6Class("Training",
                             stop("The problem type must be either classification or regression")
                           } else {
                             target_values = target_df[ , target, drop = TRUE]
-                            uniq_target_values = length(unique(target_values))
+                            uniq_target_values = length(unique(target_values[complete.cases(target_values)]))
                             if ((problem_type == "classification") & (uniq_target_values > 2L)) {
-                              warning("You set up a classification problem for more than two classes.")
+                              warning("You set up a classification problem for more than two classes.\n")
                             }
                             if ((problem_type == "regression") & (uniq_target_values == 2L)) {
-                              warning("You set up a regression problem for only two classes.")
+                              warning("You set up a regression problem for only two classes.\n")
                             }
                           }
                           super$initialize(id = id)
                           private$ind_col = ind_col
                           private$target = target
+                          private$verbose = TRUE
                           private$target_obj = Target$new(id = "target",
                                                           data_frame = target_df[ , c(ind_col, target)],
                                                           training = self)
@@ -97,11 +101,35 @@ Training <- R6Class("Training",
                             status = "Trained"
                           }
                           cat(sprintf("Training        : %s\n", private$id))
+                          cat(sprintf("Problem typ     : %s\n", private$problem_typ))
                           cat(sprintf("Status          : %s\n", status))
                           cat(sprintf("Number of layers: %s\n", nb_layers))
-                          # TODO: Fix the number of layer trained.
                           cat(sprintf("Layers trained  : %s\n", private$nb_trained_layer))
-                          cat(sprintf("n               : %s\n", nrow(private$target_obj$getData())))
+                          # cat(sprintf("n               : %s\n", nrow(private$target_obj$getData())))
+                          layers = self$getKeyClass()
+                          if (private$status) {
+                            layers = layers[layers$class %in% c("TrainLayer", "TrainMetaLayer"), ]
+                          } else {
+                            layers = layers[layers$class %in% "TrainLayer", ]
+                          }
+                          nb_layers = nrow(layers)
+                          if (nb_layers) {
+                            layer_ps = NULL
+                            layer_ns = NULL
+                            for (k in layers$key) {
+                              layer = self$getFromHashTable(key = k)
+                              train_data = layer$getTrainData()
+                              layer_p = ncol(train_data$getData())
+                              layer_n = nrow(train_data$getData())
+                              max_width <- max(nchar(layer_p), nchar(layer_n))
+                              layer_ps = c(layer_ps, format(layer_p, width = max_width, justify = "left"))
+                              layer_ns = c(layer_ns, format(layer_n, width = max_width, justify = "left"))
+                            }
+                            layer_ps = paste0(layer_ps, collapse = " | ")
+                            layer_ns = paste0(layer_ns, collapse = " | ")
+                            cat(sprintf("p               : %s\n", layer_ps))
+                            cat(sprintf("n               : %s\n", layer_ns))
+                          }
                         },
                         #' @description
                         #' Train each layer of the current Training.
@@ -110,16 +138,13 @@ Training <- R6Class("Training",
                         #' Subset of individuals IDs to be used for training.
                         #' @param use_var_sel `boolean(1)` \cr
                         #' If TRUE, selected variables available at each layer are used.
-                        #' @param verbose (`boolean`) \cr
-                        #' Warning messages will be displayed if set to TRUE.
                         #' @return
                         #' Returns the object itself, with a model for each layer.
                         #' @export
                         #'
                         #'
                         trainLayer = function (ind_subset = NULL,
-                                               use_var_sel = FALSE,
-                                               verbose = TRUE) {
+                                               use_var_sel = FALSE) {
                           layers = self$getKeyClass()
                           nb_layers = nrow(layers[layers$class %in% "TrainLayer", ])
                           if (nb_layers) {
@@ -129,8 +154,7 @@ Training <- R6Class("Training",
                             for (k in layers$key) {
                               layer = self$getFromHashTable(key = k)
                               layer$train(ind_subset = ind_subset,
-                                          use_var_sel = use_var_sel,
-                                          verbose = verbose)
+                                          use_var_sel = use_var_sel)
                             }
                           } else {
                             stop("No existing layer in the current training object.")
@@ -181,8 +205,6 @@ Training <- R6Class("Training",
                         #' If TRUE, selected variables available at each layer are used.
                         #' @param impute (`boolean`) \cr
                         #' If TRUE, mode or median based imputation is performed on the modality-specific predictions.
-                        #' @param verbose (`boolean`) \cr
-                        #' Warning messages will be displayed if set to TRUE.
                         #'
                         #' @return
                         #' The current object is returned, with a meta training dataset assigned to the meta layer.
@@ -191,8 +213,8 @@ Training <- R6Class("Training",
                         createMetaTrainData = function (resampling_method,
                                                         resampling_arg,
                                                         use_var_sel,
-                                                        impute = TRUE,
-                                                        verbose = TRUE) {
+                                                        impute = TRUE) {
+                          verbose = self$getVerbose()
                           layers = self$getKeyClass()
                           if (!("TrainMetaLayer" %in% layers$class)) {
                             stop("No existing meta layer. I cannot create meta training data.")
@@ -204,12 +226,14 @@ Training <- R6Class("Training",
                           } else {
                             train_layer_res_list = lapply(X = 1:length(resampling),
                                                           function (fold) {
+                                                            if (verbose) {
+                                                              cat(sprintf("Training for fold %s.\n", fold))
+                                                            }
                                                             test_index = resampling[[fold]]
                                                             train_index = setdiff(unlist(resampling), test_index)
                                                             train_ids = self$getTargetValues()[train_index, 1L]
                                                             self$trainLayer(ind_subset = train_ids,
-                                                                            use_var_sel = use_var_sel,
-                                                                            verbose = verbose)
+                                                                            use_var_sel = use_var_sel)
                                                             test_ids = self$getTargetValues()[test_index, 1L]
                                                             # TODO: Note: The current object is not a TestStudy, but a Training object.
                                                             predicting = self$predictLayer(testing = self,
@@ -272,8 +296,6 @@ Training <- R6Class("Training",
                         #' Function for internal validation. If not specify, the \code{resampling} function from the package \code{caret} is used for a 10-folds cross-validation.
                         #' @param resampling_arg (`list(1)`) \cr
                         #' List of arguments to be passed to the function.
-                        #' @param impute (`boolean`) \cr
-                        #' If TRUE, mode or median based imputation is performed on the modality-specific predictions.
                         #' @param verbose (`boolean`) \cr
                         #' Warning messages will be displayed if set to TRUE.
                         #'
@@ -284,9 +306,7 @@ Training <- R6Class("Training",
                         train = function (ind_subset = NULL,
                                           use_var_sel = FALSE,
                                           resampling_method = NULL,
-                                          resampling_arg = list(),
-                                          impute = TRUE,
-                                          verbose = TRUE) {
+                                          resampling_arg = list()) {
                           # Test that the training object contains ovelapping individuals
                           if (!self$testOverlap()) {
                             stop("This Training object does not contain overlapping individuals.") #nocov
@@ -300,12 +320,10 @@ Training <- R6Class("Training",
                           self$createMetaTrainData(resampling_method,
                                                    resampling_arg,
                                                    use_var_sel = use_var_sel,
-                                                   impute = impute,
-                                                   verbose = verbose)
+                                                   impute = private$impute)
                           # 2) Train each layer
                           self$trainLayer(ind_subset = ind_subset,
-                                          use_var_sel = use_var_sel,
-                                          verbose = verbose)
+                                          use_var_sel = use_var_sel)
                           # 3) Train the meta layer
                           # Add layer specific predictions to meta training layer
                           layers = self$getKeyClass()
@@ -421,7 +439,7 @@ Training <- R6Class("Training",
                             for (k in layers$key) {
                               layer = self$getFromHashTable(key = k)
                               layer_var_sel = layer$varSelection(ind_subset = ind_subset,
-                                                                 verbose = verbose)
+                                                                 verbose = self$getVerbose())
                               if (length(layer_var_sel)) {
                                 # At least one variable selected
                                 selected = rbind(selected,
@@ -587,6 +605,12 @@ Training <- R6Class("Training",
                           return(private$target)
                         },
                         #' @description
+                        #' Getter of the verbose setting.
+                        #' @export
+                        getVerbose = function () {
+                          return(private$verbose)
+                        },
+                        #' @description
                         #' Increase the number of trained layer.
                         increaseNbTrainedLayer = function () {
                           private$nb_trained_layer = private$nb_trained_layer + 1L
@@ -609,6 +633,16 @@ Training <- R6Class("Training",
                         # TODO: Maybe rename this function getTarget and find another appropriate name for the current getTarget function.
                         getTargetObj = function () {
                           return(private$target_obj)
+                        },
+                        #' @description
+                        #' Set imputation action na.action.
+                        #'
+                        #' @param impute `character(1)` \cr
+                        #' How to handle missing values.
+                        #'
+                        setImpute = function(impute) {
+                          private$impute = impute
+                          invisible(self)
                         },
                         #' @description
                         #' Test that individuals overlap over layers.
@@ -654,8 +688,8 @@ Training <- R6Class("Training",
                           # This code accesses each layer (except TrainMetaLayer) level
                           # and get the individual IDs.
                           layers = layers[layers$class %in% "TrainLayer", ]
-                          if (!nrow(layers)) {
-                            stop("No available layer in this training object.")
+                          if (!nrow(layers) | (nrow(layers) == 1L)) {
+                            stop("No or only one available layer in this training object.")
                           }
                           ids_list = lapply(layers$key, function (k) {
                             layer = self$getFromHashTable(key = k)
@@ -696,6 +730,8 @@ Training <- R6Class("Training",
                         target_obj = NULL,
                         nb_trained_layer = 0L,
                         impute = FALSE,
+                        verbose = TRUE,
+                        problem_typ = "classification",
                         status = FALSE
                       ),
                       cloneable = FALSE

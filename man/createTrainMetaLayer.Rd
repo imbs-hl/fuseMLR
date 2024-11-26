@@ -11,7 +11,7 @@ createTrainMetaLayer(
   lrn_fct,
   param_train_list = list(),
   param_pred_list = list(),
-  na_rm = TRUE,
+  na_action = "na.impute",
   x = "x",
   y = "y",
   object = "object",
@@ -38,8 +38,8 @@ List of arguments to be passed to \code{lrn_fct}.}
 \item{param_pred_list}{\verb{(character(1)} \cr
 List of arguments to be passed to \code{predict} when computing predictions.}
 
-\item{na_rm}{\cr
-If \code{TRUE}, the individuals with missing predictor values will be removed from the training dataset.}
+\item{na_action}{\cr
+Handling of missing values in meta-data. Set to "na.keep" to keep missing values, "na.rm" to remove individuals with missing values or "na.impute" to impute missing values in meta-data. Only median and mode based imputations are actually handled. With the "na.keep" option, ensure that the provided meta-learner can handle missing values.}
 
 \item{x}{(\code{character(1)}) \cr
 If the name of the argument used by the provided original functions to pass

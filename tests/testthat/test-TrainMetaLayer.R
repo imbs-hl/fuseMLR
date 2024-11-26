@@ -1,10 +1,10 @@
-data("entities")
+data("multi_omics")
 test_that("TrainLayer: all tests", {
   # Training and layers
   training <- Training$new(id = "training",
                                 ind_col = "IDS",
                                 target = "disease",
-                                target_df = entities$training$target)
+                                target_df = multi_omics$training$target)
   tl_meta <- TrainMetaLayer$new(id = "meta",
                                 training = training)
   # A TrainLayer can only belong to a Training
@@ -41,7 +41,7 @@ test_that("TrainLayer: all tests", {
                         train_layer = tl_ge)
   train_data_ge <- TrainData$new(id = "geneexpr",
                                  train_layer = tl_ge,
-                                 data_frame = entities$training$geneexpr)
+                                 data_frame = multi_omics$training$geneexpr)
   expect_error({
     tl_meta$train()
   })

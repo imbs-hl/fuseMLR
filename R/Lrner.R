@@ -42,6 +42,11 @@ Lrner <- R6Class("Lrner",
                      private$lrn_fct = lrn_fct
                      private$param_train = param_train_list
                      private$param_pred = param_pred_list
+                     if (is.null(package)) {
+                       if (!(exists(lrn_fct, envir = .GlobalEnv, inherits = TRUE) | is.function(get(lrn_fct, envir = .GlobalEnv)))) {
+                         stop(sprintf("Function %s does not exists.\n Maybe you forget to specify its package?", lrn_fct))
+                       }
+                     }
                      if (!any(c("TrainLayer", "TrainMetaLayer") %in% class(train_layer))) {
                        stop("A Lrner can only belong to a TrainLayer or a TrainMetaLayer object.")
                      }

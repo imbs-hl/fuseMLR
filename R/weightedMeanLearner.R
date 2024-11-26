@@ -14,7 +14,6 @@
 #' A model object of class \code{weightedMeanLeaner}.
 #'
 #' @export
-#'
 #' @examples
 #' set.seed(20240624L)
 #' x = data.frame(x1 = runif(n = 50L, min = 0, max = 1))
@@ -22,6 +21,9 @@
 #' my_model = weightedMeanLearner(x = x, y = y)
 #'
 weightedMeanLearner = function (x, y, weighted = TRUE) {
+  if (!is.data.frame(x)) {
+    stop("x must be a data.frame.")
+  }
   # y must be binomial. If dichotomy, first category (case) = 1 and
   # second (control) = 0
   if (is.numeric(y) & (length(unique(y)) > 2)) {

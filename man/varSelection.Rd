@@ -4,7 +4,7 @@
 \alias{varSelection}
 \title{varSelection}
 \usage{
-varSelection(training, ind_subset = NULL, verbose = TRUE)
+varSelection(training, ind_subset = NULL)
 }
 \arguments{
 \item{training}{(\code{Training(1)}) \cr
@@ -12,9 +12,6 @@ Training object where the created layer will be stored.}
 
 \item{ind_subset}{\code{vector(1)} \cr
 ID subset of individuals to be used for variable selection.}
-
-\item{verbose}{(\code{boolean}) \cr
-Warning messages will be displayed if set to TRUE.}
 }
 \value{
 The current layer is returned with the resulting model.

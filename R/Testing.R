@@ -23,9 +23,25 @@ Testing <- R6Class("Testing",
                    #' Testing id.
                    #' @param ind_col (`character(1)`)
                    #' Name of column of individuals IDS in testing data.frame.
-                   initialize = function (id, ind_col) {
+                   #' @param verbose (`boolean`) \cr
+                   #' Warning messages will be displayed if set to TRUE.
+                   initialize = function (id, ind_col, verbose = TRUE) {
                      super$initialize(id = id)
                      private$ind_col = ind_col
+                     layers = self$getKeyClass()
+                     layers = layers[layers$class %in% "TestLayer", ]
+                     nb_layers = nrow(layers)
+                     if (nb_layers) {
+                       layer_dims = NULL
+                       for (k in layers$key) {
+                         layer = self$getFromHashTable(key = k)
+                         test_data = layer$getTestData()
+                         layer_dim = ncol(test_data$getData())
+                         layer_dims = c(layer_dims, layer_dim)
+                       }
+                       layer_dims = paste0(layer_dims, collapse = " | ")
+                       cat(sprintf("p               : %s\n", layer_dims))
+                     }
                    },
                    #' @description
                    #' Printer
@@ -36,6 +52,26 @@ Testing <- R6Class("Testing",
                      nb_layers = length(private$hash_table)
                      cat(sprintf("Testing         : %s\n", private$id))
                      cat(sprintf("Number of layers: %s\n", nb_layers))
+                     layers = self$getKeyClass()
+                     layers = layers[layers$class %in% "TestLayer", ]
+                     nb_layers = nrow(layers)
+                     if (nb_layers) {
+                       layer_ps = NULL
+                       layer_ns = NULL
+                       for (k in layers$key) {
+                         layer = self$getFromHashTable(key = k)
+                         test_data = layer$getTestData()
+                         layer_p = ncol(test_data$getData())
+                         layer_n = nrow(test_data$getData())
+                         max_width <- max(nchar(layer_p), nchar(layer_n))
+                         layer_ps = c(layer_ps, format(layer_p, width = max_width, justify = "left"))
+                         layer_ns = c(layer_ns, format(layer_n, width = max_width, justify = "left"))
+                       }
+                       layer_ps = paste0(layer_ps, collapse = " | ")
+                       layer_ns = paste0(layer_ns, collapse = " | ")
+                       cat(sprintf("p               : %s\n", layer_ps))
+                       cat(sprintf("n               : %s\n", layer_ns))
+                     }
                    },
                    #' @description
                    #' Gather individual IDs from all layer.
@@ -81,6 +117,12 @@ Testing <- R6Class("Testing",
                      return(private$ind_col)
                    },
                    #' @description
+                   #' Getter of the verbose setting.
+                   #' @export
+                   getVerbose = function () {
+                     return(private$verbose)
+                   },
+                   #' @description
                    #' UpSet plot to show an overview of the overlap of individuals across various layers.
                    #'
                    #' @param ... \cr
@@ -93,8 +135,8 @@ Testing <- R6Class("Testing",
                      # This code accesses each layer (except TrainMetaLayer) level
                      # and get the individual IDs.
                      layers = layers[layers$class %in% "TestLayer", ]
-                     if (!nrow(layers)) {
-                       stop("No available layer in this testing object.")
+                     if (!nrow(layers) | (nrow(layers) == 1L)) {
+                       stop("No or only one available layer in this training object.")
                      }
                      ids_list = lapply(layers$key, function (k) {
                        layer = self$getFromHashTable(key = k)
@@ -129,7 +171,8 @@ Testing <- R6Class("Testing",
                    }
                  ),
                  private = list(
-                   ind_col = character(0L)
+                   ind_col = character(0L),
+                   verbose = TRUE
                  ),
                  cloneable = FALSE
 )

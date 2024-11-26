@@ -54,9 +54,11 @@ Use the function \code{train} for training and \code{predict} for predicting.
 \item \href{#method-Training-removeTrainMetaLayer}{\code{Training$removeTrainMetaLayer()}}
 \item \href{#method-Training-getIndCol}{\code{Training$getIndCol()}}
 \item \href{#method-Training-getTarget}{\code{Training$getTarget()}}
+\item \href{#method-Training-getVerbose}{\code{Training$getVerbose()}}
 \item \href{#method-Training-increaseNbTrainedLayer}{\code{Training$increaseNbTrainedLayer()}}
 \item \href{#method-Training-checkTargetExist}{\code{Training$checkTargetExist()}}
 \item \href{#method-Training-getTargetObj}{\code{Training$getTargetObj()}}
+\item \href{#method-Training-setImpute}{\code{Training$setImpute()}}
 \item \href{#method-Training-testOverlap}{\code{Training$testOverlap()}}
 \item \href{#method-Training-upset}{\code{Training$upset()}}
 \item \href{#method-Training-summary}{\code{Training$summary()}}
@@ -137,7 +139,7 @@ Printer
 \subsection{Method \code{trainLayer()}}{
 Train each layer of the current Training.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Training$trainLayer(ind_subset = NULL, use_var_sel = FALSE, verbose = TRUE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Training$trainLayer(ind_subset = NULL, use_var_sel = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -148,9 +150,6 @@ Subset of individuals IDs to be used for training.}
 
 \item{\code{use_var_sel}}{\code{boolean(1)} \cr
 If TRUE, selected variables available at each layer are used.}
-
-\item{\code{verbose}}{(\code{boolean}) \cr
-Warning messages will be displayed if set to TRUE.}
 }
 \if{html}{\out{</div>}}
 }
@@ -192,8 +191,7 @@ Creates a meta training dataset and assigns it to the meta layer.
   resampling_method,
   resampling_arg,
   use_var_sel,
-  impute = TRUE,
-  verbose = TRUE
+  impute = TRUE
 )}\if{html}{\out{</div>}}
 }
 
@@ -211,9 +209,6 @@ If TRUE, selected variables available at each layer are used.}
 
 \item{\code{impute}}{(\code{boolean}) \cr
 If TRUE, mode or median based imputation is performed on the modality-specific predictions.}
-
-\item{\code{verbose}}{(\code{boolean}) \cr
-Warning messages will be displayed if set to TRUE.}
 }
 \if{html}{\out{</div>}}
 }
@@ -231,9 +226,7 @@ Trains the current object. All leaners and the meta learner are trained.
   ind_subset = NULL,
   use_var_sel = FALSE,
   resampling_method = NULL,
-  resampling_arg = list(),
-  impute = TRUE,
-  verbose = TRUE
+  resampling_arg = list()
 )}\if{html}{\out{</div>}}
 }
 
@@ -251,9 +244,6 @@ Function for internal validation. If not specify, the \code{resampling} function
 
 \item{\code{resampling_arg}}{(\code{list(1)}) \cr
 List of arguments to be passed to the function.}
-
-\item{\code{impute}}{(\code{boolean}) \cr
-If TRUE, mode or median based imputation is performed on the modality-specific predictions.}
 
 \item{\code{verbose}}{(\code{boolean}) \cr
 Warning messages will be displayed if set to TRUE.}
@@ -450,6 +440,16 @@ Getter of the target variable name.
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Training-getVerbose"></a>}}
+\if{latex}{\out{\hypertarget{method-Training-getVerbose}{}}}
+\subsection{Method \code{getVerbose()}}{
+Getter of the verbose setting.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Training$getVerbose()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Training-increaseNbTrainedLayer"></a>}}
 \if{latex}{\out{\hypertarget{method-Training-increaseNbTrainedLayer}{}}}
 \subsection{Method \code{increaseNbTrainedLayer()}}{
@@ -481,6 +481,24 @@ Getter of the target object.
 \if{html}{\out{<div class="r">}}\preformatted{Training$getTargetObj()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Training-setImpute"></a>}}
+\if{latex}{\out{\hypertarget{method-Training-setImpute}{}}}
+\subsection{Method \code{setImpute()}}{
+Set imputation action na.action.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Training$setImpute(impute)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{impute}}{\code{character(1)} \cr
+How to handle missing values.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Training-testOverlap"></a>}}

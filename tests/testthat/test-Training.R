@@ -1,4 +1,4 @@
-data("entities")
+data("multi_omics")
 set.seed(5214)
 test_that("Training: all tests", {
   # Create training
@@ -6,26 +6,26 @@ test_that("Training: all tests", {
     training <- Training$new(id = "training",
                                   ind_col = "IDS",
                                   target = "disease",
-                                  target_df = entities$training$target)
+                                  target_df = multi_omics$training$target)
     print(training)
   })
   expect_error({
     Training$new(id = 1,
                    ind_col = "IDS",
                    target = "disease",
-                   target_df = entities$training$target)
+                   target_df = multi_omics$training$target)
   })
   expect_error({
     Training$new(id = "training",
                    ind_col = 1,
                    target = "disease",
-                   target_df = entities$training$target)
+                   target_df = multi_omics$training$target)
   })
   expect_error({
     Training$new(id = "training",
                    ind_col = "IDS",
                    target = 1,
-                   target_df = entities$training$target)
+                   target_df = multi_omics$training$target)
   })
   expect_error({
     Training$new(id = "training",
@@ -46,11 +46,11 @@ test_that("Training: all tests", {
     training <- Training$new(id = "training",
                                   ind_col = "IDS",
                                   target = "disease",
-                                  target_df = entities$training$target,
+                                  target_df = multi_omics$training$target,
                                   problem_type = "test")
   })
   expect_warning({
-    tmp <- entities$training$target
+    tmp <- multi_omics$training$target
     tmp$disease <- sample(x = 1:3,
                           size = nrow(tmp),
                           replace = TRUE)
@@ -64,7 +64,7 @@ test_that("Training: all tests", {
     training <- Training$new(id = "training",
                                   ind_col = "IDS",
                                   target = "disease",
-                                  target_df = entities$training$target,
+                                  target_df = multi_omics$training$target,
                                   problem_type = "regression")
   })
   # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -125,10 +125,10 @@ test_that("Training: all tests", {
   expect_no_error({
     train_data_ge <- TrainData$new(id = "geneexpr",
                                    train_layer = tl_ge,
-                                   data_frame = entities$training$geneexpr)
+                                   data_frame = multi_omics$training$geneexpr)
     train_data_pr <- TrainData$new(id = "proteinexpr",
                                    train_layer = tl_pr,
-                                   data_frame = entities$training$proteinexpr)
+                                   data_frame = multi_omics$training$proteinexpr)
   })
   # Upset plot works
   expect_no_error({
@@ -250,10 +250,10 @@ test_that("Training: all tests", {
   expect_no_error({
     testing_data_ge <- TestData$new(id = "geneexpr",
                                new_layer = nl_ge,
-                               data_frame = entities$testing$geneexpr)
+                               data_frame = multi_omics$testing$geneexpr)
     testing_data_pr <- TestData$new(id = "proteinexpr",
                                new_layer = nl_pr,
-                               data_frame = entities$testing$proteinexpr)
+                               data_frame = multi_omics$testing$proteinexpr)
     testing$summary()
     testing$upset()
   })

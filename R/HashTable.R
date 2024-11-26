@@ -1,5 +1,5 @@
 #' @title Class HashTable
-#' @description Hashtable to contain object entities. Storage objects like [Training] and [TrainLayer] are extensions of this class.
+#' @description Hashtable to contain object modalities. Storage objects like [Training] and [TrainLayer] are extensions of this class.
 #'
 #' @export
 #' @importFrom R6 R6Class

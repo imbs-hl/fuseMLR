@@ -9,7 +9,7 @@ createTrainLayer(
   train_layer_id,
   train_data,
   varsel_package = NULL,
-  varsel_fct,
+  varsel_fct = NULL,
   varsel_param = list(),
   lrner_package,
   lrn_fct,
@@ -38,7 +38,7 @@ Data modality to be stored in \link{TrainData}.}
 Name of the package containing the function that implements the variable selection algorithm.\cr}
 
 \item{varsel_fct}{(\code{character(1)}) \cr
-Name of the function that performs variable selection.}
+Name of the function that performs variable selection. For the default value NULL no variable selection will be performed.}
 
 \item{varsel_param}{(\code{list}) \cr
 List of arguments to be passed to \code{varsel_fct}.}

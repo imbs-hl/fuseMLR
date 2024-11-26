@@ -6,14 +6,18 @@
 #' Testing id.
 #' @param ind_col (`character(1)`) \cr
 #' Name of column of individuals IDs in testing data.frame.
+#' @param verbose (`boolean`) \cr
+#' Warning messages will be displayed if set to TRUE.
 #' @return
 #' A [Testing] object.
 #' @export
 createTesting = function (id,
-                          ind_col) {
+                          ind_col,
+                          verbose = TRUE) {
   testing = Testing$new(
     id = id,
-    ind_col = ind_col
+    ind_col = ind_col,
+    verbose = verbose
   )
   return(testing)
 }
@@ -44,7 +48,11 @@ createTestLayer = function (testing,
   test_data = TestData$new(id = sprintf("%s_data", test_layer_id),
                            data_frame = test_data,
                            new_layer = test_layer)
-  return(testing)
+  if (testing$getVerbose()) {
+    return(testing)
+  } else {
+    invisible(TRUE)
+  }
 }
 
 #' @title Testing object Summaries
@@ -57,7 +65,7 @@ createTestLayer = function (testing,
 #' Further arguments.
 #'
 #' @export
-#'
+#' @method summary Testing
 summary.Testing = function (object, ...) {
   return(object$summary())
 }

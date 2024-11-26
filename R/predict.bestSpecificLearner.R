@@ -16,7 +16,7 @@
 #' Predicted target values are returned.
 #'
 #' @export
-#'
+#' @method predict bestSpecificLearner
 #' @importFrom stats weighted.mean complete.cases
 #'
 #' @examples
