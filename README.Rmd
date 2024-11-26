@@ -63,10 +63,10 @@ Two types of data were simulated: training and testing datasets. Each consists o
 
 
 ```{r data_exam, include=TRUE, eval=TRUE}
-data("entities")
+data("multi_omics")
 # This is a list containing two lists of data: training and test.
-# Each sublist contains three entities.
-str(object = entities, max.level = 2L)
+# Each sublist contains three omics data.
+str(object = multi_omics, max.level = 2L)
 ```
 
 Variable selection, training and prediction are the main functionalities of `fuseMLR`. We can perform variable selection, train and fuse models for training studies, and predict new studies.
@@ -79,8 +79,8 @@ We need to set up training resources.
 training <- createTraining(id = "training",
                            ind_col = "IDS",
                            target = "disease",
-                           target_df = entities$training$target,
-                           verbose = FALSE)
+                           target_df = multi_omics$training$target,
+                           verbose = TRUE)
 print(training)
 ```
 
@@ -90,50 +90,56 @@ print(training)
 # Create gene expression layer
 createTrainLayer(training = training,
                  train_layer_id = "geneexpr",
-                 train_data = entities$training$geneexpr,
+                 train_data = multi_omics$training$geneexpr,
                  varsel_package = "Boruta",
                  varsel_fct = "Boruta",
                  varsel_param = list(num.trees = 1000L,
                                      mtry = 3L,
-                                     probability = TRUE),
+                                     probability = TRUE,
+                                     na.action = "na.learn"),
                  lrner_package = "ranger",
                  lrn_fct = "ranger",
                  param_train_list = list(probability = TRUE,
-                                         mtry = 1L),
+                                         mtry = 1L,
+                                     na.action = "na.learn"),
                  param_pred_list = list(),
-                 na_rm = TRUE)
+                 na_rm = FALSE)
 
 # Create gene protein abundance layer
 createTrainLayer(training = training,
                  train_layer_id = "proteinexpr",
-                 train_data = entities$training$proteinexpr,
+                 train_data = multi_omics$training$proteinexpr,
                  varsel_package = "Boruta",
                  varsel_fct = "Boruta",
                  varsel_param = list(num.trees = 1000L,
                                      mtry = 3L,
-                                     probability = TRUE),
+                                     probability = TRUE,
+                                     na.action = "na.learn"),
                  lrner_package = "ranger",
                  lrn_fct = "ranger",
                  param_train_list = list(probability = TRUE,
-                                         mtry = 1L),
+                                         mtry = 1L,
+                                     na.action = "na.learn"),
                  param_pred_list = list(),
-                 na_rm = TRUE)
+                 na_rm = FALSE)
 
 # Create methylation layer
 createTrainLayer(training = training,
                  train_layer_id = "methylation",
-                 train_data = entities$training$proteinexpr,
+                 train_data = multi_omics$training$proteinexpr,
                  varsel_package = "Boruta",
                  varsel_fct = "Boruta",
                  varsel_param = list(num.trees = 1000L,
                                      mtry = 3L,
-                                     probability = TRUE),
+                                     probability = TRUE,
+                                     na.action = "na.learn"),
                  lrner_package = "ranger",
                  lrn_fct = "ranger",
                  param_train_list = list(probability = TRUE,
-                                         mtry = 1L),
+                                         mtry = 1L,
+                                     na.action = "na.learn"),
                  param_pred_list = list(),
-                 na_rm = TRUE)
+                 na_rm = FALSE)
 ```
 
 - Also add a meta layer.
@@ -146,7 +152,7 @@ createTrainMetaLayer(training = training,
                      lrn_fct = "weightedMeanLearner",
                      param_train_list = list(),
                      param_pred_list = list(),
-                     na_rm = FALSE)
+                     na_action = "na.impute")
 ```
 
 - An upset plot of the training data: Visualize patient overlap across layers.
@@ -162,8 +168,7 @@ Perform variable selection on our training resources
 ```{r varsel, include=TRUE, eval=TRUE}
 # Variable selection
 set.seed(5467)
-var_sel_res <- varSelection(training = training,
-                            verbose = FALSE)
+var_sel_res <- varSelection(training = training)
 print(var_sel_res)
 ```
 
@@ -178,10 +183,8 @@ set.seed(5462)
 training <- fusemlr(training = training,
                     use_var_sel = TRUE,
                     resampling_method = NULL,
-                    resampling_arg = list(y = entities$training$target$disease,
-                                          k = 10L),
-                    impute = TRUE,
-                    verbose = FALSE)
+                    resampling_arg = list(y = multi_omics$training$target$disease,
+                                          k = 10L))
 
 print(training)
 # See also summary(training)
@@ -206,17 +209,17 @@ testing <- createTesting(id = "testing",
 # Create gene expression layer
 createTestLayer(testing = testing,
                 test_layer_id = "geneexpr",
-                 test_data = entities$testing$geneexpr)
+                 test_data = multi_omics$testing$geneexpr)
 
 # Create gene protein abundance layer
 createTestLayer(testing = testing,
                  test_layer_id = "proteinexpr",
-                 test_data = entities$testing$proteinexpr)
+                 test_data = multi_omics$testing$proteinexpr)
 
 # Create methylation layer
 createTestLayer(testing = testing,
                  test_layer_id = "methylation",
-                 test_data = entities$testing$proteinexpr)
+                 test_data = multi_omics$testing$proteinexpr)
 ```
 
 - An upset plot of the training data: Visualize patient overlap across layers.
@@ -237,7 +240,7 @@ print(predictions)
 ```{r performance_all, include=TRUE, eval=TRUE}
 pred_values <- predictions$predicted_values
 actual_pred <- merge(x = pred_values,
-                     y = entities$testing$target,
+                     y = multi_omics$testing$target,
                      by = "IDS",
                      all.y = TRUE)
 x <- as.integer(actual_pred$disease == 2L)
@@ -275,12 +278,10 @@ We distinguish common supervised learning arguments from method specific argumen
 The interface approach leverages the arguments in ```createTrainLayer()``` to map the argument names of the original learning function. In the example below, the gene expression layer is re-created using the ```svm``` (Support Vector Machine) function from the ```e1071``` package as the learner. A discrepancy arises in the argument names of the ```predict.svm``` function, which uses ```object``` and ```newdata```.
 
 ```{r interface, include=TRUE, eval=TRUE}
-# Remove the current gene expression layer from training
-removeLayer(training = training, layer_id = "geneexpr")
 # Re-create the gene expression layer with support vector machine as learner.
 createTrainLayer(training = training,
                  train_layer_id = "geneexpr",
-                 train_data = entities$training$geneexpr,
+                 train_data = multi_omics$training$geneexpr,
                  varsel_package = "Boruta",
                  varsel_fct = "Boruta",
                  varsel_param = list(num.trees = 1000L,
@@ -304,12 +305,10 @@ createTrainLayer(training = training,
 )
 # Variable selection
 set.seed(5467)
-var_sel_res <- varSelection(training = training,
-                            verbose = FALSE)
+var_sel_res <- varSelection(training = training)
 set.seed(5462)
 training <- fusemlr(training = training,
-                    use_var_sel = TRUE,
-                    verbose = FALSE)
+                    use_var_sel = TRUE)
 
 print(training)
 ```
@@ -355,11 +354,10 @@ createTrainMetaLayer(training = training,
                      lrner_package = NULL,
                      lrn_fct = "mylasso",
                      param_train_list = list(nlambda = 100L),
-                     na_rm = TRUE)
+                     na_action = "na.impute")
 set.seed(5462)
 training <- fusemlr(training = training,
-                    use_var_sel = TRUE,
-                    verbose = FALSE)
+                    use_var_sel = TRUE)
 print(training)
 ```
 

@@ -98,10 +98,10 @@ typically expected in reality. The data simulation code is available
 [here](https://github.com/imbs-hl/fuseMLR/blob/master/test_code/build_data.R).
 
 ``` r
-data("entities")
+data("multi_omics")
 # This is a list containing two lists of data: training and test.
-# Each sublist contains three entities.
-str(object = entities, max.level = 2L)
+# Each sublist contains three omics data.
+str(object = multi_omics, max.level = 2L)
 ```
 
     ## List of 2
@@ -128,16 +128,16 @@ We need to set up training resources.
 training <- createTraining(id = "training",
                            ind_col = "IDS",
                            target = "disease",
-                           target_df = entities$training$target,
-                           verbose = FALSE)
+                           target_df = multi_omics$training$target,
+                           verbose = TRUE)
 print(training)
 ```
 
     ## Training        : training
+    ## Problem typ     : classification
     ## Status          : Not trained
     ## Number of layers: 0
     ## Layers trained  : 0
-    ## n               : 70
 
 - Prepare training layers: Training layers contain `TrainData`, `Lrner`
   and `VarSel` objects. Therefore arguments to instantiate those object
@@ -151,73 +151,85 @@ print(training)
 # Create gene expression layer
 createTrainLayer(training = training,
                  train_layer_id = "geneexpr",
-                 train_data = entities$training$geneexpr,
+                 train_data = multi_omics$training$geneexpr,
                  varsel_package = "Boruta",
                  varsel_fct = "Boruta",
                  varsel_param = list(num.trees = 1000L,
                                      mtry = 3L,
-                                     probability = TRUE),
+                                     probability = TRUE,
+                                     na.action = "na.learn"),
                  lrner_package = "ranger",
                  lrn_fct = "ranger",
                  param_train_list = list(probability = TRUE,
-                                         mtry = 1L),
+                                         mtry = 1L,
+                                     na.action = "na.learn"),
                  param_pred_list = list(),
-                 na_rm = TRUE)
+                 na_rm = FALSE)
 ```
 
     ## Training        : training
+    ## Problem typ     : classification
     ## Status          : Not trained
     ## Number of layers: 1
     ## Layers trained  : 0
-    ## n               : 70
+    ## p               : 131
+    ## n               :  50
 
 ``` r
 # Create gene protein abundance layer
 createTrainLayer(training = training,
                  train_layer_id = "proteinexpr",
-                 train_data = entities$training$proteinexpr,
+                 train_data = multi_omics$training$proteinexpr,
                  varsel_package = "Boruta",
                  varsel_fct = "Boruta",
                  varsel_param = list(num.trees = 1000L,
                                      mtry = 3L,
-                                     probability = TRUE),
+                                     probability = TRUE,
+                                     na.action = "na.learn"),
                  lrner_package = "ranger",
                  lrn_fct = "ranger",
                  param_train_list = list(probability = TRUE,
-                                         mtry = 1L),
+                                         mtry = 1L,
+                                     na.action = "na.learn"),
                  param_pred_list = list(),
-                 na_rm = TRUE)
+                 na_rm = FALSE)
 ```
 
     ## Training        : training
+    ## Problem typ     : classification
     ## Status          : Not trained
     ## Number of layers: 2
     ## Layers trained  : 0
-    ## n               : 70
+    ## p               : 131 | 160
+    ## n               :  50 |  50
 
 ``` r
 # Create methylation layer
 createTrainLayer(training = training,
                  train_layer_id = "methylation",
-                 train_data = entities$training$proteinexpr,
+                 train_data = multi_omics$training$proteinexpr,
                  varsel_package = "Boruta",
                  varsel_fct = "Boruta",
                  varsel_param = list(num.trees = 1000L,
                                      mtry = 3L,
-                                     probability = TRUE),
+                                     probability = TRUE,
+                                     na.action = "na.learn"),
                  lrner_package = "ranger",
                  lrn_fct = "ranger",
                  param_train_list = list(probability = TRUE,
-                                         mtry = 1L),
+                                         mtry = 1L,
+                                     na.action = "na.learn"),
                  param_pred_list = list(),
-                 na_rm = TRUE)
+                 na_rm = FALSE)
 ```
 
     ## Training        : training
+    ## Problem typ     : classification
     ## Status          : Not trained
     ## Number of layers: 3
     ## Layers trained  : 0
-    ## n               : 70
+    ## p               : 131 | 160 | 160
+    ## n               :  50 |  50 |  50
 
 - Also add a meta layer.
 
@@ -229,14 +241,16 @@ createTrainMetaLayer(training = training,
                      lrn_fct = "weightedMeanLearner",
                      param_train_list = list(),
                      param_pred_list = list(),
-                     na_rm = FALSE)
+                     na_action = "na.impute")
 ```
 
     ## Training        : training
+    ## Problem typ     : classification
     ## Status          : Not trained
     ## Number of layers: 4
     ## Layers trained  : 0
-    ## n               : 70
+    ## p               : 131 | 160 | 160
+    ## n               :  50 |  50 |  50
 
 - An upset plot of the training data: Visualize patient overlap across
   layers.
@@ -254,8 +268,22 @@ Perform variable selection on our training resources
 ``` r
 # Variable selection
 set.seed(5467)
-var_sel_res <- varSelection(training = training,
-                            verbose = FALSE)
+var_sel_res <- varSelection(training = training)
+```
+
+    ## Variable selection on layer geneexpr started.
+
+    ## Variable selection on layer geneexpr done.
+
+    ## Variable selection on layer proteinexpr started.
+
+    ## Variable selection on layer proteinexpr done.
+
+    ## Variable selection on layer methylation started.
+
+    ## Variable selection on layer methylation done.
+
+``` r
 print(var_sel_res)
 ```
 
@@ -295,19 +323,173 @@ set.seed(5462)
 training <- fusemlr(training = training,
                     use_var_sel = TRUE,
                     resampling_method = NULL,
-                    resampling_arg = list(y = entities$training$target$disease,
-                                          k = 10L),
-                    impute = TRUE,
-                    verbose = FALSE)
+                    resampling_arg = list(y = multi_omics$training$target$disease,
+                                          k = 10L))
+```
 
+    ## Training for fold 1.
+
+    ## Training on layer geneexpr started.
+
+    ## Training on layer geneexpr done.
+
+    ## Training on layer proteinexpr started.
+
+    ## Training on layer proteinexpr done.
+
+    ## Training on layer methylation started.
+
+    ## Training on layer methylation done.
+
+    ## Training for fold 2.
+
+    ## Training on layer geneexpr started.
+
+    ## Training on layer geneexpr done.
+
+    ## Training on layer proteinexpr started.
+
+    ## Training on layer proteinexpr done.
+
+    ## Training on layer methylation started.
+
+    ## Training on layer methylation done.
+
+    ## Training for fold 3.
+
+    ## Training on layer geneexpr started.
+
+    ## Training on layer geneexpr done.
+
+    ## Training on layer proteinexpr started.
+
+    ## Training on layer proteinexpr done.
+
+    ## Training on layer methylation started.
+
+    ## Training on layer methylation done.
+
+    ## Training for fold 4.
+
+    ## Training on layer geneexpr started.
+
+    ## Training on layer geneexpr done.
+
+    ## Training on layer proteinexpr started.
+
+    ## Training on layer proteinexpr done.
+
+    ## Training on layer methylation started.
+
+    ## Training on layer methylation done.
+
+    ## Training for fold 5.
+
+    ## Training on layer geneexpr started.
+
+    ## Training on layer geneexpr done.
+
+    ## Training on layer proteinexpr started.
+
+    ## Training on layer proteinexpr done.
+
+    ## Training on layer methylation started.
+
+    ## Training on layer methylation done.
+
+    ## Training for fold 6.
+
+    ## Training on layer geneexpr started.
+
+    ## Training on layer geneexpr done.
+
+    ## Training on layer proteinexpr started.
+
+    ## Training on layer proteinexpr done.
+
+    ## Training on layer methylation started.
+
+    ## Training on layer methylation done.
+
+    ## Training for fold 7.
+
+    ## Training on layer geneexpr started.
+
+    ## Training on layer geneexpr done.
+
+    ## Training on layer proteinexpr started.
+
+    ## Training on layer proteinexpr done.
+
+    ## Training on layer methylation started.
+
+    ## Training on layer methylation done.
+
+    ## Training for fold 8.
+
+    ## Training on layer geneexpr started.
+
+    ## Training on layer geneexpr done.
+
+    ## Training on layer proteinexpr started.
+
+    ## Training on layer proteinexpr done.
+
+    ## Training on layer methylation started.
+
+    ## Training on layer methylation done.
+
+    ## Training for fold 9.
+
+    ## Training on layer geneexpr started.
+
+    ## Training on layer geneexpr done.
+
+    ## Training on layer proteinexpr started.
+
+    ## Training on layer proteinexpr done.
+
+    ## Training on layer methylation started.
+
+    ## Training on layer methylation done.
+
+    ## Training for fold 10.
+
+    ## Training on layer geneexpr started.
+
+    ## Training on layer geneexpr done.
+
+    ## Training on layer proteinexpr started.
+
+    ## Training on layer proteinexpr done.
+
+    ## Training on layer methylation started.
+
+    ## Training on layer methylation done.
+
+    ## Training on layer geneexpr started.
+
+    ## Training on layer geneexpr done.
+
+    ## Training on layer proteinexpr started.
+
+    ## Training on layer proteinexpr done.
+
+    ## Training on layer methylation started.
+
+    ## Training on layer methylation done.
+
+``` r
 print(training)
 ```
 
     ## Training        : training
+    ## Problem typ     : classification
     ## Status          : Trained
     ## Number of layers: 4
     ## Layers trained  : 4
-    ## n               : 70
+    ## p               : 131 | 160 | 160 |  3
+    ## n               :  50 |  50 |  50 | 64
 
 ``` r
 # See also summary(training)
@@ -337,31 +519,37 @@ testing <- createTesting(id = "testing",
 # Create gene expression layer
 createTestLayer(testing = testing,
                 test_layer_id = "geneexpr",
-                 test_data = entities$testing$geneexpr)
+                 test_data = multi_omics$testing$geneexpr)
 ```
 
     ## Testing         : testing
     ## Number of layers: 1
+    ## p               : 131
+    ## n               :  20
 
 ``` r
 # Create gene protein abundance layer
 createTestLayer(testing = testing,
                  test_layer_id = "proteinexpr",
-                 test_data = entities$testing$proteinexpr)
+                 test_data = multi_omics$testing$proteinexpr)
 ```
 
     ## Testing         : testing
     ## Number of layers: 2
+    ## p               : 131 | 160
+    ## n               :  20 |  20
 
 ``` r
 # Create methylation layer
 createTestLayer(testing = testing,
                  test_layer_id = "methylation",
-                 test_data = entities$testing$proteinexpr)
+                 test_data = multi_omics$testing$proteinexpr)
 ```
 
     ## Testing         : testing
     ## Number of layers: 3
+    ## p               : 131 | 160 | 160
+    ## n               :  20 |  20 |  20
 
 - An upset plot of the training data: Visualize patient overlap across
   layers.
@@ -384,34 +572,34 @@ print(predictions)
     ## Nb. layers   : 4
     ## 
     ## $predicted_values
-    ##          IDS  geneexpr proteinexpr methylation meta_layer
-    ## 1   patient1 0.8001571  0.93959762  0.92495794  0.6890614
-    ## 2  patient10 0.2715532  0.51328056  0.48941032  0.5052011
-    ## 3  patient16 0.6811413  0.51328056  0.48941032  0.9140717
-    ## 4  patient17 0.3817786  0.30925873  0.36974444  0.4484350
-    ## 5   patient2 0.5207353  0.56663333  0.66165238  0.7033941
-    ## 6  patient23 0.4298159  0.63428413  0.92495794  0.4410852
-    ## 7  patient25 0.2796373  0.40415000  0.48941032  0.3569530
-    ## 8  patient27 0.3638444  0.51328056  0.48941032  0.3509955
-    ## 9  patient29 0.3765897  0.45992778  0.24329444  0.4032013
-    ## 10 patient31 0.5207353  0.27210000  0.15999683  0.5766641
-    ## 11 patient39 0.5207353  0.08805476  0.04742698  0.7415073
-    ## 12 patient43 0.3011865  0.51328056  0.48941032  0.4768056
-    ## 13 patient44 0.4087905  0.51328056  0.48941032  0.8973592
-    ## 14 patient46 0.5207353  0.21791667  0.48941032  0.5488790
-    ## 15 patient52 0.5085119  0.12568889  0.04742698  0.5486128
-    ## 16 patient54 0.7875341  0.51328056  0.48941032  0.4649553
-    ## 17 patient58 0.5329587  0.77942222  0.59402937  0.6451195
-    ## 18 patient59 0.5207353  0.13636111  0.22532778  0.1973598
-    ## 19 patient60 0.7329190  0.83852619  0.65352381  0.4406220
-    ## 20 patient62 0.7837778  0.96909206  0.95261508  0.8848065
-    ## 21 patient72 0.6949579  0.94951984  0.95594841  0.1869428
-    ## 25 patient74 0.5458302  0.68164921  0.13405079  0.3992720
-    ## 26 patient76 0.6821508  0.51328056  0.48941032  0.5353148
-    ## 27 patient77 0.4781778  0.45292381  0.57492778  0.2957376
-    ## 31  patient8 0.7393611  0.87369683  0.51296032  0.2653453
-    ## 33 patient87 0.5207353  0.30864365  0.04329365  0.2709699
-    ## 34 patient97 0.5207353  0.74017381  0.34702778  0.5900609
+    ##              IDS  geneexpr proteinexpr methylation meta_layer
+    ## 1   participant1 0.8001571  0.93959762  0.92495794  0.5913131
+    ## 2  participant10 0.2715532  0.51328056  0.48941032  0.4917420
+    ## 3  participant16 0.6811413  0.51328056  0.48941032  0.8707412
+    ## 4  participant17 0.3817786  0.30925873  0.36974444  0.3996534
+    ## 5   participant2 0.5207353  0.56663333  0.66165238  0.7283805
+    ## 6  participant23 0.4298159  0.63428413  0.92495794  0.4959176
+    ## 7  participant25 0.2796373  0.40415000  0.48941032  0.3712966
+    ## 8  participant27 0.3638444  0.51328056  0.48941032  0.3592147
+    ## 9  participant29 0.3765897  0.45992778  0.24329444  0.3585116
+    ## 10 participant31 0.5207353  0.27210000  0.15999683  0.6485929
+    ## 11 participant39 0.5207353  0.08805476  0.04742698  0.7452092
+    ## 12 participant43 0.3011865  0.51328056  0.48941032  0.4547310
+    ## 13 participant44 0.4087905  0.51328056  0.48941032  0.8651174
+    ## 14 participant46 0.5207353  0.21791667  0.48941032  0.5946519
+    ## 15 participant52 0.5085119  0.12568889  0.04742698  0.5941352
+    ## 16 participant54 0.7875341  0.51328056  0.48941032  0.4317251
+    ## 17 participant58 0.5329587  0.77942222  0.59402937  0.6139244
+    ## 18 participant59 0.5207353  0.13636111  0.22532778  0.3050300
+    ## 19 participant60 0.7329190  0.83852619  0.65352381  0.3844854
+    ## 20 participant62 0.7837778  0.96909206  0.95261508  0.8205853
+    ## 21 participant72 0.6949579  0.94951984  0.95594841  0.3009025
+    ## 25 participant74 0.5458302  0.68164921  0.13405079  0.4305326
+    ## 26 participant76 0.6821508  0.51328056  0.48941032  0.5444192
+    ## 27 participant77 0.4781778  0.45292381  0.57492778  0.3755746
+    ## 31  participant8 0.7393611  0.87369683  0.51296032  0.3608910
+    ## 33 participant87 0.5207353  0.30864365  0.04329365  0.3519856
+    ## 34 participant97 0.5207353  0.74017381  0.34702778  0.5633052
 
 - Prediction performances for layer-specific available patients, and all
   patients on the meta layer.
@@ -419,7 +607,7 @@ print(predictions)
 ``` r
 pred_values <- predictions$predicted_values
 actual_pred <- merge(x = pred_values,
-                     y = entities$testing$target,
+                     y = multi_omics$testing$target,
                      by = "IDS",
                      all.y = TRUE)
 x <- as.integer(actual_pred$disease == 2L)
@@ -434,7 +622,7 @@ print(perf_estimated)
 ```
 
     ##    geneexpr proteinexpr methylation  meta_layer 
-    ##   0.1564895   0.1831100   0.2382557   0.2250521
+    ##   0.3093583   0.3448970   0.2932064   0.2993118
 
 - Prediction performances for overlapping individuals.
 
@@ -450,7 +638,7 @@ print(perf_overlapping)
 ```
 
     ##    geneexpr proteinexpr methylation  meta_layer 
-    ##   0.1564895   0.1831100   0.2382557   0.2250521
+    ##   0.3093583   0.3448970   0.2932064   0.2993118
 
 Note that our example is based on simulated data for usage illustration;
 only one run is not enough to appreciate the performances of our models.
@@ -479,24 +667,10 @@ learner. A discrepancy arises in the argument names of the `predict.svm`
 function, which uses `object` and `newdata`.
 
 ``` r
-# Remove the current gene expression layer from training
-removeLayer(training = training, layer_id = "geneexpr")
-```
-
-    ## Warning in training$removeLayer(id = layer_id): training was already trained.
-    ## Do not forget to train it again to update its meta layer.
-
-    ## Training        : training
-    ## Status          : Trained
-    ## Number of layers: 3
-    ## Layers trained  : 3
-    ## n               : 70
-
-``` r
 # Re-create the gene expression layer with support vector machine as learner.
 createTrainLayer(training = training,
                  train_layer_id = "geneexpr",
-                 train_data = entities$training$geneexpr,
+                 train_data = multi_omics$training$geneexpr,
                  varsel_package = "Boruta",
                  varsel_fct = "Boruta",
                  varsel_param = list(num.trees = 1000L,
@@ -521,29 +695,200 @@ createTrainLayer(training = training,
 ```
 
     ## Training        : training
+    ## Problem typ     : classification
     ## Status          : Trained
     ## Number of layers: 4
-    ## Layers trained  : 3
-    ## n               : 70
+    ## Layers trained  : 4
+    ## p               : 131 | 160 | 160 |  3
+    ## n               :  50 |  50 |  50 | 64
 
 ``` r
 # Variable selection
 set.seed(5467)
-var_sel_res <- varSelection(training = training,
-                            verbose = FALSE)
+var_sel_res <- varSelection(training = training)
+```
+
+    ## Variable selection on layer geneexpr started.
+
+    ## Variable selection on layer geneexpr done.
+
+    ## Variable selection on layer proteinexpr started.
+
+    ## Variable selection on layer proteinexpr done.
+
+    ## Variable selection on layer methylation started.
+
+    ## Variable selection on layer methylation done.
+
+``` r
 set.seed(5462)
 training <- fusemlr(training = training,
-                    use_var_sel = TRUE,
-                    verbose = FALSE)
+                    use_var_sel = TRUE)
+```
 
+    ## Training for fold 1.
+
+    ## Training on layer geneexpr started.
+
+    ## Training on layer geneexpr done.
+
+    ## Training on layer proteinexpr started.
+
+    ## Training on layer proteinexpr done.
+
+    ## Training on layer methylation started.
+
+    ## Training on layer methylation done.
+
+    ## Training for fold 2.
+
+    ## Training on layer geneexpr started.
+
+    ## Training on layer geneexpr done.
+
+    ## Training on layer proteinexpr started.
+
+    ## Training on layer proteinexpr done.
+
+    ## Training on layer methylation started.
+
+    ## Training on layer methylation done.
+
+    ## Training for fold 3.
+
+    ## Training on layer geneexpr started.
+
+    ## Training on layer geneexpr done.
+
+    ## Training on layer proteinexpr started.
+
+    ## Training on layer proteinexpr done.
+
+    ## Training on layer methylation started.
+
+    ## Training on layer methylation done.
+
+    ## Training for fold 4.
+
+    ## Training on layer geneexpr started.
+
+    ## Training on layer geneexpr done.
+
+    ## Training on layer proteinexpr started.
+
+    ## Training on layer proteinexpr done.
+
+    ## Training on layer methylation started.
+
+    ## Training on layer methylation done.
+
+    ## Training for fold 5.
+
+    ## Training on layer geneexpr started.
+
+    ## Training on layer geneexpr done.
+
+    ## Training on layer proteinexpr started.
+
+    ## Training on layer proteinexpr done.
+
+    ## Training on layer methylation started.
+
+    ## Training on layer methylation done.
+
+    ## Training for fold 6.
+
+    ## Training on layer geneexpr started.
+
+    ## Training on layer geneexpr done.
+
+    ## Training on layer proteinexpr started.
+
+    ## Training on layer proteinexpr done.
+
+    ## Training on layer methylation started.
+
+    ## Training on layer methylation done.
+
+    ## Training for fold 7.
+
+    ## Training on layer geneexpr started.
+
+    ## Training on layer geneexpr done.
+
+    ## Training on layer proteinexpr started.
+
+    ## Training on layer proteinexpr done.
+
+    ## Training on layer methylation started.
+
+    ## Training on layer methylation done.
+
+    ## Training for fold 8.
+
+    ## Training on layer geneexpr started.
+
+    ## Training on layer geneexpr done.
+
+    ## Training on layer proteinexpr started.
+
+    ## Training on layer proteinexpr done.
+
+    ## Training on layer methylation started.
+
+    ## Training on layer methylation done.
+
+    ## Training for fold 9.
+
+    ## Training on layer geneexpr started.
+
+    ## Training on layer geneexpr done.
+
+    ## Training on layer proteinexpr started.
+
+    ## Training on layer proteinexpr done.
+
+    ## Training on layer methylation started.
+
+    ## Training on layer methylation done.
+
+    ## Training for fold 10.
+
+    ## Training on layer geneexpr started.
+
+    ## Training on layer geneexpr done.
+
+    ## Training on layer proteinexpr started.
+
+    ## Training on layer proteinexpr done.
+
+    ## Training on layer methylation started.
+
+    ## Training on layer methylation done.
+
+    ## Training on layer geneexpr started.
+
+    ## Training on layer geneexpr done.
+
+    ## Training on layer proteinexpr started.
+
+    ## Training on layer proteinexpr done.
+
+    ## Training on layer methylation started.
+
+    ## Training on layer methylation done.
+
+``` r
 print(training)
 ```
 
     ## Training        : training
+    ## Problem typ     : classification
     ## Status          : Trained
     ## Number of layers: 4
-    ## Layers trained  : 4
-    ## n               : 70
+    ## Layers trained  : 5
+    ## p               : 131 | 160 | 160 |  3
+    ## n               :  50 |  50 |  50 | 64
 
 ## Wrapping
 
@@ -587,11 +932,10 @@ createTrainMetaLayer(training = training,
                      lrner_package = NULL,
                      lrn_fct = "mylasso",
                      param_train_list = list(nlambda = 100L),
-                     na_rm = TRUE)
+                     na_action = "na.impute")
 set.seed(5462)
 training <- fusemlr(training = training,
-                    use_var_sel = TRUE,
-                    verbose = FALSE)
+                    use_var_sel = TRUE)
 print(training)
 ```
 
