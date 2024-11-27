@@ -1,3 +1,12 @@
+---
+title: "fuseMLR"
+author: Cesaire J. K. Fouodo
+output: 
+  md_document:
+    variant: gfm
+    preserve_yaml: true
+---
+
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/imbs-hl/fuseMLR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/imbs-hl/fuseMLR/actions/workflows/R-CMD-check.yaml)
@@ -164,7 +173,7 @@ createTrainLayer(training = training,
                                          mtry = 1L,
                                      na.action = "na.learn"),
                  param_pred_list = list(),
-                 na_rm = FALSE)
+                 na_action = "na.keep")
 ```
 
     ## Training        : training
@@ -192,7 +201,7 @@ createTrainLayer(training = training,
                                          mtry = 1L,
                                      na.action = "na.learn"),
                  param_pred_list = list(),
-                 na_rm = FALSE)
+                 na_action = "na.keep")
 ```
 
     ## Training        : training
@@ -220,7 +229,7 @@ createTrainLayer(training = training,
                                          mtry = 1L,
                                      na.action = "na.learn"),
                  param_pred_list = list(),
-                 na_rm = FALSE)
+                 na_action = "na.keep")
 ```
 
     ## Training        : training
@@ -326,6 +335,9 @@ training <- fusemlr(training = training,
                     resampling_arg = list(y = multi_omics$training$target$disease,
                                           k = 10L))
 ```
+
+    ## Warning in fusemlr(training = training, use_var_sel = TRUE, resampling_method =
+    ## NULL, : Variable selection has been already performed.
 
     ## Training for fold 1.
 
@@ -488,6 +500,7 @@ print(training)
     ## Status          : Trained
     ## Number of layers: 4
     ## Layers trained  : 4
+    ## Var. sel. used  : Yes
     ## p               : 131 | 160 | 160 |  3
     ## n               :  50 |  50 |  50 | 64
 
@@ -500,8 +513,33 @@ Use `extractModel` to retrieve the list of stored models and
 
 ``` r
 models_list <- extractModel(training = training)
-data_list <- extractData(training = training)
+print(str(object = models_list, max.level = 1L))
 ```
+
+    ## List of 4
+    ##  $ geneexpr   :List of 14
+    ##  $ proteinexpr:List of 14
+    ##  $ methylation:List of 14
+    ##  $ meta_layer : 'weightedMeanLearner' Named num [1:3] 0.512 0.276 0.212
+    ##   ..- attr(*, "names")= chr [1:3] "geneexpr" "proteinexpr" "methylation"
+    ## NULL
+
+The list of four models (three random forests and one weighted
+meta-model) trained on each layer is returned.
+
+``` r
+data_list <- extractData(object = training)
+str(object = data_list, max.level = 1)
+```
+
+    ## List of 4
+    ##  $ geneexpr   :'data.frame': 50 obs. of  133 variables:
+    ##  $ proteinexpr:'data.frame': 50 obs. of  162 variables:
+    ##  $ methylation:'data.frame': 50 obs. of  162 variables:
+    ##  $ meta_layer :'data.frame': 64 obs. of  5 variables:
+
+The list of the four training data (the three simulated training
+modalities and the meta-data) is returned.
 
 #### E) Predicting
 
@@ -551,14 +589,30 @@ createTestLayer(testing = testing,
     ## p               : 131 | 160 | 160
     ## n               :  20 |  20 |  20
 
-- An upset plot of the training data: Visualize patient overlap across
-  layers.
+A look on testing data.
+
+``` r
+data_list <- extractData(object = testing)
+str(object = data_list, max.level = 1)
+```
+
+    ## List of 3
+    ##  $ geneexpr   :'data.frame': 20 obs. of  132 variables:
+    ##  $ proteinexpr:'data.frame': 20 obs. of  161 variables:
+    ##  $ methylation:'data.frame': 20 obs. of  161 variables:
+
+An upset plot of the training data: Visualize patient overlap across
+layers.
 
 ``` r
 upsetplot(object = testing, order.by = "freq")
 ```
 
 ![](README_files/figure-gfm/upsetplot_new-1.png)<!-- -->
+
+``` r
+# See also extractData(testing = testing)
+```
 
 - Predict the testing object.
 
@@ -640,9 +694,6 @@ print(perf_overlapping)
     ##    geneexpr proteinexpr methylation  meta_layer 
     ##   0.3093583   0.3448970   0.2932064   0.2993118
 
-Note that our example is based on simulated data for usage illustration;
-only one run is not enough to appreciate the performances of our models.
-
 # E - Interface and wrapping
 
 We distinguish common supervised learning arguments from method specific
@@ -682,7 +733,7 @@ createTrainLayer(training = training,
                                          kernel = 'radial',
                                          probability = TRUE),
                  param_pred_list = list(probability = TRUE),
-                 na_rm = TRUE,
+                 na_action = "na.keep",
                  x = "x",
                  y = "y",
                  object = "object",
@@ -699,6 +750,7 @@ createTrainLayer(training = training,
     ## Status          : Trained
     ## Number of layers: 4
     ## Layers trained  : 4
+    ## Var. sel. used  : Yes
     ## p               : 131 | 160 | 160 |  3
     ## n               :  50 |  50 |  50 | 64
 
@@ -725,6 +777,9 @@ set.seed(5462)
 training <- fusemlr(training = training,
                     use_var_sel = TRUE)
 ```
+
+    ## Warning in fusemlr(training = training, use_var_sel = TRUE): Variable selection
+    ## has been already performed.
 
     ## Training for fold 1.
 
@@ -887,6 +942,7 @@ print(training)
     ## Status          : Trained
     ## Number of layers: 4
     ## Layers trained  : 5
+    ## Var. sel. used  : Yes
     ## p               : 131 | 160 | 160 |  3
     ## n               :  50 |  50 |  50 | 64
 
@@ -947,7 +1003,7 @@ implemented the following ones.
 | Leaner              | Description                                                                                               |
 |:--------------------|:----------------------------------------------------------------------------------------------------------|
 | weightedMeanLearner | The weighted mean meta learner. It uses meta data to estimate the weights of the modality-specific models |
-| bestSpecificLearner | The best layer-specific model is used as meta model.                                                      |
+| bestLayerLearner    | The best layer-specific model is used as meta model.                                                      |
 
 © 2024 Institute of Medical Biometry and Statistics (IMBS). All rights
 reserved.

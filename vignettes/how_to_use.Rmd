@@ -165,9 +165,17 @@ We use `extractModel()` to retrieve the list of stored models and `extractData()
 
 ```{r basic_lrnr, include=TRUE, eval=TRUE}
 models_list <- extractModel(training = training)
-data_list <- extractData(training = training)
+print(str(object = models_list, max.level = 1L))
 ```
 
+The list of four models (three random forests and one weighted meta-model) trained on each layer is returned.
+
+```{r basic_data, include=TRUE, eval=TRUE}
+data_list <- extractData(object = training)
+str(object = data_list, max.level = 1)
+```
+
+The list of the four training data (the three simulated training modalities and the meta-data) is returned.
 
 # D - Predicting #
 
@@ -192,6 +200,13 @@ createTestLayer(testing = testing,
 createTestLayer(testing = testing,
                 test_layer_id = "methylation",
                 test_data = multi_omics$testing$methylation)
+```
+
+A look on testing data.
+
+```{r basic_test_data, include=TRUE, eval=TRUE}
+data_list <- extractData(object = testing)
+str(object = data_list, max.level = 1)
 ```
 
 We can also generate an upset plot to visualize patient overlap across testing layers.
@@ -238,7 +253,6 @@ perf_overlapping <- sapply(X = actual_pred[complete.cases(actual_pred),
 print(perf_overlapping)
 ```
 
-Note that our example is based on simulated data for usage illustration; only one run is not enough to appreciate the performances of our models.
 
 # E - Interface and wrapping #
 
@@ -294,12 +308,12 @@ mylasso <- function (x, y,
                      nlambda = 25,
                      nfolds = 5) {
   # Perform cross-validation to find the optimal lambda
-  cv_lasso <- cv.glmnet(x = as.matrix(x), y = y,
+  cv_lasso <- glmnet::cv.glmnet(x = as.matrix(x), y = y,
                         family = "binomial",
                         type.measure = "deviance",
                         nfolds = nfolds)
   best_lambda <- cv_lasso$lambda.min
-  lasso_best <- glmnet(x = as.matrix(x), y = y,
+  lasso_best <- glmnet::glmnet(x = as.matrix(x), y = y,
                        family = "binomial",
                        alpha = 1,
                        lambda = best_lambda
@@ -342,7 +356,7 @@ library(knitr)
 
 # Create a data frame
 data <- data.frame(
-  Leaner = c("weightedMeanLearner", "bestSpecificLearner"),
+  Leaner = c("weightedMeanLearner", "bestLayerLearner"),
   Description = c("The weighted mean meta learner. It uses meta data to estimate the weights of the modality-specific models", "The best layer-specific model is used as meta model.")
 )
 
