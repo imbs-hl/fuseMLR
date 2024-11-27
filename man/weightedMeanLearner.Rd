@@ -2,25 +2,30 @@
 % Please edit documentation in R/weightedMeanLearner.R
 \name{weightedMeanLearner}
 \alias{weightedMeanLearner}
-\title{The weighted mean meta learner}
+\title{The weighted mean meta-learner}
 \usage{
-weightedMeanLearner(x, y, weighted = TRUE)
+weightedMeanLearner(x, y, weighted = TRUE, perf = NULL)
 }
 \arguments{
-\item{x}{\code{data.frame(1)} \cr
-\code{data.frame} of predictors.}
+\item{x}{\code{data.frame} \cr
+Modality-specific predictions.}
 
-\item{y}{\code{vector(1)} \cr
-Target observations. Either binary or two level factor variable.}
+\item{y}{\code{vector} \cr
+True target values. If classification, either binary or two level factor variable.}
 
 \item{weighted}{\cr
-If TRUE, the weighted sum is computed.}
+If TRUE, the weighted sum is computed. Weights are estimated based on Brier Score
+for classification setting and mean squared error for regression.}
+
+\item{perf}{\code{function} \cr
+Function to compute layer-specific performance of learners. If NULL, the Brier Score (classification) or a mean squared error (regression) is used by default as performance measure.
+Otherwise, the performance function must accept two parameters: \code{observed} (observed values) and \code{predicted} (predicted values).}
 }
 \value{
-A model object of class \code{weightedMeanLeaner}.
+A model object of class \code{weightedMeanLearner}.
 }
 \description{
-Layer weights are estimated for each layer based on Brier score.
+Modality-specific learner are assessed and weighted based on their predictions.
 }
 \examples{
 set.seed(20240624L)

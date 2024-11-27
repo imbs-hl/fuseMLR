@@ -171,14 +171,17 @@ TrainLayer <- R6Class("TrainLayer",
                         #' @description
                         #' Predicts values for the new layer taking as argument.
                         #'
-                        #' @param new_layer `TrainLayer()` \cr
-                        #' @param ind_subset `vector()` \cr
+                        #' @param new_layer `TrainLayer` \cr
+                        #' @param use_var_sel `boolean(1)` \cr
+                        #' If TRUE, selected variables available at each layer are used.
+                        #' @param ind_subset `vector` \cr
                         #'
                         #' @return
                         #' A new [PredictLayer] object with the predicted data is returned.
                         #' @export
                         #'
                         predict = function (new_layer,
+                                            use_var_sel,
                                             ind_subset = NULL) {
                           k = self$getId()
                           # Layer IDs must match together.
@@ -191,6 +194,7 @@ TrainLayer <- R6Class("TrainLayer",
                           # Predicting: Data and model exist on this layer.
                           model = self$getModel()
                           pred_data = model$predict(testing_data = testing_data,
+                                                    use_var_sel,
                                                     ind_subset = ind_subset)
                           # Initialize a predicted layer to store predictions
                           pred_layer = PredictLayer$new(

@@ -7,7 +7,7 @@
 extractModel(training)
 }
 \arguments{
-\item{training}{(\code{Training(1)}) \cr
+\item{training}{\code{Training} \cr
 The \link{Training} object of interest.}
 }
 \value{

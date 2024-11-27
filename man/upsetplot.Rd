@@ -7,7 +7,7 @@
 upsetplot(object, ...)
 }
 \arguments{
-\item{object}{\verb{Training(1) or Testing(1)} \cr
+\item{object}{\verb{Training or Testing} \cr
 Training or testing object for each the upset plot will be created.}
 
 \item{...}{\cr

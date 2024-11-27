@@ -1,7 +1,7 @@
 Package: fuseMLR
 Type: Package
 Title: Fuse machine leaning in R
-Version: 0.1.0
+Version: 0.1.1
 Author: Cesaire J. K. Fouodo
 Maintainer: The package maintainer <cesaire.kuetefouodo@uni-luebeck.de>
 Description: More about what it does (maybe more than one line)
@@ -17,6 +17,7 @@ Suggests:
     UpSetR (>= 1.4.0),
     caret,
     ranger,
+    glmnet,
     Boruta,
     knitr,
     rmarkdown
@@ -25,7 +26,6 @@ Depends: R (>= 3.6.0)
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Collate: 
-    'BestSpecificLearner.R'
     'Data.R'
     'HashTable.R'
     'Lrner.R'
@@ -44,9 +44,10 @@ Collate:
     'TrainMetaLayer.R'
     'Training.R'
     'VarSel.R'
+    'bestLayerLearner.R'
     'multi_omics.R'
+    'predict.bestLayerLearner.R'
     'weightedMeanLearner.R'
-    'predict.bestSpecificLearner.R'
     'predict.weightedMeanLearner.R'
     'testingFunctions.R'
     'trainingFunctions.R'

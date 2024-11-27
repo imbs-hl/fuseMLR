@@ -161,7 +161,7 @@ ID value}
 Predict target values for the new data
 (from class \link{TestData}) taken as into.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Model$predict(testing_data, ind_subset = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Model$predict(testing_data, use_var_sel, ind_subset = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -169,6 +169,9 @@ Predict target values for the new data
 \describe{
 \item{\code{testing_data}}{\code{TestData(1)} \cr
 An object from class \link{TestData}.}
+
+\item{\code{use_var_sel}}{\code{boolean(1)} \cr
+If TRUE, selected variables available at each layer are used.}
 
 \item{\code{ind_subset}}{\code{vector(1)} \cr
 Subset of individual IDs to be predicted.}

@@ -7,13 +7,13 @@
 createTestLayer(testing, test_layer_id, test_data)
 }
 \arguments{
-\item{testing}{(\code{Testing(1)}) \cr
+\item{testing}{\code{Testing} \cr
 Testing object where the created layer will be stored.}
 
-\item{test_layer_id}{(\code{character(1)}) \cr
+\item{test_layer_id}{\code{character} \cr
 ID of the testing layer to be created.}
 
-\item{test_data}{(\code{data.frame(1)}) \cr
+\item{test_data}{\code{data.frame} \cr
 Data modality to be stored in \link{TestData}.}
 }
 \value{

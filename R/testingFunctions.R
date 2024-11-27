@@ -2,11 +2,11 @@
 #' @description
 #' Creates a [Testing] object.
 #'
-#' @param id (`character(1)`) \cr
+#' @param id `character` \cr
 #' Testing id.
-#' @param ind_col (`character(1)`) \cr
+#' @param ind_col `character` \cr
 #' Name of column of individuals IDs in testing data.frame.
-#' @param verbose (`boolean`) \cr
+#' @param verbose `boolean` \cr
 #' Warning messages will be displayed if set to TRUE.
 #' @return
 #' A [Testing] object.
@@ -27,11 +27,11 @@ createTesting = function (id,
 #' @description
 #' Creates and store a [TestLayer] on the [Testing] object passed as argument.
 #'
-#' @param testing (`Testing(1)`) \cr
+#' @param testing `Testing` \cr
 #' Testing object where the created layer will be stored.
-#' @param test_layer_id (`character(1)`) \cr
+#' @param test_layer_id `character` \cr
 #' ID of the testing layer to be created.
-#' @param test_data (`data.frame(1)`) \cr
+#' @param test_data `data.frame` \cr
 #' Data modality to be stored in [TestData].
 #'
 #' @return
@@ -59,7 +59,7 @@ createTestLayer = function (testing,
 #' @description
 #' Summaries a fuseMLR [Testing] object.
 #'
-#' @param object (`Testing(1)`) \cr
+#' @param object `Testing` \cr
 #' The [Testing] object of interest.
 #' @param ... \cr
 #' Further arguments.

@@ -55,6 +55,8 @@ Use the function \code{train} for training and \code{predict} for predicting.
 \item \href{#method-Training-getIndCol}{\code{Training$getIndCol()}}
 \item \href{#method-Training-getTarget}{\code{Training$getTarget()}}
 \item \href{#method-Training-getVerbose}{\code{Training$getVerbose()}}
+\item \href{#method-Training-getUseVarSel}{\code{Training$getUseVarSel()}}
+\item \href{#method-Training-getVarSelDone}{\code{Training$getVarSelDone()}}
 \item \href{#method-Training-increaseNbTrainedLayer}{\code{Training$increaseNbTrainedLayer()}}
 \item \href{#method-Training-checkTargetExist}{\code{Training$checkTargetExist()}}
 \item \href{#method-Training-getTargetObj}{\code{Training$getTargetObj()}}
@@ -226,7 +228,8 @@ Trains the current object. All leaners and the meta learner are trained.
   ind_subset = NULL,
   use_var_sel = FALSE,
   resampling_method = NULL,
-  resampling_arg = list()
+  resampling_arg = list(),
+  seed = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -245,8 +248,8 @@ Function for internal validation. If not specify, the \code{resampling} function
 \item{\code{resampling_arg}}{(\code{list(1)}) \cr
 List of arguments to be passed to the function.}
 
-\item{\code{verbose}}{(\code{boolean}) \cr
-Warning messages will be displayed if set to TRUE.}
+\item{\code{seed}}{(\code{integer(1)}) \cr
+Random seed. Default is NULL, which generates the seed from \code{R}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -446,6 +449,26 @@ Getter of the target variable name.
 Getter of the verbose setting.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Training$getVerbose()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Training-getUseVarSel"></a>}}
+\if{latex}{\out{\hypertarget{method-Training-getUseVarSel}{}}}
+\subsection{Method \code{getUseVarSel()}}{
+Getter of the use_var_sel field.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Training$getUseVarSel()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Training-getVarSelDone"></a>}}
+\if{latex}{\out{\hypertarget{method-Training-getVarSelDone}{}}}
+\subsection{Method \code{getVarSelDone()}}{
+Getter of the use_var_sel field.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Training$getVarSelDone()}\if{html}{\out{</div>}}
 }
 
 }

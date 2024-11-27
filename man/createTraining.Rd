@@ -30,7 +30,7 @@ Name of the target variable.}
 Either "classification" or "regression".}
 
 \item{verbose}{\code{boolean} \cr
-Warning messages will be displayed if set to TRUE.}
+Warning and processing information (including those of cross-validation) will be displayed if set to TRUE.}
 }
 \value{
 The created \link{Training} object is returned.

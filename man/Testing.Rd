@@ -28,6 +28,7 @@ A Testing object is structured as followed:
 \item \href{#method-Testing-getTestMetaLayer}{\code{Testing$getTestMetaLayer()}}
 \item \href{#method-Testing-getIndCol}{\code{Testing$getIndCol()}}
 \item \href{#method-Testing-getVerbose}{\code{Testing$getVerbose()}}
+\item \href{#method-Testing-getData}{\code{Testing$getData()}}
 \item \href{#method-Testing-upset}{\code{Testing$upset()}}
 \item \href{#method-Testing-summary}{\code{Testing$summary()}}
 }
@@ -131,6 +132,19 @@ Getter of the verbose setting.
 \if{html}{\out{<div class="r">}}\preformatted{Testing$getVerbose()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Testing-getData"></a>}}
+\if{latex}{\out{\hypertarget{method-Testing-getData}{}}}
+\subsection{Method \code{getData()}}{
+Retrieve meta data.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Testing$getData()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+A \code{list} containing all (base and meta) models.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Testing-upset"></a>}}

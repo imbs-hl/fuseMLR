@@ -9,24 +9,29 @@ fusemlr(
   ind_subset = NULL,
   use_var_sel = FALSE,
   resampling_method = NULL,
-  resampling_arg = list()
+  resampling_arg = list(),
+  seed = NULL
 )
 }
 \arguments{
-\item{training}{\code{Training(1)} \cr
+\item{training}{\code{Training} \cr
 Training object where the created layer will be stored.}
 
-\item{ind_subset}{\code{vector(1)} \cr
+\item{ind_subset}{\code{vector} \cr
 ID subset to be used for training.}
 
-\item{use_var_sel}{\code{boolean(1)} \cr
-If TRUE, variable selection is performed before training.}
+\item{use_var_sel}{\code{boolean} \cr
+If TRUE and no variable selection has been performed for the provide training object, then a variable selection will proceed the training.
+Otherwise, if variable selection has been previously performed, the selected variables will be use for training.}
 
-\item{resampling_method}{\verb{function(1)} \cr
+\item{resampling_method}{\code{function} \cr
 Function for internal validation. If not specify, the \code{resampling} function from the package \code{caret} is used for a 10-folds cross-validation.}
 
-\item{resampling_arg}{\code{list(1)} \cr
+\item{resampling_arg}{\code{list} \cr
 List of arguments to be passed to the function.}
+
+\item{seed}{(\code{integer}) \cr
+Random seed used for resampling. Default is NULL, which generates the seed from \code{R}.}
 }
 \value{
 The current object is returned, with each learner trained on each layer.

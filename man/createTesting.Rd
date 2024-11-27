@@ -7,13 +7,13 @@
 createTesting(id, ind_col, verbose = TRUE)
 }
 \arguments{
-\item{id}{(\code{character(1)}) \cr
+\item{id}{\code{character} \cr
 Testing id.}
 
-\item{ind_col}{(\code{character(1)}) \cr
+\item{ind_col}{\code{character} \cr
 Name of column of individuals IDs in testing data.frame.}
 
-\item{verbose}{(\code{boolean}) \cr
+\item{verbose}{\code{boolean} \cr
 Warning messages will be displayed if set to TRUE.}
 }
 \value{

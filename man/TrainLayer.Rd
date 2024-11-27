@@ -178,15 +178,18 @@ The current layer is returned with the resulting model.
 \subsection{Method \code{predict()}}{
 Predicts values for the new layer taking as argument.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TrainLayer$predict(new_layer, ind_subset = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TrainLayer$predict(new_layer, use_var_sel, ind_subset = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{new_layer}}{\code{TrainLayer()} \cr}
+\item{\code{new_layer}}{\code{TrainLayer} \cr}
 
-\item{\code{ind_subset}}{\code{vector()} \cr}
+\item{\code{use_var_sel}}{\code{boolean(1)} \cr
+If TRUE, selected variables available at each layer are used.}
+
+\item{\code{ind_subset}}{\code{vector} \cr}
 }
 \if{html}{\out{</div>}}
 }

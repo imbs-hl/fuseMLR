@@ -7,7 +7,7 @@
 \method{summary}{Testing}(object, ...)
 }
 \arguments{
-\item{object}{(\code{Testing(1)}) \cr
+\item{object}{\code{Testing} \cr
 The \link{Testing} object of interest.}
 
 \item{...}{\cr

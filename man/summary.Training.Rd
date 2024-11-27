@@ -7,7 +7,7 @@
 \method{summary}{Training}(object, ...)
 }
 \arguments{
-\item{object}{\code{Training(1)} \cr
+\item{object}{\code{Training} \cr
 The \link{Training} object of interest.}
 
 \item{...}{\cr

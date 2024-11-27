@@ -31,55 +31,55 @@ Training object where the created layer will be stored.}
 \item{train_layer_id}{\code{character} \cr
 ID of the \link{TrainLayer} to be created.}
 
-\item{train_data}{\code{data.frame(1)} \cr
+\item{train_data}{\code{data.frame} \cr
 Data modality to be stored in \link{TrainData}.}
 
-\item{varsel_package}{\code{character(1)} \cr
+\item{varsel_package}{\code{character} \cr
 Name of the package containing the function that implements the variable selection algorithm.\cr}
 
-\item{varsel_fct}{\code{character(1)} \cr
+\item{varsel_fct}{\code{character} \cr
 Name of the function that performs variable selection. For the default value NULL no variable selection will be performed.}
 
 \item{varsel_param}{\code{list} \cr
 List of arguments to be passed to \code{varsel_fct}.}
 
-\item{lrner_package}{\code{character(1)} \cr
+\item{lrner_package}{\code{character} \cr
 Name of the package containing the function that implements the learning algorithm.\cr}
 
-\item{lrn_fct}{\code{character(1)} \cr
+\item{lrn_fct}{\code{character} \cr
 Name of the function that that implements the learning algorithm.}
 
-\item{param_train_list}{\code{character(1)} \cr
+\item{param_train_list}{\code{character} \cr
 List of arguments to be passed to \code{lrn_fct}.}
 
-\item{param_pred_list}{\code{character(1)} \cr
+\item{param_pred_list}{\code{character} \cr
 List of arguments to be passed to \code{predict} when computing predictions.}
 
-\item{na_action}{\code{character(1)}\cr
+\item{na_action}{\code{character}\cr
 Handling of missing values in data a modality. Set to "na.keep" to keep missing values, or "na.rm" to remove individuals with missing values. Imputation of missing values in data modalities ist not yet handled.}
 
-\item{x}{\code{character(1)} \cr
+\item{x}{\code{character} \cr
 If the name of the argument used by the provided original functions to pass
 the matrix of independent variable is not \code{x}, use this argument to specify how it is callled in the provided function.}
 
-\item{y}{\code{character(1)} \cr
+\item{y}{\code{character} \cr
 If the name of the argument used by the provided original functions to pass
 the target variable is not \code{y}, use this argument to specify how it is callled in the provided function.}
 
-\item{object}{\code{character(1)} \cr
+\item{object}{\code{character} \cr
 The generic function \code{predict} uses a parameter \code{object} to pass a model.
 If the corresponding argument is named differently in your predict function, specify the name.}
 
-\item{data}{\code{character(1)} \cr
+\item{data}{\code{character} \cr
 The generic function \code{predict} uses a parameter \code{data} to pass new data.
 If the corresponding argument is named differently in your predict function, specify the name.}
 
-\item{extract_pred_fct}{\verb{character(1) or function(1)} \cr
+\item{extract_pred_fct}{\verb{character or function} \cr
 If the predict function that is called for the model does not return a vector, then
 use this argument to specify a (or a name of a) function that can be used to extract vector of predictions.
-Default value is NULL, if predictions are in a column.}
+Default value is NULL, if predictions are rerturned as vector.}
 
-\item{extract_var_fct}{\verb{character(1) or function(1)} \cr
+\item{extract_var_fct}{\verb{character or function} \cr
 If the variable selection function that is called does not return a vector, then
 use this argument to specify a (or a name of a) function that can be used to extract vector of selected variables.
 Default value is NULL, if selected variables are in a vector.}

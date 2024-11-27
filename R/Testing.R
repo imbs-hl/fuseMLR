@@ -123,6 +123,23 @@ Testing <- R6Class("Testing",
                      return(private$verbose)
                    },
                    #' @description
+                   #' Retrieve meta data.
+                   #'
+                   #' @return
+                   #' A \code{list} containing all (base and meta) models.
+                   #' @export
+                   #'
+                   getData = function() {
+                     layers = self$getKeyClass()
+                     layers = layers[layers$class %in% "TestLayer", ]
+                     all_data = list()
+                     for (k in layers$key) {
+                       layer = self$getFromHashTable(key = k)
+                       all_data[[layer$getId()]] = layer$getTestData()$getDataFrame()
+                     }
+                     return(all_data)
+                   },
+                   #' @description
                    #' UpSet plot to show an overview of the overlap of individuals across various layers.
                    #'
                    #' @param ... \cr

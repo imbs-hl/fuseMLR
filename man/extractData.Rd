@@ -4,15 +4,15 @@
 \alias{extractData}
 \title{extractData}
 \usage{
-extractData(training)
+extractData(object)
 }
 \arguments{
-\item{training}{\code{Training(1)} \cr
-The \link{Training} object of interest.}
+\item{object}{\verb{Training or Testing} \cr
+The object of interest.}
 }
 \value{
 A list of data is returned.
 }
 \description{
-Extracts data stored on each layers; base and meta data are extracted.
+Extracts data stored on each layers; base and meta data (for Training) are extracted.
 }

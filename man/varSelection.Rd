@@ -7,14 +7,14 @@
 varSelection(training, ind_subset = NULL)
 }
 \arguments{
-\item{training}{\code{Training(1)} \cr
+\item{training}{\code{Training} \cr
 Training object where the created layer will be stored.}
 
-\item{ind_subset}{\code{vector(1)} \cr
+\item{ind_subset}{\code{vector} \cr
 ID subset of individuals to be used for variable selection.}
 }
 \value{
-The current layer is returned with the resulting model.
+A \code{data.frame} with two columns: layer and selected variables.
 }
 \description{
 Variable selection on the current training object.

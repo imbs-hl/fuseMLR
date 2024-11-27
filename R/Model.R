@@ -126,6 +126,8 @@ Model <- R6Class("Model",
                    #'
                    #' @param testing_data `TestData(1)` \cr
                    #' An object from class [TestData].
+                   #' @param use_var_sel `boolean(1)` \cr
+                   #' If TRUE, selected variables available at each layer are used.
                    #' @param ind_subset `vector(1)` \cr
                    #' Subset of individual IDs to be predicted.
                    #' @param ...
@@ -137,7 +139,9 @@ Model <- R6Class("Model",
                    #'
                    #' @export
                    #'
-                   predict = function (testing_data, ind_subset = NULL) {
+                   predict = function (testing_data,
+                                       use_var_sel,
+                                       ind_subset = NULL) {
                      tmp_lrner = self$getLrner()
                      if(tmp_lrner$getTrainLayer()$getId() != testing_data$getTestLayer()$getId()) {
                        stop("Learner and data must belong to the same layer.")
@@ -171,7 +175,7 @@ Model <- R6Class("Model",
                      training_var = colnames(private$train_data$getData())
                      restricted_testing_data = testing_data$getData()
                      if ("TrainLayer" %in% class(private$train_layer)) {
-                       if (private$train_layer$checkVarSelExist()) {
+                       if (private$train_layer$checkVarSelExist() & use_var_sel) {
                          var_sel_obj = private$train_layer$getVarSel()
                          var_sel = var_sel_obj$getVarSubSet()
                          if (!is.null(var_sel)) {
