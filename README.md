@@ -1,12 +1,3 @@
----
-title: "fuseMLR"
-author: Cesaire J. K. Fouodo
-output: 
-  md_document:
-    variant: gfm
-    preserve_yaml: true
----
-
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/imbs-hl/fuseMLR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/imbs-hl/fuseMLR/actions/workflows/R-CMD-check.yaml)
