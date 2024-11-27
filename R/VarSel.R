@@ -26,14 +26,15 @@ VarSel <- R6Class("VarSel",
                     #' Layer on which the learner is stored.
                     #' @param train_layer (`TrainLayer(1)`) \cr
                     #'  The training layer where to store the learner.
-                    #' @param na_rm (`logical(1)`) \cr
+                    #' @param na_action `character(1)`\cr
+                    #' Handling of missing values in meta-data. Set to "na.keep" to keep missing values, "na.rm" to remove individuals with missing values or "na.impute" (only applicable on meta-data) to impute missing values in meta-data. Only median and mode based imputations are actually handled. With the "na.keep" option, ensure that the provided learner can handle missing values.
                     #' If \code{TRUE}, the individuals with missing predictor values will be removed from the training dataset.
                     initialize = function (id,
                                            package = NULL,
                                            varsel_fct,
                                            varsel_param,
                                            train_layer,
-                                           na_rm = TRUE) {
+                                           na_action = "na.rm") {
                       private$id = id
                       private$package = package
                       private$varsel_fct = varsel_fct
@@ -46,11 +47,26 @@ VarSel <- R6Class("VarSel",
                       if (!any(c("TrainLayer") %in% class(train_layer))) {
                         stop("A variable selection tool can only belong to object of class TrainLayer.")
                       }
-                      if (!is.logical(na_rm)) {
-                        stop("na.rm must be a logical value\n")
+                      # if (!is.logical(na_rm)) {
+                      #   stop("na.rm must be a logical value\n")
+                      # } else {
+                      #   private$na_rm = na_rm
+                      # }
+
+                      if (na_action == "na.keep") {
+                        na_rm = FALSE
                       } else {
-                        private$na_rm = na_rm
+                        if (na_action == "na.rm") {
+                          na_rm = TRUE
+                        } else {
+                          if (na_action == "na.impute") {
+                              stop("Imputation is not yet handled for data modalities. Please use either the 'na.keep' or the 'na.rm' option.")
+                          } else {
+                            stop("na_action must be one of 'na.fails' or 'na.rm'.")
+                          }
+                        }
                       }
+                      private$na_rm = na_rm
                       # Remove VarSel if already existing
                       if (train_layer$checkVarSelExist()) {
                           key_class = train_layer$getKeyClass()

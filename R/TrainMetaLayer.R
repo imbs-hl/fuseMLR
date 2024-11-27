@@ -157,7 +157,6 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                             #' The list of parameters to call the imputation function. Not yet implemented!
                             #' @return
                             #' A new object with the predicted values is returned.
-                            #' @export
                             #'
                             impute = function (impute_fct = NULL,
                                                impute_param = NULL) {

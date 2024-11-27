@@ -13,19 +13,19 @@ fusemlr(
 )
 }
 \arguments{
-\item{training}{(\code{Training(1)}) \cr
+\item{training}{\code{Training(1)} \cr
 Training object where the created layer will be stored.}
 
-\item{ind_subset}{(\code{vector(1)}) \cr
+\item{ind_subset}{\code{vector(1)} \cr
 ID subset to be used for training.}
 
 \item{use_var_sel}{\code{boolean(1)} \cr
 If TRUE, variable selection is performed before training.}
 
-\item{resampling_method}{(\verb{function(1)}) \cr
+\item{resampling_method}{\verb{function(1)} \cr
 Function for internal validation. If not specify, the \code{resampling} function from the package \code{caret} is used for a 10-folds cross-validation.}
 
-\item{resampling_arg}{(\code{list(1)}) \cr
+\item{resampling_arg}{\code{list(1)} \cr
 List of arguments to be passed to the function.}
 }
 \value{

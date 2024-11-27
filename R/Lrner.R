@@ -28,15 +28,15 @@ Lrner <- R6Class("Lrner",
                    #' Learn parameters.
                    #' @param train_layer (`TrainLayer(1)`) \cr
                    #' Layer on which the learner is stored.
-                   #' @param na_rm (`logical(1)`) \cr
-                   #' If \code{TRUE}, the individuals with missing predictor values will be removed from the training dataset.
+                   #' @param na_action `character(1)`\cr
+                   #' Handling of missing values. Set to "na.keep" to keep missing values, "na.rm" to remove individuals with missing values or "na.impute" (only applicable on meta-data) to impute missing values in meta-data. Only median and mode based imputations are actually handled. With the "na.keep" option, ensure that the provided learner can handle missing values.
                    initialize = function (id,
                                           package = NULL,
                                           lrn_fct,
                                           param_train_list,
                                           param_pred_list = list(),
                                           train_layer,
-                                          na_rm = TRUE) {
+                                          na_action = "na.rm") {
                      private$id = id
                      private$package = package
                      private$lrn_fct = lrn_fct
@@ -50,11 +50,34 @@ Lrner <- R6Class("Lrner",
                      if (!any(c("TrainLayer", "TrainMetaLayer") %in% class(train_layer))) {
                        stop("A Lrner can only belong to a TrainLayer or a TrainMetaLayer object.")
                      }
-                     if (!is.logical(na_rm)) {
-                       stop("na.rm must be a logical value\n")
+                     # if (!is.logical(na_rm)) {
+                     #   stop("na.rm must be a logical value\n")
+                     # } else {
+                     #   private$na_rm = na_rm
+                     # }
+                     impute = FALSE
+                     if (na_action == "na.keep") {
+                       na_rm = FALSE
                      } else {
-                       private$na_rm = na_rm
+                       if (na_action == "na.rm") {
+                         na_rm = TRUE
+                       } else {
+                         if (na_action == "na.impute") {
+                           if ("TrainLayer" %in% class(train_layer)) {
+                             stop("Imputation is not yet handled for data modalities. Please use either the 'na.keep' or the 'na.rm' option.")
+                           }
+                           na_rm = FALSE
+                           impute = TRUE
+                           # Imputation takes place in the Training class, since it
+                           # happens after meta-data have been generated.
+                           train_layer$getTraining()$setImpute(impute = impute)
+                         } else {
+                           stop("na_action must be one of 'na.fails', 'na.rm' or 'na.impute'.")
+                         }
+                       }
                      }
+                     private$na_rm = na_rm
+                     # Instantiate a Lrner object
                      # Remove learner if already existing
                      if (train_layer$checkLrnerExist()) {
                        key_class = train_layer$getKeyClass()
@@ -135,7 +158,7 @@ Lrner <- R6Class("Lrner",
                        }
                      }
                      param_interface = data.frame(standard = c("x_name", "y_name", "object_name", "data_name"),
-                                               original = c(x, y, object, data))
+                                                  original = c(x, y, object, data))
                      private$param_interface = param_interface
                      private$extract_pred_fct = extract_pred_fct
                    },

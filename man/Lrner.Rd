@@ -39,7 +39,7 @@ Initialize a default parameters list.
   param_train_list,
   param_pred_list = list(),
   train_layer,
-  na_rm = TRUE
+  na_action = "na.rm"
 )}\if{html}{\out{</div>}}
 }
 
@@ -65,8 +65,8 @@ Learn parameters.}
 \item{\code{train_layer}}{(\code{TrainLayer(1)}) \cr
 Layer on which the learner is stored.}
 
-\item{\code{na_rm}}{(\code{logical(1)}) \cr
-If \code{TRUE}, the individuals with missing predictor values will be removed from the training dataset.}
+\item{\code{na_action}}{\code{character(1)}\cr
+Handling of missing values. Set to "na.keep" to keep missing values, "na.rm" to remove individuals with missing values or "na.impute" (only applicable on meta-data) to impute missing values in meta-data. Only median and mode based imputations are actually handled. With the "na.keep" option, ensure that the provided learner can handle missing values.}
 }
 \if{html}{\out{</div>}}
 }

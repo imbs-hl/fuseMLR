@@ -176,7 +176,7 @@ test_that("Training: all tests", {
     lrner_meta <- Lrner$new(id = "weighted",
                             lrn_fct = "weightedMeanLearner",
                             param_train_list = list(),
-                            na_rm = FALSE,
+                            na_action = "na.keep",
                             train_layer = tl_meta)
   })
 

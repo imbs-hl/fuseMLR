@@ -7,13 +7,13 @@
 \method{predict}{Training}(object, testing, ind_subset = NULL)
 }
 \arguments{
-\item{object}{(\code{Training(1)}) \cr
+\item{object}{\code{Training(1)} \cr
 Training object to be used to compute predictions.}
 
-\item{testing}{(\code{Testing(1)}) \cr
+\item{testing}{\code{Testing(1)} \cr
 A new testing object to be predicted.}
 
-\item{ind_subset}{(\code{vector(1)}) \cr
+\item{ind_subset}{\code{vector(1)} \cr
 Vector of IDs to be predicted.}
 }
 \value{

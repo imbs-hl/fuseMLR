@@ -20,44 +20,44 @@ createTrainMetaLayer(
 )
 }
 \arguments{
-\item{training}{(\code{Training(1)}) \cr
+\item{training}{\code{Training(1)} \cr
 Training object where the created layer will be stored.}
 
-\item{meta_layer_id}{(\code{character(1)}) \cr
+\item{meta_layer_id}{\code{character(1)} \cr
 ID of the layer to be created.}
 
-\item{lrner_package}{(\code{character(1)}) \cr
+\item{lrner_package}{\code{character(1)} \cr
 Name of the package containing the function that implements the learning algorithm.\cr}
 
-\item{lrn_fct}{\verb{(character(1)} \cr
+\item{lrn_fct}{\code{character(1)} \cr
 Name of the function that that implements the learning algorithm.}
 
-\item{param_train_list}{\verb{(character(1)} \cr
+\item{param_train_list}{\code{character(1)} \cr
 List of arguments to be passed to \code{lrn_fct}.}
 
-\item{param_pred_list}{\verb{(character(1)} \cr
+\item{param_pred_list}{\code{list(1)} \cr
 List of arguments to be passed to \code{predict} when computing predictions.}
 
-\item{na_action}{\cr
+\item{na_action}{\code{character(1)}\cr
 Handling of missing values in meta-data. Set to "na.keep" to keep missing values, "na.rm" to remove individuals with missing values or "na.impute" to impute missing values in meta-data. Only median and mode based imputations are actually handled. With the "na.keep" option, ensure that the provided meta-learner can handle missing values.}
 
-\item{x}{(\code{character(1)}) \cr
+\item{x}{\code{character(1)} \cr
 If the name of the argument used by the provided original functions to pass
 the matrix of independent variable is not \code{x}, use this argument to specify how it is callled in the provided function.}
 
-\item{y}{(\code{character(1)}) \cr
+\item{y}{\code{character(1)} \cr
 If the name of the argument used by the provided original functions to pass
 the target variable is not \code{y}, use this argument to specify how it is callled in the provided function.}
 
-\item{object}{(\code{character(1)}) \cr
+\item{object}{\code{character(1)} \cr
 The generic function \code{predict} uses a parameter \code{object} to pass a model.
 If the corresponding argument is named differently in your predict function, specify the name.}
 
-\item{data}{(\code{character(1)}) \cr
+\item{data}{\code{character(1)} \cr
 The generic function \code{predict} uses a parameter \code{data} to pass new data.
 If the corresponding argument is named differently in your predict function, specify the name.}
 
-\item{extract_pred_fct}{(\verb{character(1) or function(1)}) \cr
+\item{extract_pred_fct}{\verb{character(1) or function(1)} \cr
 If the predict function that is called for the model does not return a vector, then
 use this argument to specify a (or a name of a) function that can be used to extract vector of predictions.
 Default value is NULL, if predictions are in a vector.}

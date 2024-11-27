@@ -6,29 +6,30 @@
 \usage{
 createTraining(
   id,
+  target_df,
   ind_col,
   target,
-  target_df,
   problem_type = "classification",
   verbose = TRUE
 )
 }
 \arguments{
-\item{id}{(\code{character(1)}) \cr}
+\item{id}{\code{character} \cr
+Training's ID.}
 
-\item{ind_col}{(\code{character(1)}) \cr
-Name of column of individuals IDS.}
+\item{target_df}{\code{data.frame} \cr
+Observed target values. A data frame with two columns: individual IDs and response variable values.}
 
-\item{target}{(\code{character(1)}) \cr
+\item{ind_col}{\code{character} \cr
+Name of column of individuals IDs.}
+
+\item{target}{\code{character} \cr
 Name of the target variable.}
 
-\item{target_df}{(\code{data.frame(1)}) \cr
-Data frame with two columns: individual IDs and response variable values.}
-
-\item{problem_type}{(\code{character}) \cr
+\item{problem_type}{\code{character} \cr
 Either "classification" or "regression".}
 
-\item{verbose}{(\code{boolean}) \cr
+\item{verbose}{\code{boolean} \cr
 Warning messages will be displayed if set to TRUE.}
 }
 \value{

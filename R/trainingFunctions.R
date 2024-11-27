@@ -2,24 +2,25 @@
 #' @description
 #' Creates a [Training] object.
 #'
-#' @param id (`character(1)`) \cr
-#' @param ind_col (`character(1)`) \cr
-#' Name of column of individuals IDS.
-#' @param target (`character(1)`) \cr
+#' @param id `character` \cr
+#' Training's ID.
+#' @param target_df `data.frame` \cr
+#' Observed target values. A data frame with two columns: individual IDs and response variable values.
+#' @param ind_col `character` \cr
+#' Name of column of individuals IDs.
+#' @param target `character` \cr
 #' Name of the target variable.
-#' @param target_df (`data.frame(1)`) \cr
-#' Data frame with two columns: individual IDs and response variable values.
-#' @param problem_type (`character`) \cr
+#' @param problem_type `character` \cr
 #' Either "classification" or "regression".
-#' @param verbose (`boolean`) \cr
+#' @param verbose `boolean` \cr
 #' Warning messages will be displayed if set to TRUE.
 #' @return
 #' The created [Training] object is returned.
 #' @export
 createTraining = function (id,
+                           target_df,
                            ind_col,
                            target,
-                           target_df,
                            problem_type = "classification",
                            verbose = TRUE) {
   training = Training$new(
@@ -37,45 +38,45 @@ createTraining = function (id,
 #' @description
 #' Creates and store a [TrainLayer] on the [Training] object passed as argument.
 #'
-#' @param training (`Training(1)`) \cr
+#' @param training `Training` \cr
 #' Training object where the created layer will be stored.
-#' @param train_layer_id (`character(1)`) \cr
+#' @param train_layer_id `character` \cr
 #' ID of the [TrainLayer] to be created.
-#' @param train_data (`data.frame(1)`) \cr
+#' @param train_data `data.frame(1)` \cr
 #' Data modality to be stored in [TrainData].
-#' @param varsel_package (`character(1)`) \cr
+#' @param varsel_package `character(1)` \cr
 #' Name of the package containing the function that implements the variable selection algorithm.\cr
-#' @param varsel_fct (`character(1)`) \cr
+#' @param varsel_fct `character(1)` \cr
 #' Name of the function that performs variable selection. For the default value NULL no variable selection will be performed.
-#' @param varsel_param (`list`) \cr
+#' @param varsel_param `list` \cr
 #' List of arguments to be passed to \code{varsel_fct}.
-#' @param lrner_package (`character(1)`) \cr
+#' @param lrner_package `character(1)` \cr
 #' Name of the package containing the function that implements the learning algorithm.\cr
-#' @param lrn_fct  `(character(1)` \cr
+#' @param lrn_fct  `character(1)` \cr
 #' Name of the function that that implements the learning algorithm.
-#' @param param_train_list  `(character(1)` \cr
+#' @param param_train_list  `character(1)` \cr
 #' List of arguments to be passed to \code{lrn_fct}.
-#' @param param_pred_list   `(character(1)` \cr
+#' @param param_pred_list   `character(1)` \cr
 #' List of arguments to be passed to \code{predict} when computing predictions.
-#' @param na_rm \cr
-#' If \code{TRUE}, the individuals with missing predictor values will be removed from the training dataset.
-#' @param x (`character(1)`) \cr
+#' @param na_action `character(1)`\cr
+#' Handling of missing values in data a modality. Set to "na.keep" to keep missing values, or "na.rm" to remove individuals with missing values. Imputation of missing values in data modalities ist not yet handled.
+#' @param x `character(1)` \cr
 #' If the name of the argument used by the provided original functions to pass
 #' the matrix of independent variable is not \code{x}, use this argument to specify how it is callled in the provided function.
-#' @param y (`character(1)`) \cr
+#' @param y `character(1)` \cr
 #' If the name of the argument used by the provided original functions to pass
 #' the target variable is not \code{y}, use this argument to specify how it is callled in the provided function.
-#' @param object (`character(1)`) \cr
+#' @param object `character(1)` \cr
 #' The generic function \code{predict} uses a parameter \code{object} to pass a model.
 #' If the corresponding argument is named differently in your predict function, specify the name.
-#' @param data (`character(1)`) \cr
+#' @param data `character(1)` \cr
 #' The generic function \code{predict} uses a parameter \code{data} to pass new data.
 #' If the corresponding argument is named differently in your predict function, specify the name.
-#' @param extract_pred_fct (`character(1) or function(1)`) \cr
+#' @param extract_pred_fct `character(1) or function(1)` \cr
 #' If the predict function that is called for the model does not return a vector, then
 #' use this argument to specify a (or a name of a) function that can be used to extract vector of predictions.
 #' Default value is NULL, if predictions are in a column.
-#' @param extract_var_fct (`character(1) or function(1)`) \cr
+#' @param extract_var_fct `character(1) or function(1)` \cr
 #' If the variable selection function that is called does not return a vector, then
 #' use this argument to specify a (or a name of a) function that can be used to extract vector of selected variables.
 #' Default value is NULL, if selected variables are in a vector.
@@ -93,7 +94,7 @@ createTrainLayer = function (training,
                              lrn_fct,
                              param_train_list = list(),
                              param_pred_list = list(),
-                             na_rm = TRUE,
+                             na_action = "na.rm",
                              x = "x",
                              y = "y",
                              object = "object",
@@ -115,7 +116,7 @@ createTrainLayer = function (training,
       varsel_fct = varsel_fct,
       varsel_param = varsel_param,
       train_layer = train_layer,
-      na_rm = na_rm
+      na_action = na_action
     )
     var_sel$interface(x = x,
                       y = y,
@@ -131,7 +132,7 @@ createTrainLayer = function (training,
     param_train_list = param_train_list,
     param_pred_list = param_pred_list,
     train_layer = train_layer,
-    na_rm = na_rm
+    na_action = na_action
   )
   lrner$interface(x = x,
                   y = y,
@@ -151,33 +152,33 @@ createTrainLayer = function (training,
 #' @description
 #' Creates and store a [TrainMetaLayer] on the [Training] object passed as argument.
 #'
-#' @param training (`Training(1)`) \cr
+#' @param training `Training(1)` \cr
 #' Training object where the created layer will be stored.
-#' @param meta_layer_id (`character(1)`) \cr
+#' @param meta_layer_id `character(1)` \cr
 #' ID of the layer to be created.
-#' @param lrner_package (`character(1)`) \cr
+#' @param lrner_package `character(1)` \cr
 #' Name of the package containing the function that implements the learning algorithm.\cr
-#' @param lrn_fct  `(character(1)` \cr
+#' @param lrn_fct  `character(1)` \cr
 #' Name of the function that that implements the learning algorithm.
-#' @param param_train_list  `(character(1)` \cr
+#' @param param_train_list  `character(1)` \cr
 #' List of arguments to be passed to \code{lrn_fct}.
-#' @param param_pred_list   `(character(1)` \cr
+#' @param param_pred_list   `list(1)` \cr
 #' List of arguments to be passed to \code{predict} when computing predictions.
-#' @param na_action \cr
+#' @param na_action `character(1)`\cr
 #' Handling of missing values in meta-data. Set to "na.keep" to keep missing values, "na.rm" to remove individuals with missing values or "na.impute" to impute missing values in meta-data. Only median and mode based imputations are actually handled. With the "na.keep" option, ensure that the provided meta-learner can handle missing values.
-#' @param x (`character(1)`) \cr
+#' @param x `character(1)` \cr
 #' If the name of the argument used by the provided original functions to pass
 #' the matrix of independent variable is not \code{x}, use this argument to specify how it is callled in the provided function.
-#' @param y (`character(1)`) \cr
+#' @param y `character(1)` \cr
 #' If the name of the argument used by the provided original functions to pass
 #' the target variable is not \code{y}, use this argument to specify how it is callled in the provided function.
-#' @param object (`character(1)`) \cr
+#' @param object `character(1)` \cr
 #' The generic function \code{predict} uses a parameter \code{object} to pass a model.
 #' If the corresponding argument is named differently in your predict function, specify the name.
-#' @param data (`character(1)`) \cr
+#' @param data `character(1)` \cr
 #' The generic function \code{predict} uses a parameter \code{data} to pass new data.
 #' If the corresponding argument is named differently in your predict function, specify the name.
-#' @param extract_pred_fct (`character(1) or function(1)`) \cr
+#' @param extract_pred_fct `character(1) or function(1)` \cr
 #' If the predict function that is called for the model does not return a vector, then
 #' use this argument to specify a (or a name of a) function that can be used to extract vector of predictions.
 #' Default value is NULL, if predictions are in a vector.
@@ -200,23 +201,6 @@ createTrainMetaLayer = function (training,
   # Instantiate a layer
   train_meta_layer = TrainMetaLayer$new(id = meta_layer_id,
                                         training = training)
-  impute = FALSE
-  # Instantiate a Lrner object
-  if (na_action == "na.keep") {
-    na_rm = FALSE
-  } else {
-    if (na_action == "na.rm") {
-      na_rm = TRUE
-    } else {
-      if (na_action == "na.impute") {
-        na_rm = FALSE
-        impute = TRUE
-      } else {
-        stop("na_action must be one of 'na.fails', 'na.rm' or 'na.impute'.")
-      }
-    }
-  }
-  training$setImpute(impute = impute)
   meta_lrner = Lrner$new(
     id = sprintf("%s_lrner", meta_layer_id),
     package = lrner_package,
@@ -224,7 +208,7 @@ createTrainMetaLayer = function (training,
     param_train_list = param_train_list,
     param_pred_list = param_pred_list,
     train_layer = train_meta_layer,
-    na_rm = na_rm
+    na_action = na_action
   )
   meta_lrner$interface(x = x,
                        y = y,
@@ -238,7 +222,7 @@ createTrainMetaLayer = function (training,
 #' @description
 #' Variable selection on the current training object.
 #'
-#' @param training (`Training(1)`) \cr
+#' @param training `Training(1)` \cr
 #' Training object where the created layer will be stored.
 #' @param ind_subset `vector(1)` \cr
 #' ID subset of individuals to be used for variable selection.
@@ -258,15 +242,15 @@ varSelection = function (training,
 #' @description
 #' Trains the [Training] object passed as argument. All leaners and the meta learner are trained.
 #'
-#' @param training (`Training(1)`) \cr
+#' @param training `Training(1)` \cr
 #' Training object where the created layer will be stored.
-#' @param ind_subset (`vector(1)`) \cr
+#' @param ind_subset `vector(1)` \cr
 #' ID subset to be used for training.
 #' @param use_var_sel `boolean(1)` \cr
 #' If TRUE, variable selection is performed before training.
-#' @param resampling_method (`function(1)`) \cr
+#' @param resampling_method `function(1)` \cr
 #' Function for internal validation. If not specify, the \code{resampling} function from the package \code{caret} is used for a 10-folds cross-validation.
-#' @param resampling_arg (`list(1)`) \cr
+#' @param resampling_arg `list(1)` \cr
 #' List of arguments to be passed to the function.
 #'
 #' @return
@@ -291,11 +275,11 @@ fusemlr = function (training,
 #' @description
 #' Computes predictions for the [Testing] object passed as argument.
 #'
-#' @param object (`Training(1)`) \cr
+#' @param object `Training(1)` \cr
 #' Training object to be used to compute predictions.
-#' @param testing (`Testing(1)`) \cr
+#' @param testing `Testing(1)` \cr
 #' A new testing object to be predicted.
-#' @param ind_subset (`vector(1)`) \cr
+#' @param ind_subset `vector(1)` \cr
 #' Vector of IDs to be predicted.
 #'
 #' @return
@@ -314,7 +298,7 @@ predict.Training = function (object,
 #' @description
 #' Extracts models stored on each layers; base and meta models are extracted.
 #'
-#' @param training (`Training(1)`) \cr
+#' @param training `Training(1)` \cr
 #' The [Training] object of interest.
 #'
 #' @return
@@ -329,7 +313,7 @@ extractModel = function (training) {
 #' @description
 #' Extracts data stored on each layers; base and meta data are extracted.
 #'
-#' @param training (`Training(1)`) \cr
+#' @param training `Training(1)` \cr
 #' The [Training] object of interest.
 #'
 #' @return
@@ -344,7 +328,7 @@ extractData = function (training) {
 #' @description
 #' Summaries a fuseMLR [Training] object.
 #'
-#' @param object (`Training(1)`) \cr
+#' @param object `Training(1)` \cr
 #' The [Training] object of interest.
 #' @param ... \cr
 #' Further arguments.
@@ -359,7 +343,7 @@ summary.Training = function (object, ...) {
 #' @description
 #' An upset plot of overlapping individuals.
 #'
-#' @param object (`Training(1) or Testing(1)`) \cr
+#' @param object `Training(1) or Testing(1)` \cr
 #' Training or testing object for each the upset plot will be created.
 #' @param ... \cr
 #' Further arguments to be passed to the \code{upset} function from package \code{UpSetR}.

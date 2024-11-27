@@ -103,7 +103,7 @@ createTrainLayer(training = training,
                                          mtry = 1L,
                                      na.action = "na.learn"),
                  param_pred_list = list(),
-                 na_rm = FALSE)
+                 na_action = "na.keep")
 
 # Create gene protein abundance layer
 createTrainLayer(training = training,
@@ -121,7 +121,7 @@ createTrainLayer(training = training,
                                          mtry = 1L,
                                      na.action = "na.learn"),
                  param_pred_list = list(),
-                 na_rm = FALSE)
+                 na_action = "na.keep")
 
 # Create methylation layer
 createTrainLayer(training = training,
@@ -139,7 +139,7 @@ createTrainLayer(training = training,
                                          mtry = 1L,
                                      na.action = "na.learn"),
                  param_pred_list = list(),
-                 na_rm = FALSE)
+                 na_action = "na.keep")
 ```
 
 - Also add a meta layer.
@@ -293,7 +293,7 @@ createTrainLayer(training = training,
                                          kernel = 'radial',
                                          probability = TRUE),
                  param_pred_list = list(probability = TRUE),
-                 na_rm = TRUE,
+                 na_action = "na.keep",
                  x = "x",
                  y = "y",
                  object = "object",
