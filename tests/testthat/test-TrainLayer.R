@@ -82,7 +82,7 @@ test_that("TrainLayer: all tests", {
                              new_layer = nl_ge,
                              data_frame = multi_omics$testing$geneexpr)
   expect_no_error({
-    tl_ge$predict(nl_ge)
+    tl_ge$predict(nl_ge, use_var_sel = TRUE)
   })
   # expect_no_error({
   #   tl_ge$getPredictions()
