@@ -14,19 +14,19 @@ VarSel <- R6Class("VarSel",
                     #'
                     #'
                     #' Learner ID.
-                    #' @param id (`character(1)`) \cr
+                    #' @param id `character` \cr
                     #' Package that implements the variable selection function.
                     #'  If NULL, the variable selection  function is called from
                     #'   the current environment.
-                    #' @param package (`character(1)`) \cr
+                    #' @param package `character` \cr
                     #' Variable selection function name. Note: Variable selection functions, except \code{Boruta}, must return a vector of selected variables.
-                    #' @param varsel_fct (`character(1)`) \cr
+                    #' @param varsel_fct `character` \cr
                     #' Variable selection parameters.
-                    #' @param varsel_param (`list(1)`) \cr
+                    #' @param varsel_param `list` \cr
                     #' Layer on which the learner is stored.
-                    #' @param train_layer (`TrainLayer(1)`) \cr
+                    #' @param train_layer `TrainLayer` \cr
                     #'  The training layer where to store the learner.
-                    #' @param na_action `character(1)`\cr
+                    #' @param na_action `character` \cr
                     #' Handling of missing values in meta-data. Set to "na.keep" to keep missing values, "na.rm" to remove individuals with missing values or "na.impute" (only applicable on meta-data) to impute missing values in meta-data. Only median and mode based imputations are actually handled. With the "na.keep" option, ensure that the provided learner can handle missing values.
                     #' If \code{TRUE}, the individuals with missing predictor values will be removed from the training dataset.
                     initialize = function (id,
@@ -104,15 +104,15 @@ VarSel <- R6Class("VarSel",
                     #' to provide how the following parameters are named in the learning
                     #' function (\code{lrn_fct}) you provided when creating the learner, or in the predicting function.
                     #'
-                    #' @param x (`string`(1)) \cr
+                    #' @param x `string` \cr
                     #' Name of the argument to pass the matrix of independent variables in the original learning function.
-                    #' @param y (`string`(1)) \cr
+                    #' @param y `string` \cr
                     #' Name of the argument to pass the response variable in the original learning function.
-                    #' @param object (`string`(1)) \cr
+                    #' @param object `string` \cr
                     #' Name of the argument to pass the model in the original predicting function.
-                    #' @param data \cr
+                    #' @param data `character` \cr
                     #' Name of the argument to pass new data in the original predicting function.
-                    #' @param extract_var_fct (`character(1) or function(1)`) \cr
+                    #' @param extract_var_fct `character` or `function` \cr
                     #' If the variable selection function that is called does not return a vector, then
                     #' use this argument to specify a (or a name of a) function that can be used to extract vector of selected variables.
                     #' Default value is NULL, if selected variables are in a vector.
@@ -155,7 +155,7 @@ VarSel <- R6Class("VarSel",
                     #' @description
                     #' Tains the current learner (from class [Lrner]) on the current training data (from class [TrainData]).
                     #'
-                    #' @param ind_subset `vector(1)` \cr
+                    #' @param ind_subset `vector` \cr
                     #' Individual ID subset on which the training will be performed.
                     #'
                     #' @return

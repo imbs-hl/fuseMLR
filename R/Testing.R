@@ -19,11 +19,11 @@ Testing <- R6Class("Testing",
                    #' @description
                    #' constructor
                    #'
-                   #' @param id (`character(1)`)\cr
+                   #' @param id `character`\cr
                    #' Testing id.
-                   #' @param ind_col (`character(1)`)
+                   #' @param ind_col `character`
                    #' Name of column of individuals IDS in testing data.frame.
-                   #' @param verbose (`boolean`) \cr
+                   #' @param verbose `boolean` \cr
                    #' Warning messages will be displayed if set to TRUE.
                    initialize = function (id, ind_col, verbose = TRUE) {
                      super$initialize(id = id)

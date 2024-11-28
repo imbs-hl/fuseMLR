@@ -15,7 +15,7 @@ PredictLayer <- R6Class("PredictLayer",
                           #' @description
                           #' constructor
                           #'
-                          #' @param id (`character(1)`) \cr
+                          #' @param id `character` \cr
                           #' The layer ID.
                           initialize = function (id) {
                             super$initialize(id = id)
@@ -80,7 +80,7 @@ PredictLayer <- R6Class("PredictLayer",
                           #' @description
                           #' Assigns a predicting object to the predicted layer.
                           #'
-                          #' @param predicting `Predicting(1)` \cr
+                          #' @param predicting `Predicting` \cr
                           #'
                           #' @return
                           #' The current object

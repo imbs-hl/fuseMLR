@@ -32,7 +32,7 @@ Initialize a default parameters list.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{(\code{character(1)}) \cr
+\item{\code{id}}{\code{character} \cr
 ID of the hash table. It must be unique.}
 }
 \if{html}{\out{</div>}}
@@ -67,13 +67,13 @@ Function to add a key-value pair to the hash table.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{key}}{(\code{character(1)}) \cr
+\item{\code{key}}{\code{character} \cr
 The key to be added.}
 
-\item{\code{value}}{(\code{object(1)}) \cr
+\item{\code{value}}{\code{object} \cr
 Object to be added.}
 
-\item{\code{.class}}{(\code{character(1)}) \cr
+\item{\code{.class}}{\code{character} \cr
 Class of the object to be added.}
 }
 \if{html}{\out{</div>}}
@@ -91,7 +91,7 @@ Getter of the object which the key passed as argument.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{key}}{\code{character()} \cr
+\item{\code{key}}{\code{character} \cr
 Key of the required object.}
 }
 \if{html}{\out{</div>}}
@@ -159,7 +159,7 @@ Check whether object from a class has already been stored.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{.class}}{\code{character()} \cr}
+\item{\code{.class}}{\code{character} \cr}
 }
 \if{html}{\out{</div>}}
 }

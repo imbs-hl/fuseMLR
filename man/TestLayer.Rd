@@ -51,10 +51,10 @@ constructor
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{(\code{character(1)})\cr
+\item{\code{id}}{\code{character}\cr
 Testing layer id.}
 
-\item{\code{testing}}{(\code{Testing(1)})\cr}
+\item{\code{testing}}{\code{Testing}\cr}
 }
 \if{html}{\out{</div>}}
 }

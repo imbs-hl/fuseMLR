@@ -10,7 +10,7 @@ HashTable <- R6Class("HashTable",
                        #' @description
                        #' Initialize a default parameters list.
                        #'
-                       #' @param id (`character(1)`) \cr
+                       #' @param id `character` \cr
                        #'  ID of the hash table. It must be unique.
                        #'
                        #' @export
@@ -35,11 +35,11 @@ HashTable <- R6Class("HashTable",
                        },
                        #' @description
                        #' Function to add a key-value pair to the hash table.
-                       #' @param key (`character(1)`) \cr
+                       #' @param key `character` \cr
                        #' The key to be added.
-                       #' @param value (`object(1)`) \cr
+                       #' @param value `object` \cr
                        #' Object to be added.
-                       #' @param .class (`character(1)`) \cr
+                       #' @param .class `character` \cr
                        #' Class of the object to be added.
                        #' @export
                        #'
@@ -64,7 +64,7 @@ HashTable <- R6Class("HashTable",
                        #' @description
                        #' Getter of the object which the key passed as argument.
                        #'
-                       #' @param key `character()` \cr
+                       #' @param key `character` \cr
                        #' Key of the required object.
                        #'
                        #' @export
@@ -124,7 +124,7 @@ HashTable <- R6Class("HashTable",
                        #' @description
                        #' Check whether object from a class has already been stored.
                        #'
-                       #' @param .class `character()` \cr
+                       #' @param .class `character` \cr
                        #'
                        #' @return
                        #' Boolean value

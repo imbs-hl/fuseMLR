@@ -44,24 +44,24 @@ Learner ID.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{(\code{character(1)}) \cr
+\item{\code{id}}{\code{character} \cr
 Package that implements the variable selection function.
 If NULL, the variable selection  function is called from
 the current environment.}
 
-\item{\code{package}}{(\code{character(1)}) \cr
+\item{\code{package}}{\code{character} \cr
 Variable selection function name. Note: Variable selection functions, except \code{Boruta}, must return a vector of selected variables.}
 
-\item{\code{varsel_fct}}{(\code{character(1)}) \cr
+\item{\code{varsel_fct}}{\code{character} \cr
 Variable selection parameters.}
 
-\item{\code{varsel_param}}{(\code{list(1)}) \cr
+\item{\code{varsel_param}}{\code{list} \cr
 Layer on which the learner is stored.}
 
-\item{\code{train_layer}}{(\code{TrainLayer(1)}) \cr
+\item{\code{train_layer}}{\code{TrainLayer} \cr
 The training layer where to store the learner.}
 
-\item{\code{na_action}}{\code{character(1)}\cr
+\item{\code{na_action}}{\code{character} \cr
 Handling of missing values in meta-data. Set to "na.keep" to keep missing values, "na.rm" to remove individuals with missing values or "na.impute" (only applicable on meta-data) to impute missing values in meta-data. Only median and mode based imputations are actually handled. With the "na.keep" option, ensure that the provided learner can handle missing values.
 If \code{TRUE}, the individuals with missing predictor values will be removed from the training dataset.}
 }
@@ -122,19 +122,19 @@ function (\code{lrn_fct}) you provided when creating the learner, or in the pred
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{x}}{(\code{string}(1)) \cr
+\item{\code{x}}{\code{string} \cr
 Name of the argument to pass the matrix of independent variables in the original learning function.}
 
-\item{\code{y}}{(\code{string}(1)) \cr
+\item{\code{y}}{\code{string} \cr
 Name of the argument to pass the response variable in the original learning function.}
 
-\item{\code{object}}{(\code{string}(1)) \cr
+\item{\code{object}}{\code{string} \cr
 Name of the argument to pass the model in the original predicting function.}
 
-\item{\code{data}}{\cr
+\item{\code{data}}{\code{character} \cr
 Name of the argument to pass new data in the original predicting function.}
 
-\item{\code{extract_var_fct}}{(\verb{character(1) or function(1)}) \cr
+\item{\code{extract_var_fct}}{\code{character} or \code{function} \cr
 If the variable selection function that is called does not return a vector, then
 use this argument to specify a (or a name of a) function that can be used to extract vector of selected variables.
 Default value is NULL, if selected variables are in a vector.}
@@ -154,7 +154,7 @@ Tains the current learner (from class \link{Lrner}) on the current training data
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{ind_subset}}{\code{vector(1)} \cr
+\item{\code{ind_subset}}{\code{vector} \cr
 Individual ID subset on which the training will be performed.}
 }
 \if{html}{\out{</div>}}

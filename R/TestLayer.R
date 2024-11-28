@@ -15,9 +15,9 @@ TestLayer <- R6Class("TestLayer",
                           #' @description
                           #' constructor
                           #'
-                          #' @param id (`character(1)`)\cr
+                          #' @param id `character`\cr
                           #' Testing layer id.
-                          #' @param testing (`Testing(1)`)\cr
+                          #' @param testing `Testing`\cr
                           #'
                           initialize = function (id, testing) {
                             super$initialize(id = id)
@@ -113,6 +113,5 @@ TestLayer <- R6Class("TestLayer",
                         private = list(
                           testing = NULL
                         ),
-                        # TODO: define a deep_clone function for this class.
                         cloneable = FALSE
 )

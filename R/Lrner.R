@@ -14,21 +14,21 @@ Lrner <- R6Class("Lrner",
                    #'
                    #'
                    #'
-                   #' @param id (`character(1)`) \cr
+                   #' @param id `character` \cr
                    #' Learner ID.
 
-                   #' @param package (`character(1)`) \cr
+                   #' @param package `character` \cr
                    #' Package that implements the learn function. If NULL, the
-                   #' @param lrn_fct (`character(1)`) \cr
+                   #' @param lrn_fct `character` \cr
                    #' learn function is called from the current environment.
-                   #' @param param_train_list \cr
+                   #' @param param_train_list `list` \cr
                    #' List of parameter for training.
-                   #' @param param_pred_list \cr
+                   #' @param param_pred_list `list` \cr
                    #' List of parameter for testing.
                    #' Learn parameters.
-                   #' @param train_layer (`TrainLayer(1)`) \cr
+                   #' @param train_layer `TrainLayer` \cr
                    #' Layer on which the learner is stored.
-                   #' @param na_action `character(1)`\cr
+                   #' @param na_action `character` \cr
                    #' Handling of missing values. Set to "na.keep" to keep missing values, "na.rm" to remove individuals with missing values or "na.impute" (only applicable on meta-data) to impute missing values in meta-data. Only median and mode based imputations are actually handled. With the "na.keep" option, ensure that the provided learner can handle missing values.
                    initialize = function (id,
                                           package = NULL,
@@ -115,15 +115,15 @@ Lrner <- R6Class("Lrner",
                    #' to provide how the following parameters are named in the learning
                    #' function (\code{lrn_fct}) you provided when creating the learner, or in the predicting function.
                    #'
-                   #' @param x (`character(1)`) \cr
+                   #' @param x `character` \cr
                    #' Name of the argument to pass the matrix of independent variables in the original learning function.
-                   #' @param y (`character(1)`) \cr
+                   #' @param y `character` \cr
                    #' Name of the argument to pass the response variable in the original learning function.
-                   #' @param object (`character(1)`) \cr
+                   #' @param object `character` \cr
                    #' Name of the argument to pass the model in the original predicting function.
                    #' @param data \cr
                    #' Name of the argument to pass new data in the original predicting function.
-                   #' @param extract_pred_fct (`character(1) or function(1)`) \cr
+                   #' @param extract_pred_fct `character` or `function` \cr
                    #' If the predict function that is called for the model does not return a vector, then
                    #' use this argument to specify a (or a name of a) function that can be used to extract vector of predictions.
                    #' Default value is NULL, if predictions are in a vector.
@@ -166,11 +166,11 @@ Lrner <- R6Class("Lrner",
                    #' @description
                    #' Tains the current learner (from class [Lrner]) on the current training data (from class [TrainData]).
                    #'
-                   #' @param ind_subset `vector(1)` \cr
+                   #' @param ind_subset `vector` \cr
                    #' Individual ID subset on which the training will be performed.
-                   #' @param use_var_sel `boolean(1)` \cr
+                   #' @param use_var_sel `boolean` \cr
                    #' If TRUE, variable selection is performed before training.
-                   #' @param verbose (`boolean`) \cr
+                   #' @param verbose `boolean` \cr
                    #' Warning messages will be displayed if set to TRUE.
                    #'
                    #' @return

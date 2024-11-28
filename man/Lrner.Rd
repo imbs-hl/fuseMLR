@@ -46,26 +46,26 @@ Initialize a default parameters list.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{(\code{character(1)}) \cr
+\item{\code{id}}{\code{character} \cr
 Learner ID.}
 
-\item{\code{package}}{(\code{character(1)}) \cr
+\item{\code{package}}{\code{character} \cr
 Package that implements the learn function. If NULL, the}
 
-\item{\code{lrn_fct}}{(\code{character(1)}) \cr
+\item{\code{lrn_fct}}{\code{character} \cr
 learn function is called from the current environment.}
 
-\item{\code{param_train_list}}{\cr
+\item{\code{param_train_list}}{\code{list} \cr
 List of parameter for training.}
 
-\item{\code{param_pred_list}}{\cr
+\item{\code{param_pred_list}}{\code{list} \cr
 List of parameter for testing.
 Learn parameters.}
 
-\item{\code{train_layer}}{(\code{TrainLayer(1)}) \cr
+\item{\code{train_layer}}{\code{TrainLayer} \cr
 Layer on which the learner is stored.}
 
-\item{\code{na_action}}{\code{character(1)}\cr
+\item{\code{na_action}}{\code{character} \cr
 Handling of missing values. Set to "na.keep" to keep missing values, "na.rm" to remove individuals with missing values or "na.impute" (only applicable on meta-data) to impute missing values in meta-data. Only median and mode based imputations are actually handled. With the "na.keep" option, ensure that the provided learner can handle missing values.}
 }
 \if{html}{\out{</div>}}
@@ -125,19 +125,19 @@ function (\code{lrn_fct}) you provided when creating the learner, or in the pred
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{x}}{(\code{character(1)}) \cr
+\item{\code{x}}{\code{character} \cr
 Name of the argument to pass the matrix of independent variables in the original learning function.}
 
-\item{\code{y}}{(\code{character(1)}) \cr
+\item{\code{y}}{\code{character} \cr
 Name of the argument to pass the response variable in the original learning function.}
 
-\item{\code{object}}{(\code{character(1)}) \cr
+\item{\code{object}}{\code{character} \cr
 Name of the argument to pass the model in the original predicting function.}
 
 \item{\code{data}}{\cr
 Name of the argument to pass new data in the original predicting function.}
 
-\item{\code{extract_pred_fct}}{(\verb{character(1) or function(1)}) \cr
+\item{\code{extract_pred_fct}}{\code{character} or \code{function} \cr
 If the predict function that is called for the model does not return a vector, then
 use this argument to specify a (or a name of a) function that can be used to extract vector of predictions.
 Default value is NULL, if predictions are in a vector.}
@@ -157,13 +157,13 @@ Tains the current learner (from class \link{Lrner}) on the current training data
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{ind_subset}}{\code{vector(1)} \cr
+\item{\code{ind_subset}}{\code{vector} \cr
 Individual ID subset on which the training will be performed.}
 
-\item{\code{use_var_sel}}{\code{boolean(1)} \cr
+\item{\code{use_var_sel}}{\code{boolean} \cr
 If TRUE, variable selection is performed before training.}
 
-\item{\code{verbose}}{(\code{boolean}) \cr
+\item{\code{verbose}}{\code{boolean} \cr
 Warning messages will be displayed if set to TRUE.}
 }
 \if{html}{\out{</div>}}

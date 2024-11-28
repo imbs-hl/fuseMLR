@@ -54,13 +54,13 @@ Initialize a new object from the current class.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{(\code{character(1)}) \cr
+\item{\code{id}}{\code{character} \cr
 The Object ID.}
 
-\item{\code{data_frame}}{(\code{data.frame(1)})\cr
+\item{\code{data_frame}}{\code{data.frame}\cr
 \code{data.frame} containing data.}
 
-\item{\code{train_layer}}{(\code{TrainLayer(1)}) \cr
+\item{\code{train_layer}}{\code{TrainLayer} \cr
 Training layer where to store the current object.}
 }
 \if{html}{\out{</div>}}

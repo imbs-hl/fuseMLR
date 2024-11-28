@@ -14,11 +14,11 @@ Target <- R6Class("Target",
                        #' @description
                        #' Initialize a new object from the current class.
                        #'
-                       #' @param id (`character(1)`) \cr
+                       #' @param id `character` \cr
                        #' The Object ID.
-                       #' @param data_frame (`data.frame(1)`)\cr
+                       #' @param data_frame `data.frame`\cr
                        #' \code{data.frame} containing data.
-                       #' @param training (`Training(1)`) \cr
+                       #' @param training `Training` \cr
                        #' Training where to store the current object.
                        initialize = function (id,
                                               data_frame,

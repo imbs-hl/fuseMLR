@@ -27,16 +27,16 @@ Training <- R6Class("Training",
                       #' @description
                       #' constructor
                       #'
-                      #' @param id (`character(1)`) \cr
-                      #' @param ind_col (`character(1)`) \cr
+                      #' @param id `character` \cr
+                      #' @param ind_col `character` \cr
                       #' Name of column of individuals IDS.
-                      #' @param target (`character(1)`) \cr
+                      #' @param target `character` \cr
                       #' Name of the target variable.
-                      #' @param target_df (`data.frame(1)`) \cr
+                      #' @param target_df `data.frame` \cr
                       #' Data frame with two columns: individual IDs and response variable values.
-                      #' @param problem_type (`character`) \cr
+                      #' @param problem_type `character` \cr
                       #' Either "classification" or "regression".
-                      #' @param verbose (`boolean`) \cr
+                      #' @param verbose `boolean` \cr
                       #' Warning messages will be displayed if set to TRUE.
                       #' @seealso [Testing] and [Predicting]
                       initialize = function (id,
@@ -106,7 +106,7 @@ Training <- R6Class("Training",
                           }
                         }
                         cat(sprintf("Training        : %s\n", private$id))
-                        cat(sprintf("Problem typ     : %s\n", private$problem_typ))
+                        cat(sprintf("Problem type    : %s\n", private$problem_typ))
                         cat(sprintf("Status          : %s\n", status))
                         cat(sprintf("Number of layers: %s\n", nb_layers))
                         cat(sprintf("Layers trained  : %s\n", private$nb_trained_layer))
@@ -142,9 +142,9 @@ Training <- R6Class("Training",
                       #' @description
                       #' Train each layer of the current Training.
                       #'
-                      #' @param ind_subset (`character(1)`)\cr
+                      #' @param ind_subset `character`\cr
                       #' Subset of individuals IDs to be used for training.
-                      #' @param use_var_sel `boolean(1)` \cr
+                      #' @param use_var_sel `boolean` \cr
                       #' If TRUE, selected variables available at each layer are used.
                       #' @return
                       #' Returns the object itself, with a model for each layer.
@@ -172,9 +172,9 @@ Training <- R6Class("Training",
                       #' @description
                       #' Predicts values given new data.
                       #'
-                      #' @param testing (`TestData(1)`) \cr
+                      #' @param testing `TestData` \cr
                       #' Object of class [TestData].
-                      #' @param ind_subset  (`vector(1)`) \cr
+                      #' @param ind_subset  `vector` \cr
                       #' Subset of individuals IDs to be used for training.
                       #'
                       #' @return
@@ -206,13 +206,13 @@ Training <- R6Class("Training",
                       #' Creates a meta training dataset and assigns it to the meta layer.
                       #'
                       #'
-                      #' @param resampling_method (`function(1)`) \cr
+                      #' @param resampling_method `function` \cr
                       #' Function for internal validation.
-                      #' @param resampling_arg (`list(1)`) \cr
+                      #' @param resampling_arg `list` \cr
                       #' List of arguments to be passed to the function.
-                      #' @param use_var_sel `boolean(1)` \cr
+                      #' @param use_var_sel `boolean` \cr
                       #' If TRUE, selected variables available at each layer are used.
-                      #' @param impute (`boolean`) \cr
+                      #' @param impute `boolean` \cr
                       #' If TRUE, mode or median based imputation is performed on the modality-specific predictions.
                       #'
                       #' @return
@@ -297,15 +297,15 @@ Training <- R6Class("Training",
                       #' @description
                       #' Trains the current object. All leaners and the meta learner are trained.
                       #'
-                      #' @param ind_subset (`vector(1)`) \cr
+                      #' @param ind_subset `vector` \cr
                       #' ID subset to be used for training.
-                      #' @param use_var_sel `boolean(1)` \cr
+                      #' @param use_var_sel `boolean` \cr
                       #' If TRUE, variable selection is performed before training.
-                      #' @param resampling_method (`function(1)`) \cr
+                      #' @param resampling_method `function` \cr
                       #' Function for internal validation. If not specify, the \code{resampling} function from the package \code{caret} is used for a 10-folds cross-validation.
-                      #' @param resampling_arg (`list(1)`) \cr
+                      #' @param resampling_arg `list` \cr
                       #' List of arguments to be passed to the function.
-                      #' @param seed (`integer(1)`) \cr
+                      #' @param seed `integer` \cr
                       #' Random seed. Default is NULL, which generates the seed from \code{R}.
                       #'
                       #' @return
@@ -353,9 +353,9 @@ Training <- R6Class("Training",
                       #' @description
                       #' Compute predictions for a testing object.
                       #'
-                      #' @param testing (`Testing(1)`) \cr
+                      #' @param testing `Testing` \cr
                       #' A new testing object to be predicted.
-                      #' @param ind_subset (`vector(1)`) \cr
+                      #' @param ind_subset `vector` \cr
                       #' Vector of IDs to be predicted.
                       #'
                       #' @return
@@ -437,9 +437,9 @@ Training <- R6Class("Training",
                       #' @description
                       #' Variable selection on the current training object.
                       #'
-                      #' @param ind_subset `vector(1)` \cr
+                      #' @param ind_subset `vector` \cr
                       #' ID subset of individuals to be used for variable selection.
-                      #' @param verbose (`boolean`) \cr
+                      #' @param verbose `boolean` \cr
                       #' Warning messages will be displayed if set to TRUE.
                       #'
                       #' @return
@@ -521,7 +521,7 @@ Training <- R6Class("Training",
                       #' @description
                       #' Get a layer of a given ID.
                       #'
-                      #' @param id `character(1)` \cr
+                      #' @param id `character` \cr
                       #' The ID of the layer to be returned.
                       #'
                       #' @return
@@ -586,7 +586,7 @@ Training <- R6Class("Training",
                       #' @description
                       #' Remove a layer of a given ID.
                       #'
-                      #' @param id `character(1)` \cr
+                      #' @param id `character` \cr
                       #' The ID of the layer to be removed.
                       #'
                       #' @return
@@ -667,7 +667,7 @@ Training <- R6Class("Training",
                       #' @description
                       #' Set imputation action na.action.
                       #'
-                      #' @param impute `character(1)` \cr
+                      #' @param impute `character` \cr
                       #' How to handle missing values.
                       #'
                       setImpute = function(impute) {

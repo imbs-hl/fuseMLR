@@ -21,9 +21,9 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                             #' @description
                             #' constructor
                             #'
-                            #' @param id (`character(1)`)\cr
+                            #' @param id `character`\cr
                             #' Id of training meta-layer.
-                            #' @param training (`Training(1)`)\cr
+                            #' @param training `Training`\cr
                             #'
                             initialize = function (id, training) {
                               super$initialize(id = id)
@@ -71,9 +71,9 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                             #' @description
                             #' Trains the current layer.
                             #'
-                            #' @param ind_subset `vector(1)` \cr
+                            #' @param ind_subset `vector` \cr
                             #' ID subset of individuals to be used for training.
-                            #' @param verbose (`boolean`) \cr
+                            #' @param verbose `boolean` \cr
                             #' Warning messages will be displayed if set to TRUE.
                             #'
                             #' @return
@@ -109,8 +109,8 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                             #' @description
                             #' Predicts values for the new layer taking as argument.
                             #'
-                            #' @param new_layer `TrainLayer(1)` \cr
-                            #' @param ind_subset `vector(1)` \cr
+                            #' @param new_layer `TrainLayer` \cr
+                            #' @param ind_subset `vector` \cr
                             #'
                             #' @return
                             #' A new object with the predicted values is returned.
@@ -149,11 +149,11 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                             #' Imputes missing values in modality-specific predictions.
                             #' Only mode and median based imputations are actually supported.
                             #'
-                            #' @param impute_fct `character(1)` \cr
+                            #' @param impute_fct `character` \cr
                             #' An imputation function to use instead of median or mode imputation.
                             #' This parameter is actually not used.
                             #' This corresponds to median or mode based imputation.
-                            #' @param impute_param `list(1)` \cr
+                            #' @param impute_param `list` \cr
                             #' The list of parameters to call the imputation function. Not yet implemented!
                             #' @return
                             #' A new object with the predicted values is returned.
@@ -247,13 +247,13 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                             #' Create and set an [TrainData] object to the current
                             #' meta learner.
                             #'
-                            #' @param id `character(1)` \cr
+                            #' @param id `character` \cr
                             #' ID of the [TrainData] object to be instanciated.
-                            #' @param ind_col `character(1)` \cr
+                            #' @param ind_col `character` \cr
                             #' Name of individual column IDs.
-                            #' @param data_frame  `data.frame(1)` \cr
+                            #' @param data_frame  `data.frame` \cr
                             #' \code{data.frame} of layer specific predictions.
-                            #' @param target `character(1)` \cr
+                            #' @param target `character` \cr
                             #' Name of the target variable
                             #'
                             #' @export

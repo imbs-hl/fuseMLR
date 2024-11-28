@@ -51,7 +51,7 @@ constructor
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{(\code{character(1)}) \cr
+\item{\code{id}}{\code{character} \cr
 The layer ID.}
 }
 \if{html}{\out{</div>}}
@@ -125,7 +125,7 @@ Assigns a predicting object to the predicted layer.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{predicting}}{\code{Predicting(1)} \cr}
+\item{\code{predicting}}{\code{Predicting} \cr}
 }
 \if{html}{\out{</div>}}
 }

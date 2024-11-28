@@ -30,7 +30,7 @@ Function for internal validation. If not specify, the \code{resampling} function
 \item{resampling_arg}{\code{list} \cr
 List of arguments to be passed to the function.}
 
-\item{seed}{(\code{integer}) \cr
+\item{seed}{\code{integer} \cr
 Random seed used for resampling. Default is NULL, which generates the seed from \code{R}.}
 }
 \value{

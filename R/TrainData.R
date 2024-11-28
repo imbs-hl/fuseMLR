@@ -14,11 +14,11 @@ TrainData <- R6Class("TrainData",
                        #' @description
                        #' Initialize a new object from the current class.
                        #'
-                       #' @param id (`character(1)`) \cr
+                       #' @param id `character` \cr
                        #' The Object ID.
-                       #' @param data_frame (`data.frame(1)`)\cr
+                       #' @param data_frame `data.frame`\cr
                        #' \code{data.frame} containing data.
-                       #' @param train_layer (`TrainLayer(1)`) \cr
+                       #' @param train_layer `TrainLayer` \cr
                        #' Training layer where to store the current object.
                        initialize = function (id,
                                               data_frame,

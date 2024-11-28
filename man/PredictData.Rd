@@ -52,13 +52,13 @@ Initialize a new object from the current class.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{(\code{character(1)}) \cr
+\item{\code{id}}{\code{character} \cr
 Object ID.}
 
-\item{\code{ind_col}}{(\code{character(1)})\cr
+\item{\code{ind_col}}{\code{character}\cr
 Column name containing individual IDs.}
 
-\item{\code{data_frame}}{(\code{data.frame(1)})\cr
+\item{\code{data_frame}}{\code{data.frame}\cr
 \code{data.frame} containing data.}
 }
 \if{html}{\out{</div>}}

@@ -253,7 +253,7 @@ varSelection = function (training,
 #' Function for internal validation. If not specify, the \code{resampling} function from the package \code{caret} is used for a 10-folds cross-validation.
 #' @param resampling_arg `list` \cr
 #' List of arguments to be passed to the function.
-#' @param seed (`integer`) \cr
+#' @param seed `integer` \cr
 #' Random seed used for resampling. Default is NULL, which generates the seed from \code{R}.
 #'
 #' @return

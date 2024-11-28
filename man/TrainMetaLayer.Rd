@@ -69,10 +69,10 @@ constructor
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{(\code{character(1)})\cr
+\item{\code{id}}{\code{character}\cr
 Id of training meta-layer.}
 
-\item{\code{training}}{(\code{Training(1)})\cr}
+\item{\code{training}}{\code{Training}\cr}
 }
 \if{html}{\out{</div>}}
 }
@@ -129,10 +129,10 @@ Trains the current layer.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{ind_subset}}{\code{vector(1)} \cr
+\item{\code{ind_subset}}{\code{vector} \cr
 ID subset of individuals to be used for training.}
 
-\item{\code{verbose}}{(\code{boolean}) \cr
+\item{\code{verbose}}{\code{boolean} \cr
 Warning messages will be displayed if set to TRUE.}
 }
 \if{html}{\out{</div>}}
@@ -153,9 +153,9 @@ Predicts values for the new layer taking as argument.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{new_layer}}{\code{TrainLayer(1)} \cr}
+\item{\code{new_layer}}{\code{TrainLayer} \cr}
 
-\item{\code{ind_subset}}{\code{vector(1)} \cr}
+\item{\code{ind_subset}}{\code{vector} \cr}
 }
 \if{html}{\out{</div>}}
 }
@@ -176,12 +176,12 @@ Only mode and median based imputations are actually supported.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{impute_fct}}{\code{character(1)} \cr
+\item{\code{impute_fct}}{\code{character} \cr
 An imputation function to use instead of median or mode imputation.
 This parameter is actually not used.
 This corresponds to median or mode based imputation.}
 
-\item{\code{impute_param}}{\code{list(1)} \cr
+\item{\code{impute_param}}{\code{list} \cr
 The list of parameters to call the imputation function. Not yet implemented!}
 }
 \if{html}{\out{</div>}}
@@ -274,16 +274,16 @@ meta learner.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{\code{character(1)} \cr
+\item{\code{id}}{\code{character} \cr
 ID of the \link{TrainData} object to be instanciated.}
 
-\item{\code{ind_col}}{\code{character(1)} \cr
+\item{\code{ind_col}}{\code{character} \cr
 Name of individual column IDs.}
 
-\item{\code{data_frame}}{\code{data.frame(1)} \cr
+\item{\code{data_frame}}{\code{data.frame} \cr
 \code{data.frame} of layer specific predictions.}
 
-\item{\code{target}}{\code{character(1)} \cr
+\item{\code{target}}{\code{character} \cr
 Name of the target variable}
 }
 \if{html}{\out{</div>}}

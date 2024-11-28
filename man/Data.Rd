@@ -40,10 +40,10 @@ Constructor of class Data.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{(\code{character(1)}) \cr
+\item{\code{id}}{\code{character} \cr
 Object ID.}
 
-\item{\code{ind_col}}{(\code{character(1)}) \cr
+\item{\code{ind_col}}{\code{character} \cr
 Column name containing individual IDs.}
 
 \item{\code{data_frame}}{\cr
@@ -81,10 +81,10 @@ Retrieve a data subset for a given variable name and values, a data subset.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{var_name}}{(\code{character(1)}) \cr
+\item{\code{var_name}}{\code{character} \cr
 Variable name of interest.}
 
-\item{\code{value}}{(\code{vector(n)}) \cr
+\item{\code{value}}{\code{vector} \cr
 Values of interest.}
 }
 \if{html}{\out{</div>}}
@@ -106,10 +106,10 @@ Only mode and median based imputations are actually supported.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{impute_fct}}{\code{character(1)} \cr
+\item{\code{impute_fct}}{\code{character} \cr
 An imputation function to use instead of median or mode imputation. Not yet implemented!}
 
-\item{\code{impute_param}}{\code{list(1)} \cr
+\item{\code{impute_param}}{\code{list} \cr
 The list of parameters to call the imputation function.}
 }
 \if{html}{\out{</div>}}
@@ -130,7 +130,7 @@ Retrieve a subset of variables from data.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{var_name}}{(\code{character(n)}) \cr
+\item{\code{var_name}}{\code{character} \cr
 Variable names of interest.}
 }
 \if{html}{\out{</div>}}
@@ -152,10 +152,10 @@ current dataset are returned.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{var_name}}{\code{character(1)} \cr
+\item{\code{var_name}}{\code{character} \cr
 Variable name of interest.}
 
-\item{\code{value}}{\code{vector(n)} \cr
+\item{\code{value}}{\code{vector} \cr
 Values of interest.}
 }
 \if{html}{\out{</div>}}
@@ -189,7 +189,7 @@ Set a new \code{data.frame} to the current object.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{data_frame}}{\code{data.frame(1)}}
+\item{\code{data_frame}}{\code{data.frame}}
 }
 \if{html}{\out{</div>}}
 }

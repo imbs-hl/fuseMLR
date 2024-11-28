@@ -12,13 +12,13 @@ TestData <- R6Class("TestData",
                      #' @description
                      #' Initialize a new object from the current class.
                      #'
-                     #' @param id (`character(1)`) \cr
+                     #' @param id `character` \cr
                      #' Object ID.
-                     #' @param ind_col (`character(1)`)\cr
+                     #' @param ind_col `character`\cr
                      #' Column name containing individual IDs.
-                     #' @param data_frame (`data.frame(1)`)\cr
+                     #' @param data_frame `data.frame`\cr
                      #' \code{data.frame} containing data.
-                     #' @param new_layer (`TestLayer(1)`) \cr
+                     #' @param new_layer `TestLayer` \cr
                      #' Layer where to store the current object.
                      # TODO: rename new_layer by test_layer
                      initialize = function (id,

@@ -64,10 +64,10 @@ constructor
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{(\code{character(1)})\cr
+\item{\code{id}}{\code{character}\cr
 Predicting id.}
 
-\item{\code{ind_col}}{(\code{character(1L)})
+\item{\code{ind_col}}{\code{character}
 Name of column of individuals IDS}
 }
 \if{html}{\out{</div>}}

@@ -13,9 +13,9 @@ TestMetaLayer <- R6Class("TestMetaLayer",
                           #' @description
                           #' constructor
                           #'
-                          #' @param id (`character(1)`)\cr
+                          #' @param id `character`\cr
                           #' Testing meta-layer id.
-                          #' @param testing (`Testing(1)`)\cr
+                          #' @param testing `Testing`\cr
                           #'
                           initialize = function (id, testing) {
                             super$initialize(id = id)

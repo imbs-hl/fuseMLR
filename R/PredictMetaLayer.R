@@ -13,8 +13,8 @@ PredictMetaLayer <- R6Class("PredictMetaLayer",
                        #' @description
                        #' constructor
                        #'
-                       #' @param id (`character(1)`)\cr
-                       #' @param predicting (`Predicting(1)`)\cr
+                       #' @param id `character`\cr
+                       #' @param predicting `Predicting`\cr
                        #'
                        initialize = function (id, predicting) {
                          super$initialize(id = id)

@@ -23,9 +23,9 @@ Predicting <- R6Class("Predicting",
                       #' @description
                       #' constructor
                       #'
-                      #' @param id (`character(1)`)\cr
+                      #' @param id `character`\cr
                       #' Predicting id.
-                      #' @param ind_col (`character(1L)`)
+                      #' @param ind_col `character`
                       #' Name of column of individuals IDS
                       initialize = function (id, ind_col) {
                         super$initialize(id = id)

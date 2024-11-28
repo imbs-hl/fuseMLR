@@ -13,9 +13,9 @@ Data <- R6Class("Data",
                   #' @description
                   #' Constructor of class Data.
                   #'
-                  #' @param id (`character(1)`) \cr
+                  #' @param id `character` \cr
                   #' Object ID.
-                  #' @param ind_col (`character(1)`) \cr
+                  #' @param ind_col `character` \cr
                   #' Column name containing individual IDs.
                   #' @param data_frame \cr
                   #'  \code{data.frame} containing data.
@@ -42,9 +42,9 @@ Data <- R6Class("Data",
                   #' @description
                   #' Retrieve a data subset for a given variable name and values, a data subset.
                   #'
-                  #' @param var_name (`character(1)`) \cr
+                  #' @param var_name `character` \cr
                   #' Variable name of interest.
-                  #' @param value (`vector(n)`) \cr
+                  #' @param value `vector` \cr
                   #' Values of interest.
                   #'
                   #' @return
@@ -63,9 +63,9 @@ Data <- R6Class("Data",
                   #' Imputes missing values in modality-specific predictions.
                   #' Only mode and median based imputations are actually supported.
                   #'
-                  #' @param impute_fct `character(1)` \cr
+                  #' @param impute_fct `character` \cr
                   #' An imputation function to use instead of median or mode imputation. Not yet implemented!
-                  #' @param impute_param `list(1)` \cr
+                  #' @param impute_param `list` \cr
                   #' The list of parameters to call the imputation function.
                   #' @return
                   #' A new object with the predicted values is returned.
@@ -104,7 +104,7 @@ Data <- R6Class("Data",
                   #' @description
                   #' Retrieve a subset of variables from data.
                   #'
-                  #' @param var_name (`character(n)`) \cr
+                  #' @param var_name `character` \cr
                   #' Variable names of interest.
                   #'
                   #' @return
@@ -122,9 +122,9 @@ Data <- R6Class("Data",
                   #' For the given variable name, non existing values in the
                   #' current dataset are returned.
                   #'
-                  #' @param var_name `character(1)` \cr
+                  #' @param var_name `character` \cr
                   #' Variable name of interest.
-                  #' @param value `vector(n)` \cr
+                  #' @param value `vector` \cr
                   #' Values of interest.
                   #'
                   #' @return
@@ -155,7 +155,7 @@ Data <- R6Class("Data",
                   #' @description
                   #' Set a new \code{data.frame} to the current object.
                   #'
-                  #' @param data_frame `data.frame(1)`
+                  #' @param data_frame `data.frame`
                   #'
                   #' @return
                   #' The current object is returned.

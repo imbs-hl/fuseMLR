@@ -23,9 +23,9 @@ TrainLayer <- R6Class("TrainLayer",
                         #' @description
                         #' constructor
                         #'
-                        #' @param id (`character(1)`)\cr
+                        #' @param id `character`\cr
                         #' Training layer id.
-                        #' @param training (`Training(1)`)\cr
+                        #' @param training `Training`\cr
                         #'
                         initialize = function (id, training) {
                           super$initialize(id = id)
@@ -78,11 +78,11 @@ TrainLayer <- R6Class("TrainLayer",
                         #' @description
                         #' Trains the current layer.
                         #'
-                        #' @param ind_subset `vector(1)` \cr
+                        #' @param ind_subset `vector` \cr
                         #' ID subset of individuals to be used for training.
-                        #' @param use_var_sel `boolean(1)` \cr
+                        #' @param use_var_sel `boolean` \cr
                         #' If TRUE, variable selection is performed before training.
-                        #' @param verbose (`boolean`) \cr
+                        #' @param verbose `boolean` \cr
                         #' Warning messages will be displayed if set to TRUE.
                         #'
                         #' @return
@@ -133,9 +133,9 @@ TrainLayer <- R6Class("TrainLayer",
                         #' @description
                         #' Variable selection on the current layer.
                         #'
-                        #' @param ind_subset `vector(1)` \cr
+                        #' @param ind_subset `vector` \cr
                         #' ID subset of individuals to be used for variable selection.
-                        #' @param verbose (`boolean`) \cr
+                        #' @param verbose `boolean` \cr
                         #' Warning messages will be displayed if set to TRUE.
                         #'
                         #' @return
@@ -172,7 +172,7 @@ TrainLayer <- R6Class("TrainLayer",
                         #' Predicts values for the new layer taking as argument.
                         #'
                         #' @param new_layer `TrainLayer` \cr
-                        #' @param use_var_sel `boolean(1)` \cr
+                        #' @param use_var_sel `boolean` \cr
                         #' If TRUE, selected variables available at each layer are used.
                         #' @param ind_subset `vector` \cr
                         #'

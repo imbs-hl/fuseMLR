@@ -16,13 +16,13 @@ Model <- R6Class("Model",
                    #' @description
                    #' Constructor of Model class.
                    #'
-                   #' @param lrner (`Lrner(1)`) \cr
+                   #' @param lrner `Lrner` \cr
                    #' The learner.
-                   #' @param train_data (`TrainData(1)`) \cr
+                   #' @param train_data `TrainData(1)` \cr
                    #' Training data.
-                   #' @param base_model (`object(1)`) \cr
+                   #' @param base_model `object` \cr
                    #' Base model as returned by the original learn function.
-                   #' @param train_layer (`TrainLayer(1)`) \cr
+                   #' @param train_layer `TrainLayer` \cr
                    #' The current training layer on which the model is stored.
                    #'
                    #' @return
@@ -124,11 +124,11 @@ Model <- R6Class("Model",
                    #' Predict target values for the new data
                    #' (from class [TestData]) taken as into.
                    #'
-                   #' @param testing_data `TestData(1)` \cr
+                   #' @param testing_data `TestData` \cr
                    #' An object from class [TestData].
-                   #' @param use_var_sel `boolean(1)` \cr
+                   #' @param use_var_sel `boolean` \cr
                    #' If TRUE, selected variables available at each layer are used.
-                   #' @param ind_subset `vector(1)` \cr
+                   #' @param ind_subset `vector` \cr
                    #' Subset of individual IDs to be predicted.
                    #' @param ...
                    #' Further parameters to be passed to the basic predict function.

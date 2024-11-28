@@ -98,21 +98,21 @@ constructor
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{(\code{character(1)}) \cr}
+\item{\code{id}}{\code{character} \cr}
 
-\item{\code{ind_col}}{(\code{character(1)}) \cr
+\item{\code{ind_col}}{\code{character} \cr
 Name of column of individuals IDS.}
 
-\item{\code{target}}{(\code{character(1)}) \cr
+\item{\code{target}}{\code{character} \cr
 Name of the target variable.}
 
-\item{\code{target_df}}{(\code{data.frame(1)}) \cr
+\item{\code{target_df}}{\code{data.frame} \cr
 Data frame with two columns: individual IDs and response variable values.}
 
-\item{\code{problem_type}}{(\code{character}) \cr
+\item{\code{problem_type}}{\code{character} \cr
 Either "classification" or "regression".}
 
-\item{\code{verbose}}{(\code{boolean}) \cr
+\item{\code{verbose}}{\code{boolean} \cr
 Warning messages will be displayed if set to TRUE.}
 }
 \if{html}{\out{</div>}}
@@ -147,10 +147,10 @@ Train each layer of the current Training.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{ind_subset}}{(\code{character(1)})\cr
+\item{\code{ind_subset}}{\code{character}\cr
 Subset of individuals IDs to be used for training.}
 
-\item{\code{use_var_sel}}{\code{boolean(1)} \cr
+\item{\code{use_var_sel}}{\code{boolean} \cr
 If TRUE, selected variables available at each layer are used.}
 }
 \if{html}{\out{</div>}}
@@ -171,10 +171,10 @@ Predicts values given new data.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{testing}}{(\code{TestData(1)}) \cr
+\item{\code{testing}}{\code{TestData} \cr
 Object of class \link{TestData}.}
 
-\item{\code{ind_subset}}{(\code{vector(1)}) \cr
+\item{\code{ind_subset}}{\code{vector} \cr
 Subset of individuals IDs to be used for training.}
 }
 \if{html}{\out{</div>}}
@@ -200,16 +200,16 @@ Creates a meta training dataset and assigns it to the meta layer.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{resampling_method}}{(\verb{function(1)}) \cr
+\item{\code{resampling_method}}{\code{function} \cr
 Function for internal validation.}
 
-\item{\code{resampling_arg}}{(\code{list(1)}) \cr
+\item{\code{resampling_arg}}{\code{list} \cr
 List of arguments to be passed to the function.}
 
-\item{\code{use_var_sel}}{\code{boolean(1)} \cr
+\item{\code{use_var_sel}}{\code{boolean} \cr
 If TRUE, selected variables available at each layer are used.}
 
-\item{\code{impute}}{(\code{boolean}) \cr
+\item{\code{impute}}{\code{boolean} \cr
 If TRUE, mode or median based imputation is performed on the modality-specific predictions.}
 }
 \if{html}{\out{</div>}}
@@ -236,19 +236,19 @@ Trains the current object. All leaners and the meta learner are trained.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{ind_subset}}{(\code{vector(1)}) \cr
+\item{\code{ind_subset}}{\code{vector} \cr
 ID subset to be used for training.}
 
-\item{\code{use_var_sel}}{\code{boolean(1)} \cr
+\item{\code{use_var_sel}}{\code{boolean} \cr
 If TRUE, variable selection is performed before training.}
 
-\item{\code{resampling_method}}{(\verb{function(1)}) \cr
+\item{\code{resampling_method}}{\code{function} \cr
 Function for internal validation. If not specify, the \code{resampling} function from the package \code{caret} is used for a 10-folds cross-validation.}
 
-\item{\code{resampling_arg}}{(\code{list(1)}) \cr
+\item{\code{resampling_arg}}{\code{list} \cr
 List of arguments to be passed to the function.}
 
-\item{\code{seed}}{(\code{integer(1)}) \cr
+\item{\code{seed}}{\code{integer} \cr
 Random seed. Default is NULL, which generates the seed from \code{R}.}
 }
 \if{html}{\out{</div>}}
@@ -269,10 +269,10 @@ Compute predictions for a testing object.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{testing}}{(\code{Testing(1)}) \cr
+\item{\code{testing}}{\code{Testing} \cr
 A new testing object to be predicted.}
 
-\item{\code{ind_subset}}{(\code{vector(1)}) \cr
+\item{\code{ind_subset}}{\code{vector} \cr
 Vector of IDs to be predicted.}
 }
 \if{html}{\out{</div>}}
@@ -293,10 +293,10 @@ Variable selection on the current training object.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{ind_subset}}{\code{vector(1)} \cr
+\item{\code{ind_subset}}{\code{vector} \cr
 ID subset of individuals to be used for variable selection.}
 
-\item{\code{verbose}}{(\code{boolean}) \cr
+\item{\code{verbose}}{\code{boolean} \cr
 Warning messages will be displayed if set to TRUE.}
 }
 \if{html}{\out{</div>}}
@@ -343,7 +343,7 @@ Get a layer of a given ID.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{\code{character(1)} \cr
+\item{\code{id}}{\code{character} \cr
 The ID of the layer to be returned.}
 }
 \if{html}{\out{</div>}}
@@ -403,7 +403,7 @@ Remove a layer of a given ID.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{\code{character(1)} \cr
+\item{\code{id}}{\code{character} \cr
 The ID of the layer to be removed.}
 }
 \if{html}{\out{</div>}}
@@ -517,7 +517,7 @@ Set imputation action na.action.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{impute}}{\code{character(1)} \cr
+\item{\code{impute}}{\code{character} \cr
 How to handle missing values.}
 }
 \if{html}{\out{</div>}}

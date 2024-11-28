@@ -73,10 +73,10 @@ constructor
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{(\code{character(1)})\cr
+\item{\code{id}}{\code{character}\cr
 Training layer id.}
 
-\item{\code{training}}{(\code{Training(1)})\cr}
+\item{\code{training}}{\code{Training}\cr}
 }
 \if{html}{\out{</div>}}
 }
@@ -133,13 +133,13 @@ Trains the current layer.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{ind_subset}}{\code{vector(1)} \cr
+\item{\code{ind_subset}}{\code{vector} \cr
 ID subset of individuals to be used for training.}
 
-\item{\code{use_var_sel}}{\code{boolean(1)} \cr
+\item{\code{use_var_sel}}{\code{boolean} \cr
 If TRUE, variable selection is performed before training.}
 
-\item{\code{verbose}}{(\code{boolean}) \cr
+\item{\code{verbose}}{\code{boolean} \cr
 Warning messages will be displayed if set to TRUE.}
 }
 \if{html}{\out{</div>}}
@@ -160,10 +160,10 @@ Variable selection on the current layer.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{ind_subset}}{\code{vector(1)} \cr
+\item{\code{ind_subset}}{\code{vector} \cr
 ID subset of individuals to be used for variable selection.}
 
-\item{\code{verbose}}{(\code{boolean}) \cr
+\item{\code{verbose}}{\code{boolean} \cr
 Warning messages will be displayed if set to TRUE.}
 }
 \if{html}{\out{</div>}}
@@ -186,7 +186,7 @@ Predicts values for the new layer taking as argument.
 \describe{
 \item{\code{new_layer}}{\code{TrainLayer} \cr}
 
-\item{\code{use_var_sel}}{\code{boolean(1)} \cr
+\item{\code{use_var_sel}}{\code{boolean} \cr
 If TRUE, selected variables available at each layer are used.}
 
 \item{\code{ind_subset}}{\code{vector} \cr}

@@ -58,13 +58,13 @@ constructor
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{(\code{character(1)})\cr
+\item{\code{id}}{\code{character}\cr
 Testing id.}
 
-\item{\code{ind_col}}{(\code{character(1)})
+\item{\code{ind_col}}{\code{character}
 Name of column of individuals IDS in testing data.frame.}
 
-\item{\code{verbose}}{(\code{boolean}) \cr
+\item{\code{verbose}}{\code{boolean} \cr
 Warning messages will be displayed if set to TRUE.}
 }
 \if{html}{\out{</div>}}
