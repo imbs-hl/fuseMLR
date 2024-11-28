@@ -134,7 +134,7 @@ print(training)
 ```
 
     ## Training        : training
-    ## Problem typ     : classification
+    ## Problem type    : classification
     ## Status          : Not trained
     ## Number of layers: 0
     ## Layers trained  : 0
@@ -168,7 +168,7 @@ createTrainLayer(training = training,
 ```
 
     ## Training        : training
-    ## Problem typ     : classification
+    ## Problem type    : classification
     ## Status          : Not trained
     ## Number of layers: 1
     ## Layers trained  : 0
@@ -196,7 +196,7 @@ createTrainLayer(training = training,
 ```
 
     ## Training        : training
-    ## Problem typ     : classification
+    ## Problem type    : classification
     ## Status          : Not trained
     ## Number of layers: 2
     ## Layers trained  : 0
@@ -224,7 +224,7 @@ createTrainLayer(training = training,
 ```
 
     ## Training        : training
-    ## Problem typ     : classification
+    ## Problem type    : classification
     ## Status          : Not trained
     ## Number of layers: 3
     ## Layers trained  : 0
@@ -245,7 +245,7 @@ createTrainMetaLayer(training = training,
 ```
 
     ## Training        : training
-    ## Problem typ     : classification
+    ## Problem type    : classification
     ## Status          : Not trained
     ## Number of layers: 4
     ## Layers trained  : 0
@@ -330,145 +330,9 @@ training <- fusemlr(training = training,
     ## Warning in fusemlr(training = training, use_var_sel = TRUE, resampling_method =
     ## NULL, : Variable selection has been already performed.
 
-    ## Training for fold 1.
+    ## Creating fold predictions.
 
-    ## Training on layer geneexpr started.
-
-    ## Training on layer geneexpr done.
-
-    ## Training on layer proteinexpr started.
-
-    ## Training on layer proteinexpr done.
-
-    ## Training on layer methylation started.
-
-    ## Training on layer methylation done.
-
-    ## Training for fold 2.
-
-    ## Training on layer geneexpr started.
-
-    ## Training on layer geneexpr done.
-
-    ## Training on layer proteinexpr started.
-
-    ## Training on layer proteinexpr done.
-
-    ## Training on layer methylation started.
-
-    ## Training on layer methylation done.
-
-    ## Training for fold 3.
-
-    ## Training on layer geneexpr started.
-
-    ## Training on layer geneexpr done.
-
-    ## Training on layer proteinexpr started.
-
-    ## Training on layer proteinexpr done.
-
-    ## Training on layer methylation started.
-
-    ## Training on layer methylation done.
-
-    ## Training for fold 4.
-
-    ## Training on layer geneexpr started.
-
-    ## Training on layer geneexpr done.
-
-    ## Training on layer proteinexpr started.
-
-    ## Training on layer proteinexpr done.
-
-    ## Training on layer methylation started.
-
-    ## Training on layer methylation done.
-
-    ## Training for fold 5.
-
-    ## Training on layer geneexpr started.
-
-    ## Training on layer geneexpr done.
-
-    ## Training on layer proteinexpr started.
-
-    ## Training on layer proteinexpr done.
-
-    ## Training on layer methylation started.
-
-    ## Training on layer methylation done.
-
-    ## Training for fold 6.
-
-    ## Training on layer geneexpr started.
-
-    ## Training on layer geneexpr done.
-
-    ## Training on layer proteinexpr started.
-
-    ## Training on layer proteinexpr done.
-
-    ## Training on layer methylation started.
-
-    ## Training on layer methylation done.
-
-    ## Training for fold 7.
-
-    ## Training on layer geneexpr started.
-
-    ## Training on layer geneexpr done.
-
-    ## Training on layer proteinexpr started.
-
-    ## Training on layer proteinexpr done.
-
-    ## Training on layer methylation started.
-
-    ## Training on layer methylation done.
-
-    ## Training for fold 8.
-
-    ## Training on layer geneexpr started.
-
-    ## Training on layer geneexpr done.
-
-    ## Training on layer proteinexpr started.
-
-    ## Training on layer proteinexpr done.
-
-    ## Training on layer methylation started.
-
-    ## Training on layer methylation done.
-
-    ## Training for fold 9.
-
-    ## Training on layer geneexpr started.
-
-    ## Training on layer geneexpr done.
-
-    ## Training on layer proteinexpr started.
-
-    ## Training on layer proteinexpr done.
-
-    ## Training on layer methylation started.
-
-    ## Training on layer methylation done.
-
-    ## Training for fold 10.
-
-    ## Training on layer geneexpr started.
-
-    ## Training on layer geneexpr done.
-
-    ## Training on layer proteinexpr started.
-
-    ## Training on layer proteinexpr done.
-
-    ## Training on layer methylation started.
-
-    ## Training on layer methylation done.
+    ##   |                                                                              |                                                                      |   0%  |                                                                              |=======                                                               |  10%  |                                                                              |==============                                                        |  20%  |                                                                              |=====================                                                 |  30%  |                                                                              |============================                                          |  40%  |                                                                              |===================================                                   |  50%  |                                                                              |==========================================                            |  60%  |                                                                              |=================================================                     |  70%  |                                                                              |========================================================              |  80%  |                                                                              |===============================================================       |  90%  |                                                                              |======================================================================| 100%
 
     ## Training on layer geneexpr started.
 
@@ -487,7 +351,7 @@ print(training)
 ```
 
     ## Training        : training
-    ## Problem typ     : classification
+    ## Problem type    : classification
     ## Status          : Trained
     ## Number of layers: 4
     ## Layers trained  : 4
@@ -737,7 +601,7 @@ createTrainLayer(training = training,
 ```
 
     ## Training        : training
-    ## Problem typ     : classification
+    ## Problem type    : classification
     ## Status          : Trained
     ## Number of layers: 4
     ## Layers trained  : 4
@@ -772,145 +636,9 @@ training <- fusemlr(training = training,
     ## Warning in fusemlr(training = training, use_var_sel = TRUE): Variable selection
     ## has been already performed.
 
-    ## Training for fold 1.
+    ## Creating fold predictions.
 
-    ## Training on layer geneexpr started.
-
-    ## Training on layer geneexpr done.
-
-    ## Training on layer proteinexpr started.
-
-    ## Training on layer proteinexpr done.
-
-    ## Training on layer methylation started.
-
-    ## Training on layer methylation done.
-
-    ## Training for fold 2.
-
-    ## Training on layer geneexpr started.
-
-    ## Training on layer geneexpr done.
-
-    ## Training on layer proteinexpr started.
-
-    ## Training on layer proteinexpr done.
-
-    ## Training on layer methylation started.
-
-    ## Training on layer methylation done.
-
-    ## Training for fold 3.
-
-    ## Training on layer geneexpr started.
-
-    ## Training on layer geneexpr done.
-
-    ## Training on layer proteinexpr started.
-
-    ## Training on layer proteinexpr done.
-
-    ## Training on layer methylation started.
-
-    ## Training on layer methylation done.
-
-    ## Training for fold 4.
-
-    ## Training on layer geneexpr started.
-
-    ## Training on layer geneexpr done.
-
-    ## Training on layer proteinexpr started.
-
-    ## Training on layer proteinexpr done.
-
-    ## Training on layer methylation started.
-
-    ## Training on layer methylation done.
-
-    ## Training for fold 5.
-
-    ## Training on layer geneexpr started.
-
-    ## Training on layer geneexpr done.
-
-    ## Training on layer proteinexpr started.
-
-    ## Training on layer proteinexpr done.
-
-    ## Training on layer methylation started.
-
-    ## Training on layer methylation done.
-
-    ## Training for fold 6.
-
-    ## Training on layer geneexpr started.
-
-    ## Training on layer geneexpr done.
-
-    ## Training on layer proteinexpr started.
-
-    ## Training on layer proteinexpr done.
-
-    ## Training on layer methylation started.
-
-    ## Training on layer methylation done.
-
-    ## Training for fold 7.
-
-    ## Training on layer geneexpr started.
-
-    ## Training on layer geneexpr done.
-
-    ## Training on layer proteinexpr started.
-
-    ## Training on layer proteinexpr done.
-
-    ## Training on layer methylation started.
-
-    ## Training on layer methylation done.
-
-    ## Training for fold 8.
-
-    ## Training on layer geneexpr started.
-
-    ## Training on layer geneexpr done.
-
-    ## Training on layer proteinexpr started.
-
-    ## Training on layer proteinexpr done.
-
-    ## Training on layer methylation started.
-
-    ## Training on layer methylation done.
-
-    ## Training for fold 9.
-
-    ## Training on layer geneexpr started.
-
-    ## Training on layer geneexpr done.
-
-    ## Training on layer proteinexpr started.
-
-    ## Training on layer proteinexpr done.
-
-    ## Training on layer methylation started.
-
-    ## Training on layer methylation done.
-
-    ## Training for fold 10.
-
-    ## Training on layer geneexpr started.
-
-    ## Training on layer geneexpr done.
-
-    ## Training on layer proteinexpr started.
-
-    ## Training on layer proteinexpr done.
-
-    ## Training on layer methylation started.
-
-    ## Training on layer methylation done.
+    ##   |                                                                              |                                                                      |   0%  |                                                                              |=======                                                               |  10%  |                                                                              |==============                                                        |  20%  |                                                                              |=====================                                                 |  30%  |                                                                              |============================                                          |  40%  |                                                                              |===================================                                   |  50%  |                                                                              |==========================================                            |  60%  |                                                                              |=================================================                     |  70%  |                                                                              |========================================================              |  80%  |                                                                              |===============================================================       |  90%  |                                                                              |======================================================================| 100%
 
     ## Training on layer geneexpr started.
 
@@ -929,7 +657,7 @@ print(training)
 ```
 
     ## Training        : training
-    ## Problem typ     : classification
+    ## Problem type    : classification
     ## Status          : Trained
     ## Number of layers: 4
     ## Layers trained  : 5

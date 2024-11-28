@@ -1,7 +1,7 @@
 #' @title The best layer-specific model is used as meta model.
 #'
 #' @description
-#' The meta learner is the best layer-specific learrner.
+#' The meta learner is the best layer-specific learner. This function is intended to be (internally) used as meta-learner in fuseMLR.
 #'
 #' @param x `data.frame` \cr
 #' \code{data.frame} of predictors.

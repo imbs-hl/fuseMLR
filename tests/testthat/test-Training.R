@@ -199,7 +199,7 @@ test_that("Training: all tests", {
     )
     print(trained)
     print(tl_ge)
-    expect_equal(length(three_warning), 3L)
+    expect_equal(length(three_warning), 1L)
 
   expect_error({
     disease <- training$getTargetValues()$disease

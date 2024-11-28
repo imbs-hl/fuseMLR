@@ -141,7 +141,7 @@ Printer
 \subsection{Method \code{trainLayer()}}{
 Train each layer of the current Training.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Training$trainLayer(ind_subset = NULL, use_var_sel = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Training$trainLayer(ind_subset = NULL, use_var_sel = FALSE, verbose = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -152,6 +152,9 @@ Subset of individuals IDs to be used for training.}
 
 \item{\code{use_var_sel}}{\code{boolean} \cr
 If TRUE, selected variables available at each layer are used.}
+
+\item{\code{verbose}}{\code{boolean} \cr
+Warning messages will be displayed if set to TRUE.}
 }
 \if{html}{\out{</div>}}
 }

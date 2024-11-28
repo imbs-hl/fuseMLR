@@ -22,14 +22,15 @@ Function to compute layer-specific performance of learners. If NULL, the Brier S
 Otherwise, the performance function must accept two parameters: \code{observed} (observed values) and \code{predicted} (predicted values).}
 }
 \value{
-A model object of class \code{weightedMeanLearner}.
+Object of class \code{weightedMeanLearner} with the vector of estimated weights pro layer.\cr
 }
 \description{
-Modality-specific learner are assessed and weighted based on their predictions.
+Modality-specific learner are assessed and weighted based on their predictions. This function is intended to be (internally) used as meta-learner in fuseMLR.
 }
 \examples{
 set.seed(20240624L)
-x = data.frame(x1 = runif(n = 50L, min = 0, max = 1))
+x = data.frame(x1 = runif(n = 50L, min = 0, max = 1),
+               x2 = runif(n = 50L, min = 0, max = 1))
 y = sample(x = 0L:1L, size = 50L, replace = TRUE)
 my_model = weightedMeanLearner(x = x, y = y)
 

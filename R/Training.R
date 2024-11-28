@@ -146,13 +146,16 @@ Training <- R6Class("Training",
                       #' Subset of individuals IDs to be used for training.
                       #' @param use_var_sel `boolean` \cr
                       #' If TRUE, selected variables available at each layer are used.
+                      #' @param verbose `boolean` \cr
+                      #' Warning messages will be displayed if set to TRUE.
                       #' @return
                       #' Returns the object itself, with a model for each layer.
                       #' @export
                       #'
                       #'
                       trainLayer = function (ind_subset = NULL,
-                                             use_var_sel = FALSE) {
+                                             use_var_sel = FALSE,
+                                             verbose = TRUE) {
                         layers = self$getKeyClass()
                         nb_layers = nrow(layers[layers$class %in% "TrainLayer", ])
                         if (nb_layers) {
@@ -162,7 +165,8 @@ Training <- R6Class("Training",
                           for (k in layers$key) {
                             layer = self$getFromHashTable(key = k)
                             layer$train(ind_subset = ind_subset,
-                                        use_var_sel = use_var_sel)
+                                        use_var_sel = use_var_sel,
+                                        verbose = verbose)
                           }
                         } else {
                           stop("No existing layer in the current training object.")
@@ -233,16 +237,21 @@ Training <- R6Class("Training",
                         if (!is.list(resampling)) {
                           stop("The resampling method must return a list of folds, with each fold containing a vector of training IDs.\n See example for details.")
                         } else {
+                          if (verbose) {
+                            message("Creating fold predictions.\n")
+                            pb <- txtProgressBar(min = 0, max = length(resampling), style = 3)
+                          }
                           train_layer_res_list = lapply(X = 1:length(resampling),
                                                         function (fold) {
                                                           if (verbose) {
-                                                            cat(sprintf("Training for fold %s.\n", fold))
+                                                            setTxtProgressBar(pb = pb, fold)
                                                           }
                                                           test_index = resampling[[fold]]
                                                           train_index = setdiff(unlist(resampling), test_index)
                                                           train_ids = self$getTargetValues()[train_index, 1L]
                                                           self$trainLayer(ind_subset = train_ids,
-                                                                          use_var_sel = use_var_sel)
+                                                                          use_var_sel = use_var_sel,
+                                                                          verbose = FALSE)
                                                           test_ids = self$getTargetValues()[test_index, 1L]
                                                           # Note: The current object is not a TestStudy, but a Training object.
                                                           predicting = self$predictLayer(testing = self,
@@ -339,9 +348,11 @@ Training <- R6Class("Training",
                                                  resampling_arg,
                                                  use_var_sel = use_var_sel,
                                                  impute = private$impute)
+                        cat("\n")
                         # 2) Train each layer
                         self$trainLayer(ind_subset = ind_subset,
-                                        use_var_sel = use_var_sel)
+                                        use_var_sel = use_var_sel,
+                                        verbose = self$getVerbose())
                         # 3) Train the meta layer
                         # Add layer specific predictions to meta training layer
                         layers = self$getKeyClass()

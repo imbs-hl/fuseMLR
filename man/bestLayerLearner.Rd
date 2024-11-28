@@ -21,7 +21,7 @@ Otherwise, the performance function must accept two parameters: \code{observed} 
 A model object of class \code{weightedMeanLeaner}.
 }
 \description{
-The meta learner is the best layer-specific learrner.
+The meta learner is the best layer-specific learner. This function is intended to be (internally) used as meta-learner in fuseMLR.
 }
 \examples{
 set.seed(20240624L)
