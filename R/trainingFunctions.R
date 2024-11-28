@@ -269,10 +269,6 @@ fusemlr = function (training,
   if (!training$getVarSelDone() & use_var_sel) {
     training$varSelection(ind_subset = ind_subset,
                           verbose = training$getVerbose())
-  } else {
-    if (training$getVarSelDone() & use_var_sel) {
-      warning("Variable selection has been already performed.")
-    }
   }
   training$train(ind_subset = ind_subset,
                  use_var_sel = use_var_sel,

@@ -327,9 +327,6 @@ training <- fusemlr(training = training,
                                           k = 10L))
 ```
 
-    ## Warning in fusemlr(training = training, use_var_sel = TRUE, resampling_method =
-    ## NULL, : Variable selection has been already performed.
-
     ## Creating fold predictions.
 
     ##   |                                                                              |                                                                      |   0%  |                                                                              |=======                                                               |  10%  |                                                                              |==============                                                        |  20%  |                                                                              |=====================                                                 |  30%  |                                                                              |============================                                          |  40%  |                                                                              |===================================                                   |  50%  |                                                                              |==========================================                            |  60%  |                                                                              |=================================================                     |  70%  |                                                                              |========================================================              |  80%  |                                                                              |===============================================================       |  90%  |                                                                              |======================================================================| 100%
@@ -632,9 +629,6 @@ set.seed(5462)
 training <- fusemlr(training = training,
                     use_var_sel = TRUE)
 ```
-
-    ## Warning in fusemlr(training = training, use_var_sel = TRUE): Variable selection
-    ## has been already performed.
 
     ## Creating fold predictions.
 
