@@ -1,4 +1,4 @@
-test_that("create_weights works correctly", {
+test_that("createWeights works correctly", {
 
   # Test 1: Check if 'ler' threshold is correctly calculated
   alpha <- 1/3
@@ -33,7 +33,7 @@ test_that("create_weights works correctly", {
   # Test 4: Check if the function returns weights when alpha is NULL
   eps <- 0.1
   alpha <- NULL  # Test without the alpha parameter (default behavior)
-  weights_no_alpha <- create_weights(train, test, n_train = n_train,
+  weights_no_alpha <- createWeights(train, test, n_train = n_train,
                                      n_test = n_test, nlearners = nlearners,
                                      eps = eps, alpha = alpha)
 
@@ -44,7 +44,7 @@ test_that("create_weights works correctly", {
   # Test 5: Check if the function returns weights
   eps <- 0.1
   alpha <- 1/3
-  weights <- create_weights(train, test, n_train = n_train,
+  weights <- createWeights(train, test, n_train = n_train,
                                      n_test = n_test, nlearners = nlearners,
                                      eps = eps, alpha = alpha)
 

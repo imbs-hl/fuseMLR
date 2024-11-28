@@ -1,15 +1,15 @@
-test_that("create_loss works", {
+test_that("createLoss works", {
   # Test 1: No error for valid inputs
   expect_no_error({
     pred <- c(0.1, 0.5, NA, 0.7)
     target <- c(0, 1, 1, 0)
-    create_loss(pred, target)
+    createLoss(pred, target)
   })
 
   # Test 2: Correct result for mixed valid and NA values
   pred <- c(0.2, NA, 0.8)
   target <- c(0, 1, 1)
-  result <- create_loss(pred, target)
+  result <- createLoss(pred, target)
   # Calculate expected loss manually
   valid_loss <- sum((target[!is.na(pred)] - pred[!is.na(pred)])^2)
   na_loss <- sum((target[is.na(pred)] - (1 - target[is.na(pred)]))^2)
@@ -19,7 +19,7 @@ test_that("create_loss works", {
   # Test 3: Correct result when all values in `pred` are NA
   pred <- c(NA, NA, NA)
   target <- c(1, 0, 1)
-  result <- create_loss(pred, target)
+  result <- createLoss(pred, target)
   # Expected loss is based only on NA penalties
   na_loss <- sum((target - (1 - target))^2)
   expect_equal(result, na_loss / length(target))
@@ -28,7 +28,7 @@ test_that("create_loss works", {
   expect_no_error({
     pred <- c(0.2, 0.6, 0.8)
     target <- c(0, 1, 1)
-    result <- create_loss(pred, target)
+    result <- createLoss(pred, target)
     # Check if the loss matches the expected value
     expect_equal(result, sum((target - pred)^2) / length(target))
   })
@@ -37,7 +37,7 @@ test_that("create_loss works", {
   expect_error({
     pred <- c(0.2, 0.6)
     target <- c(0, 1, 1)  # Different length
-    create_loss(pred, target)
+    createLoss(pred, target)
   })
 
 })

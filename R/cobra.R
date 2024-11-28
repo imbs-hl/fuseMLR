@@ -41,7 +41,7 @@
 #'
 #'
 
-cobra <- function(x, y, tune = "epsilon", k_folds = NULL, eps = NULL){
+cobra = function(x, y, tune = "epsilon", k_folds = NULL, eps = NULL){
 
   # Validate input parameters
   checkmate::assert_data_frame(x)
@@ -67,21 +67,21 @@ cobra <- function(x, y, tune = "epsilon", k_folds = NULL, eps = NULL){
   if(tune== "user"){
     # User-defined epsilon: eps must be provided or defaults to 0.1
     if(is.null(eps)){
-      eps <- 0.1
+      eps = 0.1
     } else if (!is.numeric(eps) || eps <= 0) {
         stop("Parameter 'eps' must be a positive numeric value.")
     }
-    k_folds <- NULL # No cross-validation required for user-defined epsilon
+    k_folds = NULL # No cross-validation required for user-defined epsilon
 
   } else if (tune %in% c("epsilon", "alpha_epsilon")) {
     # Cross-validation mode: k_folds must be specified or defaults to 10
     if (is.null(k_folds)) {
-      k_folds <- 10
+      k_folds = 10
     } else if (!is.numeric(k_folds) || k_folds <= 1) {
       stop("Parameter 'k_folds' must be a numeric value greater than 1.")
     }
     # eps will be determined during cross-validation
-    eps <- NULL
+    eps = NULL
   }
 
 
@@ -115,13 +115,13 @@ cobra <- function(x, y, tune = "epsilon", k_folds = NULL, eps = NULL){
       #     }
 
       # Create the COBRA model object
-      cobra_object <- list(train = x,
+      cobra_object = list(train = x,
                            train_target = y,
                            tune = tune,
                            k_folds = k_folds,
                            eps = eps)
 
-      class(cobra_object) <- "cobra"
+      class(cobra_object) = "cobra"
 
       # Provide a message about the chosen tuning mode
       if (tune == "alpha_epsilon") {

@@ -1,10 +1,9 @@
 #' Create Difference
 #'
-#'The \code{create_dif} function computes the difference between the maximum and minimum predictions in a dataset.
+#'The \code{createDif} function computes the difference between the maximum and minimum predictions in a dataset.
 #' @param x Predictions vector
-#' @export
 
-create_dif <- function(x){
+createDif = function (x) {
 
   # Check if the vector is empty or contains only NA values
   if (length(x) == 0 || all(is.na(x))) {

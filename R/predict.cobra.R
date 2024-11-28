@@ -24,7 +24,7 @@
 
 
 
-predict.cobra <- function(object, data, ...){
+predict.cobra = function(object, data, ...){
   # Ensure the object is of class 'cobra'
   if (!inherits(object, "cobra")) {
     stop("The provided object is not of class 'cobra'.")
@@ -35,12 +35,12 @@ predict.cobra <- function(object, data, ...){
   }
 
   # Extract parameters from the cobra object
-  train_data <- as.matrix(object$train)
-  n_train <-  nrow(train_data)
-  train_target <- object$train_target
-  test_data <- as.matrix(data)
-  n_test <- nrow(data)
-  n_learners <- ncol(train_data)
+  train_data = as.matrix(object$train)
+  n_train =  nrow(train_data)
+  train_target = object$train_target
+  test_data = as.matrix(data)
+  n_test = nrow(data)
+  n_learners = ncol(train_data)
 
   #  Input validation
 
@@ -54,58 +54,57 @@ predict.cobra <- function(object, data, ...){
 
 
     # Check if target is binary
-    is_binary_target <- all(train_target %in% c(0, 1))
+    is_binary_target = all(train_target %in% c(0, 1))
 
     if (is_binary_target) {
       # Binary target: Adjust epsilon range for probabilities
-      emin <- max(min(diff(sort(as.vector(train_data))),
+      emin = max(min(diff(sort(as.vector(train_data))),
                       diff(sort(as.vector(test_data)))),
                   1e-300) # Minimum epsilon
-      emax <- 1.0 # Maximum epsilon for probabilities
-      calibr_grid <- 100 # Use a grid for binary probabilities
+      emax = 1.0 # Maximum epsilon for probabilities
+      calibr_grid = 100 # Use a grid for binary probabilities
 
     } else {
       # Continuous target: Use the original calculation
-      emin <- max(min(diff(sort(as.vector(train_data))),
+      emin = max(min(diff(sort(as.vector(train_data))),
                       diff(sort(as.vector(test_data)))),
                   1e-300) # Minimum epsilon
-      emax <- 2 * max(create_dif(train_data),
-                      create_dif(test_data)) # Maximum epsilon
+      emax = 2 * max(createDif(train_data),
+                      createDif(test_data)) # Maximum epsilon
       calibr_grid = 200 # Grid
     }
 
-    estep <- (emax - emin)/(calibr_grid-1)
+    estep = (emax - emin)/(calibr_grid-1)
     # Epsilon vector
-    evect <- seq(emin, emax, estep)
-    n_e <- length(evect)
-    epsoptvec <- numeric(n_learners)
+    evect = seq(emin, emax, estep)
+    n_e = length(evect)
+    epsoptvec = numeric(n_learners)
     # nocov end
 
     # Perform cross-validation
-    k_folds <- object$k_folds
-    folds <- caret::createFolds(train_target, k = k_folds, list = TRUE)
-
+    k_folds = object$k_folds
+    folds = caret::createFolds(train_target, k = k_folds, list = TRUE)
     if (object$tune == "alpha_epsilon") {
       # Optimize both alpha and epsilon
-      alphaseq <- seq(1, n_learners)/n_learners # Range of alpha values
+      alphaseq = seq(1, n_learners)/n_learners # Range of alpha values
 
-      loss_cv <- array(0, dim = c(n_e, n_learners, k_folds)) # Loss matrix for cross-validation
+      loss_cv = array(0, dim = c(n_e, n_learners, k_folds)) # Loss matrix for cross-validation
 
       # cross validation for parameter optimization
       for (fold_idx in seq_along(folds)) {
         # Split data into training and test folds
-        test_idx <- folds[[fold_idx]]
-        train_idx <- setdiff(seq_along(train_target), test_idx)
+        test_idx = folds[[fold_idx]]
+        train_idx = setdiff(seq_along(train_target), test_idx)
 
-        train_target_fold <- train_target[train_idx]
-        test_target_fold <- train_target[test_idx]
-        train_pred_fold <- train_data[train_idx, , drop = FALSE]
-        test_pred_fold <- train_data[test_idx, , drop = FALSE]
+        train_target_fold = train_target[train_idx]
+        test_target_fold = train_target[test_idx]
+        train_pred_fold = train_data[train_idx, , drop = FALSE]
+        test_pred_fold = train_data[test_idx, , drop = FALSE]
 
         for(a in alphaseq){
-          alpha <- a
-          ilearner <- a*n_learners
-          pred <- sapply(X = evect, FUN = function(e) create_cobra_pred(eps = e,
+          alpha = a
+          ilearner = a*n_learners
+          pred = sapply(X = evect, FUN = function(e) createCobraPred(eps = e,
                                                                         train = train_pred_fold,
                                                                         test = test_pred_fold,
                                                                         n_train = length(train_idx),
@@ -115,10 +114,10 @@ predict.cobra <- function(object, data, ...){
                                                                         train_target = train_target_fold))
           # loss
           if (is.vector(pred)) { # if one observation in test_pred_fold
-            loss_cv[, ilearner, fold_idx] <- sapply(1:length(pred), function(i) create_loss(pred[i],
+            loss_cv[, ilearner, fold_idx] = sapply(1:length(pred), function(i) createLoss(pred[i],
                                                                                   target = test_target_fold))
           } else {
-            loss_cv[, ilearner, fold_idx] <- apply(X = pred, MARGIN = 2, FUN = create_loss,
+            loss_cv[, ilearner, fold_idx] = apply(X = pred, MARGIN = 2, FUN = createLoss,
                                                    target = test_target_fold)
           }
 
@@ -126,16 +125,16 @@ predict.cobra <- function(object, data, ...){
       }
 
       # Calculate mean loss and find optimal alpha and epsilon
-      loss_avg <- apply(loss_cv, c(1, 2), mean)
-      alphaopt_idx <- which.min(loss_avg)%/%n_e+1
-      alpha_opt <- alphaseq[alphaopt_idx]
-      eps_opt <- evect[which.min(loss_avg) %% n_e]
+      loss_avg = apply(loss_cv, c(1, 2), mean)
+      alphaopt_idx = which.min(loss_avg)%/%n_e+1
+      alpha_opt = alphaseq[alphaopt_idx]
+      eps_opt = evect[which.min(loss_avg) %% n_e]
 
       message('Optimal alpha: ', round(alpha_opt, 3) , ' (', alpha_opt * n_learners, ' Learner(s))',
               '. Optimal epsilon: ', round(eps_opt, 3), ". Tuning with ", k_folds, " folds.")
 
       # final predictions
-      pred <- create_cobra_pred(eps = eps_opt,
+      pred = createCobraPred(eps = eps_opt,
                                 train = train_data,
                                 test = test_data,
                                 n_train = n_train,
@@ -146,20 +145,20 @@ predict.cobra <- function(object, data, ...){
 
 
     } else { # If tuning epsilon only
-      loss_cv <- array(0, dim = c(n_e, k_folds))
+      loss_cv = array(0, dim = c(n_e, k_folds))
 
       # cross validation for parameter optimization
       for (fold_idx in seq_along(folds)) {
         # Split data into training and test folds
-        test_idx <- folds[[fold_idx]]
-        train_idx <- setdiff(seq_along(train_target), test_idx)
+        test_idx = folds[[fold_idx]]
+        train_idx = setdiff(seq_along(train_target), test_idx)
 
-        train_target_fold <- train_target[train_idx]
-        test_target_fold <- train_target[test_idx]
-        train_pred_fold <- train_data[train_idx, , drop = FALSE]
-        test_pred_fold <- train_data[test_idx, , drop = FALSE]
+        train_target_fold = train_target[train_idx]
+        test_target_fold = train_target[test_idx]
+        train_pred_fold = train_data[train_idx, , drop = FALSE]
+        test_pred_fold = train_data[test_idx, , drop = FALSE]
 
-        pred <- sapply(X = evect, FUN = function(e) create_cobra_pred(eps = e,
+        pred = sapply(X = evect, FUN = function(e) createCobraPred(eps = e,
                                                                       train = train_pred_fold,
                                                                       test = test_pred_fold,
                                                                       n_train = length(train_idx),
@@ -168,26 +167,26 @@ predict.cobra <- function(object, data, ...){
                                                                       alpha = NULL,
                                                                       train_target = train_target_fold))
         # loss
-        # loss_cv[, fold_idx] <- apply(X = pred, MARGIN = 2, FUN = create_loss,
+        # loss_cv[, fold_idx] = apply(X = pred, MARGIN = 2, FUN = createLoss,
         #                              target = test_target_fold)
 
         if (is.vector(pred)) { # if one observation in test_pred_fold
-          loss_cv[, fold_idx] <- sapply(1:length(pred), function(i) create_loss(pred[i],
+          loss_cv[, fold_idx] = sapply(1:length(pred), function(i) createLoss(pred[i],
                                                                                 target = test_target_fold))
         } else {
-          loss_cv[, fold_idx] <- apply(X = pred, MARGIN = 2, FUN = create_loss,
+          loss_cv[, fold_idx] = apply(X = pred, MARGIN = 2, FUN = createLoss,
                                        target = test_target_fold)
         }
       }
 
       # Calculate mean loss and find optimal epsilon
-      loss_avg <- apply(loss_cv, 1, mean)
-      eps_opt <- evect[which.min(loss_avg)]
+      loss_avg = apply(loss_cv, 1, mean)
+      eps_opt = evect[which.min(loss_avg)]
 
       message('Optimal epsilon: ', round(eps_opt, 3), ". Tuning with ", k_folds, " folds.")
 
       # final predictions
-      pred <- create_cobra_pred(eps = eps_opt,
+      pred = createCobraPred(eps = eps_opt,
                                 train = train_data,
                                 test = test_data,
                                 n_train = n_train,
@@ -198,10 +197,10 @@ predict.cobra <- function(object, data, ...){
 
     }
   } else  { # If tune = "user"
-    eps <- object$eps
+    eps = object$eps
 
     # final predictions
-    pred <- create_cobra_pred(eps = eps,
+    pred = createCobraPred(eps = eps,
                               train = train_data,
                               test = test_data,
                               n_train = n_train,
@@ -212,7 +211,7 @@ predict.cobra <- function(object, data, ...){
 
   }
 
-  predictions <- as.vector(pred)
+  predictions = as.vector(pred)
   return(predictions)
 }
 
