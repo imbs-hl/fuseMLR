@@ -20,11 +20,12 @@ Suggests:
     glmnet,
     Boruta,
     knitr,
-    rmarkdown
+    rmarkdown,
+    checkmate
 Config/testthat/edition: 3
 Depends: R (>= 3.6.0)
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 Collate: 
     'Data.R'
     'HashTable.R'
@@ -45,8 +46,14 @@ Collate:
     'Training.R'
     'VarSel.R'
     'bestLayerLearner.R'
+    'cobra.R'
+    'create.cobra.pred.R'
+    'create.dif.R'
+    'create.loss.R'
+    'create.weights.R'
     'multi_omics.R'
     'predict.bestLayerLearner.R'
+    'predict.cobra.R'
     'weightedMeanLearner.R'
     'predict.weightedMeanLearner.R'
     'testingFunctions.R'
