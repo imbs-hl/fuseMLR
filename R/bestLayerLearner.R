@@ -69,10 +69,10 @@ bestLayerLearner = function (x, y, perf = NULL) {
   }
   # nocov end
   weights_values = (1L / perf_values) / sum((1L / perf_values))
-  max_index = which.max(weights_values)
-  weights_values = rep(0L, length(weights_values))
-  weights_values[max_index] = 1L
-  names(weights_values) = names(x)
-  class(weights_values) = "bestLayerLearner"
-  return(weights_values)
+  ranking = order(-weights_values)
+  ordered_weights = rep(0L, length(weights_values))
+  ordered_weights[ranking] = seq_along(weights_values)
+  names(ordered_weights) = names(x)
+  class(ordered_weights) = "bestLayerLearner"
+  return(ordered_weights)
 }

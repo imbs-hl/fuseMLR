@@ -8,21 +8,26 @@
 #' (based on the proximity threshold \code{epsilon}) are used for prediction.
 #' If no suitable training points are found, the function returns \code{NA}.
 #'
-#' @param x A \code{data.frame} of training data, where rows are observations and
+#' @param x `data.frame` \cr
+#' A training data, where rows are observations and
 #' columns are predictions from individual learners. Use \code{NA} for missing predictions.
-#' @param y A \code{vector} containing the training targets. This can be a binary or two-level factor variable.
-#' @param tune A \code{character} value specifying the tuning mode:
+#' @param y `vector` \cr
+#' A vector containing the training targets. This can be a binary or two-level factor variable.
+#' @param tune `character` \cr
+#' A character value specifying the tuning mode:
 #' - \code{"alpha_epsilon"}: Tunes both \code{alpha} (number of learners) and \code{epsilon} (proximity threshold) via cross-validation.
 #' - \code{"epsilon"}: Tunes \code{epsilon} only via cross-validation.
 #' - \code{"user"}: No tuning; the user provides an optimal \code{epsilon}.
 #' #' The default value is \code{epsilon}.
-#' @param eps A \code{numeric} value for the proximity threshold, used only when \code{tune = "user"}.
+#' @param eps `numeric` \cr
+#' A numeric value for the proximity threshold, used only when \code{tune = "user"}.
 #' Defaults to \code{0.1}.
-#' @param k_folds Number of folds for cross-validation when \code{tune = "alpha_epsilon"} or \code{"epsilon"}.
+#' @param k_folds `integer` \cr
+#' Number of folds for cross-validation when \code{tune = "alpha_epsilon"} or \code{"epsilon"}.
 #' Default is \code{10}.
 #' @return An object of class \code{cobra} containing the training data, target values, and chosen parameters.
 #' @references
-#' Biau, G., Fischer, A., Guedj, B., & Malley, J. D. (2014). COBRA: A combined regression strategy.
+#' Biau, G., Fischer, A., Guedj, B., & Malley, J. D. (2014). COBRA: A combined regression strategy. The Journal of Multivariate Analysis 46:18-28
 #' @examples
 #' # Example usage
 #' set.seed(123)

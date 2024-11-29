@@ -239,7 +239,7 @@ Training <- R6Class("Training",
                         } else {
                           if (verbose) {
                             message("Creating fold predictions.\n")
-                            pb <- txtProgressBar(min = 0, max = length(resampling), style = 3)
+                            pb <- txtProgressBar(min = 0, max = length(resampling), style = 1)
                           }
                           train_layer_res_list = lapply(X = 1:length(resampling),
                                                         function (fold) {

@@ -27,10 +27,17 @@ Training object where the created layer will be stored.}
 ID of the layer to be created.}
 
 \item{lrner_package}{\code{character} \cr
-Name of the package containing the function that implements the learning algorithm.\cr}
+Name of the package containing the function that implements the learning algorithm.
+Default is \code{NULL}, if the function is available in the current working environment.}
 
 \item{lrn_fct}{\code{character} \cr
-Name of the function that that implements the learning algorithm.}
+Name of the learning function. The corresponding function must allow at least two parameters \code{x} (of predictors)
+and \code{y} (response values), and return a model. If not, the interface
+parameters \code{x} and \code{y} below can be used to map these argument name with the original arguments in your function.
+The returned model must allow the use of the generic function \code{predict} (with arguments \code{object} and \code{data}) to make
+predictions for new data and predictions should be a vector or a \code{list} containing a vector called
+\code{predictions} with the predicted values. See the details below about meta-learners. If the arguments \code{object} and \code{data} are named differently in your predict
+function, use the interface parameters \code{object} and \code{data} below to specify the original names.}
 
 \item{param_train_list}{\code{character} \cr
 List of arguments to be passed to \code{lrn_fct}.}
@@ -67,4 +74,33 @@ The updated \link{Training} object (with the new layer) is returned.
 }
 \description{
 Creates and store a \link{TrainMetaLayer} on the \link{Training} object passed as argument.
+The meta-layer encapsulates the meta-learner and the fold predictions (internally created) of the layer-specific
+base models.
+}
+\details{
+Internal meta-learners are available in the package.
+
+The \link{cobra} meta-learner implements the COBRA (COmBined Regression Alternative),
+an aggregation method for combining predictions from multiple individual learners (Biau et al. 2014).
+This method aims to tune key parameters for achieving optimal predictions
+by averaging the target values of similar candidates in the training dataset's predictions.
+Only the training points that are sufficiently similar to the test point
+(based on the proximity threshold \code{epsilon}) are used for prediction.
+If no suitable training points are found, the function returns \code{NA}.
+
+The \link{weightedMeanLearner} evaluates the prediction performance of modality-specific
+learners and uses these estimates to weight the base models, aggregating their
+predictions accordingly.
+
+The \link{bestLayerLearner} evaluates the prediction performance of modality-specific
+learners and returns predictions made by the best learner as the meta-prediction.
+
+Beyond the internal meta-learners, any other learning algorithm can be used.
+}
+\references{
+Fouodo C.J.K, Bleskina M. and Szymczak (2024). fuseMLR: An R package for integrative prediction modeling of multi-omics data, paper submitted. \cr
+Biau, G., Fischer, A., Guedj, B., & Malley, J. D. (2014). COBRA: A combined regression strategy. The Journal of Multivariate Analysis 46:18-28
+}
+\seealso{
+\link{createTrainLayer}, \link{varSelection}, and \link{fusemlr}.
 }

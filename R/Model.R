@@ -233,9 +233,9 @@ Model <- R6Class("Model",
                        names(predicted_obj) = pred_colnames
                      } else {
                        if (is.list(predicted_obj)) {
-                         if (is.null(predicted_obj$predictions)) {
+                         if (is.null(predicted_obj$predictions) & is.vector(predicted_obj$predictions)) {
                            # nocov start
-                           stop("Predicted object must either be a vector or a list containing a field named 'predictions'")
+                           stop("Predicted object must either be a vector or a list containing a vector named 'predictions'.")
                            # nocov end
                          } else {
                            predicted_obj = data.frame(

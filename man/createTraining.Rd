@@ -36,5 +36,10 @@ Warning and processing information (including those of cross-validation) will be
 The created \link{Training} object is returned.
 }
 \description{
-Creates a \link{Training} object.
+Creates a \link{Training} object. Training object are designed to encapsulate training layers
+and training meta-layer. Functions \link{createTrainLayer} and \link{createTrainMetaLayer} are available
+to add the training layer and the training meta-layer to a training object.
+}
+\seealso{
+\link{createTrainLayer}, \link{createTrainMetaLayer} and \link{fusemlr}.
 }

@@ -1,6 +1,8 @@
 #' @title createTraining
 #' @description
-#' Creates a [Training] object.
+#' Creates a [Training] object. Training object are designed to encapsulate training layers
+#' and training meta-layer. Functions [createTrainLayer] and [createTrainMetaLayer] are available
+#' to add the training layer and the training meta-layer to a training object.
 #'
 #' @param id `character` \cr
 #' Training's ID.
@@ -16,6 +18,7 @@
 #' Warning and processing information (including those of cross-validation) will be displayed if set to TRUE.
 #' @return
 #' The created [Training] object is returned.
+#' @seealso [createTrainLayer], [createTrainMetaLayer] and [fusemlr].
 #' @export
 createTraining = function (id,
                            target_df,
@@ -47,13 +50,23 @@ createTraining = function (id,
 #' @param varsel_package `character` \cr
 #' Name of the package containing the function that implements the variable selection algorithm.\cr
 #' @param varsel_fct `character` \cr
-#' Name of the function that performs variable selection. For the default value NULL no variable selection will be performed.
+#' Name of variable selection function. Default value is `NULL` for no variable selection.
+#' If specified, the function must allow at least two parameters `x` (of predictors)
+#' and `y` (response values), and return a vector of selected variables. Otherwise use the interface parameters
+#' `x`, `y` below to map the original argument names, and `extract_var_fct`  indicate how to extract the vector of selected variables.
 #' @param varsel_param `list` \cr
 #' List of arguments to be passed to \code{varsel_fct}.
 #' @param lrner_package `character` \cr
-#' Name of the package containing the function that implements the learning algorithm.\cr
+#' Name of the package containing the function that implements the learning algorithm.
+#' Default is `NULL`, if the function is available in the current working environment.
 #' @param lrn_fct  `character` \cr
-#' Name of the function that that implements the learning algorithm.
+#' Name of the learning function. The corresponding function must allow at least two parameters `x` (of predictors)
+#' and `y` (response values), and return a model. If not, the interface
+#' parameters `x` and `y` below can be used to map these argument name with the original arguments in your function.
+#' The returned model must allow the use of the generic function `predict` (with arguments `object` and `data`) to make
+#' predictions for new data and predictions should be a vector or a `list` containing a vector called
+#' `predictions` with the predicted values. If the arguments `object` and `data` are named differently in your predict
+#' function, use the interface parameters `object` and `data` below to specify the original names.
 #' @param param_train_list  `character` \cr
 #' List of arguments to be passed to \code{lrn_fct}.
 #' @param param_pred_list   `character` \cr
@@ -82,15 +95,18 @@ createTraining = function (id,
 #' Default value is NULL, if selected variables are in a vector.
 #' @return
 #' The updated [Training] object (with the new layer) is returned.
+#' @seealso [createTrainMetaLayer] and [fusemlr].
 #' @export
 #'
+#' @references
+#' Fouodo C.J.K, Bleskina M. and Szymczak (2024). fuseMLR: An R package for integrative prediction modeling of multi-omics data, paper submitted.\cr
 createTrainLayer = function (training,
                              train_layer_id,
                              train_data,
                              varsel_package = NULL,
                              varsel_fct = NULL,
                              varsel_param = list(),
-                             lrner_package,
+                             lrner_package = NULL,
                              lrn_fct,
                              param_train_list = list(),
                              param_pred_list = list(),
@@ -151,15 +167,24 @@ createTrainLayer = function (training,
 #' @title createTrainMetaLayer
 #' @description
 #' Creates and store a [TrainMetaLayer] on the [Training] object passed as argument.
+#' The meta-layer encapsulates the meta-learner and the fold predictions (internally created) of the layer-specific
+#' base models.
 #'
 #' @param training `Training` \cr
 #' Training object where the created layer will be stored.
 #' @param meta_layer_id `character` \cr
 #' ID of the layer to be created.
 #' @param lrner_package `character` \cr
-#' Name of the package containing the function that implements the learning algorithm.\cr
+#' Name of the package containing the function that implements the learning algorithm.
+#' Default is `NULL`, if the function is available in the current working environment.
 #' @param lrn_fct  `character` \cr
-#' Name of the function that that implements the learning algorithm.
+#' Name of the learning function. The corresponding function must allow at least two parameters `x` (of predictors)
+#' and `y` (response values), and return a model. If not, the interface
+#' parameters `x` and `y` below can be used to map these argument name with the original arguments in your function.
+#' The returned model must allow the use of the generic function `predict` (with arguments `object` and `data`) to make
+#' predictions for new data and predictions should be a vector or a `list` containing a vector called
+#' `predictions` with the predicted values. See the details below about meta-learners. If the arguments `object` and `data` are named differently in your predict
+#' function, use the interface parameters `object` and `data` below to specify the original names.
 #' @param param_train_list  `character` \cr
 #' List of arguments to be passed to \code{lrn_fct}.
 #' @param param_pred_list   `list` \cr
@@ -182,8 +207,33 @@ createTrainLayer = function (training,
 #' If the predict function that is called for the model does not return a vector, then
 #' use this argument to specify a (or a name of a) function that can be used to extract vector of predictions.
 #' Default value is NULL, if predictions are in a vector.
+#' @details
+#'
+#' Internal meta-learners are available in the package.
+#'
+#' The [cobra] meta-learner implements the COBRA (COmBined Regression Alternative),
+#' an aggregation method for combining predictions from multiple individual learners (Biau et al. 2014).
+#' This method aims to tune key parameters for achieving optimal predictions
+#' by averaging the target values of similar candidates in the training dataset's predictions.
+#' Only the training points that are sufficiently similar to the test point
+#' (based on the proximity threshold \code{epsilon}) are used for prediction.
+#' If no suitable training points are found, the function returns \code{NA}.
+#'
+#' The [weightedMeanLearner] evaluates the prediction performance of modality-specific
+#' learners and uses these estimates to weight the base models, aggregating their
+#' predictions accordingly.
+#'
+#' The [bestLayerLearner] evaluates the prediction performance of modality-specific
+#' learners and returns predictions made by the best learner as the meta-prediction.
+#'
+#' Beyond the internal meta-learners, any other learning algorithm can be used.
+#'
 #' @return
 #' The updated [Training] object (with the new layer) is returned.
+#' @seealso [createTrainLayer], [varSelection], and [fusemlr].
+#' @references
+#' Fouodo C.J.K, Bleskina M. and Szymczak (2024). fuseMLR: An R package for integrative prediction modeling of multi-omics data, paper submitted. \cr
+#' Biau, G., Fischer, A., Guedj, B., & Malley, J. D. (2014). COBRA: A combined regression strategy. The Journal of Multivariate Analysis 46:18-28
 #' @export
 #'
 createTrainMetaLayer = function (training,
@@ -231,6 +281,8 @@ createTrainMetaLayer = function (training,
 #' A \code{data.frame} with two columns: layer and selected variables.
 #' @export
 #'
+#' @references
+#' Fouodo C.J.K, Bleskina M. and Szymczak (2024). fuseMLR: An R package for integrative prediction modeling of multi-omics data, paper submitted. \cr
 varSelection = function (training,
                          ind_subset = NULL) {
   selected = training$varSelection(ind_subset = ind_subset,
@@ -240,7 +292,15 @@ varSelection = function (training,
 
 #' @title fusemlr
 #' @description
-#' Trains the [Training] object passed as argument. All leaners and the meta learner are trained.
+#' Trains the [Training] object passed as argument. A training object must contain
+#' the training layers and a training meta-layer. A training layer encapsulates
+#' data modalities, a variable selection method and a learner. Use the function
+#' [createTraining] to create a training object, [createTrainLayer] to add training
+#' layers to the created training object, and [createTrainMetaLayer] to add a meta-layer
+#' with the corresponding meta-learner to the training object. The function `fusemlr`
+#' is designed to train all training layers and the meta-learner. After training
+#' the layer-specific base models and the meta-model will be stored in the training
+#' object which can be used for predictions.
 #'
 #' @param training `Training` \cr
 #' Training object where the created layer will be stored.
@@ -258,8 +318,11 @@ varSelection = function (training,
 #'
 #' @return
 #' The current object is returned, with each learner trained on each layer.
+#' @seealso [extractModel] and [extractData].
 #' @export
 #'
+#' @references
+#' Fouodo C.J.K, Bleskina M. and Szymczak (2024). fuseMLR: An R package for integrative prediction modeling of multi-omics data, paper submitted.\cr
 fusemlr = function (training,
                     ind_subset = NULL,
                     use_var_sel = FALSE,

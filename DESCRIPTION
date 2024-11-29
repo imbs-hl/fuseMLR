@@ -1,7 +1,7 @@
 Package: fuseMLR
 Type: Package
 Title: Fuse machine leaning in R
-Version: 0.1.1
+Version: 0.1.2
 Author: Cesaire J. K. Fouodo
 Maintainer: The package maintainer <cesaire.kuetefouodo@uni-luebeck.de>
 Description: More about what it does (maybe more than one line)

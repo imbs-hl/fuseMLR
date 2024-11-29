@@ -37,5 +37,19 @@ Random seed used for resampling. Default is NULL, which generates the seed from 
 The current object is returned, with each learner trained on each layer.
 }
 \description{
-Trains the \link{Training} object passed as argument. All leaners and the meta learner are trained.
+Trains the \link{Training} object passed as argument. A training object must contain
+the training layers and a training meta-layer. A training layer encapsulates
+data modalities, a variable selection method and a learner. Use the function
+\link{createTraining} to create a training object, \link{createTrainLayer} to add training
+layers to the created training object, and \link{createTrainMetaLayer} to add a meta-layer
+with the corresponding meta-learner to the training object. The function \code{fusemlr}
+is designed to train all training layers and the meta-learner. After training
+the layer-specific base models and the meta-model will be stored in the training
+object which can be used for predictions.
+}
+\references{
+Fouodo C.J.K, Bleskina M. and Szymczak (2024). fuseMLR: An R package for integrative prediction modeling of multi-omics data, paper submitted.\cr
+}
+\seealso{
+\link{extractModel} and \link{extractData}.
 }

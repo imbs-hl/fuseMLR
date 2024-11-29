@@ -7,12 +7,15 @@
 cobra(x, y, tune = "epsilon", k_folds = NULL, eps = NULL)
 }
 \arguments{
-\item{x}{A \code{data.frame} of training data, where rows are observations and
+\item{x}{\code{data.frame} \cr
+A training data, where rows are observations and
 columns are predictions from individual learners. Use \code{NA} for missing predictions.}
 
-\item{y}{A \code{vector} containing the training targets. This can be a binary or two-level factor variable.}
+\item{y}{\code{vector} \cr
+A vector containing the training targets. This can be a binary or two-level factor variable.}
 
-\item{tune}{A \code{character} value specifying the tuning mode:
+\item{tune}{\code{character} \cr
+A character value specifying the tuning mode:
 \itemize{
 \item \code{"alpha_epsilon"}: Tunes both \code{alpha} (number of learners) and \code{epsilon} (proximity threshold) via cross-validation.
 \item \code{"epsilon"}: Tunes \code{epsilon} only via cross-validation.
@@ -20,10 +23,12 @@ columns are predictions from individual learners. Use \code{NA} for missing pred
 #' The default value is \code{epsilon}.
 }}
 
-\item{k_folds}{Number of folds for cross-validation when \code{tune = "alpha_epsilon"} or \code{"epsilon"}.
+\item{k_folds}{\code{integer} \cr
+Number of folds for cross-validation when \code{tune = "alpha_epsilon"} or \code{"epsilon"}.
 Default is \code{10}.}
 
-\item{eps}{A \code{numeric} value for the proximity threshold, used only when \code{tune = "user"}.
+\item{eps}{\code{numeric} \cr
+A numeric value for the proximity threshold, used only when \code{tune = "user"}.
 Defaults to \code{0.1}.}
 }
 \value{
@@ -54,5 +59,5 @@ prediction <- predict(object = cobra_model, data = x_new)
 
 }
 \references{
-Biau, G., Fischer, A., Guedj, B., & Malley, J. D. (2014). COBRA: A combined regression strategy.
+Biau, G., Fischer, A., Guedj, B., & Malley, J. D. (2014). COBRA: A combined regression strategy. The Journal of Multivariate Analysis 46:18-28
 }
