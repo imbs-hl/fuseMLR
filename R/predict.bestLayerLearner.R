@@ -24,6 +24,7 @@
 #' x_new <- data.frame(x1 = rnorm(10L))
 #' my_predictions <- predict(object = my_model, data = x_new)
 #'
+#'
 predict.bestLayerLearner = function (object, data) {
   if (all(names(object) %in% names(data))) {
     pred = apply(data[ , names(object), drop = FALSE], 1L, function (tmp_row) {

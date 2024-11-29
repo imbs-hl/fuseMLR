@@ -21,8 +21,7 @@
 #' x_new <- data.frame(a = rnorm(5L), b = rnorm(5L))
 #' prediction <- predict(object = cobra_model, data = x_new)
 #' @export
-
-
+#' @method predict cobra
 
 predict.cobra = function(object, data, ...){
   # Ensure the object is of class 'cobra'
