@@ -15,7 +15,6 @@
 #'
 #' @export
 #' @method predict bestLayerLearner
-#' @importFrom stats weighted.mean complete.cases
 #'
 #' @examples
 #' set.seed(20240625)
