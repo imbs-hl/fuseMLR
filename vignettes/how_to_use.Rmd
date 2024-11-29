@@ -126,7 +126,7 @@ createTrainMetaLayer(training = training,
                      lrn_fct = "weightedMeanLearner",
                      param_train_list = list(),
                      param_pred_list = list(),
-                     na_action = "na.impute")
+                     na_action = "na.rm")
 ```
 
 Function ```upsetplot()``` is available to generate an upset of the training data, i.e. an overview how patients overlap across layers.
@@ -156,7 +156,6 @@ We use the function ```fusemlr()``` to train our models using the subset of sele
 set.seed(5462)
 fusemlr(training = training,
         use_var_sel = TRUE)
-
 print(training)
 # See also summary(training)
 ```
@@ -222,7 +221,7 @@ predictions <- predict(object = training, testing = testing)
 print(predictions)
 ```
 
-- Prediction performances for layer-specific available patients, and all patients on the meta layer.
+Prediction performances for layer-specific available patients, and all patients on the meta layer.
 
 ```{r performance_all, include=TRUE, eval=TRUE}
 pred_values <- predictions$predicted_values
@@ -230,7 +229,7 @@ actual_pred <- merge(x = pred_values,
                      y = multi_omics$testing$target,
                      by = "IDS",
                      all.y = TRUE)
-x <- as.integer(actual_pred$disease == 2L)
+x <- as.integer(actual_pred$disease == 1L)
 
 # On all patients
 perf_estimated <- sapply(X = actual_pred[ , 2L:5L], FUN = function (my_pred) {
@@ -240,7 +239,7 @@ perf_estimated <- sapply(X = actual_pred[ , 2L:5L], FUN = function (my_pred) {
 print(perf_estimated)
 ```
 
-- Prediction performances for overlapping individuals.
+Prediction performances for overlapping individuals.
 
 ```{r performance_overlap, include=TRUE, eval=TRUE}
 # On overlapping patients
@@ -356,8 +355,8 @@ library(knitr)
 
 # Create a data frame
 data <- data.frame(
-  Leaner = c("weightedMeanLearner", "bestLayerLearner"),
-  Description = c("The weighted mean meta learner. It uses meta data to estimate the weights of the modality-specific models", "The best layer-specific model is used as meta model.")
+  Leaner = c("weightedMeanLearner", "bestLayerLearner", "cobra"),
+  Description = c("The weighted mean meta learner. It uses meta data to estimate the weights of the modality-specific models", "The best layer-specific model is used as meta model.", "cobra implements the COBRA (COmBined Regression Alternative), an aggregation method for combining predictions from multiple individual learners")
 )
 
 # Generate the table
