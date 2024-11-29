@@ -1,4 +1,4 @@
-#' @title Weighted mean prediction.
+#' @title Best specific Learner prediction.
 #'
 #' @description
 #' Predict function for models from class \code{bestLayerLearner}.

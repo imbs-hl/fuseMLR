@@ -2,7 +2,7 @@
 % Please edit documentation in R/predict.bestLayerLearner.R
 \name{predict.bestLayerLearner}
 \alias{predict.bestLayerLearner}
-\title{Weighted mean prediction.}
+\title{Best specific Learner prediction.}
 \usage{
 \method{predict}{bestLayerLearner}(object, data)
 }
