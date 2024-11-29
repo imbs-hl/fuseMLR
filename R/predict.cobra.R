@@ -77,7 +77,7 @@ predict.cobra = function(object, data, ...){
     # Epsilon vector
     evect = seq(emin, emax, estep)
     n_e = length(evect)
-    epsoptvec = numeric(n_learners)
+
     # nocov end
 
     # Perform cross-validation
@@ -88,6 +88,7 @@ predict.cobra = function(object, data, ...){
       alphaseq = seq(1, n_learners)/n_learners # Range of alpha values
 
       loss_cv = array(0, dim = c(n_e, n_learners, k_folds)) # Loss matrix for cross-validation
+      epsoptvec = array(0, dim = c(n_learners, k_folds))
 
       # cross validation for parameter optimization
       for (fold_idx in seq_along(folds)) {
@@ -120,14 +121,18 @@ predict.cobra = function(object, data, ...){
                                                    target = test_target_fold)
           }
 
+          epsoptvec[ilearner, fold_idx] = evect[which.min(loss_cv[, ilearner, fold_idx])]
+
         }
       }
 
       # Calculate mean loss and find optimal alpha and epsilon
       loss_avg = apply(loss_cv, c(1, 2), mean)
+      epsoptvec_avg = rowMeans(epsoptvec)
+
       alphaopt_idx = which.min(loss_avg)%/%n_e+1
       alpha_opt = alphaseq[alphaopt_idx]
-      eps_opt = evect[which.min(loss_avg) %% n_e]
+      eps_opt = epsoptvec_avg[alphaopt_idx]
 
       message('Optimal alpha: ', round(alpha_opt, 3) , ' (', alpha_opt * n_learners, ' Learner(s))',
               '. Optimal epsilon: ', round(eps_opt, 3), ". Tuning with ", k_folds, " folds.")
