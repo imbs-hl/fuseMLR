@@ -4,7 +4,7 @@
 \alias{predict.bestLayerLearner}
 \title{Weighted mean prediction.}
 \usage{
-\method{predict}{bestLayerLearner}(object, data, na.rm = TRUE)
+\method{predict}{bestLayerLearner}(object, data)
 }
 \arguments{
 \item{object}{\code{bestLayerLearner} \cr
@@ -12,9 +12,6 @@ An object from class \link{bestLayerLearner}}
 
 \item{data}{\code{data.frame} \cr
 \code{data.frame} to be predicted.}
-
-\item{na.rm}{\cr
-Removes NAs when TRUE.}
 }
 \value{
 Predicted target values are returned.

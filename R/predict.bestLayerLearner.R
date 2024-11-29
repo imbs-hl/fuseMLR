@@ -9,8 +9,6 @@
 #' An object from class [bestLayerLearner]
 #' @param data `data.frame` \cr
 #' \code{data.frame} to be predicted.
-#' @param na.rm \cr
-#' Removes NAs when TRUE.
 #'
 #' @return
 #' Predicted target values are returned.
@@ -27,10 +25,15 @@
 #' x_new <- data.frame(x1 = rnorm(10L))
 #' my_predictions <- predict(object = my_model, data = x_new)
 #'
-predict.bestLayerLearner = function (object, data, na.rm = TRUE) {
+predict.bestLayerLearner = function (object, data) {
   if (all(names(object) %in% names(data))) {
     pred = apply(data[ , names(object), drop = FALSE], 1L, function (tmp_row) {
-      return(weighted.mean(x = tmp_row, w = object, na.rm = na.rm))
+      for (rank in seq_along(object)) {
+        model_name = names(object)[which(object == rank)]
+        if (!is.na(tmp_row[model_name])) {
+          return(tmp_row[model_name])
+        }
+      }
     })
     return(list(predictions = unlist(pred)))
   } else {
