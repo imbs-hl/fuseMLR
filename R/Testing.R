@@ -31,6 +31,7 @@ Testing <- R6Class("Testing",
                      layers = self$getKeyClass()
                      layers = layers[layers$class %in% "TestLayer", ]
                      nb_layers = nrow(layers)
+                     # nocov start
                      if (nb_layers) {
                        layer_dims = NULL
                        for (k in layers$key) {
@@ -42,6 +43,7 @@ Testing <- R6Class("Testing",
                        layer_dims = paste0(layer_dims, collapse = " | ")
                        cat(sprintf("p               : %s\n", layer_dims))
                      }
+                     # nocov end
                    },
                    #' @description
                    #' Printer
@@ -129,6 +131,7 @@ Testing <- R6Class("Testing",
                    #' A \code{list} containing all (base and meta) models.
                    #' @export
                    #'
+                   # nocov start
                    getData = function() {
                      layers = self$getKeyClass()
                      layers = layers[layers$class %in% "TestLayer", ]
@@ -139,6 +142,7 @@ Testing <- R6Class("Testing",
                      }
                      return(all_data)
                    },
+                   # nocov end
                    #' @description
                    #' UpSet plot to show an overview of the overlap of individuals across various layers.
                    #'

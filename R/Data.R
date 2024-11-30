@@ -32,7 +32,7 @@ Data <- R6Class("Data",
                   #' Printer
                   #' @param ... (any) \cr
                   #'
-                  print = function(...) { # nocov
+                  print = function(...) { # nocov start
                     cat("Class     : Data\n")
                     cat(sprintf("name      : %s\n", private$id))
                     cat(sprintf("ind. id.  : %s\n", private$ind_col))
@@ -73,6 +73,7 @@ Data <- R6Class("Data",
                   #'
                   impute = function (impute_fct,
                                      impute_param) {
+                    # nocov start
                     current_data = private$data_frame
                     current_data[ , private$ind_col] = NULL
                     # R is faster when working column wise.
@@ -103,6 +104,7 @@ Data <- R6Class("Data",
                       warning("Only mode and median imputations are actually supported.")
                     }
                     invisible(self)
+                    # nocov end
                   },
                   #' @description
                   #' Retrieve a subset of variables from data.

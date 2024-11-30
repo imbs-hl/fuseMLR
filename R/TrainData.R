@@ -42,6 +42,7 @@ TrainData <- R6Class("TrainData",
                            }
                            data_frame[ , target] = NULL
                          }
+                         # nocov start
                          if (!all(data_frame[ , ind_col] %in% target_df[ , ind_col])) {
                            cat("The following IDs do not exist in target:\n")
                            id_not_in = !(data_frame[ , ind_col] %in% target_df[ , ind_col])
@@ -55,6 +56,7 @@ TrainData <- R6Class("TrainData",
                              }
                            }
                          }
+                         # nocov end
                          if (train_layer$checkTrainDataExist()) {
                            # Remove TrainData if already existing
                            key_class = train_layer$getKeyClass()
@@ -92,6 +94,7 @@ TrainData <- R6Class("TrainData",
                                                      value = self,
                                                      .class = "TrainData")
                          }
+                         # nocov start
                          if (any(missing_target)) {
                            warning(sprintf("%s individual(s) with missing target value(s) recognized and removed.\n",
                                            sum(missing_target)))
@@ -100,6 +103,7 @@ TrainData <- R6Class("TrainData",
                            warning(sprintf("%s individual(s) with missing ID value(s) recognized and removed.\n",
                                            sum(missing_id)))
                          }
+                         # nocov end
                        },
                        #' @description
                        #' Printer

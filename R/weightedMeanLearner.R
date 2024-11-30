@@ -29,7 +29,9 @@ weightedMeanLearner = function (x,
                                 weighted = TRUE,
                                 perf = NULL) {
   if (!is.data.frame(x)) {
+    # nocov start
     stop("x must be a data.frame.")
+    # nocov end
   }
   if (is.null(perf)) {
     # y must be binomial. If dichotomy, first category (case) = 1 and
@@ -40,13 +42,17 @@ weightedMeanLearner = function (x,
       })
     } else {
       if ((length(unique(y)) > 2) | is.character(y)) {
+        # nocov start
         stop("y must be either binary or two level factor variable.\n")
+        # nocov end
       } else {
         if (is.factor(y)) {
           y = as.integer(y) - 1
         } else {
           if (!all(y %in% 0:1)) {
+            # nocov start
             stop("y must take its values between 0 and 1.\n")
+            # nocov end
           }
         }
         score_values = lapply(X = x, FUN = function (predicted) {
