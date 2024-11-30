@@ -119,14 +119,14 @@ createTrainLayer(training = training,
 Also add a meta layer.
 
 ```{r training_meta_layers, include=TRUE, eval=TRUE}
-# Create meta layer
+# Create meta layer with imputation of missing values.
 createTrainMetaLayer(training = training,
                      meta_layer_id = "meta_layer",
                      lrner_package = NULL,
                      lrn_fct = "weightedMeanLearner",
                      param_train_list = list(),
                      param_pred_list = list(),
-                     na_action = "na.rm")
+                     na_action = "na.impute")
 ```
 
 Function ```upsetplot()``` is available to generate an upset of the training data, i.e. an overview how patients overlap across layers.
@@ -223,34 +223,57 @@ print(predictions)
 
 Prediction performances for layer-specific available patients, and all patients on the meta layer.
 
-```{r performance_all, include=TRUE, eval=TRUE}
+- Brier score estimated.
+
+```{r brier, include=TRUE, eval=TRUE}
 pred_values <- predictions$predicted_values
 actual_pred <- merge(x = pred_values,
                      y = multi_omics$testing$target,
                      by = "IDS",
                      all.y = TRUE)
-x <- as.integer(actual_pred$disease == 1L)
+x <- actual_pred$disease
 
 # On all patients
-perf_estimated <- sapply(X = actual_pred[ , 2L:5L], FUN = function (my_pred) {
-  bs <- bs <- mean((x[complete.cases(my_pred)] - my_pred[complete.cases(my_pred)])^2)
+perf_bs <- sapply(X = actual_pred[ , 2L:5L], FUN = function (my_pred) {
+  bs <- mean((x[complete.cases(my_pred)] - my_pred[complete.cases(my_pred)])^2)
   return(bs)
 })
-print(perf_estimated)
+print(perf_bs)
 ```
 
-Prediction performances for overlapping individuals.
+- AUC estimated.
 
-```{r performance_overlap, include=TRUE, eval=TRUE}
-# On overlapping patients
-perf_overlapping <- sapply(X = actual_pred[complete.cases(actual_pred),
-                                           2L:5L],
-                           FUN = function (my_pred) {
-                             bs <- mean((x[complete.cases(actual_pred)] - my_pred)^2)
-                             return(bs)
-                           })
-print(perf_overlapping)
+```{r auc, include=TRUE, eval=TRUE, message=FALSE}
+pred_values <- predictions$predicted_values
+actual_pred <- merge(x = pred_values,
+                     y = multi_omics$testing$target,
+                     by = "IDS",
+                     all.y = TRUE)
+x <- actual_pred$disease
+
+# On all patients
+perf_auc <- sapply(X = actual_pred[ , 2L:5L], FUN = function (my_pred) {
+  roc_obj <- pROC::roc(x[complete.cases(my_pred)], my_pred[complete.cases(my_pred)])
+  auc_value <- pROC::auc(roc_obj)
+  return(auc_value)
+})
+print(perf_auc)
 ```
+
+The weighted mean meta-learner combined with mean imputation effectively aggregates the layer-specific learners.
+
+<!-- Prediction performances for overlapping individuals. -->
+
+<!-- ```{r performance_overlap, include=TRUE, eval=TRUE} -->
+<!-- # On overlapping patients -->
+<!-- perf_overlapping <- sapply(X = actual_pred[complete.cases(actual_pred), -->
+<!--                                            2L:5L], -->
+<!--                            FUN = function (my_pred) { -->
+<!--                              bs <- mean((x[complete.cases(actual_pred)] - my_pred)^2) -->
+<!--                              return(bs) -->
+<!--                            }) -->
+<!-- print(perf_overlapping) -->
+<!-- ``` -->
 
 
 # E - Interface and wrapping #

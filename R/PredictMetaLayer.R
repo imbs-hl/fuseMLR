@@ -76,7 +76,6 @@ PredictMetaLayer <- R6Class("PredictMetaLayer",
                        #' @export
                        #'
                        getPredictData = function () {
-                         print("I am in PredictMetaLayer")
                          layer_kc = self$getKeyClass()
                          if (any(c("PredictData") %in% layer_kc[ , "class"])) {
                              predict_data_key = layer_kc[layer_kc$class == "PredictData" ,

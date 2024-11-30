@@ -75,6 +75,9 @@ Data <- R6Class("Data",
                                      impute_param) {
                     current_data = private$data_frame
                     current_data[ , private$ind_col] = NULL
+                    # R is faster when working column wise.
+                    name_current_data = names(current_data)
+                    current_data = as.data.frame(t(current_data))
                     if (is.null(impute_fct)) {
                       imputed_data = lapply(current_data, function(col_var) {
                         if (is.factor(col_var) | is.character(col_var)) {
@@ -93,8 +96,8 @@ Data <- R6Class("Data",
                           }
                         }
                       })
-                      imputed_data = as.data.frame(imputed_data)
-                      private$data_frame[ , names(current_data)] = imputed_data
+                      imputed_data = as.data.frame(t(as.data.frame(imputed_data)))
+                      private$data_frame[ , name_current_data] = imputed_data
                     } else {
                       # impute_fct has been set, but actually not implemented.
                       warning("Only mode and median imputations are actually supported.")

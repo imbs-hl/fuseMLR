@@ -33,7 +33,7 @@ predict.weightedMeanLearner = function (object, data, na.rm = TRUE) {
     pred = apply(data[ , names(object), drop = FALSE], 1L, function (tmp_row) {
       return(weighted.mean(x = tmp_row, w = object, na.rm = na.rm))
     })
-    return(list(predictions = unlist(pred)))
+    return(list(predictions = pred))
   } else {
     stop("Names of weights do not match with name columns in data")
   }

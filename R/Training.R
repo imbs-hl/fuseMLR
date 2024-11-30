@@ -411,37 +411,20 @@ Training <- R6Class("Training",
                         predicting$add2HashTable(key = predicted_layer$getId(),
                                                  value = predicted_layer,
                                                  .class = "PredictData")
-                        # Updating the predicted meta layer
-                        # predicting$add2HashTable(key = meta_layer_key,
-                        #                               value = predicted_layer,
-                        #                               .class = "Predict")
-                        # Resume predictions
-                        key_class_predicting = predicting$getKeyClass()
-                        predicted_values = NULL
-                        for (k in key_class_predicting[ , "key"]) {
-                          # TODO: Please ensure the difference between [PredictData] and
-                          # predicted values (predicted data.frame) when writting the paper.
-                          pred_layer = predicting$getFromHashTable(key = k)
-                          pred_data = pred_layer$getPredictData()
-                          pred_values = pred_data$getPredictData()
-                          predicted_values = data.frame(rbind(predicted_values,
-                                                              pred_values))
-                        }
-                        # Will transform meta data.frame into wide format
-                        predicted_values_wide = reshape(predicted_values,
-                                                        idvar = colnames(predicted_values)[2L],
-                                                        timevar = colnames(predicted_values)[1L],
+                        # Reshape format of meta-predictions as those of layer-spec predictions
+                        predicted_meta_values = predicted_layer$getPredictData()$getDataFrame()
+                        predicted_meta_values_wide = reshape(predicted_layer$getPredictData()$getDataFrame(),
+                                                        idvar = colnames(predicted_meta_values)[2L],
+                                                        timevar = colnames(predicted_meta_values)[1L],
                                                         direction = "wide")
                         colname_vector = gsub(pattern = "Prediction.",
                                               replacement = "",
-                                              x = names(predicted_values_wide))
-
-                        names(predicted_values_wide) = colname_vector
-                        if (private$impute) {
-                          # Update testing meta data if imputation has been performed.
-                          imputed_data = testing_meta_data$getDataFrame()
-                          predicted_values_wide[ , names(imputed_data)] = imputed_data
-                        }
+                                              x = names(predicted_meta_values_wide))
+                        names(predicted_meta_values_wide) = colname_vector
+                        predicted_values_wide = merge(x = testing_meta_data$getDataFrame(),
+                                                      y = predicted_meta_values_wide,
+                                                      by = self$getIndCol(),
+                                                      all.y = TRUE)
                         return(list(predicting = predicting,
                                     predicted_values = predicted_values_wide))
                       },
