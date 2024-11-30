@@ -516,7 +516,7 @@ actual_pred <- merge(x = pred_values,
                      y = multi_omics$testing$target,
                      by = "IDS",
                      all.y = TRUE)
-x <- as.integer(actual_pred$disease == 2L)
+x <- actual_pred$disease
 
 # On all patients
 perf_estimated <- sapply(X = actual_pred[ , 2L:5L], FUN = function (my_pred) {
@@ -528,7 +528,7 @@ print(perf_estimated)
 ```
 
     ##    geneexpr proteinexpr methylation  meta_layer 
-    ##   0.2728594   0.3511652   0.3056799   0.2936792
+    ##   0.1573086   0.1441201   0.2001666   0.1536869
 
 - Prediction performances for overlapping individuals.
 
@@ -544,7 +544,7 @@ print(perf_overlapping)
 ```
 
     ##    geneexpr proteinexpr methylation  meta_layer 
-    ##   0.2728594   0.3511652   0.3056799   0.2936792
+    ##   0.1573086   0.1441201   0.2001666   0.1536869
 
 # E - Interface and wrapping
 

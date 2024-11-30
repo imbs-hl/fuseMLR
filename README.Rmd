@@ -261,7 +261,7 @@ actual_pred <- merge(x = pred_values,
                      y = multi_omics$testing$target,
                      by = "IDS",
                      all.y = TRUE)
-x <- as.integer(actual_pred$disease == 2L)
+x <- actual_pred$disease
 
 # On all patients
 perf_estimated <- sapply(X = actual_pred[ , 2L:5L], FUN = function (my_pred) {
