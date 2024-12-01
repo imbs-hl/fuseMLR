@@ -233,11 +233,14 @@ Model <- R6Class("Model",
                        names(predicted_obj) = pred_colnames
                      } else {
                        if (is.list(predicted_obj)) {
-                         if (is.null(predicted_obj$predictions) & is.vector(predicted_obj$predictions)) {
+                         if (is.null(predicted_obj$predictions)) {
                            # nocov start
                            stop("Predicted object must either be a vector or a list containing a vector named 'predictions'.")
                            # nocov end
                          } else {
+                           if (!is.vector(predicted_obj$predictions) & !(any(class(predicted_obj$predictions) %in% c("data.frame", "matrix")))) {
+                             stop("Predicted object must either be a vector or a list containing a vector named 'predictions'.")
+                           }
                            predicted_obj = data.frame(
                              layer = private$lrner$getTrainLayer()$getId(),
                              id = ind_subset,

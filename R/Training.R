@@ -270,7 +270,8 @@ Training <- R6Class("Training",
                                                         })
                           predicted_values = data.frame(do.call(what = "rbind",
                                                                 args = train_layer_res_list))
-                          # Will transform meta data.frame into wide format
+                          # Will transform meta data.frame into wide format. If predictions are data.frame like
+                          # ranger predictions than only the first column will be consider.
                           predicted_values_wide = reshape(predicted_values,
                                                           idvar = colnames(predicted_values)[2],
                                                           timevar = colnames(predicted_values)[1],
