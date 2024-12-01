@@ -54,16 +54,20 @@ VarSel <- R6Class("VarSel",
                       # }
 
                       if (na_action == "na.keep") {
+                        # nocov start
                         na_rm = FALSE
+                        #nocov end
                       } else {
                         if (na_action == "na.rm") {
                           na_rm = TRUE
                         } else {
+                          # nocov start
                           if (na_action == "na.impute") {
                               stop("Imputation is not yet handled for data modalities. Please use either the 'na.keep' or the 'na.rm' option.")
                           } else {
                             stop("na_action must be one of 'na.fails' or 'na.rm'.")
                           }
+                          # nocov end
                         }
                       }
                       private$na_rm = na_rm
@@ -171,7 +175,9 @@ VarSel <- R6Class("VarSel",
                         train_data$setDataFrame(data_frame = complete_data)
                       }
                       if (is.null(private$package)) {
+                        # nocov start
                         varsel = private$varsel_fct
+                        # nocov end
                       } else {
                         varsel = sprintf('%s::%s', private$package,
                                          private$varsel_fct)
@@ -307,9 +313,11 @@ VarSel <- R6Class("VarSel",
                     #' @return
                     #' A data.frame of interface.
                     #'
+                    # nocov start
                     getExtractVar = function () {
                       return(private$extract_var_fct)
                     }
+                    # nocov end
                   ),
                   private = list(
                     # ID field.

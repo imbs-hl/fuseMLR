@@ -263,6 +263,8 @@ test_that("Training: all tests", {
   })
 
   expect_no_error({
+    all_models <- training$getModel()
+    all_data <- training$getData()
     new_predictions <- training$predict(testing = testing)
     print(new_predictions)
   })
