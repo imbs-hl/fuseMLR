@@ -116,7 +116,7 @@ createTrainLayer(training = training,
                  na_action = "na.keep")
 ```
 
-Also add a meta-layer. We use the weighted mean (internal function to `fuseMLR`) as meta-learner. However, any other learner can be used as described in [Appendix](#appendix).
+Also add a meta-layer. We use the weighted mean (internal function to `fuseMLR`) as meta-learner. Similarly learners, a meta-learner should allow at least the arguments `x` and `y` to pass the design matrix of predictors and should return a model that allow the call of the generic function `predict` to make predictions for a new dataset (see documentation of `createTrainMetaLayer` for details). If these criteria are not fulfill the explaination in [E-Interface and wrapping](#e---interface-and-wrapping) can be used to map the `x` and `y` to the original argument names or to wrap the original function. We also provide information about possible meta-learner can be used in [Appendix](#appendix).
 
 ```{r training_meta_layers, include=TRUE, eval=TRUE}
 # Create meta layer with imputation of missing values.

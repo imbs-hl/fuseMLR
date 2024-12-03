@@ -518,8 +518,16 @@ an interface or wrap their original function for the
 <span id="cb4-67"><a href="#cb4-67" tabindex="-1"></a><span class="co">#&gt; p               : 131 | 160 | 367</span></span>
 <span id="cb4-68"><a href="#cb4-68" tabindex="-1"></a><span class="co">#&gt; n               :  50 |  50 |  50</span></span></code></pre></div>
 <p>Also add a meta-layer. We use the weighted mean (internal function to
-<code>fuseMLR</code>) as meta-learner. However, any other learner can be
-used as described in <a href="#appendix">Appendix</a>.</p>
+<code>fuseMLR</code>) as meta-learner. Similarly learners, a
+meta-learner should allow at least the arguments <code>x</code> and
+<code>y</code> to pass the design matrix of predictors and should return
+a model that allow the call of the generic function <code>predict</code>
+to make predictions for a new dataset (see documentation of
+<code>createTrainMetaLayer</code> for details). If these criteria are
+not fulfill the explaination in <a href="#e---interface-and-wrapping">E-Interface and wrapping</a> can be
+used to map the <code>x</code> and <code>y</code> to the original
+argument names or to wrap the original function. We also provide
+information about possible meta-learner can be used in <a href="#appendix">Appendix</a>.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Create meta layer with imputation of missing values.</span></span>
 <span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="fu">createTrainMetaLayer</span>(<span class="at">training =</span> training,</span>
 <span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>                     <span class="at">meta_layer_id =</span> <span class="st">&quot;meta_layer&quot;</span>,</span>
