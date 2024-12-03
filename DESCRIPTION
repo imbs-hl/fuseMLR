@@ -13,7 +13,7 @@ Description: Recent technological advances have enable the simultaneous collecti
     aggregation of the modality-specific predictions to train a final meta-model. 
     This package facilitates conducting late integration predictive modeling in a 
     systematic, structured, and reproducible way.
-License: GPL
+License: GPL-3
 Encoding: UTF-8
 Imports: 
     R6,

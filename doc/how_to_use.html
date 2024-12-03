@@ -359,26 +359,25 @@ multi-omics datasets.</p>
 <div id="b---data" class="section level2">
 <h2>B - Data</h2>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(fuseMLR)</span></code></pre></div>
-<p>The following example is based on simulated data available in
-<code>fuseMLR</code>. Data have been simulated using the R package
-<code>InterSIM</code>, version 2.2.0. Two types of data were simulated:
-training and testing datasets. Each consists of four
+<p>The following example is based on multi-omics simulated data
+available in <code>fuseMLR</code>. Data have been simulated using the R
+package <code>InterSIM</code>, version 2.2.0. Two types of data were
+simulated: training and testing datasets. Each consists of four
 <code>data.frame</code>s—gene expression, protein expression,
-methylation data, and target variable observations. Individuals are
+methylation data modalities, and targeted observations. Individuals are
 organized in rows, variables in columns, with an additional column for
 individual IDs. In total, <span class="math inline">\(70\)</span>
 individuals with <span class="math inline">\(50\)</span> individuals pro
 layer have been simulated for training, and <span class="math inline">\(23\)</span> (<span class="math inline">\(20\)</span> per layer) for testing. Individuals do
-not necessarily overlapped. Effects have been introduced for gene
-expression and methylation by shifting the means by <span class="math inline">\(0.5\)</span> to create case-control study with
+not necessarily overlapped. Effects have been introduced for across data
+modalities by shifting the means by <span class="math inline">\(0.5\)</span> to create case-control study with
 <span class="math inline">\(50\)</span>% prevalence. Individuals do not
-necessarily overlap. Effects were introduced in gene expression and
-methylation by shifting the means by 0.5 to create a case-control study.
-For illustration, the number of variables was kept smaller than what is
-typically expected in reality. The data simulation code is available <a href="https://github.com/imbs-hl/fuseMLR/blob/master/test_code/build_data.R">here</a>.</p>
+necessarily overlap. For illustration, the number of variables was kept
+smaller than what is typically expected in reality. The data simulation
+code is available <a href="https://github.com/imbs-hl/fuseMLR/blob/master/test_code/build_data.R">here</a>.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;multi_omics&quot;</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co"># This is a list containing two lists of data: training and test.</span></span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co"># Each sublist contains three omics data.</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co"># This list contains two lists of data: training and test.</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co"># Each sublist contains three omics data as described above.</span></span>
 <span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="fu">str</span>(<span class="at">object =</span> multi_omics, <span class="at">max.level =</span> 2L)</span>
 <span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="co">#&gt; List of 2</span></span>
 <span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="co">#&gt;  $ training:List of 4</span></span>
@@ -399,6 +398,8 @@ class called <strong>Training</strong>. We will use
 <code>training</code> to refer to an instance from this class. Function
 <code>createTraining</code> is available to create an empty (without
 layers) <code>training</code>.</p>
+<div id="c.1---creating-a-training" class="section level3">
+<h3>C.1 - Creating a training</h3>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>training <span class="ot">&lt;-</span> <span class="fu">createTraining</span>(<span class="at">id =</span> <span class="st">&quot;training&quot;</span>,</span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>                           <span class="at">ind_col =</span> <span class="st">&quot;IDS&quot;</span>,</span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>                           <span class="at">target =</span> <span class="st">&quot;disease&quot;</span>,</span>
@@ -417,34 +418,38 @@ modality-specific training layers encapsulate training data modalities,
 variable selection functions and learners (i.e. <code>R</code> functions
 implementing statistical predicting methods). The meta-layer
 encapsulates the meta-learner.</p>
-<div id="c.1---creating-a-training" class="section level3">
-<h3>C.1 - Creating a training</h3>
-<p>We will use <code>training</code> (resp. <code>testing</code>) to
-refer to an instance from the <strong>Training</strong> (resp.
-<strong>Testing</strong>) class. A <code>training</code> contains
-modality-specific training layers (instances of the
-<strong>TrainLayer</strong> class) and a meta-layer (instance of the
-<strong>TrainMetaLayer</strong> class). The modality-specific training
-layers encapsulate training data modalities, variable selection
-functions and learners (i.e. <code>R</code> functions implementing
-statistical predicting methods). The meta-layer encapsulates the
-meta-learner.</p>
-<p>Three main functions are necessary to create <code>training</code>:
-<code>createTraining()</code>, <code>createTrainLayer()</code> and
-<code>createTrainMetaLayer()</code>. <code>createTraining()</code>
-creates an empty <code>training</code>, on which modalitity-specific
-training layers can be add using the function
+<p>Three main functions are necessary to create the
+<code>training</code>: <code>createTraining()</code>,
+<code>createTrainLayer()</code> and <code>createTrainMetaLayer()</code>.
+<code>createTraining()</code> creates an empty <code>training</code>, on
+which modalitity-specific training layers are added using the function
 <code>createTrainLayer()</code>. Function
 <code>createTrainMetaLayer()</code> is used to add meta-layer to
 <code>training</code>.</p>
 <p>The following code adds a gene expression, a protein abundance, and a
 methylation layer to <code>training</code>. For illustration purpose we
 use the same variable selection method <code>Boruta</code> and the same
-learner (<code>ranger</code>) for all layers. The corresponding
-functions can be used with their original arguments and outputs.
-Otherwise, we would proceed as explained in <a href="#e---interface-and-wrapping">E-Interface and wrapping</a> to
-accommodate them to the <code>fuseMLR</code> usage.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Create gene expression layer</span></span>
+learner (<code>ranger</code>) for all layers. These functions fulfill
+<code>fuseMLR</code> requirements in terms of arguments and outputs (see
+<code>createTrainLayer</code> documentation for details). For example,
+we expect the variable selection function to have at an argument
+<code>x</code> to pass the design matrix of predictors and
+<code>y</code> to pass the response values. In addition, the function
+must return a vector of selected variables. The use of any method that
+does not fulfill this criteria – the Vita variable selection method
+(implemented by <code>ranger</code>) or the Lasso based approach, for
+instance – requires either additional wrapping steps or a function to be
+use to returns a vector the selected variables for a given significant
+threshold. Also for learners, arguments <code>x</code> and
+<code>y</code> are required, and the generic <code>predict</code>
+function must be <em>callable</em> for the resulting model. Predictions
+must be stored either as a vector or a list containing a field
+<code>predictions</code> (a vector of predicted values). If the provided
+function do not fulfill criteria the argument and output criteria, users
+should proceed as explained in <a href="#e---interface-and-wrapping">E-Interface and wrapping</a> to build
+an interface or wrap their original function for the
+<code>fuseMLR</code> usage.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Create gene expression layer.</span></span>
 <span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="fu">createTrainLayer</span>(<span class="at">training =</span> training,</span>
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>                 <span class="at">train_layer_id =</span> <span class="st">&quot;geneexpr&quot;</span>,</span>
 <span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>                 <span class="at">train_data =</span> multi_omics<span class="sc">$</span>training<span class="sc">$</span>geneexpr,</span>
@@ -452,73 +457,67 @@ accommodate them to the <code>fuseMLR</code> usage.</p>
 <span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>                 <span class="at">varsel_fct =</span> <span class="st">&quot;Boruta&quot;</span>,</span>
 <span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>                 <span class="at">varsel_param =</span> <span class="fu">list</span>(<span class="at">num.trees =</span> 1000L,</span>
 <span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>                                     <span class="at">mtry =</span> 3L,</span>
-<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>                                     <span class="at">probability =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>                                     <span class="at">na.action =</span> <span class="st">&quot;na.learn&quot;</span>),</span>
-<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>                 <span class="at">lrner_package =</span> <span class="st">&quot;ranger&quot;</span>,</span>
-<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>                 <span class="at">lrn_fct =</span> <span class="st">&quot;ranger&quot;</span>,</span>
-<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>                 <span class="at">param_train_list =</span> <span class="fu">list</span>(<span class="at">probability =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>                                         <span class="at">mtry =</span> 1L,</span>
-<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>                                     <span class="at">na.action =</span> <span class="st">&quot;na.learn&quot;</span>),</span>
-<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a>                 <span class="at">param_pred_list =</span> <span class="fu">list</span>(),</span>
-<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>                 <span class="at">na_action =</span> <span class="st">&quot;na.keep&quot;</span>)</span>
-<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="co">#&gt; Training        : training</span></span>
-<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a><span class="co">#&gt; Problem type    : classification</span></span>
-<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a><span class="co">#&gt; Status          : Not trained</span></span>
-<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a><span class="co">#&gt; Number of layers: 1</span></span>
-<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a><span class="co">#&gt; Layers trained  : 0</span></span>
-<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a><span class="co">#&gt; p               : 131</span></span>
-<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a><span class="co">#&gt; n               :  50</span></span>
-<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a></span>
-<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a><span class="co"># Create gene protein abundance layer</span></span>
-<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a><span class="fu">createTrainLayer</span>(<span class="at">training =</span> training,</span>
-<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a>                 <span class="at">train_layer_id =</span> <span class="st">&quot;proteinexpr&quot;</span>,</span>
-<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a>                 <span class="at">train_data =</span> multi_omics<span class="sc">$</span>training<span class="sc">$</span>proteinexpr,</span>
-<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a>                 <span class="at">varsel_package =</span> <span class="st">&quot;Boruta&quot;</span>,</span>
-<span id="cb4-31"><a href="#cb4-31" tabindex="-1"></a>                 <span class="at">varsel_fct =</span> <span class="st">&quot;Boruta&quot;</span>,</span>
-<span id="cb4-32"><a href="#cb4-32" tabindex="-1"></a>                 <span class="at">varsel_param =</span> <span class="fu">list</span>(<span class="at">num.trees =</span> 1000L,</span>
-<span id="cb4-33"><a href="#cb4-33" tabindex="-1"></a>                                     <span class="at">mtry =</span> 3L,</span>
-<span id="cb4-34"><a href="#cb4-34" tabindex="-1"></a>                                     <span class="at">probability =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb4-35"><a href="#cb4-35" tabindex="-1"></a>                                     <span class="at">na.action =</span> <span class="st">&quot;na.learn&quot;</span>),</span>
-<span id="cb4-36"><a href="#cb4-36" tabindex="-1"></a>                 <span class="at">lrner_package =</span> <span class="st">&quot;ranger&quot;</span>,</span>
-<span id="cb4-37"><a href="#cb4-37" tabindex="-1"></a>                 <span class="at">lrn_fct =</span> <span class="st">&quot;ranger&quot;</span>,</span>
-<span id="cb4-38"><a href="#cb4-38" tabindex="-1"></a>                 <span class="at">param_train_list =</span> <span class="fu">list</span>(<span class="at">probability =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb4-39"><a href="#cb4-39" tabindex="-1"></a>                                         <span class="at">mtry =</span> 1L,</span>
-<span id="cb4-40"><a href="#cb4-40" tabindex="-1"></a>                                     <span class="at">na.action =</span> <span class="st">&quot;na.learn&quot;</span>),</span>
-<span id="cb4-41"><a href="#cb4-41" tabindex="-1"></a>                 <span class="at">param_pred_list =</span> <span class="fu">list</span>(<span class="at">type =</span> <span class="st">&quot;response&quot;</span>),</span>
-<span id="cb4-42"><a href="#cb4-42" tabindex="-1"></a>                 <span class="at">na_action =</span> <span class="st">&quot;na.keep&quot;</span>)</span>
-<span id="cb4-43"><a href="#cb4-43" tabindex="-1"></a><span class="co">#&gt; Training        : training</span></span>
-<span id="cb4-44"><a href="#cb4-44" tabindex="-1"></a><span class="co">#&gt; Problem type    : classification</span></span>
-<span id="cb4-45"><a href="#cb4-45" tabindex="-1"></a><span class="co">#&gt; Status          : Not trained</span></span>
-<span id="cb4-46"><a href="#cb4-46" tabindex="-1"></a><span class="co">#&gt; Number of layers: 2</span></span>
-<span id="cb4-47"><a href="#cb4-47" tabindex="-1"></a><span class="co">#&gt; Layers trained  : 0</span></span>
-<span id="cb4-48"><a href="#cb4-48" tabindex="-1"></a><span class="co">#&gt; p               : 131 | 160</span></span>
-<span id="cb4-49"><a href="#cb4-49" tabindex="-1"></a><span class="co">#&gt; n               :  50 |  50</span></span>
-<span id="cb4-50"><a href="#cb4-50" tabindex="-1"></a></span>
-<span id="cb4-51"><a href="#cb4-51" tabindex="-1"></a><span class="co"># Create methylation layer</span></span>
-<span id="cb4-52"><a href="#cb4-52" tabindex="-1"></a><span class="fu">createTrainLayer</span>(<span class="at">training =</span> training,</span>
-<span id="cb4-53"><a href="#cb4-53" tabindex="-1"></a>                 <span class="at">train_layer_id =</span> <span class="st">&quot;methylation&quot;</span>,</span>
-<span id="cb4-54"><a href="#cb4-54" tabindex="-1"></a>                 <span class="at">train_data =</span> multi_omics<span class="sc">$</span>training<span class="sc">$</span>methylation,</span>
-<span id="cb4-55"><a href="#cb4-55" tabindex="-1"></a>                 <span class="at">varsel_package =</span> <span class="st">&quot;Boruta&quot;</span>,</span>
-<span id="cb4-56"><a href="#cb4-56" tabindex="-1"></a>                 <span class="at">varsel_fct =</span> <span class="st">&quot;Boruta&quot;</span>,</span>
-<span id="cb4-57"><a href="#cb4-57" tabindex="-1"></a>                 <span class="at">varsel_param =</span> <span class="fu">list</span>(<span class="at">num.trees =</span> 1000L,</span>
-<span id="cb4-58"><a href="#cb4-58" tabindex="-1"></a>                                     <span class="at">mtry =</span> 3L,</span>
-<span id="cb4-59"><a href="#cb4-59" tabindex="-1"></a>                                     <span class="at">probability =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb4-60"><a href="#cb4-60" tabindex="-1"></a>                                     <span class="at">na.action =</span> <span class="st">&quot;na.learn&quot;</span>),</span>
-<span id="cb4-61"><a href="#cb4-61" tabindex="-1"></a>                 <span class="at">lrner_package =</span> <span class="st">&quot;ranger&quot;</span>,</span>
-<span id="cb4-62"><a href="#cb4-62" tabindex="-1"></a>                 <span class="at">lrn_fct =</span> <span class="st">&quot;ranger&quot;</span>,</span>
-<span id="cb4-63"><a href="#cb4-63" tabindex="-1"></a>                 <span class="at">param_train_list =</span> <span class="fu">list</span>(<span class="at">probability =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb4-64"><a href="#cb4-64" tabindex="-1"></a>                                         <span class="at">mtry =</span> 1L,</span>
-<span id="cb4-65"><a href="#cb4-65" tabindex="-1"></a>                                     <span class="at">na.action =</span> <span class="st">&quot;na.learn&quot;</span>),</span>
-<span id="cb4-66"><a href="#cb4-66" tabindex="-1"></a>                 <span class="at">param_pred_list =</span> <span class="fu">list</span>(),</span>
-<span id="cb4-67"><a href="#cb4-67" tabindex="-1"></a>                 <span class="at">na_action =</span> <span class="st">&quot;na.keep&quot;</span>)</span>
-<span id="cb4-68"><a href="#cb4-68" tabindex="-1"></a><span class="co">#&gt; Training        : training</span></span>
-<span id="cb4-69"><a href="#cb4-69" tabindex="-1"></a><span class="co">#&gt; Problem type    : classification</span></span>
-<span id="cb4-70"><a href="#cb4-70" tabindex="-1"></a><span class="co">#&gt; Status          : Not trained</span></span>
-<span id="cb4-71"><a href="#cb4-71" tabindex="-1"></a><span class="co">#&gt; Number of layers: 3</span></span>
-<span id="cb4-72"><a href="#cb4-72" tabindex="-1"></a><span class="co">#&gt; Layers trained  : 0</span></span>
-<span id="cb4-73"><a href="#cb4-73" tabindex="-1"></a><span class="co">#&gt; p               : 131 | 160 | 367</span></span>
-<span id="cb4-74"><a href="#cb4-74" tabindex="-1"></a><span class="co">#&gt; n               :  50 |  50 |  50</span></span></code></pre></div>
-<p>Also add a meta layer. We use the weighted mean (internal function to
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>                                     <span class="at">probability =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>                 <span class="at">lrner_package =</span> <span class="st">&quot;ranger&quot;</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>                 <span class="at">lrn_fct =</span> <span class="st">&quot;ranger&quot;</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>                 <span class="at">param_train_list =</span> <span class="fu">list</span>(<span class="at">probability =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>                                         <span class="at">mtry =</span> 1L),</span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>                 <span class="at">param_pred_list =</span> <span class="fu">list</span>(),</span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>                 <span class="at">na_action =</span> <span class="st">&quot;na.keep&quot;</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="co">#&gt; Training        : training</span></span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="co">#&gt; Problem type    : classification</span></span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="co">#&gt; Status          : Not trained</span></span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a><span class="co">#&gt; Number of layers: 1</span></span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a><span class="co">#&gt; Layers trained  : 0</span></span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a><span class="co">#&gt; p               : 131</span></span>
+<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a><span class="co">#&gt; n               :  50</span></span>
+<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a></span>
+<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a><span class="co"># Create gene protein abundance layer</span></span>
+<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a><span class="fu">createTrainLayer</span>(<span class="at">training =</span> training,</span>
+<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a>                 <span class="at">train_layer_id =</span> <span class="st">&quot;proteinexpr&quot;</span>,</span>
+<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a>                 <span class="at">train_data =</span> multi_omics<span class="sc">$</span>training<span class="sc">$</span>proteinexpr,</span>
+<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a>                 <span class="at">varsel_package =</span> <span class="st">&quot;Boruta&quot;</span>,</span>
+<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a>                 <span class="at">varsel_fct =</span> <span class="st">&quot;Boruta&quot;</span>,</span>
+<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a>                 <span class="at">varsel_param =</span> <span class="fu">list</span>(<span class="at">num.trees =</span> 1000L,</span>
+<span id="cb4-31"><a href="#cb4-31" tabindex="-1"></a>                                     <span class="at">mtry =</span> 3L,</span>
+<span id="cb4-32"><a href="#cb4-32" tabindex="-1"></a>                                     <span class="at">probability =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb4-33"><a href="#cb4-33" tabindex="-1"></a>                 <span class="at">lrner_package =</span> <span class="st">&quot;ranger&quot;</span>,</span>
+<span id="cb4-34"><a href="#cb4-34" tabindex="-1"></a>                 <span class="at">lrn_fct =</span> <span class="st">&quot;ranger&quot;</span>,</span>
+<span id="cb4-35"><a href="#cb4-35" tabindex="-1"></a>                 <span class="at">param_train_list =</span> <span class="fu">list</span>(<span class="at">probability =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb4-36"><a href="#cb4-36" tabindex="-1"></a>                                         <span class="at">mtry =</span> 1L),</span>
+<span id="cb4-37"><a href="#cb4-37" tabindex="-1"></a>                 <span class="at">param_pred_list =</span> <span class="fu">list</span>(<span class="at">type =</span> <span class="st">&quot;response&quot;</span>),</span>
+<span id="cb4-38"><a href="#cb4-38" tabindex="-1"></a>                 <span class="at">na_action =</span> <span class="st">&quot;na.keep&quot;</span>)</span>
+<span id="cb4-39"><a href="#cb4-39" tabindex="-1"></a><span class="co">#&gt; Training        : training</span></span>
+<span id="cb4-40"><a href="#cb4-40" tabindex="-1"></a><span class="co">#&gt; Problem type    : classification</span></span>
+<span id="cb4-41"><a href="#cb4-41" tabindex="-1"></a><span class="co">#&gt; Status          : Not trained</span></span>
+<span id="cb4-42"><a href="#cb4-42" tabindex="-1"></a><span class="co">#&gt; Number of layers: 2</span></span>
+<span id="cb4-43"><a href="#cb4-43" tabindex="-1"></a><span class="co">#&gt; Layers trained  : 0</span></span>
+<span id="cb4-44"><a href="#cb4-44" tabindex="-1"></a><span class="co">#&gt; p               : 131 | 160</span></span>
+<span id="cb4-45"><a href="#cb4-45" tabindex="-1"></a><span class="co">#&gt; n               :  50 |  50</span></span>
+<span id="cb4-46"><a href="#cb4-46" tabindex="-1"></a></span>
+<span id="cb4-47"><a href="#cb4-47" tabindex="-1"></a><span class="co"># Create methylation layer</span></span>
+<span id="cb4-48"><a href="#cb4-48" tabindex="-1"></a><span class="fu">createTrainLayer</span>(<span class="at">training =</span> training,</span>
+<span id="cb4-49"><a href="#cb4-49" tabindex="-1"></a>                 <span class="at">train_layer_id =</span> <span class="st">&quot;methylation&quot;</span>,</span>
+<span id="cb4-50"><a href="#cb4-50" tabindex="-1"></a>                 <span class="at">train_data =</span> multi_omics<span class="sc">$</span>training<span class="sc">$</span>methylation,</span>
+<span id="cb4-51"><a href="#cb4-51" tabindex="-1"></a>                 <span class="at">varsel_package =</span> <span class="st">&quot;Boruta&quot;</span>,</span>
+<span id="cb4-52"><a href="#cb4-52" tabindex="-1"></a>                 <span class="at">varsel_fct =</span> <span class="st">&quot;Boruta&quot;</span>,</span>
+<span id="cb4-53"><a href="#cb4-53" tabindex="-1"></a>                 <span class="at">varsel_param =</span> <span class="fu">list</span>(<span class="at">num.trees =</span> 1000L,</span>
+<span id="cb4-54"><a href="#cb4-54" tabindex="-1"></a>                                     <span class="at">mtry =</span> 3L,</span>
+<span id="cb4-55"><a href="#cb4-55" tabindex="-1"></a>                                     <span class="at">probability =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb4-56"><a href="#cb4-56" tabindex="-1"></a>                 <span class="at">lrner_package =</span> <span class="st">&quot;ranger&quot;</span>,</span>
+<span id="cb4-57"><a href="#cb4-57" tabindex="-1"></a>                 <span class="at">lrn_fct =</span> <span class="st">&quot;ranger&quot;</span>,</span>
+<span id="cb4-58"><a href="#cb4-58" tabindex="-1"></a>                 <span class="at">param_train_list =</span> <span class="fu">list</span>(<span class="at">probability =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb4-59"><a href="#cb4-59" tabindex="-1"></a>                                         <span class="at">mtry =</span> 1L),</span>
+<span id="cb4-60"><a href="#cb4-60" tabindex="-1"></a>                 <span class="at">param_pred_list =</span> <span class="fu">list</span>(),</span>
+<span id="cb4-61"><a href="#cb4-61" tabindex="-1"></a>                 <span class="at">na_action =</span> <span class="st">&quot;na.keep&quot;</span>)</span>
+<span id="cb4-62"><a href="#cb4-62" tabindex="-1"></a><span class="co">#&gt; Training        : training</span></span>
+<span id="cb4-63"><a href="#cb4-63" tabindex="-1"></a><span class="co">#&gt; Problem type    : classification</span></span>
+<span id="cb4-64"><a href="#cb4-64" tabindex="-1"></a><span class="co">#&gt; Status          : Not trained</span></span>
+<span id="cb4-65"><a href="#cb4-65" tabindex="-1"></a><span class="co">#&gt; Number of layers: 3</span></span>
+<span id="cb4-66"><a href="#cb4-66" tabindex="-1"></a><span class="co">#&gt; Layers trained  : 0</span></span>
+<span id="cb4-67"><a href="#cb4-67" tabindex="-1"></a><span class="co">#&gt; p               : 131 | 160 | 367</span></span>
+<span id="cb4-68"><a href="#cb4-68" tabindex="-1"></a><span class="co">#&gt; n               :  50 |  50 |  50</span></span></code></pre></div>
+<p>Also add a meta-layer. We use the weighted mean (internal function to
 <code>fuseMLR</code>) as meta-learner. However, any other learner can be
 used as described in <a href="#appendix">Appendix</a>.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Create meta layer with imputation of missing values.</span></span>
@@ -545,7 +544,8 @@ layers.</p>
 <div id="c.2---variable-selection" class="section level3">
 <h3>C.2 - Variable selection</h3>
 <p>Function <code>varSelection()</code> performs modality-specific
-variable selection.</p>
+variable selection. So, a user can opt to conduct variable selection
+separately without training.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># Variable selection</span></span>
 <span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">5467</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>var_sel_res <span class="ot">&lt;-</span> <span class="fu">varSelection</span>(<span class="at">training =</span> training)</span>
@@ -613,13 +613,14 @@ variable selection.</p>
 <span id="cb7-65"><a href="#cb7-65" tabindex="-1"></a><span class="co">#&gt; 54 methylation cg12507125</span></span>
 <span id="cb7-66"><a href="#cb7-66" tabindex="-1"></a><span class="co">#&gt; 55 methylation cg01442799</span></span></code></pre></div>
 <p>For each layer, the variable selection results show the chosen
-variables. In this example, we perform variable selection. Users can opt
-to conduct variable selection on individual layers if desired.</p>
+variables.</p>
 </div>
 <div id="c.2---train" class="section level3">
 <h3>C.2 - Train</h3>
 <p>We use the function <code>fusemlr()</code> to train our models using
-the subset of selected variables.</p>
+the subset of selected variables. Here we set
+<code>use_var_sel = TRUE</code> to previously perform variable selection
+before model training.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">5462</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="fu">fusemlr</span>(<span class="at">training =</span> training,</span>
 <span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>        <span class="at">use_var_sel =</span> <span class="cn">TRUE</span>)</span>
@@ -660,8 +661,8 @@ models and <code>extractData()</code> to retrieve training data.</p>
 <span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a><span class="co">#&gt;  $ meta_layer : &#39;weightedMeanLearner&#39; Named num [1:3] 0.268 0.27 0.462</span></span>
 <span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a><span class="co">#&gt;   ..- attr(*, &quot;names&quot;)= chr [1:3] &quot;geneexpr&quot; &quot;proteinexpr&quot; &quot;methylation&quot;</span></span>
 <span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a><span class="co">#&gt; NULL</span></span></code></pre></div>
-<p>The list of four models (three random forests and one weighted
-meta-model) trained on each layer is returned.</p>
+<p>Three random forests and one weighted meta-model trained on each
+layer are returned.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>data_list <span class="ot">&lt;-</span> <span class="fu">extractData</span>(<span class="at">object =</span> training)</span>
 <span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="fu">str</span>(<span class="at">object =</span> data_list, <span class="at">max.level =</span> <span class="dv">1</span>)</span>
 <span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="co">#&gt; List of 4</span></span>
@@ -669,17 +670,17 @@ meta-model) trained on each layer is returned.</p>
 <span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="co">#&gt;  $ proteinexpr:&#39;data.frame&#39;: 50 obs. of  162 variables:</span></span>
 <span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="co">#&gt;  $ methylation:&#39;data.frame&#39;: 50 obs. of  369 variables:</span></span>
 <span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="co">#&gt;  $ meta_layer :&#39;data.frame&#39;: 69 obs. of  5 variables:</span></span></code></pre></div>
-<p>The list of the four training data (the three simulated training
-modalities and the meta-data) is returned.</p>
+<p>The three simulated training modalities and the meta-data are
+returned.</p>
 </div>
 </div>
 <div id="d---predicting" class="section level2">
 <h2>D - Predicting</h2>
 <p>In this section, we create a <code>testing</code> instance (from the
 <em>Testing</em> class) and make predictions for new data. This is done
-analogously to <code>training</code>. The only difference that only the
-testing data modalities are required. Relevant functions are
-<code>createTesting()</code> and <code>createTestLayer()</code>.</p>
+analogously to <code>training</code>. Only the testing data modalities
+are required. Relevant functions are <code>createTesting()</code> and
+<code>createTestLayer()</code>.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="co"># Create testing for predcitions</span></span>
 <span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>testing <span class="ot">&lt;-</span> <span class="fu">createTesting</span>(<span class="at">id =</span> <span class="st">&quot;testing&quot;</span>,</span>
 <span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>                         <span class="at">ind_col =</span> <span class="st">&quot;IDS&quot;</span>)</span>
@@ -798,8 +799,8 @@ all patients on the meta layer.</p>
 <span id="cb16-14"><a href="#cb16-14" tabindex="-1"></a><span class="fu">print</span>(perf_auc)</span>
 <span id="cb16-15"><a href="#cb16-15" tabindex="-1"></a><span class="co">#&gt;    geneexpr proteinexpr methylation  meta_layer </span></span>
 <span id="cb16-16"><a href="#cb16-16" tabindex="-1"></a><span class="co">#&gt;   0.9904762   0.6119048   0.9761905   0.9666667</span></span></code></pre></div>
-<p>The weighted mean meta-learner combined with mean imputation
-effectively aggregates the layer-specific learners.</p>
+<p>The weighted mean meta-learner is a good aggregation of the
+layer-specific learners.</p>
 <!-- Prediction performances for overlapping individuals. -->
 <!-- ```{r performance_overlap, include=TRUE, eval=TRUE} -->
 <!-- # On overlapping patients -->
@@ -828,7 +829,7 @@ either an interface or a wrapping of the original function can be done
 to solve name discepancies.</p>
 <div id="interface" class="section level3">
 <h3>Interface</h3>
-<p>The interface approach leverages the arguments in
+<p>The interface approach leverages the some arguments in
 <code>createTrainLayer()</code> to map the argument names of the
 original learning function. In the example below, the gene expression
 layer is re-created using the <code>svm</code> (Support Vector Machine)
@@ -871,7 +872,7 @@ function, which uses <code>object</code> and <code>newdata</code>.</p>
 </div>
 <div id="wrapping" class="section level3">
 <h3>Wrapping</h3>
-<p>In the wrapping approach we re-define the function
+<p>In the wrapping approach we define a new function
 <code>mylasso</code> to run a Lasso regression from the
 <code>glmnet</code> package as the meta-leaner.</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="co"># We wrap the original functions</span></span>
@@ -894,7 +895,7 @@ function, which uses <code>object</code> and <code>newdata</code>.</p>
 <span id="cb18-18"><a href="#cb18-18" tabindex="-1"></a>  <span class="fu">return</span>(lasso_model)</span>
 <span id="cb18-19"><a href="#cb18-19" tabindex="-1"></a>}</span>
 <span id="cb18-20"><a href="#cb18-20" tabindex="-1"></a></span>
-<span id="cb18-21"><a href="#cb18-21" tabindex="-1"></a>predict.mylasso <span class="ot">&lt;-</span> <span class="cf">function</span>(object, data) {</span>
+<span id="cb18-21"><a href="#cb18-21" tabindex="-1"></a>predict.mylasso <span class="ot">&lt;-</span> <span class="cf">function</span> (object, data) {</span>
 <span id="cb18-22"><a href="#cb18-22" tabindex="-1"></a>  glmnet_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(<span class="at">object =</span> object<span class="sc">$</span>model,</span>
 <span id="cb18-23"><a href="#cb18-23" tabindex="-1"></a>                         <span class="at">newx =</span> <span class="fu">as.matrix</span>(data),</span>
 <span id="cb18-24"><a href="#cb18-24" tabindex="-1"></a>                         <span class="at">type =</span> <span class="st">&quot;response&quot;</span>,</span>
@@ -951,6 +952,25 @@ multiple individual learners</td>
 </tr>
 </tbody>
 </table>
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<ul>
+<li><p>Wright MN, Ziegler A.. Ranger: a fast implementation of random
+forests for high dimensional data in C ++ and R. J Stat Softw
+2017;77:1–17.</p></li>
+<li><p>Tay JK, Narasimhan B, Hastie T (2023). Elastic Net Regularization
+Paths for All Generalized Linear Models. Journal of Statistical
+Software_, <em>106</em>(1), 1-31.</p></li>
+<li><p>Kursa M, Rudnicki W.. Feature selection with the Boruta package.
+J Stat Softw 2010;36:1–13.</p></li>
+<li><p>Janitza S, Celik E, Boulesteix A-L.. A computationally fast
+variable importance test for random forests for high-dimensional data.
+Adv Data Anal Classif 2016, in press</p></li>
+<li><p>Biau, G., Fischer, A., Guedj, B., &amp; Malley, J. D. (2014).
+COBRA: A combined regression strategy. The Journal of Multivariate
+Analysis 46:18-28</p></li>
+</ul>
 <p>© 2024 Institute of Medical Biometry and Statistics (IMBS). All
 rights reserved.</p>
 </div>
