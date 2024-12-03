@@ -4,12 +4,14 @@
 #' Modality-specific learner are assessed and weighted based on their predictions. This function is intended to be (internally) used as meta-learner in fuseMLR.
 #'
 #' @param x `data.frame` \cr
-#' Modality-specific predictions.
+#' Modality-specific predictions. Each column of the `data.frame` content the predictions
+#' a specific learner.
 #' @param y `vector` \cr
 #' True target values. If classification, either binary or two level factor variable.
 #' @param weighted \cr
-#' If TRUE, the weighted sum is computed. Weights are estimated based on Brier Score
-#' for classification setting and mean squared error for regression.
+#' If TRUE, a weighted sum is computed. As default, weights are estimated based on Brier Score
+#' for classification setting and mean squared error for regression. Otherwise, use argument
+#' `perf` below to specify the function to use estimate learner performance.
 #' @param perf `function` \cr
 #' Function to compute layer-specific performance of learners. If NULL, the Brier Score (classification) or a mean squared error (regression) is used by default as performance measure.
 #' Otherwise, the performance function must accept two parameters: \code{observed} (observed values) and \code{predicted} (predicted values).

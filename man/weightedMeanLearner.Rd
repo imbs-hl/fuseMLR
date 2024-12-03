@@ -8,14 +8,16 @@ weightedMeanLearner(x, y, weighted = TRUE, perf = NULL)
 }
 \arguments{
 \item{x}{\code{data.frame} \cr
-Modality-specific predictions.}
+Modality-specific predictions. Each column of the \code{data.frame} content the predictions
+a specific learner.}
 
 \item{y}{\code{vector} \cr
 True target values. If classification, either binary or two level factor variable.}
 
 \item{weighted}{\cr
-If TRUE, the weighted sum is computed. Weights are estimated based on Brier Score
-for classification setting and mean squared error for regression.}
+If TRUE, a weighted sum is computed. As default, weights are estimated based on Brier Score
+for classification setting and mean squared error for regression. Otherwise, use argument
+\code{perf} below to specify the function to use estimate learner performance.}
 
 \item{perf}{\code{function} \cr
 Function to compute layer-specific performance of learners. If NULL, the Brier Score (classification) or a mean squared error (regression) is used by default as performance measure.
