@@ -313,7 +313,7 @@ varSelection = function (training,
 #' ID subset to be used for training.
 #' @param use_var_sel `boolean` \cr
 #' If TRUE and no variable selection has been performed for the provide training object, then a variable selection will proceed the training.
-#' Otherwise, if variable selection has been previously performed, the selected variables will be use for training.
+#' Otherwise, if variable selection has been previously performed, the selected variables will be used for training.
 #' @param resampling_method `function` \cr
 #' Function for internal validation. If not specify, the \code{resampling} function from the package \code{caret} is used for a 10-folds cross-validation.
 #' @param resampling_arg `list` \cr
