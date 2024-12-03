@@ -4,8 +4,15 @@ Title: Fuse machine leaning in R
 Version: 0.1.3
 Author: Cesaire J. K. Fouodo
 Maintainer: The package maintainer <cesaire.kuetefouodo@uni-luebeck.de>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: Recent technological advances have enable the simultaneous collection
+    of multi-omics data i.e., different types or modalities of molecular data, 
+    presenting challenges for integrative prediction modeling due to the heterogeneous,
+    high-dimensional nature and possible missing modalities of some individuals. 
+    We introduce this package for late integrative prediction modeling, enabling 
+    modality-specific variable selection and prediction modeling, followed by the 
+    aggregation of the modality-specific predictions to train a final meta-model. 
+    This package facilitates conducting late integration predictive modeling in a 
+    systematic, structured, and reproducible way.
 License: GPL
 Encoding: UTF-8
 Imports: 
