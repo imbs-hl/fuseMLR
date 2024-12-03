@@ -1,12 +1,3 @@
----
-title: "fuseMLR"
-author: Cesaire J. K. Fouodo
-output: 
-  md_document:
-    variant: gfm
-    preserve_yaml: true
----
-
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/imbs-hl/fuseMLR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/imbs-hl/fuseMLR/actions/workflows/R-CMD-check.yaml)
@@ -68,14 +59,6 @@ within a `TrainLayer` or `MetaTrainLayer` instance. An `Training` object
 can be used to automatically conduct layer-specific variable selection
 and train layer-specfic learner and the meta-learner. Analogously, a
 `Testing` can be set up and predicted after the training.
-
-### Installation
-
-Install the development version from GitHub with
-
-``` r
-devtools::install_github("imbs-hl/fuseMLR")
-```
 
 © 2024 Institute of Medical Biometry and Statistics (IMBS). All rights
 reserved.
