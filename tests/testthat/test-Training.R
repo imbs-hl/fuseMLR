@@ -49,7 +49,7 @@ test_that("Training: all tests", {
                                   target_df = multi_omics$training$target,
                                   problem_type = "test")
   })
-  expect_warning({
+  expect_error({
     tmp <- multi_omics$training$target
     tmp$disease <- sample(x = 1:3,
                           size = nrow(tmp),
