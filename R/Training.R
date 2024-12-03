@@ -78,13 +78,6 @@ Training <- R6Class("Training",
                           if ((problem_type == "regression") & (uniq_target_values == 2L)) {
                             warning("You set up a regression problem for only two classes.\n")
                           }
-                          # Force the response variable to be a factor in case of binary classification problem.
-                          if ((problem_type == "classification") & (uniq_target_values == 2L)) {
-                            if (!is.factor(target_values)) {
-                              # TODO: Fix this as soon as possible!!!
-                              target_df[ , target] = as.factor(target_values)
-                            }
-                          }
                         }
                         super$initialize(id = id)
                         private$ind_col = ind_col

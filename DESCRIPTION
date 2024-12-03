@@ -59,4 +59,4 @@ Collate:
     'predict.weightedMeanLearner.R'
     'testingFunctions.R'
     'trainingFunctions.R'
-VignetteBuilder: knitr
+VignetteBuilder: knitr, rmarkdown

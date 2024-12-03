@@ -7,6 +7,8 @@ vignette: >
   %\VignetteIndexEntry{How does fuseMLR work?}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  toc: true
+  toc_depth: 2
 ---
 
 ```{r, include = FALSE}
@@ -16,7 +18,13 @@ knitr::opts_chunk$set(
 )
 ```
 
-## A - Introduction #
+<!-- [A - Introduction](#a---Introduction) -->
+
+<!-- [B - Data](#b---data) -->
+
+<!-- [C - Training](#c---training) -->
+
+## A - Introduction
 
 The R package **fuseMLR** offers a framework for late integrative predictive modeling using multi-omics data. 
 This vignette serves as a user guide to use the package effectively.
@@ -52,13 +60,13 @@ print(training)
 
 A ```training``` contains modality-specific training layers (instances of the **TrainLayer** class) and a meta-layer (instance of the **TrainMetaLayer** class). The modality-specific training layers encapsulate training data modalities, variable selection functions and learners (i.e. ```R``` functions implementing statistical predicting methods). The meta-layer encapsulates the meta-learner.
 
-## C.1 - Creating a training ##
+### C.1 - Creating a training ##
 
 We will use ```training``` (resp. ```testing```) to refer to an instance from the **Training** (resp. **Testing**) class. A ```training``` contains modality-specific training layers (instances of the **TrainLayer** class) and a meta-layer (instance of the **TrainMetaLayer** class). The modality-specific training layers encapsulate training data modalities, variable selection functions and learners (i.e. ```R``` functions implementing statistical predicting methods). The meta-layer encapsulates the meta-learner.
 
 Three main functions are necessary to create ```training```: ```createTraining()```, ```createTrainLayer()``` and ```createTrainMetaLayer()```. ```createTraining()``` creates an empty ```training```, on which modalitity-specific training layers can be add using the function ```createTrainLayer()```. Function ```createTrainMetaLayer()``` is used to add meta-layer to ```training```. 
 
-The following code adds a gene expression, a protein abundance, and a methylation layer to ```training```.
+The following code adds a gene expression, a protein abundance, and a methylation layer to ```training```. For illustration purpose we use the same variable selection method `Boruta` and the same learner (`ranger`) for all layers. The corresponding functions can be used with their original arguments and outputs. Otherwise, we would proceed as explained in [E-Interface and wrapping](#e---interface-and-wrapping) to accommodate them to the `fuseMLR` usage.
 
 ```{r training_layers, include=TRUE, eval=TRUE}
 # Create gene expression layer
@@ -116,7 +124,7 @@ createTrainLayer(training = training,
                  na_action = "na.keep")
 ```
 
-Also add a meta layer.
+Also add a meta layer. We use the weighted mean (internal function to `fuseMLR`) as meta-learner. However, any other learner can be used as described in [Appendix](#appendix).
 
 ```{r training_meta_layers, include=TRUE, eval=TRUE}
 # Create meta layer with imputation of missing values.
@@ -135,7 +143,7 @@ Function ```upsetplot()``` is available to generate an upset of the training dat
 upsetplot(object = training, order.by = "freq")
 ```
 
-## C.2 - Variable selection ##
+### C.2 - Variable selection ##
 
 Function ```varSelection()``` performs modality-specific variable selection.
 
@@ -148,7 +156,7 @@ print(var_sel_res)
 
 For each layer, the variable selection results show the chosen variables. In this example, we perform variable selection. Users can opt to conduct variable selection on individual layers if desired.
 
-## C.2 - Training ##
+### C.2 - Train ##
 
 We use the function ```fusemlr()``` to train our models using the subset of selected variables.
 
@@ -176,7 +184,7 @@ str(object = data_list, max.level = 1)
 
 The list of the four training data (the three simulated training modalities and the meta-data) is returned.
 
-# D - Predicting #
+## D - Predicting #
 
 In this section, we create a ```testing``` instance (from the *Testing* class) and make predictions for new data. This is done analogously to ```training```. The only difference that only the testing data modalities are required. Relevant functions are ```createTesting()``` and ```createTestLayer()```.
 
@@ -231,11 +239,11 @@ actual_pred <- merge(x = pred_values,
                      y = multi_omics$testing$target,
                      by = "IDS",
                      all.y = TRUE)
-x <- actual_pred$disease
+y <- as.numeric(actual_pred$disease == "1")
 
 # On all patients
 perf_bs <- sapply(X = actual_pred[ , 2L:5L], FUN = function (my_pred) {
-  bs <- mean((x[complete.cases(my_pred)] - my_pred[complete.cases(my_pred)])^2)
+  bs <- mean((y[complete.cases(my_pred)] - my_pred[complete.cases(my_pred)])^2)
   return(bs)
 })
 print(perf_bs)
@@ -249,11 +257,11 @@ actual_pred <- merge(x = pred_values,
                      y = multi_omics$testing$target,
                      by = "IDS",
                      all.y = TRUE)
-x <- actual_pred$disease
+y <- actual_pred$disease
 
 # On all patients
 perf_auc <- sapply(X = actual_pred[ , 2L:5L], FUN = function (my_pred) {
-  roc_obj <- pROC::roc(x[complete.cases(my_pred)], my_pred[complete.cases(my_pred)])
+  roc_obj <- pROC::roc(y[complete.cases(my_pred)], my_pred[complete.cases(my_pred)])
   auc_value <- pROC::auc(roc_obj)
   return(auc_value)
 })
@@ -276,11 +284,11 @@ The weighted mean meta-learner combined with mean imputation effectively aggrega
 <!-- ``` -->
 
 
-# E - Interface and wrapping #
+## E - Interface and wrapping
 
 We distinguish common supervised learning arguments from method specific arguments. The common arguments are a matrix ```x``` of independent variables and  ```y``` representing a response variable. These arguments are handled by ```fuseMLR```, so users do not need to make any adjustments themselves. We also define standard argument names for predicting. The arguments ```object``` and ```data``` (used by the generic ```R``` function ```predict``` to pass model and the data for which prediction are needed) are also stanard in ```fuseMLR```. If the original learning or predicting function do not use these names as arguments, either an interface or a wrapping of the original function can be done to solve name discepancies. 
 
-## Interface ##
+### Interface ##
 
 The interface approach leverages the arguments in ```createTrainLayer()``` to map the argument names of the original learning function. In the example below, the gene expression layer is re-created using the ```svm``` (Support Vector Machine) function from the ```e1071``` package as the learner. A discrepancy arises in the argument names of the ```predict.svm``` function, which uses ```object``` and ```newdata```.
 
@@ -320,7 +328,7 @@ training <- fusemlr(training = training,
 print(training)
 ```
 
-## Wrapping ##
+### Wrapping
 
 In the wrapping approach we re-define the function ```mylasso``` to run a Lasso regression from the ```glmnet``` package as the meta-leaner.
 
@@ -368,7 +376,7 @@ training <- fusemlr(training = training,
 print(training)
 ```
 
-### Appendix
+## Appendix
 
 In addition to any pre-existing learner in R as a meta-learner, we have implemented the following ones.
 
