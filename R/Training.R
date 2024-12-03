@@ -138,6 +138,7 @@ Training <- R6Class("Training",
                           cat(sprintf("p               : %s\n", layer_ps))
                           cat(sprintf("n               : %s\n", layer_ns))
                         }
+                        invisible(self)
                       },
                       #' @description
                       #' Train each layer of the current Training.
@@ -416,9 +417,9 @@ Training <- R6Class("Training",
                         # Reshape format of meta-predictions as those of layer-spec predictions
                         predicted_meta_values = predicted_layer$getPredictData()$getDataFrame()
                         predicted_meta_values_wide = reshape(predicted_layer$getPredictData()$getDataFrame(),
-                                                        idvar = colnames(predicted_meta_values)[2L],
-                                                        timevar = colnames(predicted_meta_values)[1L],
-                                                        direction = "wide")
+                                                             idvar = colnames(predicted_meta_values)[2L],
+                                                             timevar = colnames(predicted_meta_values)[1L],
+                                                             direction = "wide")
                         colname_vector = gsub(pattern = "Prediction.",
                                               replacement = "",
                                               x = names(predicted_meta_values_wide))
@@ -753,6 +754,7 @@ Training <- R6Class("Training",
                           layer$summary()
                           cat("\n")
                         }
+                        invisible(self)
                       }
                     ),
                     private = list(

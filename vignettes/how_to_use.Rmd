@@ -18,11 +18,16 @@ knitr::opts_chunk$set(
 )
 ```
 
-<!-- [A - Introduction](#a---Introduction) -->
+```{css, echo=FALSE}
+pre {
+  max-height: 300px;
+  overflow-y: auto;
+}
 
-<!-- [B - Data](#b---data) -->
-
-<!-- [C - Training](#c---training) -->
+pre[class] {
+  max-height: 400px;
+}
+```
 
 ## A - Introduction
 
@@ -66,7 +71,7 @@ Three main functions are necessary to create the ```training```: ```createTraini
 
 The following code adds a gene expression, a protein abundance, and a methylation layer to ```training```. For illustration purpose we use the same variable selection method `Boruta` and the same learner (`ranger`) for all layers. These  functions fulfill `fuseMLR` requirements in terms of arguments and outputs (see `createTrainLayer` documentation for details). For example, we expect the variable selection function to have at an argument `x` to pass the design matrix of predictors and `y` to pass the response values. In addition, the function must return a vector of selected variables. The use of any method that does not fulfill this criteria -- the Vita variable selection method (implemented by `ranger`) or the Lasso based approach, for instance -- requires either additional wrapping steps or a function to be use to returns a vector the selected variables for a given significant threshold. Also for learners, arguments `x` and `y` are required, and the generic `predict` function must be *callable* for the resulting model. Predictions must be stored either as a vector or a list containing a field `predictions` (a vector of predicted values). If the provided function do not fulfill criteria the argument and output criteria, users should proceed as explained in [E-Interface and wrapping](#e---interface-and-wrapping) to build an interface or wrap their original function for the `fuseMLR` usage.
 
-```{r training_layers, include=TRUE, eval=TRUE}
+```{r geneexpr, include=TRUE, eval=TRUE}
 # Create gene expression layer.
 createTrainLayer(training = training,
                  train_layer_id = "geneexpr",
@@ -82,7 +87,9 @@ createTrainLayer(training = training,
                                          mtry = 1L),
                  param_pred_list = list(),
                  na_action = "na.keep")
+```
 
+```{r proteinexpr, include=TRUE, eval=TRUE}
 # Create gene protein abundance layer
 createTrainLayer(training = training,
                  train_layer_id = "proteinexpr",
@@ -98,7 +105,9 @@ createTrainLayer(training = training,
                                          mtry = 1L),
                  param_pred_list = list(type = "response"),
                  na_action = "na.keep")
+```
 
+```{r methylation, include=TRUE, eval=TRUE}
 # Create methylation layer
 createTrainLayer(training = training,
                  train_layer_id = "methylation",
@@ -118,7 +127,15 @@ createTrainLayer(training = training,
 
 Also add a meta-layer. We use the weighted mean (internal function to `fuseMLR`) as meta-learner. Similarly learners, a meta-learner should allow at least the arguments `x` and `y` to pass the design matrix of predictors and should return a model that allow the call of the generic function `predict` to make predictions for a new dataset (see documentation of `createTrainMetaLayer` for details). If these criteria are not fulfill the explaination in [E-Interface and wrapping](#e---interface-and-wrapping) can be used to map the `x` and `y` to the original argument names or to wrap the original function. We also provide information about possible meta-learner can be used in [Appendix](#appendix).
 
-```{r training_meta_layers, include=TRUE, eval=TRUE}
+```{css, echo=FALSE}
+.scroll-100 {
+  max-height: 400px;
+  overflow-y: auto;
+  background-color: inherit;
+}
+```
+
+```{r training_meta_layers, include=TRUE, eval=TRUE, class.output="scroll-100"}
 # Create meta layer with imputation of missing values.
 createTrainMetaLayer(training = training,
                      meta_layer_id = "meta_layer",
@@ -127,6 +144,7 @@ createTrainMetaLayer(training = training,
                      param_train_list = list(),
                      param_pred_list = list(),
                      na_action = "na.impute")
+print(summary(training))
 ```
 
 Function ```upsetplot()``` is available to generate an upset of the training data, i.e. an overview how patients overlap across layers.
@@ -184,17 +202,23 @@ In this section, we create a ```testing``` instance (from the *Testing* class) a
 # Create testing for predcitions
 testing <- createTesting(id = "testing",
                          ind_col = "IDS")
+```
 
+```{r testing_ge, include=TRUE, eval=TRUE}
 # Create gene expression layer
 createTestLayer(testing = testing,
                 test_layer_id = "geneexpr",
                 test_data = multi_omics$testing$geneexpr)
+```
 
+```{r testing_pr, include=TRUE, eval=TRUE}
 # Create gene protein abundance layer
 createTestLayer(testing = testing,
                 test_layer_id = "proteinexpr",
                 test_data = multi_omics$testing$proteinexpr)
+```
 
+```{r testing_me, include=TRUE, eval=TRUE}
 # Create methylation layer
 createTestLayer(testing = testing,
                 test_layer_id = "methylation",
@@ -221,7 +245,7 @@ predictions <- predict(object = training, testing = testing)
 print(predictions)
 ```
 
-Prediction performances for layer-specific available patients, and all patients on the meta layer.
+Prediction performances for layer-specific levels, and on the meta layer are displayed.
 
 - Brier score estimated.
 
@@ -324,7 +348,9 @@ print(training)
 
 In the wrapping approach we define a new function ```mylasso``` to run a Lasso regression from the ```glmnet``` package as the meta-leaner.
 
-```{r wrap, include=TRUE, eval=FALSE}
+- Wrapping of glmnet.
+
+```{r wrap_lasso, include=TRUE, eval=FALSE}
 # We wrap the original functions
 mylasso <- function (x, y,
                      nlambda = 25,
@@ -344,7 +370,12 @@ mylasso <- function (x, y,
   class(lasso_model) <- "mylasso"
   return(lasso_model)
 }
+```
 
+- Extension of `predict`.
+
+```{r wrap_predict, include=TRUE, eval=FALSE}
+# We extend the generic predict function mylasso. 
 predict.mylasso <- function (object, data) {
   glmnet_pred <- predict(object = object$model,
                          newx = as.matrix(data),
@@ -355,6 +386,22 @@ predict.mylasso <- function (object, data) {
 
 # Remove the current gene expression layer from training
 removeLayer(training = training, layer_id = "meta_layer")
+# Re-create the gene expression layer with support vector machine as learner.
+createTrainMetaLayer(training = training,
+                     meta_layer_id = "meta_layer",
+                     lrner_package = NULL,
+                     lrn_fct = "mylasso",
+                     param_train_list = list(nlambda = 100L),
+                     na_action = "na.impute")
+set.seed(5462)
+training <- fusemlr(training = training,
+                    use_var_sel = TRUE)
+print(training)
+```
+
+- Re-set the meta-layer with the wrapped learner and train.
+
+```{r add_wrap, include=TRUE, eval=FALSE}
 # Re-create the gene expression layer with support vector machine as learner.
 createTrainMetaLayer(training = training,
                      meta_layer_id = "meta_layer",

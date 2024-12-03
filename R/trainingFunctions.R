@@ -413,7 +413,7 @@ extractData = function (object) {
 #' @export
 #'
 summary.Training = function (object, ...) {
-  return(object$summary())
+  print(object$summary())
 }
 
 #' @title upsetplot
