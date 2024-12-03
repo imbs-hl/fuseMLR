@@ -57,7 +57,10 @@ parameters \code{x} and \code{y} below can be used to map these argument name wi
 The returned model must allow the use of the generic function \code{predict} (with arguments \code{object} and \code{data}) to make
 predictions for new data and predictions should be a vector or a \code{list} containing a vector called
 \code{predictions} with the predicted values. If the arguments \code{object} and \code{data} are named differently in your predict
-function, use the interface parameters \code{object} and \code{data} below to specify the original names.}
+function, use the interface parameters \code{object} and \code{data} below to specify the original names. In addition, if
+predictions are stored as a \code{matrix} or a \code{data.frame} (e.g. predicted probabilities for different classes in dichotomous classification),
+only the second column (assumed to be the class \code{1} probabilities) will be considered. If the predicted values are not returned in one of the formats above,
+use the argument \code{extract_pred_fct} below to specify how the predicted values can be extracted from the predicted object.}
 
 \item{param_train_list}{\code{character} \cr
 List of arguments to be passed to \code{lrn_fct}.}
@@ -98,7 +101,9 @@ Default value is NULL, if selected variables are in a vector.}
 The updated \link{Training} object (with the new layer) is returned.
 }
 \description{
-Creates and store a \link{TrainLayer} on the \link{Training} object passed as argument.
+Creates and stores a \link{TrainLayer} on the \link{Training} object passed as argument.
+The main components of a training layer are training data modality, a variable
+selection methods, and a modality-specific learner.
 }
 \references{
 Fouodo C.J.K, Bleskina M. and Szymczak (2024). fuseMLR: An R package for integrative prediction modeling of multi-omics data, paper submitted.\cr

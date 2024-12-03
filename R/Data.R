@@ -66,18 +66,24 @@ Data <- R6Class("Data",
                   #' @param impute_fct `character` \cr
                   #' An imputation function to use instead of median or mode imputation. Not yet implemented!
                   #' @param impute_param `list` \cr
+                  #' @param target_name `character` \cr
+                  #' Name of the target variable.
                   #' The list of parameters to call the imputation function.
                   #' @return
                   #' A new object with the predicted values is returned.
-                  #' @export
                   #'
                   impute = function (impute_fct,
-                                     impute_param) {
+                                     impute_param,
+                                     target_name) {
                     # nocov start
                     current_data = private$data_frame
                     current_data[ , private$ind_col] = NULL
                     # R is faster when working column wise.
                     name_current_data = names(current_data)
+                    if (target_name %in% name_current_data) {
+                      target_values = current_data[ , target_name]
+                      current_data[ , target_name] = NULL
+                    }
                     current_data = as.data.frame(t(current_data))
                     if (is.null(impute_fct)) {
                       imputed_data = lapply(current_data, function(col_var) {
@@ -99,6 +105,9 @@ Data <- R6Class("Data",
                       })
                       imputed_data = as.data.frame(t(as.data.frame(imputed_data)))
                       private$data_frame[ , name_current_data] = imputed_data
+                      if (target_name %in% name_current_data) {
+                        private$data_frame[ , target_name] = target_values
+                      }
                     } else {
                       # impute_fct has been set, but actually not implemented.
                       warning("Only mode and median imputations are actually supported.")

@@ -60,6 +60,7 @@ Use the function \code{train} for training and \code{predict} for predicting.
 \item \href{#method-Training-increaseNbTrainedLayer}{\code{Training$increaseNbTrainedLayer()}}
 \item \href{#method-Training-checkTargetExist}{\code{Training$checkTargetExist()}}
 \item \href{#method-Training-getTargetObj}{\code{Training$getTargetObj()}}
+\item \href{#method-Training-getProblemTyp}{\code{Training$getProblemTyp()}}
 \item \href{#method-Training-setImpute}{\code{Training$setImpute()}}
 \item \href{#method-Training-testOverlap}{\code{Training$testOverlap()}}
 \item \href{#method-Training-upset}{\code{Training$upset()}}
@@ -505,6 +506,16 @@ Boolean value
 Getter of the target object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Training$getTargetObj()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Training-getProblemTyp"></a>}}
+\if{latex}{\out{\hypertarget{method-Training-getProblemTyp}{}}}
+\subsection{Method \code{getProblemTyp()}}{
+Getter of the problem type.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Training$getProblemTyp()}\if{html}{\out{</div>}}
 }
 
 }

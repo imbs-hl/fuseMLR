@@ -162,7 +162,8 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                                                impute_param = NULL) {
                               train_data = self$getTrainData()
                               train_data$impute(impute_fct = impute_fct,
-                                                impute_param = impute_param)
+                                                impute_param = impute_param,
+                                                target_name = self$getTraining()$getTargetObj()$getTargetName())
                               invisible(self)
                             },
                             #' @description
@@ -181,6 +182,9 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                               } else {
                                 stop(sprintf("No train data on layer %s.", self$getId()))
                               }
+                              # call_stack <- sys.calls()
+                              # caller_name <- as.character(call_stack[[length(call_stack) - 1]])[1]
+                              # stop(sprintf("%s", caller_name))
                               return(train_data)
                             },
                             #' @description

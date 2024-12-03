@@ -73,10 +73,17 @@ Training <- R6Class("Training",
                           target_values = target_df[ , target, drop = TRUE]
                           uniq_target_values = length(unique(target_values[complete.cases(target_values)]))
                           if ((problem_type == "classification") & (uniq_target_values > 2L)) {
-                            warning("You set up a classification problem for more than two classes.\n")
+                            stop("You set up a classification problem for more than two classes. Only binary classification problems are actually handled.\n")
                           }
                           if ((problem_type == "regression") & (uniq_target_values == 2L)) {
                             warning("You set up a regression problem for only two classes.\n")
+                          }
+                          # Force the response variable to be a factor in case of binary classification problem.
+                          if ((problem_type == "classification") & (uniq_target_values == 2L)) {
+                            if (!is.factor(target_values)) {
+                              # TODO: Fix this as soon as possible!!!
+                              target_df[ , target] = as.factor(target_values)
+                            }
                           }
                         }
                         super$initialize(id = id)
@@ -398,7 +405,8 @@ Training <- R6Class("Training",
                         if (private$impute) {
                           # TODO: Can be moved into testMetaLayer; similarly to trainMetaLayer.
                           testing_meta_data$impute(impute_fct = NULL,
-                                                   impute_param = NULL)
+                                                   impute_param = NULL,
+                                                   target_name = self$getTargetObj()$getTargetName())
                         }
                         # 3) Predict new meta layer by the trained meta layer.
                         layers = self$getKeyClass()
@@ -658,6 +666,11 @@ Training <- R6Class("Training",
                       # TODO: Maybe rename this function getTarget and find another appropriate name for the current getTarget function.
                       getTargetObj = function () {
                         return(private$target_obj)
+                      },
+                      #' @description
+                      #' Getter of the problem type.
+                      getProblemTyp = function () {
+                        return(private$problem_typ)
                       },
                       #' @description
                       #' Set imputation action na.action.

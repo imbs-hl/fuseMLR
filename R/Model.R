@@ -239,6 +239,11 @@ Model <- R6Class("Model",
                          } else {
                            if (!is.vector(predicted_obj$predictions) & !(any(class(predicted_obj$predictions) %in% c("data.frame", "matrix")))) {
                              stop("Predicted object must either be a vector or a list containing a vector named 'predictions'.")
+                           } else {
+                             # Choose the second column from data.frame predictions as those returned by ranger.
+                             if (any(class(predicted_obj$predictions) %in% c("data.frame", "matrix")) & (private$train_layer$getTraining()$getProblemTyp() == "classification")) {
+                               predicted_obj$predictions = predicted_obj$predictions[ , 2L]
+                             }
                            }
                            # nocov end
                            predicted_obj = data.frame(

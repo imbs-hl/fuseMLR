@@ -39,7 +39,9 @@ createTraining = function (id,
 
 #' @title createTrainLayer
 #' @description
-#' Creates and store a [TrainLayer] on the [Training] object passed as argument.
+#' Creates and stores a [TrainLayer] on the [Training] object passed as argument.
+#' The main components of a training layer are training data modality, a variable
+#' selection methods, and a modality-specific learner.
 #'
 #' @param training `Training` \cr
 #' Training object where the created layer will be stored.
@@ -66,7 +68,10 @@ createTraining = function (id,
 #' The returned model must allow the use of the generic function `predict` (with arguments `object` and `data`) to make
 #' predictions for new data and predictions should be a vector or a `list` containing a vector called
 #' `predictions` with the predicted values. If the arguments `object` and `data` are named differently in your predict
-#' function, use the interface parameters `object` and `data` below to specify the original names.
+#' function, use the interface parameters `object` and `data` below to specify the original names. In addition, if
+#' predictions are stored as a `matrix` or a `data.frame` (e.g. predicted probabilities for different classes in dichotomous classification),
+#' only the second column (assumed to be the class `1` probabilities) will be considered. If the predicted values are not returned in one of the formats above,
+#' use the argument `extract_pred_fct` below to specify how the predicted values can be extracted from the predicted object.
 #' @param param_train_list  `character` \cr
 #' List of arguments to be passed to \code{lrn_fct}.
 #' @param param_pred_list   `character` \cr
