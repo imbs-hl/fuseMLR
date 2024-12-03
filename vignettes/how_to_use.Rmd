@@ -149,7 +149,7 @@ print(summary(training))
 
 Function ```upsetplot()``` is available to generate an upset of the training data, i.e. an overview how patients overlap across layers.
 
-```{r upsetplot, include=TRUE, eval=TRUE, }
+```{r upsetplot, include=TRUE, eval=TRUE, fig.width=5, fig.align='center'}
 upsetplot(object = training, order.by = "freq")
 ```
 
@@ -234,7 +234,7 @@ str(object = data_list, max.level = 1)
 
 We can also generate an upset plot to visualize patient overlap across testing layers.
 
-```{r upsetplot_new, include=TRUE, eval=TRUE, }
+```{r upsetplot_new, include=TRUE, eval=TRUE, fig.width=5, fig.align='center'}
 upsetplot(object = testing, order.by = "freq")
 ```
 
