@@ -66,5 +66,9 @@ Install the development version from GitHub with
 devtools::install_github("imbs-hl/fuseMLR")
 ```
 
+### Usage
+
+See [vignette]().
+
 © 2024 Institute of Medical Biometry and Statistics (IMBS). All rights
 reserved.
