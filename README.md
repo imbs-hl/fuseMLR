@@ -45,8 +45,6 @@ new package for conducting late-stage multi-omics integrative modeling.
 Refer to the [vignette]() for a quick overview of how to use the
 package.
 
-### Package overview
-
 The following figure illustrates the general architecture of `fuseMLR`:
 
 <img src="README_files/figure-gfm/structure.png" width="70%" height="100%" />
@@ -59,6 +57,14 @@ within a `TrainLayer` or `MetaTrainLayer` instance. An `Training` object
 can be used to automatically conduct layer-specific variable selection
 and train layer-specfic learner and the meta-learner. Analogously, a
 `Testing` can be set up and predicted after the training.
+
+### Installation
+
+Install the development version from GitHub with
+
+``` r
+devtools::install_github("imbs-hl/fuseMLR")
+```
 
 © 2024 Institute of Medical Biometry and Statistics (IMBS). All rights
 reserved.
