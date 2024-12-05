@@ -373,14 +373,14 @@ simulated: training and testing datasets. Each consists of four
 methylation data modalities, and targeted observations. Individuals are
 organized in rows, variables in columns, with an additional column for
 individual IDs. In total, <span class="math inline">\(70\)</span>
-individuals with <span class="math inline">\(50\)</span> individuals pro
-layer have been simulated for training, and <span class="math inline">\(23\)</span> (<span class="math inline">\(20\)</span> per layer) for testing. Individuals do
-not necessarily overlapped. Effects have been introduced for across data
-modalities by shifting the means by <span class="math inline">\(0.5\)</span> to create case-control study with
-<span class="math inline">\(50\)</span>% prevalence. Individuals do not
-necessarily overlap. For illustration, the number of variables was kept
-smaller than what is typically expected in reality. The data simulation
-code is available <a href="https://github.com/imbs-hl/fuseMLR/blob/master/test_code/build_data.R">here</a>.</p>
+individuals with <span class="math inline">\(50\)</span> (not
+necessarily overlapping) individuals pro layer have been simulated for
+training, and <span class="math inline">\(23\)</span> (<span class="math inline">\(20\)</span> per layer) for testing. Effects have
+been introduced for across data modalities by shifting the means by
+<span class="math inline">\(0.5\)</span> to create case-control study
+with <span class="math inline">\(50\)</span>% prevalence. For
+illustration, the number of variables was kept smaller than what is
+typically expected in reality. The data simulation code is available <a href="https://github.com/imbs-hl/fuseMLR/blob/master/test_code/build_data.R">here</a>.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;multi_omics&quot;</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co"># This list contains two lists of data: training and test.</span></span>
 <span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co"># Each sublist contains three omics data as described above.</span></span>
@@ -437,24 +437,22 @@ methylation layer to <code>training</code>. For illustration purpose we
 use the same variable selection method <code>Boruta</code> and the same
 learner (<code>ranger</code>) for all layers. These functions fulfill
 <code>fuseMLR</code> requirements in terms of arguments and outputs (see
-<code>createTrainLayer</code> documentation for details). For example,
-we expect the variable selection function to have at an argument
-<code>x</code> to pass the design matrix of predictors and
-<code>y</code> to pass the response values. In addition, the function
-must return a vector of selected variables. The use of any method that
-does not fulfill this criteria – the Vita variable selection method
-(implemented by <code>ranger</code>) or the Lasso based approach, for
-instance – requires either additional wrapping steps or a function to be
-use to returns a vector the selected variables for a given significant
-threshold. Also for learners, arguments <code>x</code> and
-<code>y</code> are required, and the generic <code>predict</code>
-function must be <em>callable</em> for the resulting model. Predictions
-must be stored either as a vector or a list containing a field
-<code>predictions</code> (a vector of predicted values). If the provided
-function do not fulfill criteria the argument and output criteria, users
-should proceed as explained in <a href="#e---interface-and-wrapping">E-Interface and wrapping</a> to build
-an interface or wrap their original function for the
-<code>fuseMLR</code> usage.</p>
+<code>createTrainLayer</code> documentation for details). We expect the
+variable selection function to accept two arguments: <code>x</code> (the
+predictor design matrix) and <code>y</code> (the response vector). The
+function must return a vector of selected variables. Methods that do not
+follow this format – such as Vita (via <code>ranger</code>) or Lasso
+(via <code>glmnet</code>) – require additional wrapping or a custom
+function to extract the selected variables, for example, based on a
+significance threshold. For learners, the arguments <code>x</code> and
+<code>y</code> are mandatory as well, and the resulting model must
+support the generic <code>predict</code> function. Predictions should be
+returned either as a vector or a list with a <code>predictions</code>
+field containing the predicted values (also a vector). If the function
+does not meet the required input and output criteria, users should
+follow the steps in <a href="#e---interface-and-wrapping">E-Interface
+and wrapping</a> and Wrapping to create an interface or wrap their
+function for use with fuseMLR.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Create gene expression layer.</span></span>
 <span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="fu">createTrainLayer</span>(<span class="at">training =</span> training,</span>
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>                 <span class="at">train_layer_id =</span> <span class="st">&quot;geneexpr&quot;</span>,</span>
@@ -984,7 +982,7 @@ returned.</p>
 analogously to <code>training</code>. Only the testing data modalities
 are required. Relevant functions are <code>createTesting()</code> and
 <code>createTestLayer()</code>.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="co"># Create testing for predcitions</span></span>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="co"># Create testing for predictions</span></span>
 <span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>testing <span class="ot">&lt;-</span> <span class="fu">createTesting</span>(<span class="at">id =</span> <span class="st">&quot;testing&quot;</span>,</span>
 <span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>                         <span class="at">ind_col =</span> <span class="st">&quot;IDS&quot;</span>)</span></code></pre></div>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="co"># Create gene expression layer</span></span>
@@ -1130,41 +1128,49 @@ layer are displayed.</p>
 <span id="cb23-16"><a href="#cb23-16" tabindex="-1"></a><span class="co">#&gt;   0.9904762   0.6119048   0.9761905   0.9666667</span></span></code></pre></div>
 <p>The weighted mean meta-learner is a good aggregation of the
 layer-specific learners.</p>
-<!-- Prediction performances for overlapping individuals. -->
-<!-- ```{r performance_overlap, include=TRUE, eval=TRUE} -->
-<!-- # On overlapping patients -->
-<!-- perf_overlapping <- sapply(X = actual_pred[complete.cases(actual_pred), -->
-<!--                                            2L:5L], -->
-<!--                            FUN = function (my_pred) { -->
-<!--                              bs <- mean((x[complete.cases(actual_pred)] - my_pred)^2) -->
-<!--                              return(bs) -->
-<!--                            }) -->
-<!-- print(perf_overlapping) -->
-<!-- ``` -->
 </div>
 <div id="e---interface-and-wrapping" class="section level2">
 <h2>E - Interface and wrapping</h2>
-<p>We distinguish common supervised learning arguments from method
-specific arguments. The common arguments are a matrix <code>x</code> of
-independent variables and <code>y</code> representing a response
-variable. These arguments are handled by <code>fuseMLR</code>, so users
-do not need to make any adjustments themselves. We also define standard
-argument names for predicting. The arguments <code>object</code> and
-<code>data</code> (used by the generic <code>R</code> function
-<code>predict</code> to pass model and the data for which prediction are
-needed) are also stanard in <code>fuseMLR</code>. If the original
-learning or predicting function do not use these names as arguments,
-either an interface or a wrapping of the original function can be done
-to solve name discepancies.</p>
+<p>This section explains how to resolve argument discrepancies when the
+original function does not conform to the <code>fuseMLR</code> format
+introduced in <a href="C.1---Creating-a-training">C.1 - Creating a
+training</a>. These discrepancies can occur in input (argument names) or
+output formats of the user-provided functions.</p>
+<p>At the input level, we distinguish common supervised learning
+arguments from method specific arguments. The common arguments are a
+matrix <code>x</code> of independent variables and <code>y</code>
+representing a response variable. If the provided original function
+(variable selection or learning function) does not have these two
+arguments, then discrepancies must be resolved. Moreover, the
+<code>predict</code> extending the generic predict function must allow
+arguments <code>object</code> and <code>data</code>. If this is not the
+case, discrepancies must be resolved.</p>
+<p>The provided learner must return a model compatible with an extension
+of the generic <code>predict</code> function (e.g.,
+<code>predict.glmnet</code> for <code>glmnet</code> models). The
+<code>predict</code> function should return either a vector of
+predictions or a <code>list</code> with a <code>predictions</code> field
+(a vector of predicted values). For binary classification (classes 0 and
+1), learners can return a two-column <code>matrix</code> or
+<code>data.frame</code> of class probabilities, where the second column
+represents the probability of class 1 (used by <code>fuseMLR</code>) and
+the first column that of 0 (ignored by <code>fuseMLR</code>). For
+variable selection, the output should be a vector of selected variables.
+If these criteria are not met, discrepancies must be resolved.</p>
+<p>We offer two main ways to resolve discrepancies: either using an
+interface or a wrapping of the original function.</p>
 <div id="interface" class="section level3">
 <h3>Interface</h3>
-<p>The interface approach leverages the some arguments in
-<code>createTrainLayer()</code> to map the argument names of the
-original learning function. In the example below, the gene expression
-layer is re-created using the <code>svm</code> (Support Vector Machine)
-function from the <code>e1071</code> package as the learner. A
-discrepancy arises in the argument names of the <code>predict.svm</code>
-function, which uses <code>object</code> and <code>newdata</code>.</p>
+<p>The interface approach maps the argument names of the original
+learning function using arguments of <code>createTrainLayer()</code>. In
+the example below, the gene expression layer is recreated using the
+<code>svm</code> function from the <code>e1071</code> package as the
+learner. A discrepancy arises because <code>predict.svm</code> uses
+<code>object</code> and <code>newdata</code> as argument names. We also
+provide a function using the argument <code>extract_pred_fct</code> of
+<code>createTrainLayer</code> to extract the predicted values. Similar
+arguments are also available for the <code>createTrainMetaLayer</code>
+function to generate meta-layer.</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="co"># Re-create the gene expression layer with support vector machine as learner.</span></span>
 <span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a><span class="fu">createTrainLayer</span>(<span class="at">training =</span> training,</span>
 <span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a>                 <span class="at">train_layer_id =</span> <span class="st">&quot;geneexpr&quot;</span>,</span>
@@ -1180,16 +1186,16 @@ function, which uses <code>object</code> and <code>newdata</code>.</p>
 <span id="cb24-13"><a href="#cb24-13" tabindex="-1"></a>                                         <span class="at">kernel =</span> <span class="st">&#39;radial&#39;</span>,</span>
 <span id="cb24-14"><a href="#cb24-14" tabindex="-1"></a>                                         <span class="at">probability =</span> <span class="cn">TRUE</span>),</span>
 <span id="cb24-15"><a href="#cb24-15" tabindex="-1"></a>                 <span class="at">param_pred_list =</span> <span class="fu">list</span>(<span class="at">probability =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb24-16"><a href="#cb24-16" tabindex="-1"></a>                 <span class="at">na_action =</span> <span class="st">&quot;na.rm&quot;</span>),</span>
-<span id="cb24-17"><a href="#cb24-17" tabindex="-1"></a>                 x <span class="ot">=</span> <span class="st">&quot;x&quot;</span>,</span>
-<span id="cb24-18"><a href="#cb24-18" tabindex="-1"></a>                 y <span class="ot">=</span> <span class="st">&quot;y&quot;</span>,</span>
-<span id="cb24-19"><a href="#cb24-19" tabindex="-1"></a>                 object <span class="ot">=</span> <span class="st">&quot;object&quot;</span>,</span>
-<span id="cb24-20"><a href="#cb24-20" tabindex="-1"></a>                 data <span class="ot">=</span> <span class="st">&quot;newdata&quot;</span>, <span class="co"># Name discrepancy resolved.</span></span>
-<span id="cb24-21"><a href="#cb24-21" tabindex="-1"></a>                 extract_pred_fct <span class="ot">=</span> <span class="cf">function</span> (pred) { </span>
+<span id="cb24-16"><a href="#cb24-16" tabindex="-1"></a>                 <span class="at">na_action =</span> <span class="st">&quot;na.impute&quot;</span>,</span>
+<span id="cb24-17"><a href="#cb24-17" tabindex="-1"></a>                 <span class="at">x =</span> <span class="st">&quot;x&quot;</span>,</span>
+<span id="cb24-18"><a href="#cb24-18" tabindex="-1"></a>                 <span class="at">y =</span> <span class="st">&quot;y&quot;</span>,</span>
+<span id="cb24-19"><a href="#cb24-19" tabindex="-1"></a>                 <span class="at">object =</span> <span class="st">&quot;object&quot;</span>,</span>
+<span id="cb24-20"><a href="#cb24-20" tabindex="-1"></a>                 <span class="at">data =</span> <span class="st">&quot;newdata&quot;</span>, <span class="co"># Name discrepancy resolved.</span></span>
+<span id="cb24-21"><a href="#cb24-21" tabindex="-1"></a>                 <span class="at">extract_pred_fct =</span> <span class="cf">function</span> (pred) { </span>
 <span id="cb24-22"><a href="#cb24-22" tabindex="-1"></a>                   pred <span class="ot">&lt;-</span> <span class="fu">attr</span>(pred, <span class="st">&quot;probabilities&quot;</span>)</span>
 <span id="cb24-23"><a href="#cb24-23" tabindex="-1"></a>                   <span class="fu">return</span>(pred[ , 1L])</span>
 <span id="cb24-24"><a href="#cb24-24" tabindex="-1"></a>                 }</span>
-<span id="cb24-25"><a href="#cb24-25" tabindex="-1"></a><span class="er">)</span></span>
+<span id="cb24-25"><a href="#cb24-25" tabindex="-1"></a>)</span>
 <span id="cb24-26"><a href="#cb24-26" tabindex="-1"></a><span class="co"># Variable selection</span></span>
 <span id="cb24-27"><a href="#cb24-27" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">5467</span>)</span>
 <span id="cb24-28"><a href="#cb24-28" tabindex="-1"></a>var_sel_res <span class="ot">&lt;-</span> <span class="fu">varSelection</span>(<span class="at">training =</span> training)</span>
@@ -1238,19 +1244,17 @@ function, which uses <code>object</code> and <code>newdata</code>.</p>
 <span id="cb26-7"><a href="#cb26-7" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">as.vector</span>(glmnet_pred))</span>
 <span id="cb26-8"><a href="#cb26-8" tabindex="-1"></a>}</span>
 <span id="cb26-9"><a href="#cb26-9" tabindex="-1"></a></span>
-<span id="cb26-10"><a href="#cb26-10" tabindex="-1"></a><span class="co"># Remove the current gene expression layer from training</span></span>
-<span id="cb26-11"><a href="#cb26-11" tabindex="-1"></a><span class="fu">removeLayer</span>(<span class="at">training =</span> training, <span class="at">layer_id =</span> <span class="st">&quot;meta_layer&quot;</span>)</span>
-<span id="cb26-12"><a href="#cb26-12" tabindex="-1"></a><span class="co"># Re-create the gene expression layer with support vector machine as learner.</span></span>
-<span id="cb26-13"><a href="#cb26-13" tabindex="-1"></a><span class="fu">createTrainMetaLayer</span>(<span class="at">training =</span> training,</span>
-<span id="cb26-14"><a href="#cb26-14" tabindex="-1"></a>                     <span class="at">meta_layer_id =</span> <span class="st">&quot;meta_layer&quot;</span>,</span>
-<span id="cb26-15"><a href="#cb26-15" tabindex="-1"></a>                     <span class="at">lrner_package =</span> <span class="cn">NULL</span>,</span>
-<span id="cb26-16"><a href="#cb26-16" tabindex="-1"></a>                     <span class="at">lrn_fct =</span> <span class="st">&quot;mylasso&quot;</span>,</span>
-<span id="cb26-17"><a href="#cb26-17" tabindex="-1"></a>                     <span class="at">param_train_list =</span> <span class="fu">list</span>(<span class="at">nlambda =</span> 100L),</span>
-<span id="cb26-18"><a href="#cb26-18" tabindex="-1"></a>                     <span class="at">na_action =</span> <span class="st">&quot;na.impute&quot;</span>)</span>
-<span id="cb26-19"><a href="#cb26-19" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">5462</span>)</span>
-<span id="cb26-20"><a href="#cb26-20" tabindex="-1"></a>training <span class="ot">&lt;-</span> <span class="fu">fusemlr</span>(<span class="at">training =</span> training,</span>
-<span id="cb26-21"><a href="#cb26-21" tabindex="-1"></a>                    <span class="at">use_var_sel =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb26-22"><a href="#cb26-22" tabindex="-1"></a><span class="fu">print</span>(training)</span></code></pre></div>
+<span id="cb26-10"><a href="#cb26-10" tabindex="-1"></a><span class="co"># Re-create the gene expression layer with support vector machine as learner.</span></span>
+<span id="cb26-11"><a href="#cb26-11" tabindex="-1"></a><span class="fu">createTrainMetaLayer</span>(<span class="at">training =</span> training,</span>
+<span id="cb26-12"><a href="#cb26-12" tabindex="-1"></a>                     <span class="at">meta_layer_id =</span> <span class="st">&quot;meta_layer&quot;</span>,</span>
+<span id="cb26-13"><a href="#cb26-13" tabindex="-1"></a>                     <span class="at">lrner_package =</span> <span class="cn">NULL</span>,</span>
+<span id="cb26-14"><a href="#cb26-14" tabindex="-1"></a>                     <span class="at">lrn_fct =</span> <span class="st">&quot;mylasso&quot;</span>,</span>
+<span id="cb26-15"><a href="#cb26-15" tabindex="-1"></a>                     <span class="at">param_train_list =</span> <span class="fu">list</span>(<span class="at">nlambda =</span> 100L),</span>
+<span id="cb26-16"><a href="#cb26-16" tabindex="-1"></a>                     <span class="at">na_action =</span> <span class="st">&quot;na.impute&quot;</span>)</span>
+<span id="cb26-17"><a href="#cb26-17" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">5462</span>)</span>
+<span id="cb26-18"><a href="#cb26-18" tabindex="-1"></a>training <span class="ot">&lt;-</span> <span class="fu">fusemlr</span>(<span class="at">training =</span> training,</span>
+<span id="cb26-19"><a href="#cb26-19" tabindex="-1"></a>                    <span class="at">use_var_sel =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb26-20"><a href="#cb26-20" tabindex="-1"></a><span class="fu">print</span>(training)</span></code></pre></div>
 <ul>
 <li>Re-set the meta-layer with the wrapped learner and train.</li>
 </ul>

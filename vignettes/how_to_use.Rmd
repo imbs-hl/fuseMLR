@@ -41,7 +41,7 @@ Three key functionalities are provided: variable selection for modality-specific
 library(fuseMLR)
 ```
 
-The following example is based on multi-omics simulated data available in `fuseMLR`. Data have been simulated using the R package `InterSIM`, version 2.2.0. Two types of data were simulated: training and testing datasets. Each consists of four `data.frame`s—gene expression, protein expression, methylation data modalities, and targeted observations. Individuals are organized in rows, variables in columns, with an additional column for individual IDs. In total, $70$ individuals with $50$ individuals pro layer have been simulated for training, and $23$ ($20$ per layer) for testing. Individuals do not necessarily overlapped. Effects have been introduced for across data modalities by shifting the means by $0.5$ to create case-control study with $50$% prevalence. Individuals do not necessarily overlap. For illustration, the number of variables was kept smaller than what is typically expected in reality. The data simulation code is available [here](https://github.com/imbs-hl/fuseMLR/blob/master/test_code/build_data.R).
+The following example is based on multi-omics simulated data available in `fuseMLR`. Data have been simulated using the R package `InterSIM`, version 2.2.0. Two types of data were simulated: training and testing datasets. Each consists of four `data.frame`s—gene expression, protein expression, methylation data modalities, and targeted observations. Individuals are organized in rows, variables in columns, with an additional column for individual IDs. In total, $70$ individuals with $50$ (not necessarily overlapping) individuals pro layer have been simulated for training, and $23$ ($20$ per layer) for testing. Effects have been introduced for across data modalities by shifting the means by $0.5$ to create case-control study with $50$% prevalence. For illustration, the number of variables was kept smaller than what is typically expected in reality. The data simulation code is available [here](https://github.com/imbs-hl/fuseMLR/blob/master/test_code/build_data.R).
 
 ```{r data_exam, include=TRUE, eval=TRUE}
 data("multi_omics")
@@ -69,7 +69,7 @@ A ```training``` contains modality-specific training layers (instances of the **
 
 Three main functions are necessary to create the ```training```: ```createTraining()```, ```createTrainLayer()``` and ```createTrainMetaLayer()```. ```createTraining()``` creates an empty ```training```, on which modalitity-specific training layers are added using the function ```createTrainLayer()```. Function ```createTrainMetaLayer()``` is used to add meta-layer to ```training```. 
 
-The following code adds a gene expression, a protein abundance, and a methylation layer to ```training```. For illustration purpose we use the same variable selection method `Boruta` and the same learner (`ranger`) for all layers. These  functions fulfill `fuseMLR` requirements in terms of arguments and outputs (see `createTrainLayer` documentation for details). For example, we expect the variable selection function to have at an argument `x` to pass the design matrix of predictors and `y` to pass the response values. In addition, the function must return a vector of selected variables. The use of any method that does not fulfill this criteria -- the Vita variable selection method (implemented by `ranger`) or the Lasso based approach, for instance -- requires either additional wrapping steps or a function to be use to returns a vector the selected variables for a given significant threshold. Also for learners, arguments `x` and `y` are required, and the generic `predict` function must be *callable* for the resulting model. Predictions must be stored either as a vector or a list containing a field `predictions` (a vector of predicted values). If the provided function do not fulfill criteria the argument and output criteria, users should proceed as explained in [E-Interface and wrapping](#e---interface-and-wrapping) to build an interface or wrap their original function for the `fuseMLR` usage.
+The following code adds a gene expression, a protein abundance, and a methylation layer to ```training```. For illustration purpose we use the same variable selection method `Boruta` and the same learner (`ranger`) for all layers. These  functions fulfill `fuseMLR` requirements in terms of arguments and outputs (see `createTrainLayer` documentation for details). We expect the variable selection function to accept two arguments: `x` (the predictor design matrix) and `y` (the response vector). The function must return a vector of selected variables. Methods that do not follow this format -- such as Vita (via `ranger`) or Lasso (via `glmnet`) -- require additional wrapping or a custom function to extract the selected variables, for example, based on a significance threshold. For learners, the arguments `x` and `y` are mandatory as well, and the resulting model must support the generic `predict` function. Predictions should be returned either as a vector or a list with a `predictions` field containing the predicted values (also a vector). If the function does not meet the required input and output criteria, users should follow the steps in [E-Interface and wrapping](#e---interface-and-wrapping) and Wrapping to create an interface or wrap their function for use with fuseMLR.
 
 ```{r geneexpr, include=TRUE, eval=TRUE}
 # Create gene expression layer.
@@ -205,7 +205,7 @@ The three simulated training modalities and the meta-data are returned.
 In this section, we create a ```testing``` instance (from the *Testing* class) and make predictions for new data. This is done analogously to ```training```. Only the testing data modalities are required. Relevant functions are ```createTesting()``` and ```createTestLayer()```.
 
 ```{r testing, include=TRUE, eval=TRUE}
-# Create testing for predcitions
+# Create testing for predictions
 testing <- createTesting(id = "testing",
                          ind_col = "IDS")
 ```
@@ -298,27 +298,19 @@ print(perf_auc)
 
 The weighted mean meta-learner is a good aggregation of the layer-specific learners.
 
-<!-- Prediction performances for overlapping individuals. -->
-
-<!-- ```{r performance_overlap, include=TRUE, eval=TRUE} -->
-<!-- # On overlapping patients -->
-<!-- perf_overlapping <- sapply(X = actual_pred[complete.cases(actual_pred), -->
-<!--                                            2L:5L], -->
-<!--                            FUN = function (my_pred) { -->
-<!--                              bs <- mean((x[complete.cases(actual_pred)] - my_pred)^2) -->
-<!--                              return(bs) -->
-<!--                            }) -->
-<!-- print(perf_overlapping) -->
-<!-- ``` -->
-
-
 ## E - Interface and wrapping
 
-We distinguish common supervised learning arguments from method specific arguments. The common arguments are a matrix ```x``` of independent variables and  ```y``` representing a response variable. These arguments are handled by ```fuseMLR```, so users do not need to make any adjustments themselves. We also define standard argument names for predicting. The arguments ```object``` and ```data``` (used by the generic ```R``` function ```predict``` to pass model and the data for which prediction are needed) are also stanard in ```fuseMLR```. If the original learning or predicting function do not use these names as arguments, either an interface or a wrapping of the original function can be done to solve name discepancies. 
+This section explains how to resolve argument discrepancies when the original function does not conform to the `fuseMLR` format introduced in [C.1 - Creating a training](C.1---Creating-a-training). These discrepancies can occur in input (argument names) or output formats of the user-provided functions.
+
+At the input level, we distinguish common supervised learning arguments from method specific arguments. The common arguments are a matrix ```x``` of independent variables and  ```y``` representing a response variable. If the provided original function (variable selection or learning function) does not have these two arguments, then discrepancies must be resolved. Moreover, the ```predict``` extending the generic predict function must allow arguments ```object``` and ```data```. If this is not the case, discrepancies must be resolved.
+
+The provided learner must return a model compatible with an extension of the generic `predict` function (e.g., `predict.glmnet` for `glmnet` models). The `predict` function should return either a vector of predictions or a `list` with a `predictions` field (a vector of predicted values). For binary classification (classes 0 and 1), learners can return a two-column `matrix` or `data.frame` of class probabilities, where the second column represents the probability of class 1 (used by `fuseMLR`) and the first column that of 0 (ignored by `fuseMLR`). For variable selection, the output should be a vector of selected variables. If these criteria are not met, discrepancies must be resolved.
+
+We offer two main ways to resolve discrepancies: either using an interface or a wrapping of the original function.
 
 ### Interface ##
 
-The interface approach leverages the some arguments in ```createTrainLayer()``` to map the argument names of the original learning function. In the example below, the gene expression layer is re-created using the ```svm``` (Support Vector Machine) function from the ```e1071``` package as the learner. A discrepancy arises in the argument names of the ```predict.svm``` function, which uses ```object``` and ```newdata```.
+The interface approach maps the argument names of the original learning function using arguments of `createTrainLayer()`. In the example below, the gene expression layer is recreated using the `svm` function from the `e1071` package as the learner. A discrepancy arises because `predict.svm` uses `object` and `newdata` as argument names. We also provide a function using the argument `extract_pred_fct` of `createTrainLayer` to extract the predicted values. Similar arguments are also available for the `createTrainMetaLayer` function to generate meta-layer.
 
 ```{r interface, include=TRUE, eval=FALSE}
 # Re-create the gene expression layer with support vector machine as learner.
@@ -336,7 +328,7 @@ createTrainLayer(training = training,
                                          kernel = 'radial',
                                          probability = TRUE),
                  param_pred_list = list(probability = TRUE),
-                 na_action = "na.rm"),
+                 na_action = "na.impute",
                  x = "x",
                  y = "y",
                  object = "object",
@@ -396,8 +388,6 @@ predict.mylasso <- function (object, data) {
   return(as.vector(glmnet_pred))
 }
 
-# Remove the current gene expression layer from training
-removeLayer(training = training, layer_id = "meta_layer")
 # Re-create the gene expression layer with support vector machine as learner.
 createTrainMetaLayer(training = training,
                      meta_layer_id = "meta_layer",
