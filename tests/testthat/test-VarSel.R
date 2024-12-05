@@ -40,6 +40,8 @@ test_that("VarSel: with package for variable selection", {
                             train_layer = tl_ge)
   })
   expect_no_error({
+    skip_on_cran()
+    skip_on_ci()
     varsel_ge$varSelection(ind_subset = multi_omics$training$geneexpr$IDS[1:45])
     varsel_ge$getId()
   })

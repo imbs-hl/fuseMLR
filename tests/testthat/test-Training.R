@@ -145,13 +145,6 @@ test_that("Training: all tests", {
                             varsel_param = list(num.trees = 50L,
                                                 mtry = 3L),
                             train_layer = tl_ge)
-
-    # varsel_pr <- VarSel$new(id = "varsel_proteinexpr",
-    #                         package = "Boruta",
-    #                         varsel_fct = "Boruta",
-    #                         param = same_param_varsel,
-    #                         train_layer = tl_pr)
-
     var_sel_res <- training$varSelection()
     print(var_sel_res)
   })
@@ -184,10 +177,8 @@ test_that("Training: all tests", {
   # Tests for training with for training.                    +
   # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   expect_no_error({
-
     disease <- training$getTargetValues()$disease
   })
-
     no_resampling <- capture_warning(
       training$train(use_var_sel = TRUE)
     )

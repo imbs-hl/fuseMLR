@@ -144,7 +144,7 @@ createTrainMetaLayer(training = training,
                      param_train_list = list(),
                      param_pred_list = list(),
                      na_action = "na.impute")
-print(summary(training))
+summary(training)
 ```
 
 Function ```upsetplot()``` is available to generate an upset of the training data, i.e. an overview how patients overlap across layers.
@@ -176,6 +176,12 @@ fusemlr(training = training,
         use_var_sel = TRUE)
 print(training)
 # See also summary(training)
+```
+
+We can also display a summary of `training` to see more details on layer levels. Information about the training data modality, the variable selection method and the learner stored at each layer will be displayed. 
+
+```{r training_summary, include=TRUE, eval=TRUE, message=TRUE}
+summary(training)
 ```
 
 We use `extractModel()` to retrieve the list of stored models and `extractData()` to retrieve training data.
@@ -223,6 +229,12 @@ createTestLayer(testing = testing,
 createTestLayer(testing = testing,
                 test_layer_id = "methylation",
                 test_data = multi_omics$testing$methylation)
+```
+
+A summary of `testing`.
+
+```{r testing_summary, include=TRUE, eval=TRUE, message=TRUE}
+summary(testing)
 ```
 
 A look on testing data.
@@ -435,15 +447,15 @@ kable(data, caption = "")
 
 ## References
 
-- Wright MN, Ziegler A.. Ranger: a fast implementation of random forests for high dimensional data in C ++ and R. J Stat Softw 2017;77:1–17.
+- Wright MN, Ziegler A.. Ranger: a fast implementation of random forests for high dimensional data in C ++ and R. J Stat Softw 2017;77:1–17, [https://doi.org/10.18637/jss.v077.i01](https://doi.org/10.18637/jss.v077.i01).
 
-- Tay JK, Narasimhan B, Hastie T (2023). Elastic Net Regularization Paths for All Generalized Linear Models. Journal of Statistical Software_, *106*(1), 1-31.
+- Tay JK, Narasimhan B, Hastie T.. (2023). Elastic Net Regularization Paths for All Generalized Linear Models. Journal of Statistical Software, 106(1), 1-31, [https://doi.org/10.18637/jss.v106.i01](https://doi.org/10.18637/jss.v106.i01). 
 
-- Kursa M, Rudnicki W.. Feature selection with the Boruta package. J Stat Softw 2010;36:1–13.
+- Kursa M, Rudnicki W.. Feature selection with the Boruta package. J Stat Softw 2010;36:1–13, [https://doi.org/10.18637/jss.v036.i11](https://doi.org/10.18637/jss.v036.i11).
 
-- Janitza S, Celik E, Boulesteix A-L.. A computationally fast variable importance test for random forests for high-dimensional data. Adv Data Anal Classif 2016, in press
+- Janitza S, Celik E, Boulesteix A-L.. A computationally fast variable importance test for random forests for high-dimensional data. Adv Data Anal Classif 2016, in press, [https://doi.org/10.1007/s11634-016-0276-4](https://doi.org/10.1007/s11634-016-0276-4)
 
-- Biau, G., Fischer, A., Guedj, B., & Malley, J. D. (2014). COBRA: A combined regression strategy. The Journal of Multivariate Analysis 46:18-28
+- Biau, G., Fischer, A., Guedj, B., & Malley, J. D. (2014). COBRA: A combined regression strategy. The Journal of Multivariate Analysis 46:18-28, [https://doi.org/10.1016/j.jmva.2015.04.007](https://doi.org/10.1016/j.jmva.2015.04.007).
 
 
 &copy; 2024 Institute of Medical Biometry and Statistics (IMBS). All rights reserved.

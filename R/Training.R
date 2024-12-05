@@ -497,7 +497,6 @@ Training <- R6Class("Training",
                       #'
                       #' @return
                       #' A \code{data.frame} containing individuals IDs.
-                      #' @export
                       #'
                       getIndIDs = function() {
                         layers = self$getKeyClass()
@@ -588,7 +587,6 @@ Training <- R6Class("Training",
                       #'
                       #' @return
                       #' The [TrainLayer] object is returned for the given ID.
-                      #' @export
                       #'
                       removeLayer = function(id) {
                         if (private$nb_trained_layer > 0L) {
@@ -601,8 +599,6 @@ Training <- R6Class("Training",
                       #' @description
                       #' Remove the meta layer from the current [Training] object.
                       #'
-                      #' @export
-                      #'
                       removeTrainMetaLayer = function() {
                         layers = self$getKeyClass()
                         meta_layer_key = layers[layers$class == "TrainMetaLayer", "key"]
@@ -611,19 +607,16 @@ Training <- R6Class("Training",
                       },
                       #' @description
                       #' Getter of the individual column name.
-                      #' @export
                       getIndCol = function () {
                         return(private$ind_col)
                       },
                       #' @description
                       #' Getter of the target variable name.
-                      #' @export
                       getTarget = function () {
                         return(private$target)
                       },
                       #' @description
                       #' Getter of the verbose setting.
-                      #' @export
                       getVerbose = function () {
                         return(private$verbose)
                       },
@@ -656,7 +649,6 @@ Training <- R6Class("Training",
                       },
                       #' @description
                       #' Getter of the target object.
-                      #' @export
                       # TODO: Maybe rename this function getTarget and find another appropriate name for the current getTarget function.
                       getTargetObj = function () {
                         return(private$target_obj)
@@ -679,8 +671,6 @@ Training <- R6Class("Training",
                       #' @description
                       #' Test that individuals overlap over layers.
                       #' At least five individuals must overlapped.
-                      #'
-                      #' @export
                       #'
                       testOverlap = function () {
                         layers = self$getKeyClass()

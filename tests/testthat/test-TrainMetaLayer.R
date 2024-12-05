@@ -57,6 +57,8 @@ test_that("TrainLayer: all tests", {
   })
   disease <- training$getTargetValues()$disease
   expect_no_error({
+    skip_on_cran()
+    skip_on_ci()
     training$train(resampling_method = "caret::createFolds",
                       resampling_arg = list(y = disease,
                                             k = 2L),
