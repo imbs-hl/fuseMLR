@@ -144,7 +144,7 @@ createTrainMetaLayer(training = training,
                      param_train_list = list(),
                      param_pred_list = list(),
                      na_action = "na.impute")
-summary(training)
+print(training)
 ```
 
 Function ```upsetplot()``` is available to generate an upset of the training data, i.e. an overview how patients overlap across layers.
@@ -175,7 +175,6 @@ set.seed(5462)
 fusemlr(training = training,
         use_var_sel = TRUE)
 print(training)
-# See also summary(training)
 ```
 
 We can also display a summary of `training` to see more details on layer levels. Information about the training data modality, the variable selection method and the learner stored at each layer will be displayed. 
@@ -300,11 +299,11 @@ The weighted mean meta-learner is a good aggregation of the layer-specific learn
 
 ## E - Interface and wrapping
 
-This section explains how to resolve argument discrepancies when the original function does not conform to the `fuseMLR` format introduced in [C.1 - Creating a training](C.1---Creating-a-training). These discrepancies can occur in input (argument names) or output formats of the user-provided functions.
+This section explains how to resolve argument discrepancies when the original function does not conform to the `fuseMLR` format introduced in [C.1 - Creating a training](#c.1---creating-a-training). These discrepancies can occur in input (argument names) or output formats of the user-provided functions.
 
 At the input level, we distinguish common supervised learning arguments from method specific arguments. The common arguments are a matrix ```x``` of independent variables and  ```y``` representing a response variable. If the provided original function (variable selection or learning function) does not have these two arguments, then discrepancies must be resolved. Moreover, the ```predict``` extending the generic predict function must allow arguments ```object``` and ```data```. If this is not the case, discrepancies must be resolved.
 
-The provided learner must return a model compatible with an extension of the generic `predict` function (e.g., `predict.glmnet` for `glmnet` models). The `predict` function should return either a vector of predictions or a `list` with a `predictions` field (a vector of predicted values). For binary classification (classes 0 and 1), learners can return a two-column `matrix` or `data.frame` of class probabilities, where the second column represents the probability of class 1 (used by `fuseMLR`) and the first column that of 0 (ignored by `fuseMLR`). For variable selection, the output should be a vector of selected variables. If these criteria are not met, discrepancies must be resolved.
+The provided learner must return a model compatible with an extension of the generic `predict` function (e.g., `predict.glmnet` for `glmnet` models). The `predict` function should return either a vector of predictions or a `list` with a `predictions` field (a vector of predicted values). For binary classification (classes $0$ and $1$), learners can return a two-column `matrix` or `data.frame` of class probabilities, where the second column represents the probability of class $1$ (used by `fuseMLR`) and the first column that of $0$ (ignored by `fuseMLR`). For variable selection, the output should be a vector of selected variables. If these criteria are not met, discrepancies must be resolved.
 
 We offer two main ways to resolve discrepancies: either using an interface or a wrapping of the original function.
 
