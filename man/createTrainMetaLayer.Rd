@@ -98,7 +98,7 @@ learners and returns predictions made by the best learner as the meta-prediction
 Beyond the internal meta-learners, any other learning algorithm can be used.
 }
 \references{
-Fouodo C.J.K, Bleskina M. and Szymczak (2024). fuseMLR: An R package for integrative prediction modeling of multi-omics data, paper submitted. \cr
+Fouodo C.J.K, Bleskina M. and Szymczak S. (2024). fuseMLR: An R package for integrative prediction modeling of multi-omics data, paper submitted. \cr
 Biau, G., Fischer, A., Guedj, B., & Malley, J. D. (2014). COBRA: A combined regression strategy. The Journal of Multivariate Analysis 46:18-28
 }
 \seealso{

@@ -106,7 +106,7 @@ The main components of a training layer are training data modality, a variable
 selection methods, and a modality-specific learner.
 }
 \references{
-Fouodo C.J.K, Bleskina M. and Szymczak (2024). fuseMLR: An R package for integrative prediction modeling of multi-omics data, paper submitted.\cr
+Fouodo C.J.K, Bleskina M. and Szymczak S. (2024). fuseMLR: An R package for integrative prediction modeling of multi-omics data, paper submitted.\cr
 }
 \seealso{
 \link{createTrainMetaLayer} and \link{fusemlr}.

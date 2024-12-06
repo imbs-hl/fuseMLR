@@ -104,7 +104,7 @@ createTraining = function (id,
 #' @export
 #'
 #' @references
-#' Fouodo C.J.K, Bleskina M. and Szymczak (2024). fuseMLR: An R package for integrative prediction modeling of multi-omics data, paper submitted.\cr
+#' Fouodo C.J.K, Bleskina M. and Szymczak S. (2024). fuseMLR: An R package for integrative prediction modeling of multi-omics data, paper submitted.\cr
 createTrainLayer = function (training,
                              train_layer_id,
                              train_data,
@@ -237,7 +237,7 @@ createTrainLayer = function (training,
 #' The updated [Training] object (with the new layer) is returned.
 #' @seealso [createTrainLayer], [varSelection], and [fusemlr].
 #' @references
-#' Fouodo C.J.K, Bleskina M. and Szymczak (2024). fuseMLR: An R package for integrative prediction modeling of multi-omics data, paper submitted. \cr
+#' Fouodo C.J.K, Bleskina M. and Szymczak S. (2024). fuseMLR: An R package for integrative prediction modeling of multi-omics data, paper submitted. \cr
 #' Biau, G., Fischer, A., Guedj, B., & Malley, J. D. (2014). COBRA: A combined regression strategy. The Journal of Multivariate Analysis 46:18-28
 #' @export
 #'
