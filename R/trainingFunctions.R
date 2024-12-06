@@ -327,7 +327,7 @@ varSelection = function (training,
 #' @export
 #'
 #' @references
-#' Fouodo C.J.K, Bleskina M. and Szymczak (2024). fuseMLR: An R package for integrative prediction modeling of multi-omics data, paper submitted.\cr
+#' Fouodo C.J.K, Bleskina M. and Szymczak S. (2024). fuseMLR: An R package for integrative prediction modeling of multi-omics data, paper submitted.\cr
 fusemlr = function (training,
                     ind_subset = NULL,
                     use_var_sel = FALSE,
