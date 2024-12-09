@@ -68,7 +68,7 @@ devtools::install_github("imbs-hl/fuseMLR")
 
 ### Usage
 
-See the vignette by runing the following comment:
+Run this to use the vignette:
 
 ``` r
 vignette("fuseMLR")
