@@ -27,7 +27,7 @@ Recent technological advances have enabled the simultaneous collection of multi-
 
 We introduce the R package fuseMLR for late integration prediction modeling. This comprehensive package enables users to define a training process with multiple data modalities and modality-specific machine learning methods. The package is user-friendly, facilitates variable selection and training of different models across modalities, and automatically performs aggregation once modality-specific training is completed. We simulated multi-omics data to illustrate the usage of our new package for conducting late-stage multi-omics integrative modeling.
 
-`fuseMLR` is an object-oriented package based on `R6` version 2.5.1. Refer to the [vignette]() for a quick overview of how to use the package.
+`fuseMLR` is an object-oriented package based on `R6` version 2.5.1. Refer to the vignette (section *Usage* below) for a quick overview of how to use the package.
 
 The following figure illustrates the general architecture of `fuseMLR`:
 

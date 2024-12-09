@@ -42,8 +42,8 @@ completed. We simulated multi-omics data to illustrate the usage of our
 new package for conducting late-stage multi-omics integrative modeling.
 
 `fuseMLR` is an object-oriented package based on `R6` version 2.5.1.
-Refer to the [vignette]() for a quick overview of how to use the
-package.
+Refer to the vignette (section *Usage* below) for a quick overview of
+how to use the package.
 
 The following figure illustrates the general architecture of `fuseMLR`:
 
