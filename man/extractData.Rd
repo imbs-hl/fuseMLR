@@ -14,5 +14,5 @@ The object of interest.}
 A list of data is returned.
 }
 \description{
-Extracts data stored on each layers; base and meta data (for Training) are extracted.
+Extracts data stored on each layers; base data and modality-specific predictions (for Training) are extracted.
 }

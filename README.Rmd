@@ -50,7 +50,7 @@ devtools::install_github("imbs-hl/fuseMLR")
 See the vignette by runing the following comment:
 
 ```R
-devtools::vignette("fuseMLR")
+vignette("fuseMLR")
 ```
 
 &copy; 2024 Institute of Medical Biometry and Statistics (IMBS). All rights reserved.

@@ -4,7 +4,7 @@
 \alias{predict.weightedMeanLearner}
 \title{Weighted mean prediction.}
 \usage{
-\method{predict}{weightedMeanLearner}(object, data, na.rm = TRUE)
+\method{predict}{weightedMeanLearner}(object, data, na_rm = FALSE)
 }
 \arguments{
 \item{object}{\code{weightedMeanLearner(1)} \cr
@@ -13,7 +13,7 @@ An object from class \link{weightedMeanLearner}}
 \item{data}{\code{data.frame} \cr
 \code{data.frame} to be predicted.}
 
-\item{na.rm}{\cr
+\item{na_rm}{\cr
 Removes NAs when TRUE.}
 }
 \value{

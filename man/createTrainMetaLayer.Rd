@@ -12,8 +12,8 @@ createTrainMetaLayer(
   param_train_list = list(),
   param_pred_list = list(),
   na_action = "na.impute",
-  x = "x",
-  y = "y",
+  x_lrn = "x",
+  y_lrn = "y",
   object = "object",
   data = "data",
   extract_pred_fct = NULL
@@ -33,7 +33,7 @@ Default is \code{NULL}, if the function is available in the current working envi
 \item{lrn_fct}{\code{character} \cr
 Name of the learning function. The corresponding function must allow at least two parameters \code{x} (of predictors)
 and \code{y} (response values), and return a model. If not, the interface
-parameters \code{x} and \code{y} below can be used to map these argument name with the original arguments in your function.
+parameters \code{x_lrn} and \code{y_lrn} below can be used to map these argument name with the original arguments in your function.
 The returned model must allow the use of the generic function \code{predict} (with arguments \code{object} and \code{data}) to make
 predictions for new data and predictions should be a vector or a \code{list} containing a vector called
 \code{predictions} with the predicted values. See the details below about meta-learners. If the arguments \code{object} and \code{data} are named differently in your predict
@@ -46,15 +46,15 @@ List of arguments to be passed to \code{lrn_fct}.}
 List of arguments to be passed to \code{predict} when computing predictions.}
 
 \item{na_action}{\code{character}\cr
-Handling of missing values in meta-data. Set to "na.keep" to keep missing values, "na.rm" to remove individuals with missing values or "na.impute" to impute missing values in meta-data. Only median and mode based imputations are actually handled. With the "na.keep" option, ensure that the provided meta-learner can handle missing values.}
+Handling of missing values in modality-specific predictions during training. Set to "na.keep" to keep missing values, "na.rm" to remove individuals with missing values or "na.impute" to impute missing values in modality-specific predictions. Only median and mode based imputations are actually handled. With the "na.keep" option, ensure that the provided meta-learner can handle missing values.}
 
-\item{x}{\code{character} \cr
+\item{x_lrn}{\code{character} \cr
 If the name of the argument used by the provided original functions to pass
-the matrix of independent variable is not \code{x}, use this argument to specify how it is callled in the provided function.}
+the matrix of independent variable is not \code{x}, use this argument to specify how it is called in the provided function.}
 
-\item{y}{\code{character} \cr
+\item{y_lrn}{\code{character} \cr
 If the name of the argument used by the provided original functions to pass
-the target variable is not \code{y}, use this argument to specify how it is callled in the provided function.}
+the target variable is not \code{y}, use this argument to specify how it is called in the provided function.}
 
 \item{object}{\code{character} \cr
 The generic function \code{predict} uses a parameter \code{object} to pass a model.

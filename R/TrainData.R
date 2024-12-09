@@ -111,7 +111,7 @@ TrainData <- R6Class("TrainData",
                        #'
                        print = function (...) {
                          if ("TrainMetaLayer" %in% class(private$train_layer)) {
-                           cat(sprintf("TrainData : %s\n", "meta data"))
+                           cat(sprintf("TrainData : %s\n", "modality-specific prediction data"))
                          } else {
                            cat(sprintf("TrainData : %s\n", private$id))
                          }
@@ -120,7 +120,7 @@ TrainData <- R6Class("TrainData",
                          cat(sprintf("target    : %s\n", private$target))
                          cat(sprintf("n         : %s\n", nrow(private$data_frame)))
                          cat(sprintf("Missing   : %s\n", sum(!complete.cases(private$data_frame))))
-                         cat(sprintf("p         : %s\n", ncol(private$data_frame)))
+                         cat(sprintf("p         : %s\n", ncol(private$data_frame) - 2L))
                        },
                        #' @description
                        #' Summary
@@ -128,7 +128,7 @@ TrainData <- R6Class("TrainData",
                        #'
                        summary = function (...) {
                          if ("TrainMetaLayer" %in% class(private$train_layer)) {
-                           cat(sprintf("      TrainData : %s\n", "meta data"))
+                           cat(sprintf("      TrainData : %s\n", "modality-specific predictions"))
                          } else {
                            cat(sprintf("      TrainData : %s\n", private$id))
                          }
@@ -137,7 +137,7 @@ TrainData <- R6Class("TrainData",
                          cat(sprintf("      Target     : %s\n", private$target))
                          cat(sprintf("      n          : %s\n", nrow(private$data_frame)))
                          cat(sprintf("      Missing    : %s\n", sum(!complete.cases(private$data_frame))))
-                         cat(sprintf("      p          : %s\n", ncol(private$data_frame)))
+                         cat(sprintf("      p          : %s\n", ncol(private$data_frame) - 2L))
                        },
                        #' @description
                        #' Getter of the current \code{data.frame} wihtout individual

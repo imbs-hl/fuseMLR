@@ -11,7 +11,7 @@
 #'    - [Model]: Specific model. This is set up by training the learner on the training data.
 #' * [TrainMetaLayer]: Basically a [TrainLayer], but with some specific properties.
 #'    - [Lrner]: This is the meta learner, it must be set up by the user.
-#'    - [TrainData]: Specific meta data. This is set up internally after cross-validation.
+#'    - [TrainData]: Specific modality-specific prediction data. This is set up internally after cross-validation.
 #'    - [Model]: Specific meta model. This is set up by training the learner on the training data.
 #'
 #' Use the function \code{train} for training and \code{predict} for predicting.
@@ -124,19 +124,24 @@ Training <- R6Class("Training",
                         if (nb_layers) {
                           layer_ps = NULL
                           layer_ns = NULL
+                          lner_nas = NULL
                           for (k in layers$key) {
                             layer = self$getFromHashTable(key = k)
                             train_data = layer$getTrainData()
                             layer_p = ncol(train_data$getData())
                             layer_n = nrow(train_data$getData())
+                            lner_na = layer$getLrner()$getNaAction()
                             max_width <- max(nchar(layer_p), nchar(layer_n))
                             layer_ps = c(layer_ps, format(layer_p, width = max_width, justify = "left"))
                             layer_ns = c(layer_ns, format(layer_n, width = max_width, justify = "left"))
+                            lner_nas = c(lner_nas, format(lner_na, width = max_width, justify = "left"))
                           }
                           layer_ps = paste0(layer_ps, collapse = " | ")
                           layer_ns = paste0(layer_ns, collapse = " | ")
+                          lner_nas = paste0(lner_nas, collapse = " | ")
                           cat(sprintf("p               : %s\n", layer_ps))
                           cat(sprintf("n               : %s\n", layer_ns))
+                          cat(sprintf("na.action       : %s\n", lner_nas))
                         }
                         invisible(self)
                       },
@@ -271,7 +276,7 @@ Training <- R6Class("Training",
                                                         })
                           predicted_values = data.frame(do.call(what = "rbind",
                                                                 args = train_layer_res_list))
-                          # Will transform meta data.frame into wide format. If predictions are data.frame like
+                          # Will transform modality-specific prediction data.frame into wide format. If predictions are data.frame like
                           # ranger predictions than only the first column will be consider.
                           predicted_values_wide = reshape(predicted_values,
                                                           idvar = colnames(predicted_values)[2],
@@ -396,6 +401,7 @@ Training <- R6Class("Training",
                         meta_layer_id = self$getTrainMetaLayer()$getId()
                         testing_meta_data = predicting$createMetaTestData(
                           meta_layer_id = meta_layer_id)
+                        # print(testing_meta_data$getDataFrame())
                         if (private$impute) {
                           # TODO: Can be moved into testMetaLayer; similarly to trainMetaLayer.
                           testing_meta_data$impute(impute_fct = NULL,
@@ -562,7 +568,7 @@ Training <- R6Class("Training",
                         return(models)
                       },
                       #' @description
-                      #' Retrieve meta data.
+                      #' Retrieve modality-specific predictions.
                       #'
                       #' @return
                       #' A \code{list} containing all (base and meta) models.

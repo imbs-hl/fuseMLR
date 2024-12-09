@@ -6,7 +6,7 @@
 #' A layer is structured as followed:
 #'
 #' * [Lrner]: It is set by the user to be trained on the meta training data.
-#' * [TrainData]: It are meta data, automatically created by the internal cross validation.
+#' * [TrainData]: It are modality-specific prediction data, automatically created by the internal cross validation.
 #' * [Model]: The meta model, result of training the learner on the training data, and therefore, not to be set by the user.
 #' * [TestData]: The meta new data to be predicted, consisting in predictions obtained from each layer.
 #'

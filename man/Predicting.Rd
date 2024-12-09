@@ -94,7 +94,7 @@ Printer
 \if{html}{\out{<a id="method-Predicting-createMetaTestData"></a>}}
 \if{latex}{\out{\hypertarget{method-Predicting-createMetaTestData}{}}}
 \subsection{Method \code{createMetaTestData()}}{
-Creates a new meta dataset based on layer predictions.
+Creates a new modality-specific predictions dataset based on layer predictions.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Predicting$createMetaTestData(meta_layer_id)}\if{html}{\out{</div>}}
 }

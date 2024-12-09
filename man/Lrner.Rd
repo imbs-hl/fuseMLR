@@ -17,6 +17,7 @@ This class implements a learner. A \link{Lrner} object can only exist as a compo
 \item \href{#method-Lrner-train}{\code{Lrner$train()}}
 \item \href{#method-Lrner-getTrainLayer}{\code{Lrner$getTrainLayer()}}
 \item \href{#method-Lrner-getNaRm}{\code{Lrner$getNaRm()}}
+\item \href{#method-Lrner-getNaAction}{\code{Lrner$getNaAction()}}
 \item \href{#method-Lrner-getId}{\code{Lrner$getId()}}
 \item \href{#method-Lrner-getPackage}{\code{Lrner$getPackage()}}
 \item \href{#method-Lrner-getIndSubset}{\code{Lrner$getIndSubset()}}
@@ -192,6 +193,16 @@ The current layer is returned.
 The current layer is returned.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Lrner$getNaRm()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Lrner-getNaAction"></a>}}
+\if{latex}{\out{\hypertarget{method-Lrner-getNaAction}{}}}
+\subsection{Method \code{getNaAction()}}{
+The current layer is returned.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Lrner$getNaAction()}\if{html}{\out{</div>}}
 }
 
 }

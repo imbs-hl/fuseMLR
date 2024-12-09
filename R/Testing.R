@@ -125,7 +125,7 @@ Testing <- R6Class("Testing",
                      return(private$verbose)
                    },
                    #' @description
-                   #' Retrieve meta data.
+                   #' Retrieve modality-specific prediction data.
                    #'
                    #' @return
                    #' A \code{list} containing all (base and meta) models.

@@ -4,7 +4,7 @@
 \alias{weightedMeanLearner}
 \title{The weighted mean meta-learner}
 \usage{
-weightedMeanLearner(x, y, weighted = TRUE, perf = NULL)
+weightedMeanLearner(x, y, weighted = TRUE, perf = NULL, na_rm = FALSE)
 }
 \arguments{
 \item{x}{\code{data.frame} \cr
@@ -22,6 +22,9 @@ for classification setting and mean squared error for regression. Otherwise, use
 \item{perf}{\code{function} \cr
 Function to compute layer-specific performance of learners. If NULL, the Brier Score (classification) or a mean squared error (regression) is used by default as performance measure.
 Otherwise, the performance function must accept two parameters: \code{observed} (observed values) and \code{predicted} (predicted values).}
+
+\item{na_rm}{\code{boolean} \cr
+Should missing values be removed when computing the weights?}
 }
 \value{
 Object of class \code{weightedMeanLearner} with the vector of estimated weights pro layer.\cr

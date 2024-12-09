@@ -137,7 +137,7 @@ Getter of the verbose setting.
 \if{html}{\out{<a id="method-Testing-getData"></a>}}
 \if{latex}{\out{\hypertarget{method-Testing-getData}{}}}
 \subsection{Method \code{getData()}}{
-Retrieve meta data.
+Retrieve modality-specific prediction data.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Testing$getData()}\if{html}{\out{</div>}}
 }

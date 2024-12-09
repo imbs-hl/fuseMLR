@@ -149,10 +149,10 @@ Model <- R6Class("Model",
                      # Incomplete data are removed if required.
                      testing_data = testing_data$clone(deep = FALSE)
                      # Restrict variables to the subset used for training
-                     if (tmp_lrner$getNaRm()) {
-                       complete_data = testing_data$getCompleteData()
-                       testing_data$setDataFrame(data_frame = complete_data)
-                     }
+                     # if (tmp_lrner$getNaRm()) {
+                     #   complete_data = testing_data$getCompleteData()
+                     #   testing_data$setDataFrame(data_frame = complete_data)
+                     # }
                      # Prepare new dataset
                      if (is.null(ind_subset)) {
                        missing_ind = NULL
@@ -277,11 +277,14 @@ Model <- R6Class("Model",
                      predicted_obj = data.frame(
                        rbind(predicted_obj,
                              predicted_obj_missing))
+                     # Prediction is finished. Re-set the all data if na.rm was TRUE
+                     # nocov start
                      predicted_data = PredictData$new(
                        id = testing_data$getId(),
                        ind_col = testing_data$getIndCol(),
                        data_frame = predicted_obj
                      )
+                     # nocov end
                      return(predicted_data)
                    }
                  ),

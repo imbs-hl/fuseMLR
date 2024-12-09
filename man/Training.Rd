@@ -18,7 +18,7 @@ The Training class is structured as followed:
 \item \link{TrainMetaLayer}: Basically a \link{TrainLayer}, but with some specific properties.
 \itemize{
 \item \link{Lrner}: This is the meta learner, it must be set up by the user.
-\item \link{TrainData}: Specific meta data. This is set up internally after cross-validation.
+\item \link{TrainData}: Specific modality-specific prediction data. This is set up internally after cross-validation.
 \item \link{Model}: Specific meta model. This is set up by training the learner on the training data.
 }
 }
@@ -386,7 +386,7 @@ A \code{list} containing all (base and meta) models.
 \if{html}{\out{<a id="method-Training-getData"></a>}}
 \if{latex}{\out{\hypertarget{method-Training-getData}{}}}
 \subsection{Method \code{getData()}}{
-Retrieve meta data.
+Retrieve modality-specific predictions.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Training$getData()}\if{html}{\out{</div>}}
 }

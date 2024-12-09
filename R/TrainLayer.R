@@ -271,7 +271,7 @@ TrainLayer <- R6Class("TrainLayer",
                         #'
                         #' @return
                         #' The stored [TestData] object is returned.
-                        # A TrainLayer plays the role of TestLayer when creating meta data.
+                        # A TrainLayer plays the role of TestLayer when creating meta modality-specific prediction data.
                         getTestData = function () {
                           layer_kc = self$getKeyClass()
                           if (any(c("TestData", "TrainData") %in% layer_kc[ , "class"])) {

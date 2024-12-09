@@ -9,7 +9,7 @@ This class implement a meta meta layer. A \link{TrainMetaLayer} can only exist a
 A layer is structured as followed:
 \itemize{
 \item \link{Lrner}: It is set by the user to be trained on the meta training data.
-\item \link{TrainData}: It are meta data, automatically created by the internal cross validation.
+\item \link{TrainData}: It are modality-specific prediction data, automatically created by the internal cross validation.
 \item \link{Model}: The meta model, result of training the learner on the training data, and therefore, not to be set by the user.
 \item \link{TestData}: The meta new data to be predicted, consisting in predictions obtained from each layer.
 }

@@ -20,6 +20,7 @@ This class implements a learner. A \link{VarSel} object can only exist as a comp
 \item \href{#method-VarSel-getPackage}{\code{VarSel$getPackage()}}
 \item \href{#method-VarSel-getVarSubSet}{\code{VarSel$getVarSubSet()}}
 \item \href{#method-VarSel-getParamInterface}{\code{VarSel$getParamInterface()}}
+\item \href{#method-VarSel-getNaAction}{\code{VarSel$getNaAction()}}
 \item \href{#method-VarSel-getExtractVar}{\code{VarSel$getExtractVar()}}
 }
 }
@@ -227,6 +228,16 @@ The current parameter interface is returned.
 \subsection{Returns}{
 A data.frame of interface.
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-VarSel-getNaAction"></a>}}
+\if{latex}{\out{\hypertarget{method-VarSel-getNaAction}{}}}
+\subsection{Method \code{getNaAction()}}{
+The current layer is returned.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{VarSel$getNaAction()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-VarSel-getExtractVar"></a>}}

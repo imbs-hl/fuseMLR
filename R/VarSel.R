@@ -308,6 +308,11 @@ VarSel <- R6Class("VarSel",
                       return(private$param_interface)
                     },
                     #' @description
+                    #' The current layer is returned.
+                    getNaAction = function () {
+                      return(private$na_action)
+                    },
+                    #' @description
                     #' The function to extract selected variables is returned.
                     #'
                     #' @return
@@ -331,6 +336,7 @@ VarSel <- R6Class("VarSel",
                     # Parameter interface to original names of arguments in original learning and predict function.
                     param_interface = NULL,
                     na_rm = NULL,
+                    na_action = NULL,
                     # Training layer (from class [TainLayer] or [TrainMetaLayer]) of the current learner.
                     train_layer = NULL,
                     # Individuals subset IDs.

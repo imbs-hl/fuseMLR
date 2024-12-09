@@ -15,6 +15,8 @@
 #' @param perf `function` \cr
 #' Function to compute layer-specific performance of learners. If NULL, the Brier Score (classification) or a mean squared error (regression) is used by default as performance measure.
 #' Otherwise, the performance function must accept two parameters: \code{observed} (observed values) and \code{predicted} (predicted values).
+#' @param na_rm `boolean` \cr
+#' Should missing values be removed when computing the weights?
 #' @return
 #' Object of class \code{weightedMeanLearner} with the vector of estimated weights pro layer.\cr
 #'
@@ -29,7 +31,8 @@
 weightedMeanLearner = function (x,
                                 y,
                                 weighted = TRUE,
-                                perf = NULL) {
+                                perf = NULL,
+                                na_rm = FALSE) {
   if (!is.data.frame(x)) {
     # nocov start
     stop("x must be a data.frame.")
@@ -40,7 +43,7 @@ weightedMeanLearner = function (x,
     # second (control) = 0
     if (is.numeric(y) & (length(unique(y)) > 2)) {
       score_values = lapply(X = x, FUN = function (predicted) {
-        mean(x = (predicted - y)^2, na.rm = TRUE)
+        mean(x = (predicted - y)^2, na.rm = na_rm)
       })
     } else {
       if ((length(unique(y)) > 2) | is.character(y)) {
@@ -58,7 +61,7 @@ weightedMeanLearner = function (x,
           }
         }
         score_values = lapply(X = x, FUN = function (predicted) {
-          mean(x = (predicted - y)^2, na.rm = TRUE)
+          mean(x = (predicted - y)^2, na.rm = na_rm)
         })
       }
     }

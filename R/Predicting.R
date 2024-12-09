@@ -44,7 +44,7 @@ Predicting <- R6Class("Predicting",
                       #' ID of the meta layer where the testing meta data will be stored.
                       #'
                       #' @description
-                      #' Creates a new meta dataset based on layer predictions.
+                      #' Creates a new modality-specific predictions dataset based on layer predictions.
                       #'
                       #' @return
                       #' A [TestData] is returned.

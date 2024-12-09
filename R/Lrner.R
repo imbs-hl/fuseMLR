@@ -77,6 +77,7 @@ Lrner <- R6Class("Lrner",
                        }
                      }
                      private$na_rm = na_rm
+                     private$na_action = na_action
                      # Instantiate a Lrner object
                      # Remove learner if already existing
                      if (train_layer$checkLrnerExist()) {
@@ -184,6 +185,7 @@ Lrner <- R6Class("Lrner",
                      # Train only on complete data
                      train_data = train_data$clone(deep = FALSE)
                      if (private$na_rm) {
+                       all_data = train_data$getDataFrame()
                        complete_data = train_data$getCompleteData()
                        train_data$setDataFrame(data_frame = complete_data)
                      }
@@ -241,6 +243,12 @@ Lrner <- R6Class("Lrner",
                                        base_model = base_model,
                                        train_layer = private$train_layer)
                      private$ind_subset = ind_subset
+                     # Reset all the data to the TrainData
+                     # nocov start
+                     if (private$na_rm) {
+                       train_data$setDataFrame(data_frame = all_data)
+                     }
+                     # nocov end
                      # Update learner into the hash table
                      # TODO: Maybe not needed bacause addressing by reference
                      private$train_layer$add2HashTable(key = private$id,
@@ -262,6 +270,11 @@ Lrner <- R6Class("Lrner",
                    #' The current layer is returned.
                    getNaRm = function () {
                      return(private$na_rm)
+                   },
+                   #' @description
+                   #' The current layer is returned.
+                   getNaAction = function () {
+                     return(private$na_action)
                    },
                    #' @description
                    #' Getter of the current learner ID.
@@ -344,6 +357,7 @@ Lrner <- R6Class("Lrner",
                    # Parameter interface to original names of arguments in original learning and predict function.
                    param_interface = NULL,
                    na_rm = NULL,
+                   na_action = NULL,
                    # Training layer (from class [TainLayer] or [TrainMetaLayer]) of the current learner.
                    train_layer = NULL,
                    # Individuals subset IDs.
