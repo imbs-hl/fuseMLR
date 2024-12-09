@@ -65,11 +65,11 @@ training <- createTraining(id = "training",
 print(training)
 ```
 
-A ```training``` contains modality-specific training layers (instances of the **TrainLayer** class) and a meta-layer (instance of the **TrainMetaLayer** class). The modality-specific training layers encapsulate training data modalities, variable selection functions and learners (i.e. ```R``` functions implementing statistical predicting methods). The meta-layer encapsulates the meta-learner.
+A ```training``` contains modality-specific training layers (instances of the **TrainLayer** class) and a meta-layer (instance of the **TrainMetaLayer** class). The modality-specific training layers encapsulate training data modalities, variable selection functions and learners (i.e. ```R``` functions implementing statistical predicting methods). The meta-layer encapsulates the meta-learner. The terms modality-specific and layer-specific are used interchangeably as synonyms in the following.
 
 Three main functions are necessary to create the ```training```: ```createTraining()```, ```createTrainLayer()``` and ```createTrainMetaLayer()```. ```createTraining()``` creates an empty ```training```, on which modalitity-specific training layers are added using the function ```createTrainLayer()```. Function ```createTrainMetaLayer()``` is used to add meta-layer to ```training```. 
 
-The following code adds a gene expression, a protein abundance, and a methylation layer to ```training```. For illustration purpose we use the same variable selection method `Boruta` and the same learner (`ranger`) for all layers. These  functions fulfill `fuseMLR` requirements in terms of arguments and outputs (see `createTrainLayer` documentation for details). We expect the variable selection function to accept two arguments: `x` (the predictor design matrix) and `y` (the response vector). The function must return a vector of selected variables. Methods that do not follow this format -- such as Vita (via `ranger`) or Lasso (via `glmnet`) -- require additional wrapping or a custom function to extract the selected variables, for example, based on a significance threshold. For learners, the arguments `x` and `y` are mandatory as well, and the resulting model must support the generic `predict` function. Predictions should be returned either as a vector or a list with a `predictions` field containing the predicted values (also a vector). If the function does not meet the required input and output criteria, users should follow the steps in [E-Interface and wrapping](#e---interface-and-wrapping) and Wrapping to create an interface or wrap their function for use with fuseMLR.
+The following code adds a gene expression, a protein abundance, and a methylation layer to ```training```. For illustration purpose we use the same variable selection method `Boruta` and the same learner (`ranger`) for all layers. These  functions fulfill `fuseMLR` requirements in terms of arguments and outputs (see `createTrainLayer` documentation for details). We expect the variable selection function to accept two arguments: `x` (the predictor design matrix) and `y` (the response vector). The function must return a vector of selected variables. Methods that do not follow this format -- such as Vita (via `ranger`) or Lasso (via `glmnet`) -- require additional wrapping or a custom function to extract the selected variables, for example, based on a significance threshold. An exception, however, is made for the Boruta function, for which an internal adjustment is implemented; its use requires no further modifications. For learners, the arguments `x` and `y` are mandatory as well, and the resulting model must support the generic `predict` function. Predictions should be returned either as a vector or a list with a `predictions` field containing the predicted values (also a vector). If the function does not meet the required input and output criteria, users should follow the steps in [E-Interface and wrapping](#e---interface-and-wrapping) and Wrapping to create an interface or wrap their function for use with fuseMLR.
 
 ```{r geneexpr, include=TRUE, eval=TRUE}
 # Create gene expression layer.
@@ -125,7 +125,7 @@ createTrainLayer(training = training,
                  na_action = "na.keep")
 ```
 
-Also add a meta-layer. We use the weighted mean (internal function to `fuseMLR`) as meta-learner. Similarly learners, a meta-learner should allow at least the arguments `x` and `y` to pass the design matrix of predictors and should return a model that allow the call of the generic function `predict` to make predictions for a new dataset (see documentation of `createTrainMetaLayer` for details). If these criteria are not fulfill the explaination in [E-Interface and wrapping](#e---interface-and-wrapping) can be used to map the `x` and `y` to the original argument names or to wrap the original function. We also provide information about possible meta-learner can be used in [Appendix](#appendix).
+Also add a meta-layer. We use the weighted mean (internal function to `fuseMLR`) as meta-learner. Similarly learners, a meta-learner should allow at least the arguments `x` and `y` to pass the design matrix of predictors and should return a model that allow to call the generic function `predict` to make predictions for a new dataset (see documentation of `createTrainMetaLayer` for details). If these criteria are not fulfilled the explanation in [E-Interface and wrapping](#e---interface-and-wrapping) can be used to map the `x` and `y` to the original argument names or to wrap the original function. We also provide information about possible meta-learner can be used in [Appendix](#appendix).
 
 ```{css, echo=FALSE}
 .scroll-100 {
@@ -135,6 +135,8 @@ Also add a meta-layer. We use the weighted mean (internal function to `fuseMLR`)
 }
 ```
 
+We use the weighted mean as the meta-learner. Theoretically, we do not expect this meta-learner to outperform all the modality-specific learners but rather to achieve a performance level between the worst and the best of the modality-specific learners.
+
 ```{r training_meta_layers, include=TRUE, eval=TRUE, class.output="scroll-100"}
 # Create meta layer with imputation of missing values.
 createTrainMetaLayer(training = training,
@@ -142,8 +144,8 @@ createTrainMetaLayer(training = training,
                      lrner_package = NULL,
                      lrn_fct = "weightedMeanLearner",
                      param_train_list = list(),
-                     param_pred_list = list(),
-                     na_action = "na.impute")
+                     param_pred_list = list(na_rm = TRUE),
+                     na_action = "na.rm")
 print(training)
 ```
 
@@ -187,10 +189,10 @@ We use `extractModel()` to retrieve the list of stored models and `extractData()
 
 ```{r basic_lrnr, include=TRUE, eval=TRUE}
 models_list <- extractModel(training = training)
-print(str(object = models_list, max.level = 1L))
+str(object = models_list, max.level = 1L)
 ```
 
-Three random forests and one weighted meta-model trained on each layer are returned.
+Three random forests and one weighted meta-model trained on each layer are returned. The smallest weight is assigned to protein abundance, while the highest is given to gene expression.
 
 ```{r basic_data, include=TRUE, eval=TRUE}
 data_list <- extractData(object = training)
@@ -256,11 +258,9 @@ predictions <- predict(object = training, testing = testing)
 print(predictions)
 ```
 
-Prediction performances for layer-specific levels, and on the meta layer are displayed.
+Prediction performances for layer-specific levels and the meta-layer are estimated. We use the Brier Score (BS) to assess calibration performance and the Area Under the Curve (AUC) to evaluate classification accuracy.
 
-- Brier score estimated.
-
-```{r brier, include=TRUE, eval=TRUE}
+```{r brier, include=TRUE, eval=TRUE, message = FALSE}
 pred_values <- predictions$predicted_values
 actual_pred <- merge(x = pred_values,
                      y = multi_omics$testing$target,
@@ -271,31 +271,16 @@ y <- as.numeric(actual_pred$disease == "1")
 # On all patients
 perf_bs <- sapply(X = actual_pred[ , 2L:5L], FUN = function (my_pred) {
   bs <- mean((y[complete.cases(my_pred)] - my_pred[complete.cases(my_pred)])^2)
-  return(bs)
+  roc_obj <- pROC::roc(y[complete.cases(my_pred)], my_pred[complete.cases(my_pred)])
+  auc <- pROC::auc(roc_obj)
+  performances = rbind(bs, auc)
+  return(performances)
 })
+rownames(perf_bs) <- c("BS", "AUC")
 print(perf_bs)
 ```
 
-- AUC estimated.
-
-```{r auc, include=TRUE, eval=TRUE, message=FALSE}
-pred_values <- predictions$predicted_values
-actual_pred <- merge(x = pred_values,
-                     y = multi_omics$testing$target,
-                     by = "IDS",
-                     all.y = TRUE)
-y <- actual_pred$disease
-
-# On all patients
-perf_auc <- sapply(X = actual_pred[ , 2L:5L], FUN = function (my_pred) {
-  roc_obj <- pROC::roc(y[complete.cases(my_pred)], my_pred[complete.cases(my_pred)])
-  auc_value <- pROC::auc(roc_obj)
-  return(auc_value)
-})
-print(perf_auc)
-```
-
-The weighted mean meta-learner is a good aggregation of the layer-specific learners.
+As expected, the performance of the meta-learner in terms of Brier Score falls between the worst and best modality-specific performance measures. For AUC, the meta-learner performs as well as the best modality-specific learner. We observe that performance on protein abundance is the worst, consistent with its lowest assigned weight. There is a reversal in the weight order between the methylation layer and gene expression, likely due to discrepancies in the individuals used for performance computation. The performance difference between these two modalities is relatively small, approximately $0.05$.
 
 ## E - Interface and wrapping
 
@@ -327,9 +312,9 @@ createTrainLayer(training = training,
                                          kernel = 'radial',
                                          probability = TRUE),
                  param_pred_list = list(probability = TRUE),
-                 na_action = "na.impute",
-                 x = "x",
-                 y = "y",
+                 na_action = "na.rm",
+                 x_lrn = "x",
+                 y_lrn = "y",
                  object = "object",
                  data = "newdata", # Name discrepancy resolved.
                  extract_pred_fct = function (pred) { 
@@ -427,7 +412,7 @@ library(knitr)
 # Create a data frame
 data <- data.frame(
   Leaner = c("weightedMeanLearner", "bestLayerLearner", "cobra"),
-  Description = c("The weighted mean meta learner. It uses meta data to estimate the weights of the modality-specific models", "The best layer-specific model is used as meta model.", "cobra implements the COBRA (COmBined Regression Alternative), an aggregation method for combining predictions from multiple individual learners")
+  Description = c("The weighted mean meta learner. It uses modality-specific predictions to estimate the weights of the modality-specific models", "The best layer-specific model is used as meta model.", "cobra implements the COBRA (COmBined Regression Alternative), an aggregation method for combining predictions from multiple individual learners")
 )
 
 # Generate the table
