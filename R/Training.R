@@ -83,6 +83,7 @@ Training <- R6Class("Training",
                         private$ind_col = ind_col
                         private$target = target
                         private$verbose = TRUE
+                        private$problem_type = problem_type
                         private$target_obj = Target$new(id = "target",
                                                         data_frame = target_df[ , c(ind_col, target)],
                                                         training = self)
@@ -106,7 +107,7 @@ Training <- R6Class("Training",
                           }
                         }
                         cat(sprintf("Training        : %s\n", private$id))
-                        cat(sprintf("Problem type    : %s\n", private$problem_typ))
+                        cat(sprintf("Problem type    : %s\n", private$problem_type))
                         cat(sprintf("Status          : %s\n", status))
                         cat(sprintf("Number of layers: %s\n", nb_layers))
                         cat(sprintf("Layers trained  : %s\n", private$nb_trained_layer))
@@ -245,12 +246,13 @@ Training <- R6Class("Training",
                         } else {
                           if (verbose) {
                             message("Creating fold predictions.\n")
-                            pb <- txtProgressBar(min = 0, max = length(resampling), style = 1)
+                            pb <- txtProgressBar(min = 0, max = length(resampling), style = 3)
                           }
                           train_layer_res_list = lapply(X = 1:length(resampling),
                                                         function (fold) {
                                                           if (verbose) {
-                                                            setTxtProgressBar(pb = pb, fold)
+                                                            percent <- round((fold / length(resampling)) * 100L, 1L)
+                                                            setTxtProgressBar(pb = pb, value = fold, label = percent)
                                                           }
                                                           test_index = resampling[[fold]]
                                                           train_index = setdiff(unlist(resampling), test_index)
@@ -274,6 +276,7 @@ Training <- R6Class("Training",
                                                           }
                                                           return(current_pred)
                                                         })
+                          close(pb)
                           predicted_values = data.frame(do.call(what = "rbind",
                                                                 args = train_layer_res_list))
                           # Will transform modality-specific prediction data.frame into wide format. If predictions are data.frame like
@@ -338,9 +341,24 @@ Training <- R6Class("Training",
                         } else {
                           private$use_var_sel = use_var_sel
                         }
-                        # Test that the training object contains ovelapping individuals
+                        # Test that the training object contains overlapping individuals
                         if (!self$testOverlap()) {
                           stop("This Training object does not contain overlapping individuals.") #nocov
+                        }
+                        # Check wether all individuals have layer-data
+                        layer_ids = self$getIndIDs()[ , 1L]
+                        target_df = self$getTargetObj()$getData()
+                        ids_in_target = target_df[ , private$ind_col]
+                        ids_not_in_target = setdiff(ids_in_target, layer_ids)
+                        if (length(ids_not_in_target)) {
+                          if (length(ids_not_in_target) == nrow(target_df)) {
+                            stop("There is no target individual(s) with modality observations.\n")
+                          } else {
+                            warning(sprintf("%d individual(s) with target value(s), but no modality observations identified and excluded.\n", length(ids_not_in_target)))
+                          }
+                          # Remove those individuals in target without modality data.
+                          clean_target_df = target_df[ids_in_target %in% layer_ids, ]
+                          self$getTargetObj()$setData(clean_target_df)
                         }
                         # 1) Create meta training data
                         if (is.null(resampling_method)) {
@@ -401,7 +419,6 @@ Training <- R6Class("Training",
                         meta_layer_id = self$getTrainMetaLayer()$getId()
                         testing_meta_data = predicting$createMetaTestData(
                           meta_layer_id = meta_layer_id)
-                        # print(testing_meta_data$getDataFrame())
                         if (private$impute) {
                           # TODO: Can be moved into testMetaLayer; similarly to trainMetaLayer.
                           testing_meta_data$impute(impute_fct = NULL,
@@ -451,6 +468,21 @@ Training <- R6Class("Training",
                       #'
                       varSelection = function (ind_subset = NULL,
                                                verbose = TRUE) {
+                        # Check wether all individuals have layer-data
+                        layer_ids = self$getIndIDs()[ , 1L]
+                        target_df = self$getTargetObj()$getData()
+                        ids_in_target = target_df[ , private$ind_col]
+                        ids_not_in_target = setdiff(ids_in_target, layer_ids)
+                        if (length(ids_not_in_target)) {
+                          if (length(ids_not_in_target) == nrow(target_df)) {
+                            stop("There is no target individual(s) with modality observations.\n")
+                          } else {
+                            warning(sprintf("%d individual(s) with target value(s), but no modality observations identified and excluded.\n", length(ids_not_in_target)))
+                          }
+                          # Remove those individuals in target without modality data.
+                          clean_target_df = target_df[ids_in_target %in% layer_ids, ]
+                          self$getTargetObj()$setData(clean_target_df)
+                        }
                         layers = self$getKeyClass()
                         nb_layers = nrow(layers[layers$class %in% "TrainLayer", ])
                         if (nb_layers) {
@@ -662,7 +694,7 @@ Training <- R6Class("Training",
                       #' @description
                       #' Getter of the problem type.
                       getProblemTyp = function () {
-                        return(private$problem_typ)
+                        return(private$problem_type)
                       },
                       #' @description
                       #' Set imputation action na.action.
@@ -760,7 +792,7 @@ Training <- R6Class("Training",
                       nb_trained_layer = 0L,
                       impute = FALSE,
                       verbose = TRUE,
-                      problem_typ = "classification",
+                      problem_type = "classification",
                       status = FALSE,
                       use_var_sel = FALSE,
                       var_sel_done = FALSE

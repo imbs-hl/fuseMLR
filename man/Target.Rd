@@ -23,6 +23,7 @@ exist as a component of a \link{Training} object.
 \item \href{#method-Target-getTargetValues}{\code{Target$getTargetValues()}}
 \item \href{#method-Target-getTargetName}{\code{Target$getTargetName()}}
 \item \href{#method-Target-getTraining}{\code{Target$getTraining()}}
+\item \href{#method-Target-setData}{\code{Target$setData()}}
 \item \href{#method-Target-clone}{\code{Target$clone()}}
 }
 }
@@ -148,6 +149,27 @@ Getter of the current training object.
 \subsection{Returns}{
 The training layer (from class \link{Training}) on which the current train data are stored
 is returned.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Target-setData"></a>}}
+\if{latex}{\out{\hypertarget{method-Target-setData}{}}}
+\subsection{Method \code{setData()}}{
+Getter of the current \code{data.frame} wihtout individual
+ID nor target variables.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Target$setData(data_frame)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{data_frame}}{\code{data.frame} \cr
+data.frame to be set.
+
+Title}
+}
+\if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}

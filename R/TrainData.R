@@ -80,7 +80,7 @@ TrainData <- R6Class("TrainData",
                                           ind_col = train_layer$getTraining()$getIndCol(),
                                           data_frame = data_frame)
                          private$target = train_layer$getTraining()$getTarget()
-                         # Add to object to ht
+                         # Add the object to ht
                          if ("TrainMetaLayer" %in% class(train_layer)) {
                            if (train_layer$getAccess()) {
                              train_layer$add2HashTable(key = private$id,
@@ -193,6 +193,19 @@ TrainData <- R6Class("TrainData",
                        #TODO: Maybe rename getTestLayer, getTrainLayer and getPredictLayer as getLayer?
                        getTestLayer = function () {
                          return(private$train_layer)
+                       },
+                       #' @description
+                       #' Set a new \code{data.frame} to the current object.
+                       #'
+                       #' @param data_frame `data.frame`
+                       #'
+                       #' @return
+                       #' The current object is returned.
+                       #'
+                       #'
+                       setDataFrame = function (data_frame) {
+                         private$data_frame = data_frame
+                         invisible(self)
                        }
                      ),
                      private = list(

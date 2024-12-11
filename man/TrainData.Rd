@@ -24,6 +24,7 @@ exist as a component of a \link{TrainLayer} or a \link{TrainMetaLayer} object.
 \item \href{#method-TrainData-getTargetName}{\code{TrainData$getTargetName()}}
 \item \href{#method-TrainData-getTrainLayer}{\code{TrainData$getTrainLayer()}}
 \item \href{#method-TrainData-getTestLayer}{\code{TrainData$getTestLayer()}}
+\item \href{#method-TrainData-setDataFrame}{\code{TrainData$setDataFrame()}}
 \item \href{#method-TrainData-clone}{\code{TrainData$clone()}}
 }
 }
@@ -38,7 +39,6 @@ exist as a component of a \link{TrainLayer} or a \link{TrainMetaLayer} object.
 <li><span class="pkg-link" data-pkg="fuseMLR" data-topic="Data" data-id="getSetDiff"><a href='../../fuseMLR/html/Data.html#method-Data-getSetDiff'><code>fuseMLR::Data$getSetDiff()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="fuseMLR" data-topic="Data" data-id="getVarSubset"><a href='../../fuseMLR/html/Data.html#method-Data-getVarSubset'><code>fuseMLR::Data$getVarSubset()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="fuseMLR" data-topic="Data" data-id="impute"><a href='../../fuseMLR/html/Data.html#method-Data-impute'><code>fuseMLR::Data$impute()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="fuseMLR" data-topic="Data" data-id="setDataFrame"><a href='../../fuseMLR/html/Data.html#method-Data-setDataFrame'><code>fuseMLR::Data$setDataFrame()</code></a></span></li>
 </ul>
 </details>
 }}
@@ -163,6 +163,26 @@ Getter of the current layer.
 \subsection{Returns}{
 The layer (from class \link{TestLayer}) on which the current train data are stored
 is returned.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TrainData-setDataFrame"></a>}}
+\if{latex}{\out{\hypertarget{method-TrainData-setDataFrame}{}}}
+\subsection{Method \code{setDataFrame()}}{
+Set a new \code{data.frame} to the current object.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TrainData$setDataFrame(data_frame)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{data_frame}}{\code{data.frame}}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+The current object is returned.
 }
 }
 \if{html}{\out{<hr>}}

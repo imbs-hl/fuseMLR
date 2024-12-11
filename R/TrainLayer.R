@@ -111,13 +111,13 @@ TrainLayer <- R6Class("TrainLayer",
                             use_var_sel = FALSE
                           }
                           if (verbose) {
-                            message(sprintf("Training on layer %s started.\n", self$getId()))
+                            message(sprintf("Training of base model on layer %s started.\n", self$getId()))
                           }
                           model = lrner$train(ind_subset = ind_subset,
                                               use_var_sel = use_var_sel,
                                               verbose = verbose)
                           if (verbose) {
-                            message(sprintf("Training on layer %s done.\n", self$getId()))
+                            message(sprintf("Training of base model on layer %s done.\n", self$getId()))
                           }
                           # Updating the training status.
                           if (!private$status) {

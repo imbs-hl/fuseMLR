@@ -63,7 +63,7 @@ VarSel <- R6Class("VarSel",
                         } else {
                           # nocov start
                           if (na_action == "na.impute") {
-                              stop("Imputation is not yet handled for data modalities. Please use either the 'na.keep' or the 'na.rm' option.")
+                            stop("Imputation is not yet handled for data modalities. Please use either the 'na.keep' or the 'na.rm' option.")
                           } else {
                             stop("na_action must be one of 'na.fails' or 'na.rm'.")
                           }
@@ -73,12 +73,12 @@ VarSel <- R6Class("VarSel",
                       private$na_rm = na_rm
                       # Remove VarSel if already existing
                       if (train_layer$checkVarSelExist()) {
-                          key_class = train_layer$getKeyClass()
-                          key = key_class[key_class$class == "VarSel", "key"]
-                          train_layer$removeFromHashTable(key = key)
+                        key_class = train_layer$getKeyClass()
+                        key = key_class[key_class$class == "VarSel", "key"]
+                        train_layer$removeFromHashTable(key = key)
                       }
                       private$train_layer = train_layer
-                      # Add to object to ht
+                      # Add object to ht
                       train_layer$add2HashTable(key = private$id,
                                                 value = self,
                                                 .class = "VarSel")
@@ -230,7 +230,7 @@ VarSel <- R6Class("VarSel",
                             param_extract = list()
                             param_extract[[names(formals(extract_var_fct))]] = varselected
                             varselected = do.call(what = extract_var_fct,
-                                                    args = param_extract)
+                                                  args = param_extract)
                           }
                           # nocov end
                         }
@@ -251,8 +251,11 @@ VarSel <- R6Class("VarSel",
                         warning(sprintf("No variable selected on layer %s", private$train_layer$getId()))
                         private$var_subset = NULL
                         # nocov end
-                        } else {
+                      } else {
                         private$var_subset = varselected
+                        train_data_frame = train_data$getDataFrame()
+                        train_data_frame = train_data_frame[ , c(train_data$getIndCol(), varselected, train_data$getTargetName())]
+                        private$train_layer$getTrainData()$setDataFrame(data_frame = train_data_frame)
                       }
                       return(varselected)
                     },

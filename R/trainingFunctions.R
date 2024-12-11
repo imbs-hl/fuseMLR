@@ -351,7 +351,7 @@ fusemlr = function (training,
                  resampling_method = resampling_method,
                  resampling_arg = resampling_arg,
                  seed = seed)
-  return(training)
+  invisible(training)
 }
 
 

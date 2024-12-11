@@ -56,7 +56,7 @@ test_that("TrainLayer: all tests", {
     tl_meta$predict(nl_ge)
   })
   disease <- training$getTargetValues()$disease
-  expect_no_error({
+  expect_warning({
     skip_on_cran()
     training$train(resampling_method = "caret::createFolds",
                       resampling_arg = list(y = disease,

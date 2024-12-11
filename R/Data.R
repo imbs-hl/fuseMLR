@@ -127,7 +127,10 @@ Data <- R6Class("Data",
                   #' @export
                   #'
                   getVarSubset = function (var_name) {
-                    subset_data <- self$clone(deep = FALSE)
+                    if (!(private$ind_col %in% var_name)) {
+                      var_name = c(private$ind_col, var_name)
+                    }
+                    subset_data = self$clone(deep = FALSE)
                     data_frame = subset_data$getDataFrame()[ , var_name]
                     subset_data$setDataFrame(data_frame = data_frame)
                     return(subset_data)
@@ -174,7 +177,6 @@ Data <- R6Class("Data",
                   #' @return
                   #' The current object is returned.
                   #'
-                  #' @export
                   #'
                   setDataFrame = function (data_frame) {
                     private$data_frame = data_frame

@@ -159,11 +159,17 @@ upsetplot(object = training, order.by = "freq")
 
 Function ```varSelection()``` performs modality-specific variable selection. So, a user can opt to conduct variable selection separately without training.
 
-```{r varsel, include=TRUE, eval=TRUE}
+```{r varsel, include=TRUE, eval=TRUE, warning=FALSE}
 # Variable selection
 set.seed(5467)
 var_sel_res <- varSelection(training = training)
 print(var_sel_res)
+```
+
+Let us display the training object again to see the update on variable level.
+
+```{r training_varsel_disp, include=TRUE, eval=TRUE, warning=FALSE}
+print(training)
 ```
 
 For each layer, the variable selection results show the chosen variables.
@@ -176,8 +182,14 @@ We use the function ```fusemlr()``` to train our models using the subset of sele
 set.seed(5462)
 fusemlr(training = training,
         use_var_sel = TRUE)
+```
+
+The display of the training object now updates information about the trained layers.
+
+```{r display_lrner_trained, include=TRUE, eval=TRUE, message=TRUE}
 print(training)
 ```
+
 
 We can also display a summary of `training` to see more details on layer levels. Information about the training data modality, the variable selection method and the learner stored at each layer will be displayed. 
 
