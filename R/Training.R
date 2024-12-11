@@ -591,7 +591,6 @@ Training <- R6Class("Training",
                         # This code accesses each layer (except TrainMetaLayer) level
                         # and get the individual IDs.
                         layers = layers[layers$class %in% c("TrainLayer", "TrainMetaLayer"), ]
-                        current_model = NULL
                         models = list()
                         for (k in layers$key) {
                           layer = self$getFromHashTable(key = k)
@@ -609,7 +608,6 @@ Training <- R6Class("Training",
                       getData = function() {
                         layers = self$getKeyClass()
                         layers = layers[layers$class %in% c("TrainLayer", "TrainMetaLayer"), ]
-                        current_model = NULL
                         all_data = list()
                         for (k in layers$key) {
                           layer = self$getFromHashTable(key = k)

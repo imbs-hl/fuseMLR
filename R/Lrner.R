@@ -182,8 +182,8 @@ Lrner <- R6Class("Lrner",
                                      use_var_sel = FALSE,
                                      verbose = TRUE) {
                      train_data = private$train_layer$getTrainData()
-                     # Train only on complete data
                      train_data = train_data$clone(deep = FALSE)
+                     # Train only on complete data
                      if (private$na_rm) {
                        all_data = train_data$getDataFrame()
                        complete_data = train_data$getCompleteData()

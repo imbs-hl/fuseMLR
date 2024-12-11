@@ -257,23 +257,26 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                             #' Name of individual column IDs.
                             #' @param data_frame  `data.frame` \cr
                             #' \code{data.frame} of layer specific predictions.
-                            #' @param target `character` \cr
-                            #' Name of the target variable
                             #'
                             #' @export
                             # TODO: Please do not export me.
                             setTrainData = function (id,
                                                      ind_col,
-                                                     data_frame,
-                                                     target) {
+                                                     data_frame) {
                               # nocov start
                               if (sum(!complete.cases(data_frame)) == nrow(data_frame)) {
                                 warning("No individual fully overlaps across all layers.")
                               }
                               # nocov end
-                              TrainData$new(id = id,
-                                            data_frame = data_frame,
-                                            train_layer = self)
+                              if (self$getLrner()$getNaRm()) {
+                                TrainData$new(id = id,
+                                              data_frame = data_frame[complete.cases(data_frame), ],
+                                              train_layer = self)
+                              } else {
+                                TrainData$new(id = id,
+                                              data_frame = data_frame,
+                                              train_layer = self)
+                              }
                               return(self)
                             },
                             #' @description

@@ -12,7 +12,7 @@
 
 <meta name="author" content="Cesaire Fouodo" />
 
-<meta name="date" content="2024-12-11" />
+<meta name="date" content="2024-12-12" />
 
 <title>How does fuseMLR work?</title>
 
@@ -340,7 +340,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">How does fuseMLR work?</h1>
 <h4 class="author">Cesaire Fouodo</h4>
-<h4 class="date">2024-12-11</h4>
+<h4 class="date">2024-12-12</h4>
 
 
 
@@ -471,7 +471,7 @@ fuseMLR.</p>
 <span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>                 <span class="at">param_train_list =</span> <span class="fu">list</span>(<span class="at">probability =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>                                         <span class="at">mtry =</span> 1L),</span>
 <span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>                 <span class="at">param_pred_list =</span> <span class="fu">list</span>(),</span>
-<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>                 <span class="at">na_action =</span> <span class="st">&quot;na.keep&quot;</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>                 <span class="at">na_action =</span> <span class="st">&quot;na.rm&quot;</span>)</span>
 <span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="co">#&gt; Training        : training</span></span>
 <span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="co">#&gt; Problem type    : classification</span></span>
 <span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="co">#&gt; Status          : Not trained</span></span>
@@ -479,7 +479,7 @@ fuseMLR.</p>
 <span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a><span class="co">#&gt; Layers trained  : 0</span></span>
 <span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a><span class="co">#&gt; p               : 131</span></span>
 <span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a><span class="co">#&gt; n               :  50</span></span>
-<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a><span class="co">#&gt; na.action       : na.keep</span></span></code></pre></div>
+<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a><span class="co">#&gt; na.action       : na.rm</span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Create gene protein abundance layer</span></span>
 <span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="fu">createTrainLayer</span>(<span class="at">training =</span> training,</span>
 <span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>                 <span class="at">train_layer_id =</span> <span class="st">&quot;proteinexpr&quot;</span>,</span>
@@ -502,7 +502,7 @@ fuseMLR.</p>
 <span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a><span class="co">#&gt; Layers trained  : 0</span></span>
 <span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a><span class="co">#&gt; p               : 131 | 160</span></span>
 <span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a><span class="co">#&gt; n               :  50 |  50</span></span>
-<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a><span class="co">#&gt; na.action       : na.keep | na.keep</span></span></code></pre></div>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a><span class="co">#&gt; na.action       : na.rm | na.keep</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># Create methylation layer</span></span>
 <span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="fu">createTrainLayer</span>(<span class="at">training =</span> training,</span>
 <span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>                 <span class="at">train_layer_id =</span> <span class="st">&quot;methylation&quot;</span>,</span>
@@ -525,7 +525,7 @@ fuseMLR.</p>
 <span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a><span class="co">#&gt; Layers trained  : 0</span></span>
 <span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a><span class="co">#&gt; p               : 131 | 160 | 367</span></span>
 <span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a><span class="co">#&gt; n               :  50 |  50 |  50</span></span>
-<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a><span class="co">#&gt; na.action       : na.keep | na.keep | na.keep</span></span></code></pre></div>
+<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a><span class="co">#&gt; na.action       : na.rm | na.keep | na.keep</span></span></code></pre></div>
 <p>Also add a meta-layer. We use the weighted mean (internal function to
 <code>fuseMLR</code>) as meta-learner. Similarly learners, a
 meta-learner should allow at least the arguments <code>x</code> and
@@ -563,7 +563,7 @@ the best of the modality-specific learners.</p>
 <span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a><span class="co">#&gt; Layers trained  : 0</span></span>
 <span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a><span class="co">#&gt; p               : 131 | 160 | 367</span></span>
 <span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a><span class="co">#&gt; n               :  50 |  50 |  50</span></span>
-<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a><span class="co">#&gt; na.action       : na.keep | na.keep | na.keep</span></span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a><span class="co">#&gt; na.action       : na.rm | na.keep | na.keep</span></span>
 <span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a><span class="fu">print</span>(training)</span>
 <span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a><span class="co">#&gt; Training        : training</span></span>
 <span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a><span class="co">#&gt; Problem type    : classification</span></span>
@@ -572,7 +572,7 @@ the best of the modality-specific learners.</p>
 <span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a><span class="co">#&gt; Layers trained  : 0</span></span>
 <span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a><span class="co">#&gt; p               : 131 | 160 | 367</span></span>
 <span id="cb7-24"><a href="#cb7-24" tabindex="-1"></a><span class="co">#&gt; n               :  50 |  50 |  50</span></span>
-<span id="cb7-25"><a href="#cb7-25" tabindex="-1"></a><span class="co">#&gt; na.action       : na.keep | na.keep | na.keep</span></span></code></pre></div>
+<span id="cb7-25"><a href="#cb7-25" tabindex="-1"></a><span class="co">#&gt; na.action       : na.rm | na.keep | na.keep</span></span></code></pre></div>
 <p>Function <code>upsetplot()</code> is available to generate an upset
 of the training data, i.e. an overview how patients overlap across
 layers.</p>
@@ -660,7 +660,7 @@ variable level.</p>
 <span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="co">#&gt; Layers trained  : 0</span></span>
 <span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="co">#&gt; p               : 19 |  1 | 35</span></span>
 <span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="co">#&gt; n               : 50 | 50 | 50</span></span>
-<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a><span class="co">#&gt; na.action       : na.keep | na.keep | na.keep</span></span></code></pre></div>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a><span class="co">#&gt; na.action       : na.rm | na.keep | na.keep</span></span></code></pre></div>
 <p>For each layer, the variable selection results show the chosen
 variables.</p>
 </div>
@@ -713,8 +713,8 @@ trained layers.</p>
 <span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a><span class="co">#&gt; Layers trained  : 4</span></span>
 <span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a><span class="co">#&gt; Var. sel. used  : Yes</span></span>
 <span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a><span class="co">#&gt; p               : 19 |  1 | 35 |  3</span></span>
-<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a><span class="co">#&gt; n               : 50 | 50 | 50 | 69</span></span>
-<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a><span class="co">#&gt; na.action       : na.keep | na.keep | na.keep | na.rm</span></span></code></pre></div>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a><span class="co">#&gt; n               : 50 | 50 | 50 | 26</span></span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a><span class="co">#&gt; na.action       : na.rm | na.keep | na.keep | na.rm</span></span></code></pre></div>
 <p>We can also display a summary of <code>training</code> to see more
 details on layer levels. Information about the training data modality,
 the variable selection method and the learner stored at each layer will
@@ -729,8 +729,8 @@ be displayed.</p>
 <span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a><span class="co">#&gt; Layers trained  : 4</span></span>
 <span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a><span class="co">#&gt; Var. sel. used  : Yes</span></span>
 <span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a><span class="co">#&gt; p               : 19 |  1 | 35 |  3</span></span>
-<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a><span class="co">#&gt; n               : 50 | 50 | 50 | 69</span></span>
-<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a><span class="co">#&gt; na.action       : na.keep | na.keep | na.keep | na.rm</span></span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a><span class="co">#&gt; n               : 50 | 50 | 50 | 26</span></span>
+<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a><span class="co">#&gt; na.action       : na.rm | na.keep | na.keep | na.rm</span></span>
 <span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a><span class="co">#&gt; ----------------</span></span>
 <span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb13-15"><a href="#cb13-15" tabindex="-1"></a><span class="co">#&gt;    Layer geneexpr</span></span>
@@ -852,8 +852,8 @@ be displayed.</p>
 <span id="cb13-131"><a href="#cb13-131" tabindex="-1"></a><span class="co">#&gt;       Layer      : meta_layer</span></span>
 <span id="cb13-132"><a href="#cb13-132" tabindex="-1"></a><span class="co">#&gt;       Ind. id.   : IDS</span></span>
 <span id="cb13-133"><a href="#cb13-133" tabindex="-1"></a><span class="co">#&gt;       Target     : disease</span></span>
-<span id="cb13-134"><a href="#cb13-134" tabindex="-1"></a><span class="co">#&gt;       n          : 69</span></span>
-<span id="cb13-135"><a href="#cb13-135" tabindex="-1"></a><span class="co">#&gt;       Missing    : 43</span></span>
+<span id="cb13-134"><a href="#cb13-134" tabindex="-1"></a><span class="co">#&gt;       n          : 26</span></span>
+<span id="cb13-135"><a href="#cb13-135" tabindex="-1"></a><span class="co">#&gt;       Missing    : 0</span></span>
 <span id="cb13-136"><a href="#cb13-136" tabindex="-1"></a><span class="co">#&gt;       p          : 3</span></span>
 <span id="cb13-137"><a href="#cb13-137" tabindex="-1"></a><span class="co">#&gt;       ----------------</span></span></code></pre></div>
 <p>We use <code>extractModel()</code> to retrieve the list of stored
@@ -875,7 +875,7 @@ abundance, while the highest is given to gene expression.</p>
 <span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a><span class="co">#&gt;  $ geneexpr   :&#39;data.frame&#39;: 50 obs. of  21 variables:</span></span>
 <span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a><span class="co">#&gt;  $ proteinexpr:&#39;data.frame&#39;: 50 obs. of  3 variables:</span></span>
 <span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a><span class="co">#&gt;  $ methylation:&#39;data.frame&#39;: 50 obs. of  37 variables:</span></span>
-<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a><span class="co">#&gt;  $ meta_layer :&#39;data.frame&#39;: 69 obs. of  5 variables:</span></span></code></pre></div>
+<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a><span class="co">#&gt;  $ meta_layer :&#39;data.frame&#39;: 26 obs. of  5 variables:</span></span></code></pre></div>
 <p>The three simulated training modalities and the meta-data are
 returned.</p>
 </div>

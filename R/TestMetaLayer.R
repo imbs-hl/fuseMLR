@@ -94,15 +94,12 @@ TestMetaLayer <- R6Class("TestMetaLayer",
                           #' Name of individual column IDs.
                           #' @param data_frame  `data.frame(1)` \cr
                           #' \code{data.frame} of layer specific predictions.
-                          #' @param meta_layer `TestLayer(1)` \cr
-                          #' Layer where to store the [TestData] object.
                           #'
                           #' @export
                           # TODO: Please do not export me.
                           setTestData = function (id,
                                                  ind_col,
-                                                 data_frame,
-                                                 meta_layer) {
+                                                 data_frame) {
                             TestData$new(id = id,
                                         ind_col = ind_col,
                                         data_frame = data_frame,
