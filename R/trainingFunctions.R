@@ -1,6 +1,6 @@
 #' @title createTraining
 #' @description
-#' Creates a [Training] object. Training object are designed to encapsulate training layers
+#' Creates a [Training] object. A training object is designed to encapsulate training layers
 #' and training meta-layer. Functions [createTrainLayer] and [createTrainMetaLayer] are available
 #' to add the training layer and the training meta-layer to a training object.
 #'

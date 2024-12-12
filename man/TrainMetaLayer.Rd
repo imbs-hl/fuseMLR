@@ -268,7 +268,7 @@ Getter of the current access to the meta layer.
 Create and set an \link{TrainData} object to the current
 meta learner.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TrainMetaLayer$setTrainData(id, ind_col, data_frame, target)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TrainMetaLayer$setTrainData(id, ind_col, data_frame)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -282,9 +282,6 @@ Name of individual column IDs.}
 
 \item{\code{data_frame}}{\code{data.frame} \cr
 \code{data.frame} of layer specific predictions.}
-
-\item{\code{target}}{\code{character} \cr
-Name of the target variable}
 }
 \if{html}{\out{</div>}}
 }

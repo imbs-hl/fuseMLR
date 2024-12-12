@@ -140,7 +140,7 @@ Getter of the current access to the meta layer.
 Create and set an \link{TestData} object to the current
 new meta learner.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TestMetaLayer$setTestData(id, ind_col, data_frame, meta_layer)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TestMetaLayer$setTestData(id, ind_col, data_frame)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -154,9 +154,6 @@ Name of individual column IDs.}
 
 \item{\code{data_frame}}{\code{data.frame(1)} \cr
 \code{data.frame} of layer specific predictions.}
-
-\item{\code{meta_layer}}{\code{TestLayer(1)} \cr
-Layer where to store the \link{TestData} object.}
 }
 \if{html}{\out{</div>}}
 }
