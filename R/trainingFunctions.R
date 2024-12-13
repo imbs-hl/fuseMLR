@@ -44,54 +44,64 @@ createTraining = function (id,
 #' selection methods, and a modality-specific learner.
 #'
 #' @param training `Training` \cr
-#' Training object where the created layer will be stored.
+#' Training object for storing the created layer.
 #' @param train_layer_id `character` \cr
 #' ID of the [TrainLayer] to be created.
 #' @param train_data `data.frame` \cr
-#' Data modality to be stored in [TrainData].
+#' Data modality to be stored on the layer.
 #' @param varsel_package `character` \cr
-#' Name of the package containing the function that implements the variable selection algorithm.\cr
+#' Package name containing the variable selection algorithm function.
+#' Defaults to `NULL` if the function exists in the current working environment.\cr
 #' @param varsel_fct `character` \cr
-#' Name of variable selection function. Default value is `NULL` for no variable selection.
-#' If specified, the function must allow at least two parameters `x` (of predictors)
-#' and `y` (response values), and return a vector of selected variables. Otherwise use the interface parameters
-#' `x_varsel`, `y_varsel` below to map the original argument names, and `extract_var_fct`  indicate how to extract the vector of selected variables.
-#' An exception, however, is made for the Boruta function, for which an internal adjustment is implemented; its use requires no further modifications.
+#' Variable selection function name. Default value is `NULL` for no variable selection.
+#' If specified, the function must accept at least two parameters: `x` (predictors)
+#' and `y` (response values), and return a vector of selected variables.
+#' Alternatively, use the interface parameters `x_varsel` and `y_varsel` to map
+#' the original argument names, and `extract_var_fct` to specify how to extract
+#' the vector of selected variables. An exception is made for the `Boruta` function,
+#' which includes an internal adjustment and requires no additional modifications.
 #' @param varsel_param `list` \cr
 #' List of arguments to be passed to \code{varsel_fct}.
 #' @param lrner_package `character` \cr
-#' Name of the package containing the function that implements the learning algorithm.
-#' Default is `NULL`, if the function is available in the current working environment.
+#' Name of the package containing the learning algorithm function. Defaults to
+#' `NULL` if the function is available in the current working environment.
 #' @param lrn_fct  `character` \cr
-#' Name of the learning function. The corresponding function must allow at least two parameters `x` (of predictors)
-#' and `y` (response values), and return a model. Otherwise, the interface
-#' parameters `x_lrn` and `y_lrn` below can be used to map these argument name with the original arguments in your function.
-#' The returned model must allow the use of the generic function `predict` (with arguments `object` and `data`) to make
-#' predictions for new data and predictions should be a vector or a `list` containing a vector called
-#' `predictions` with the predicted values. If the arguments `object` and `data` are named differently in your predict
-#' function, use the interface parameters `object` and `data` below to specify the original names. In addition, if
-#' predictions are stored as a `matrix` or a `data.frame` (e.g. predicted probabilities for different classes in dichotomous classification),
-#' only the second column (assumed to be the class `1` probabilities) will be considered. If the predicted values are not returned in one of the formats above,
-#' use the argument `extract_pred_fct` below to specify how the predicted values can be extracted from the predicted object.
+#' Name of the learning function. The function must accept at least two parameters:
+#' `x` (predictors) and `y` (response values) and return a model. Alternatively,
+#' use the interface parameters `x_lrn` and `y_lrn` to map these names to the
+#' original arguments in your function.
+#' The returned model must support the generic `predict` function (with arguments
+#' `object` and `data`) to generate predictions for new data. Predictions should
+#' be either a vector or a `list` containing a vector named `predictions` with
+#' the predicted values.\cr
+#' If the arguments `object` and `data` have different names in your `predict`
+#' function, use the interface parameters below to map them to the original names.
+#' Additionally, if predictions are stored as a `matrix` or `data.frame`
+#' (e.g., predicted probabilities for dichotomous classification), only the second
+#' column (assumed to be class `1` probabilities) will be used.
+#' If the predicted values are not returned in one of the formats mentioned above,
+#' use the `extract_pred_fct` argument below to specify how to extract the predicted
+#' values from the prediction object.
 #' @param param_train_list  `character` \cr
 #' List of arguments to be passed to \code{lrn_fct}.
 #' @param param_pred_list   `character` \cr
-#' List of arguments to be passed to \code{predict} when computing predictions.
+#' List of arguments to be passed to \code{predict} when generating predictions.
 #' @param na_action `character`\cr
-#' Handling of missing values in data a modality during training. Set to "na.keep" to keep missing values, or "na.rm" to remove individuals with missing values. Imputation of missing values in data modalities is not yet handled.
+#' Handling of missing values in data during training. Set to `"na.keep"` to retain
+#' missing values, or `"na.rm"` to remove instances with missing values.
 #' @param object `character` \cr
-#' The generic function \code{predict} uses a parameter \code{object} to pass a model.
-#' If the corresponding argument is named differently in your predict function, specify the name.
+#' The generic function `predict` uses the parameter `object` to pass a model.
+#' If the corresponding argument is named differently in your `predict` function, specify its name.
 #' @param data `character` \cr
 #' The generic function \code{predict} uses a parameter \code{data} to pass new data.
 #' If the corresponding argument is named differently in your predict function, specify the name.
 #' @param extract_pred_fct `character or function` \cr
-#' If the predict function that is called for the model does not return a vector, then
-#' use this argument to specify a (or a name of a) function that can be used to extract vector of predictions.
-#' Default value is NULL, if predictions are rerturned as vector.
+#' If the `predict` function called for the model does not return a vector,
+#' use this argument to specify a function (or the name of a function) to extract
+#' the vector of predictions. The default value is `NULL` if predictions are returned as a vector.
 #' @param extract_var_fct `character or function` \cr
-#' If the variable selection function that is called does not return a vector, then
-#' use this argument to specify a (or a name of a) function that can be used to extract vector of selected variables.
+#' If the variable selection function does not return a vector, use this argument
+#'  to specify a function (or the name of a function) to extract the vector of selected variables.
 #' @param x_varsel `character` \cr
 #' If the name of the argument used by the provided original variable selection function to pass
 #' the matrix of independent variable is not \code{x}, use this argument to specify how it is called in the provided function.
@@ -184,32 +194,40 @@ createTrainLayer = function (training,
 #' base models.
 #'
 #' @param training `Training` \cr
-#' Training object where the created layer will be stored.
+#' Training object for storing the created meta-layer.
 #' @param meta_layer_id `character` \cr
 #' ID of the layer to be created.
 #' @param lrner_package `character` \cr
-#' Name of the package containing the function that implements the learning algorithm.
-#' Default is `NULL`, if the function is available in the current working environment.
+#' Package name containing the variable selection algorithm function.
+#' Defaults to `NULL` if the function exists in the current working environment.
 #' @param lrn_fct  `character` \cr
-#' Name of the learning function. The corresponding function must allow at least two parameters `x` (of predictors)
-#' and `y` (response values), and return a model. If not, the interface
-#' parameters `x_lrn` and `y_lrn` below can be used to map these argument name with the original arguments in your function.
-#' The returned model must allow the use of the generic function `predict` (with arguments `object` and `data`) to make
-#' predictions for new data and predictions should be a vector or a `list` containing a vector called
-#' `predictions` with the predicted values. See the details below about meta-learners. If the arguments `object` and `data` are named differently in your predict
-#' function, use the interface parameters `object` and `data` below to specify the original names.
+#' Name of the learning function. The function must accept at least two
+#' parameters: `x` (predictors) and `y` (response values), and return a model.
+#' If not, use the interface parameters `x_lrn` and `y_lrn` below to map these
+#' argument names to the original arguments in your function. The returned model
+#' must support the generic `predict` function (with arguments `object` and `data`)
+#' to make predictions for new data, and the predictions should be a vector or
+#' a `list` containing a vector called `predictions` with the predicted values.
+#' If the arguments `object` and `data` are named differently in your predict
+#' function, use the interface parameters `object` and `data` below to specify
+#' the original names. See the details below about meta-learners.
 #' @param param_train_list  `character` \cr
 #' List of arguments to be passed to \code{lrn_fct}.
 #' @param param_pred_list   `list` \cr
 #' List of arguments to be passed to \code{predict} when computing predictions.
 #' @param na_action `character`\cr
-#' Handling of missing values in modality-specific predictions during training. Set to "na.keep" to keep missing values, "na.rm" to remove individuals with missing values or "na.impute" to impute missing values in modality-specific predictions. Only median and mode based imputations are actually handled. With the "na.keep" option, ensure that the provided meta-learner can handle missing values.
+#' Handling of missing values in modality-specific predictions during training.
+#' Set to `"na.keep"` to keep missing values, `"na.rm"` to remove individuals
+#' with missing values or `"na.impute"` to impute missing values in modality-specific
+#'  predictions. Only median and mode based imputations are actually handled.
+#'  With the `"na.keep"` option, ensure that the provided meta-learner can handle missing values.
 #' @param x_lrn `character` \cr
-#' If the name of the argument used by the provided original functions to pass
-#' the matrix of independent variable is not \code{x}, use this argument to specify how it is called in the provided function.
+#' If the argument name used by the provided original function to pass the matrix
+#' of independent variables is not `x`, use this argument to specify the name used
+#' in the function.
 #' @param y_lrn `character` \cr
-#' If the name of the argument used by the provided original functions to pass
-#' the target variable is not \code{y}, use this argument to specify how it is called in the provided function.
+#' If the argument name used by the provided original function to pass the target
+#'  variable is not `y`, use this argument to specify the name used in the function.
 #' @param object `character` \cr
 #' The generic function \code{predict} uses a parameter \code{object} to pass a model.
 #' If the corresponding argument is named differently in your predict function, specify the name.
@@ -219,7 +237,7 @@ createTrainLayer = function (training,
 #' @param extract_pred_fct `character or function` \cr
 #' If the predict function that is called for the model does not return a vector, then
 #' use this argument to specify a (or a name of a) function that can be used to extract vector of predictions.
-#' Default value is NULL, if predictions are in a vector.
+#' Defaults to NULL, if predictions are a vector.
 #' @details
 #'
 #' Internal meta-learners are available in the package.
@@ -283,10 +301,10 @@ createTrainMetaLayer = function (training,
 
 #' @title varSelection
 #' @description
-#' Variable selection on the current training object.
+#' Variable selection on the training object passed as argument.
 #'
 #' @param training `Training` \cr
-#' Training object where the created layer will be stored.
+#' Training object for storing the created layer.
 #' @param ind_subset `vector` \cr
 #' ID subset of individuals to be used for variable selection.
 #'
@@ -316,14 +334,16 @@ varSelection = function (training,
 #' object which can be used for predictions.
 #'
 #' @param training `Training` \cr
-#' Training object where the created layer will be stored.
+#' Training object for storing training layers.
 #' @param ind_subset `vector` \cr
 #' ID subset to be used for training.
 #' @param use_var_sel `boolean` \cr
-#' If TRUE and no variable selection has been performed for the provide training object, then a variable selection will proceed the training.
+#' If `TRUE` and no variable selection has been performed for the provide training object,
+#' then a variable selection will proceed the training.
 #' Otherwise, if variable selection has been previously performed, the selected variables will be used for training.
 #' @param resampling_method `function` \cr
-#' Function for internal validation. If not specify, the \code{resampling} function from the package \code{caret} is used for a 10-folds cross-validation.
+#' Function for internal validation. If not specify, the \code{resampling} function
+#' from the package \code{caret} is used for a 10-folds cross-validation.
 #' @param resampling_arg `list` \cr
 #' List of arguments to be passed to the function.
 #' @param seed `integer` \cr
@@ -361,14 +381,14 @@ fusemlr = function (training,
 #' Computes predictions for the [Testing] object passed as argument.
 #'
 #' @param object `Training` \cr
-#' Training object to be used to compute predictions.
+#' A trained Training object to be used to compute predictions.
 #' @param testing `Testing` \cr
 #' A new testing object to be predicted.
 #' @param ind_subset `vector` \cr
 #' Vector of IDs to be predicted.
 #'
 #' @return
-#' The predicted object. All layers and the meta layer are predicted. This is the final predicted object.
+#' The final predicted object. All layers and the meta layer are predicted.
 #' @export
 #' @method predict Training
 predict.Training = function (object,
@@ -411,7 +431,7 @@ extractData = function (object) {
 
 #' @title Training object Summaries
 #' @description
-#' Summaries a fuseMLR [Training] object.
+#' Summaries a `fuseMLR` [Training] object.
 #'
 #' @param object `Training` \cr
 #' The [Training] object of interest.

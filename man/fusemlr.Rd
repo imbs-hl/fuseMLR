@@ -15,17 +15,19 @@ fusemlr(
 }
 \arguments{
 \item{training}{\code{Training} \cr
-Training object where the created layer will be stored.}
+Training object for storing training layers.}
 
 \item{ind_subset}{\code{vector} \cr
 ID subset to be used for training.}
 
 \item{use_var_sel}{\code{boolean} \cr
-If TRUE and no variable selection has been performed for the provide training object, then a variable selection will proceed the training.
+If \code{TRUE} and no variable selection has been performed for the provide training object,
+then a variable selection will proceed the training.
 Otherwise, if variable selection has been previously performed, the selected variables will be used for training.}
 
 \item{resampling_method}{\code{function} \cr
-Function for internal validation. If not specify, the \code{resampling} function from the package \code{caret} is used for a 10-folds cross-validation.}
+Function for internal validation. If not specify, the \code{resampling} function
+from the package \code{caret} is used for a 10-folds cross-validation.}
 
 \item{resampling_arg}{\code{list} \cr
 List of arguments to be passed to the function.}

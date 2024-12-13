@@ -28,51 +28,61 @@ createTrainLayer(
 }
 \arguments{
 \item{training}{\code{Training} \cr
-Training object where the created layer will be stored.}
+Training object for storing the created layer.}
 
 \item{train_layer_id}{\code{character} \cr
 ID of the \link{TrainLayer} to be created.}
 
 \item{train_data}{\code{data.frame} \cr
-Data modality to be stored in \link{TrainData}.}
+Data modality to be stored on the layer.}
 
 \item{varsel_package}{\code{character} \cr
-Name of the package containing the function that implements the variable selection algorithm.\cr}
+Package name containing the variable selection algorithm function.
+Defaults to \code{NULL} if the function exists in the current working environment.\cr}
 
 \item{varsel_fct}{\code{character} \cr
-Name of variable selection function. Default value is \code{NULL} for no variable selection.
-If specified, the function must allow at least two parameters \code{x} (of predictors)
-and \code{y} (response values), and return a vector of selected variables. Otherwise use the interface parameters
-\code{x_varsel}, \code{y_varsel} below to map the original argument names, and \code{extract_var_fct}  indicate how to extract the vector of selected variables.
-An exception, however, is made for the Boruta function, for which an internal adjustment is implemented; its use requires no further modifications.}
+Variable selection function name. Default value is \code{NULL} for no variable selection.
+If specified, the function must accept at least two parameters: \code{x} (predictors)
+and \code{y} (response values), and return a vector of selected variables.
+Alternatively, use the interface parameters \code{x_varsel} and \code{y_varsel} to map
+the original argument names, and \code{extract_var_fct} to specify how to extract
+the vector of selected variables. An exception is made for the \code{Boruta} function,
+which includes an internal adjustment and requires no additional modifications.}
 
 \item{varsel_param}{\code{list} \cr
 List of arguments to be passed to \code{varsel_fct}.}
 
 \item{lrner_package}{\code{character} \cr
-Name of the package containing the function that implements the learning algorithm.
-Default is \code{NULL}, if the function is available in the current working environment.}
+Name of the package containing the learning algorithm function. Defaults to
+\code{NULL} if the function is available in the current working environment.}
 
 \item{lrn_fct}{\code{character} \cr
-Name of the learning function. The corresponding function must allow at least two parameters \code{x} (of predictors)
-and \code{y} (response values), and return a model. Otherwise, the interface
-parameters \code{x_lrn} and \code{y_lrn} below can be used to map these argument name with the original arguments in your function.
-The returned model must allow the use of the generic function \code{predict} (with arguments \code{object} and \code{data}) to make
-predictions for new data and predictions should be a vector or a \code{list} containing a vector called
-\code{predictions} with the predicted values. If the arguments \code{object} and \code{data} are named differently in your predict
-function, use the interface parameters \code{object} and \code{data} below to specify the original names. In addition, if
-predictions are stored as a \code{matrix} or a \code{data.frame} (e.g. predicted probabilities for different classes in dichotomous classification),
-only the second column (assumed to be the class \code{1} probabilities) will be considered. If the predicted values are not returned in one of the formats above,
-use the argument \code{extract_pred_fct} below to specify how the predicted values can be extracted from the predicted object.}
+Name of the learning function. The function must accept at least two parameters:
+\code{x} (predictors) and \code{y} (response values) and return a model. Alternatively,
+use the interface parameters \code{x_lrn} and \code{y_lrn} to map these names to the
+original arguments in your function.
+The returned model must support the generic \code{predict} function (with arguments
+\code{object} and \code{data}) to generate predictions for new data. Predictions should
+be either a vector or a \code{list} containing a vector named \code{predictions} with
+the predicted values.\cr
+If the arguments \code{object} and \code{data} have different names in your \code{predict}
+function, use the interface parameters below to map them to the original names.
+Additionally, if predictions are stored as a \code{matrix} or \code{data.frame}
+(e.g., predicted probabilities for dichotomous classification), only the second
+column (assumed to be class \code{1} probabilities) will be used.
+If the predicted values are not returned in one of the formats mentioned above,
+use the \code{extract_pred_fct} argument below to specify how to extract the predicted
+values from the prediction object.}
 
 \item{param_train_list}{\code{character} \cr
 List of arguments to be passed to \code{lrn_fct}.}
 
 \item{param_pred_list}{\code{character} \cr
-List of arguments to be passed to \code{predict} when computing predictions.}
+List of arguments to be passed to \code{predict} when generating predictions.}
 
 \item{na_action}{\code{character}\cr
-Handling of missing values in data a modality during training. Set to "na.keep" to keep missing values, or "na.rm" to remove individuals with missing values. Imputation of missing values in data modalities is not yet handled.}
+Handling of missing values in data during training. Set to \code{"na.keep"} to retain
+missing values, or \code{"na.rm"} to remove instances with missing values.}
 
 \item{x_varsel}{\code{character} \cr
 If the name of the argument used by the provided original variable selection function to pass
@@ -91,21 +101,21 @@ If the name of the argument used by the provided original learning function to p
 the target variable is not \code{y}, use this argument to specify how it is called in the provided function.}
 
 \item{object}{\code{character} \cr
-The generic function \code{predict} uses a parameter \code{object} to pass a model.
-If the corresponding argument is named differently in your predict function, specify the name.}
+The generic function \code{predict} uses the parameter \code{object} to pass a model.
+If the corresponding argument is named differently in your \code{predict} function, specify its name.}
 
 \item{data}{\code{character} \cr
 The generic function \code{predict} uses a parameter \code{data} to pass new data.
 If the corresponding argument is named differently in your predict function, specify the name.}
 
 \item{extract_pred_fct}{\verb{character or function} \cr
-If the predict function that is called for the model does not return a vector, then
-use this argument to specify a (or a name of a) function that can be used to extract vector of predictions.
-Default value is NULL, if predictions are rerturned as vector.}
+If the \code{predict} function called for the model does not return a vector,
+use this argument to specify a function (or the name of a function) to extract
+the vector of predictions. The default value is \code{NULL} if predictions are returned as a vector.}
 
 \item{extract_var_fct}{\verb{character or function} \cr
-If the variable selection function that is called does not return a vector, then
-use this argument to specify a (or a name of a) function that can be used to extract vector of selected variables.}
+If the variable selection function does not return a vector, use this argument
+to specify a function (or the name of a function) to extract the vector of selected variables.}
 }
 \value{
 The updated \link{Training} object (with the new layer) is returned.

@@ -5,9 +5,9 @@
 #' @param id `character` \cr
 #' Testing id.
 #' @param ind_col `character` \cr
-#' Name of column of individuals IDs in testing data.frame.
+#' Name of column of individuals IDs in testing `data.frame`.
 #' @param verbose `boolean` \cr
-#' Warning messages will be displayed if set to TRUE.
+#' Warning messages will be displayed if set to `TRUE`.
 #' @return
 #' A [Testing] object.
 #' @export
@@ -25,7 +25,7 @@ createTesting = function (id,
 
 #' @title createTestLayer
 #' @description
-#' Creates and store a [TestLayer] on the [Testing] object passed as argument.
+#' Creates and stores a [TestLayer] on the [Testing] object passed as argument.
 #'
 #' @param testing `Testing` \cr
 #' Testing object where the created layer will be stored.
@@ -57,7 +57,7 @@ createTestLayer = function (testing,
 
 #' @title Testing object Summaries
 #' @description
-#' Summaries a fuseMLR [Testing] object.
+#' Summaries a `fuseMLR` [Testing] object.
 #'
 #' @param object `Testing` \cr
 #' The [Testing] object of interest.

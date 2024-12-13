@@ -11,10 +11,10 @@ createTesting(id, ind_col, verbose = TRUE)
 Testing id.}
 
 \item{ind_col}{\code{character} \cr
-Name of column of individuals IDs in testing data.frame.}
+Name of column of individuals IDs in testing \code{data.frame}.}
 
 \item{verbose}{\code{boolean} \cr
-Warning messages will be displayed if set to TRUE.}
+Warning messages will be displayed if set to \code{TRUE}.}
 }
 \value{
 A \link{Testing} object.

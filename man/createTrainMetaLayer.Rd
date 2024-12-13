@@ -21,23 +21,26 @@ createTrainMetaLayer(
 }
 \arguments{
 \item{training}{\code{Training} \cr
-Training object where the created layer will be stored.}
+Training object for storing the created meta-layer.}
 
 \item{meta_layer_id}{\code{character} \cr
 ID of the layer to be created.}
 
 \item{lrner_package}{\code{character} \cr
-Name of the package containing the function that implements the learning algorithm.
-Default is \code{NULL}, if the function is available in the current working environment.}
+Package name containing the variable selection algorithm function.
+Defaults to \code{NULL} if the function exists in the current working environment.}
 
 \item{lrn_fct}{\code{character} \cr
-Name of the learning function. The corresponding function must allow at least two parameters \code{x} (of predictors)
-and \code{y} (response values), and return a model. If not, the interface
-parameters \code{x_lrn} and \code{y_lrn} below can be used to map these argument name with the original arguments in your function.
-The returned model must allow the use of the generic function \code{predict} (with arguments \code{object} and \code{data}) to make
-predictions for new data and predictions should be a vector or a \code{list} containing a vector called
-\code{predictions} with the predicted values. See the details below about meta-learners. If the arguments \code{object} and \code{data} are named differently in your predict
-function, use the interface parameters \code{object} and \code{data} below to specify the original names.}
+Name of the learning function. The function must accept at least two
+parameters: \code{x} (predictors) and \code{y} (response values), and return a model.
+If not, use the interface parameters \code{x_lrn} and \code{y_lrn} below to map these
+argument names to the original arguments in your function. The returned model
+must support the generic \code{predict} function (with arguments \code{object} and \code{data})
+to make predictions for new data, and the predictions should be a vector or
+a \code{list} containing a vector called \code{predictions} with the predicted values.
+If the arguments \code{object} and \code{data} are named differently in your predict
+function, use the interface parameters \code{object} and \code{data} below to specify
+the original names. See the details below about meta-learners.}
 
 \item{param_train_list}{\code{character} \cr
 List of arguments to be passed to \code{lrn_fct}.}
@@ -46,15 +49,20 @@ List of arguments to be passed to \code{lrn_fct}.}
 List of arguments to be passed to \code{predict} when computing predictions.}
 
 \item{na_action}{\code{character}\cr
-Handling of missing values in modality-specific predictions during training. Set to "na.keep" to keep missing values, "na.rm" to remove individuals with missing values or "na.impute" to impute missing values in modality-specific predictions. Only median and mode based imputations are actually handled. With the "na.keep" option, ensure that the provided meta-learner can handle missing values.}
+Handling of missing values in modality-specific predictions during training.
+Set to \code{"na.keep"} to keep missing values, \code{"na.rm"} to remove individuals
+with missing values or \code{"na.impute"} to impute missing values in modality-specific
+predictions. Only median and mode based imputations are actually handled.
+With the \code{"na.keep"} option, ensure that the provided meta-learner can handle missing values.}
 
 \item{x_lrn}{\code{character} \cr
-If the name of the argument used by the provided original functions to pass
-the matrix of independent variable is not \code{x}, use this argument to specify how it is called in the provided function.}
+If the argument name used by the provided original function to pass the matrix
+of independent variables is not \code{x}, use this argument to specify the name used
+in the function.}
 
 \item{y_lrn}{\code{character} \cr
-If the name of the argument used by the provided original functions to pass
-the target variable is not \code{y}, use this argument to specify how it is called in the provided function.}
+If the argument name used by the provided original function to pass the target
+variable is not \code{y}, use this argument to specify the name used in the function.}
 
 \item{object}{\code{character} \cr
 The generic function \code{predict} uses a parameter \code{object} to pass a model.
@@ -67,7 +75,7 @@ If the corresponding argument is named differently in your predict function, spe
 \item{extract_pred_fct}{\verb{character or function} \cr
 If the predict function that is called for the model does not return a vector, then
 use this argument to specify a (or a name of a) function that can be used to extract vector of predictions.
-Default value is NULL, if predictions are in a vector.}
+Defaults to NULL, if predictions are a vector.}
 }
 \value{
 The updated \link{Training} object (with the new layer) is returned.

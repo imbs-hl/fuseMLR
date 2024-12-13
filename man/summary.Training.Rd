@@ -14,5 +14,5 @@ The \link{Training} object of interest.}
 Further arguments.}
 }
 \description{
-Summaries a fuseMLR \link{Training} object.
+Summaries a \code{fuseMLR} \link{Training} object.
 }

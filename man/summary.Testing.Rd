@@ -14,5 +14,5 @@ The \link{Testing} object of interest.}
 Further arguments.}
 }
 \description{
-Summaries a fuseMLR \link{Testing} object.
+Summaries a \code{fuseMLR} \link{Testing} object.
 }

@@ -20,5 +20,5 @@ Data modality to be stored in \link{TestData}.}
 The updated \link{Testing} object (with the new layer) is returned.
 }
 \description{
-Creates and store a \link{TestLayer} on the \link{Testing} object passed as argument.
+Creates and stores a \link{TestLayer} on the \link{Testing} object passed as argument.
 }

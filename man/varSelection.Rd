@@ -8,7 +8,7 @@ varSelection(training, ind_subset = NULL)
 }
 \arguments{
 \item{training}{\code{Training} \cr
-Training object where the created layer will be stored.}
+Training object for storing the created layer.}
 
 \item{ind_subset}{\code{vector} \cr
 ID subset of individuals to be used for variable selection.}
@@ -17,7 +17,7 @@ ID subset of individuals to be used for variable selection.}
 A \code{data.frame} with two columns: layer and selected variables.
 }
 \description{
-Variable selection on the current training object.
+Variable selection on the training object passed as argument.
 }
 \references{
 Fouodo C.J.K, Bleskina M. and Szymczak (2024). fuseMLR: An R package for integrative prediction modeling of multi-omics data, paper submitted. \cr

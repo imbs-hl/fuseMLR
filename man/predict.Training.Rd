@@ -8,7 +8,7 @@
 }
 \arguments{
 \item{object}{\code{Training} \cr
-Training object to be used to compute predictions.}
+A trained Training object to be used to compute predictions.}
 
 \item{testing}{\code{Testing} \cr
 A new testing object to be predicted.}
@@ -17,7 +17,7 @@ A new testing object to be predicted.}
 Vector of IDs to be predicted.}
 }
 \value{
-The predicted object. All layers and the meta layer are predicted. This is the final predicted object.
+The final predicted object. All layers and the meta layer are predicted.
 }
 \description{
 Computes predictions for the \link{Testing} object passed as argument.

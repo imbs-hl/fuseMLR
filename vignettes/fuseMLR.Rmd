@@ -86,7 +86,7 @@ createTrainLayer(training = training,
                  param_train_list = list(probability = TRUE,
                                          mtry = 1L),
                  param_pred_list = list(),
-                 na_action = "na.rm")
+                 na_action = "na.keep")
 ```
 
 ```{r proteinexpr, include=TRUE, eval=TRUE}
