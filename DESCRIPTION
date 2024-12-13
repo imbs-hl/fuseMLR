@@ -1,7 +1,7 @@
 Package: fuseMLR
 Type: Package
 Title: Fusing machine learning in R
-Version: 1.0.0
+Version: 0.0.1
 Author: Cesaire J. K. Fouodo
 Maintainer: Cesaire J. K. Fouodo <cesaire.kuetefouodo@uni-luebeck.de>
 Description: Recent technological advances have enable the simultaneous collection
