@@ -69,7 +69,7 @@ A ```training``` contains modality-specific training layers (instances of the **
 
 Three main functions are necessary to create the ```training```: ```createTraining()```, ```createTrainLayer()``` and ```createTrainMetaLayer()```. ```createTraining()``` creates an empty ```training```, on which modalitity-specific training layers are added using the function ```createTrainLayer()```. Function ```createTrainMetaLayer()``` is used to add meta-layer to ```training```. 
 
-The following code adds a gene expression, a protein abundance, and a methylation layer to ```training```. For illustration purpose we use the same variable selection method `Boruta` and the same learner (`ranger`) for all layers. These  functions fulfill `fuseMLR` requirements in terms of arguments and outputs (see `createTrainLayer` documentation for details). We expect the variable selection function to accept two arguments: `x` (the predictor design matrix) and `y` (the response vector). The function must return a vector of selected variables. Methods that do not follow this format -- such as Vita (via `ranger`) or Lasso (via `glmnet`) -- require additional wrapping or a custom function to extract the selected variables, for example, based on a significance threshold. An exception, however, is made for the Boruta function, for which an internal adjustment is implemented; its use requires no further modifications. For learners, the arguments `x` and `y` are mandatory as well, and the resulting model must support the generic `predict` function. Predictions should be returned either as a vector or a list with a `predictions` field containing the predicted values (also a vector). If the function does not meet the required input and output criteria, users should follow the steps in [E-Interface and wrapping](#e---interface-and-wrapping) and Wrapping to create an interface or wrap their function for use with fuseMLR.
+The following code adds a gene expression, a protein abundance, and a methylation layer to ```training```. For illustration purpose we use the same variable selection method `Boruta` and the same learner (`ranger`) for all layers. These  functions fulfill `fuseMLR` requirements in terms of arguments and outputs (see `createTrainLayer` documentation for details). We expect the variable selection function to accept two arguments: `x` (the predictor design matrix) and `y` (the response vector). The function must return a vector of selected variables. Methods that do not follow this format -- such as Vita (via `ranger`) or Lasso (via `glmnet`) -- require additional wrapping or a custom function to extract the selected variables, for example, based on a significance threshold. An exception, however, is made for the Boruta function, for which an internal adjustment is implemented; its use requires no further modifications. For learners, the arguments `x` and `y` are mandatory as well, and the resulting model must support the generic `predict` function. Predictions should be returned either as a vector or a list with a `predictions` field containing the predicted values (also a vector). If the function does not meet the required input and output criteria, users should follow the steps in [E-Interface and wrapping](#e---interface-and-wrapping) to create an interface or wrap their function for use with `fuseMLR`.
 
 ```{r geneexpr, include=TRUE, eval=TRUE}
 # Create gene expression layer.
@@ -125,7 +125,7 @@ createTrainLayer(training = training,
                  na_action = "na.keep")
 ```
 
-Also add a meta-layer. We use the weighted mean (internal function to `fuseMLR`) as meta-learner. Similarly learners, a meta-learner should allow at least the arguments `x` and `y` to pass the design matrix of predictors and should return a model that allow to call the generic function `predict` to make predictions for a new dataset (see documentation of `createTrainMetaLayer` for details). If these criteria are not fulfilled the explanation in [E-Interface and wrapping](#e---interface-and-wrapping) can be used to map the `x` and `y` to the original argument names or to wrap the original function. We also provide information about possible meta-learner can be used in [Appendix](#appendix).
+Also add a meta-layer. We use the weighted mean (internal function to `fuseMLR`) as meta-learner. Similarly to learners, a meta-learner should allow at least the arguments `x` and `y` to pass the design matrix of predictors and should return a model that allow to call the generic function `predict` to make predictions for a new dataset (see documentation of `createTrainMetaLayer` for details). If these criteria are not fulfilled, the explanation provided in [E-Interface and wrapping](#e---interface-and-wrapping) can be followed to to map the `x` and `y` to the original argument names or to wrap the original function. In [Appendix](#appendix) we provide information about available meta-learners.
 
 ```{css, echo=FALSE}
 .scroll-100 {
@@ -135,7 +135,7 @@ Also add a meta-layer. We use the weighted mean (internal function to `fuseMLR`)
 }
 ```
 
-We use the weighted mean as the meta-learner. Theoretically, we do not expect this meta-learner to outperform all the modality-specific learners but rather to achieve a performance level between the worst and the best of the modality-specific learners.
+We use the weighted mean as the meta-learner. Weighted learners allow the meta-model to be more robust against outliers or noisy data. By adjusting the weights, it can downplay the influence of less reliable models or predictions, thus making the system more stable in the face of unpredictable data. Theoretically, we do not expect this meta-learner to outperform all the modality-specific learners but rather to achieve a performance level between the worst and the best of the modality-specific learners. 
 
 ```{r training_meta_layers, include=TRUE, eval=TRUE, class.output="scroll-100"}
 # Create meta layer with imputation of missing values.
@@ -176,7 +176,7 @@ For each layer, the variable selection results show the chosen variables.
 
 ### C.2 - Train ##
 
-We use the function ```fusemlr()``` to train our models using the subset of selected variables. Here we set `use_var_sel = TRUE` to previously perform variable selection before model training.
+We use the function ```fusemlr()``` to train our models using the subset of selected variables. Here we set `use_var_sel = TRUE` to use variables obtained from the variable selection step.
 
 ```{r lrner_train, include=TRUE, eval=TRUE, message=TRUE}
 set.seed(5462)
@@ -190,8 +190,7 @@ The display of the training object now updates information about the trained lay
 print(training)
 ```
 
-
-We can also display a summary of `training` to see more details on layer levels. Information about the training data modality, the variable selection method and the learner stored at each layer will be displayed. 
+We can also display a summary of `training` to see more details on layer levels. Information about the training data modality, the variable selection method and the learner stored at each layer are displayed. 
 
 ```{r training_summary, include=TRUE, eval=TRUE, message=TRUE}
 summary(training)
@@ -257,7 +256,7 @@ data_list <- extractData(object = testing)
 str(object = data_list, max.level = 1)
 ```
 
-We can also generate an upset plot to visualize patient overlap across testing layers.
+An upset plot to visualize patient overlap across testing layers.
 
 ```{r upsetplot_new, include=TRUE, eval=TRUE, fig.width=5, fig.align='center'}
 upsetplot(object = testing, order.by = "freq")
@@ -270,7 +269,7 @@ predictions <- predict(object = training, testing = testing)
 print(predictions)
 ```
 
-Prediction performances for layer-specific levels and the meta-layer are estimated. We use the Brier Score (BS) to assess calibration performance and the Area Under the Curve (AUC) to evaluate classification accuracy.
+Prediction performances for layer-specific levels and the meta-layer are estimated. Brier Score (BS) is utilized to assess calibration performance and the Area Under the Curve (AUC) to evaluate classification accuracy.
 
 ```{r brier, include=TRUE, eval=TRUE, message = FALSE}
 pred_values <- predictions$predicted_values
@@ -292,13 +291,13 @@ rownames(perf_bs) <- c("BS", "AUC")
 print(perf_bs)
 ```
 
-As expected, the performance of the meta-learner in terms of Brier Score falls between the worst and best modality-specific performance measures. For AUC, the meta-learner performs as well as the best modality-specific learner. We observe that performance on protein abundance is the worst, consistent with its lowest assigned weight. There is a reversal in the weight order between the methylation layer and gene expression, likely due to discrepancies in the individuals used for performance computation. The performance difference between these two modalities is relatively small, approximately $0.05$.
+As expected, the performance of the meta-learner in terms of Brier Score is not the best; it falls between the worst and best modality-specific performance measures. For AUC, the meta-learner performs as well as the best modality-specific learner. We observe that performance on protein abundance is the worst, consistent with its lowest assigned weight. There is a reversal in the weight order between the methylation layer and gene expression. However, the performance difference between these two modalities is relatively small, approximately $0.05$.
 
 ## E - Interface and wrapping
 
 This section explains how to resolve argument discrepancies when the original function does not conform to the `fuseMLR` format introduced in [C.1 - Creating a training](#c.1---creating-a-training). These discrepancies can occur in input (argument names) or output formats of the user-provided functions.
 
-At the input level, we distinguish common supervised learning arguments from method specific arguments. The common arguments are a matrix ```x``` of independent variables and  ```y``` representing a response variable. If the provided original function (variable selection or learning function) does not have these two arguments, then discrepancies must be resolved. Moreover, the ```predict``` extending the generic predict function must allow arguments ```object``` and ```data```. If this is not the case, discrepancies must be resolved.
+At the input level, we distinguish common supervised learning arguments from method specific arguments. The common arguments are a matrix ```x``` of independent variables and  ```y``` representing a response variable. If the provided original function (variable selection or learning function) does not have these two arguments, then discrepancies must be resolved. Moreover, the ```predict``` function extending the generic `R` predict function must allow arguments ```object``` and ```data```. If this is not the case, discrepancies must be resolved.
 
 The provided learner must return a model compatible with an extension of the generic `predict` function (e.g., `predict.glmnet` for `glmnet` models). The `predict` function should return either a vector of predictions or a `list` with a `predictions` field (a vector of predicted values). For binary classification (classes $0$ and $1$), learners can return a two-column `matrix` or `data.frame` of class probabilities, where the second column represents the probability of class $1$ (used by `fuseMLR`) and the first column that of $0$ (ignored by `fuseMLR`). For variable selection, the output should be a vector of selected variables. If these criteria are not met, discrepancies must be resolved.
 
