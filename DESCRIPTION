@@ -67,3 +67,4 @@ Collate:
     'testingFunctions.R'
     'trainingFunctions.R'
 VignetteBuilder: knitr, rmarkdown
+BugReports: https://github.com/imbs-hl/fuseMLR/issues
