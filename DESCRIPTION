@@ -1,9 +1,9 @@
 Package: fuseMLR
 Type: Package
-Title: Fuse machine leaning in R
-Version: 0.1.5
+Title: Fusing machine learning in R
+Version: 1.0.0
 Author: Cesaire J. K. Fouodo
-Maintainer: The package maintainer <cesaire.kuetefouodo@uni-luebeck.de>
+Maintainer: Cesaire J. K. Fouodo <cesaire.kuetefouodo@uni-luebeck.de>
 Description: Recent technological advances have enable the simultaneous collection
     of multi-omics data i.e., different types or modalities of molecular data, 
     presenting challenges for integrative prediction modeling due to the heterogeneous,
