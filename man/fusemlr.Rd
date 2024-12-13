@@ -53,5 +53,5 @@ object which can be used for predictions.
 Fouodo C.J.K, Bleskina M. and Szymczak S. (2024). fuseMLR: An R package for integrative prediction modeling of multi-omics data, paper submitted.\cr
 }
 \seealso{
-\link{extractModel} and \link{extractData}.
+\link{createTrainLayer}, \link{createTrainMetaLayer}, \link{extractModel} and \link{extractData}.
 }

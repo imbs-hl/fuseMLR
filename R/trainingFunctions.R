@@ -351,7 +351,7 @@ varSelection = function (training,
 #'
 #' @return
 #' The current object is returned, with each learner trained on each layer.
-#' @seealso [extractModel] and [extractData].
+#' @seealso [createTrainLayer], [createTrainMetaLayer], [extractModel] and [extractData].
 #' @export
 #'
 #' @references
