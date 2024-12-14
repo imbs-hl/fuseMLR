@@ -7,3 +7,9 @@
 ^\.covrignore
 ^doc$
 ^Meta$
+^\.*.DS_Store
+^\.*.Rhistory
+^\.*.git
+vignettes/figure-gfm/
+^..Rcheck
+
