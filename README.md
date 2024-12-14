@@ -1,7 +1,7 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/imbs-hl/fuseMLR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/imbs-hl/fuseMLR/actions/workflows/R-CMD-check.yaml)
-[![codecov](https://codecov.io/github/imbs-hl/fuseMLR/graph/badge.svg?token=SZU7NGK8G8)](https://codecov.io/github/imbs-hl/fuseMLR)
+[![codecov](https://app.codecov.io/github/imbs-hl/fuseMLR/graph/badge.svg?token=SZU7NGK8G8)](https://app.codecov.io/github/imbs-hl/fuseMLR)
 [![Lifecycle:
 Stable](https://img.shields.io/badge/lifecycle-Stable-green.svg)](https://lifecycle.r-lib.org/articles/stages.html#Stable)
 [![CRAN
