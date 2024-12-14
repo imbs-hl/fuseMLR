@@ -120,7 +120,7 @@ createTraining = function (id,
 #' @export
 #'
 #' @references
-#' Fouodo C.J.K, Bleskina M. and Szymczak S. (2024). fuseMLR: An R package for integrative prediction modeling of multi-omics data, paper submitted.\cr
+#' Fouodo C.J.K, Bleskina M. and Szymczak S. (2024). fuseMLR: An R package for integrative prediction modeling of multi-omics data, paper submitted.
 createTrainLayer = function (training,
                              train_layer_id,
                              train_data,
@@ -355,7 +355,7 @@ varSelection = function (training,
 #' @export
 #'
 #' @references
-#' Fouodo C.J.K, Bleskina M. and Szymczak S. (2024). fuseMLR: An R package for integrative prediction modeling of multi-omics data, paper submitted.\cr
+#' Fouodo C.J.K, Bleskina M. and Szymczak S. (2024). fuseMLR: An R package for integrative prediction modeling of multi-omics data, paper submitted.
 fusemlr = function (training,
                     ind_subset = NULL,
                     use_var_sel = FALSE,
@@ -386,6 +386,8 @@ fusemlr = function (training,
 #' A new testing object to be predicted.
 #' @param ind_subset `vector` \cr
 #' Vector of IDs to be predicted.
+#' @param ... `any` \cr
+#' Further arguments passed to or from other methods.
 #'
 #' @return
 #' The final predicted object. All layers and the meta layer are predicted.
@@ -393,7 +395,11 @@ fusemlr = function (training,
 #' @method predict Training
 predict.Training = function (object,
                              testing,
-                             ind_subset = NULL) {
+                             ind_subset = NULL,
+                             ...) {
+  if (!inherits(object, "Training")) {
+    stop("Error: 'object' must be a Training object.")
+  }
   predictions = object$predict(testing = testing,
                                ind_subset = ind_subset)
   return(predictions)
@@ -435,7 +441,7 @@ extractData = function (object) {
 #'
 #' @param object `Training` \cr
 #' The [Training] object of interest.
-#' @param ... \cr
+#' @param ... `any` \cr
 #' Further arguments.
 #'
 #' @export
@@ -450,7 +456,7 @@ summary.Training = function (object, ...) {
 #'
 #' @param object `Training or Testing` \cr
 #' Training or testing object for each the upset plot will be created.
-#' @param ... \cr
+#' @param ... `any` \cr
 #' Further arguments to be passed to the \code{upset} function from package \code{UpSetR}.
 #'
 #' @export

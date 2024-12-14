@@ -10,7 +10,7 @@ upsetplot(object, ...)
 \item{object}{\verb{Training or Testing} \cr
 Training or testing object for each the upset plot will be created.}
 
-\item{...}{\cr
+\item{...}{\code{any} \cr
 Further arguments to be passed to the \code{upset} function from package \code{UpSetR}.}
 }
 \description{

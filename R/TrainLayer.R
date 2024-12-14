@@ -41,7 +41,7 @@ TrainLayer <- R6Class("TrainLayer",
                         },
                         #' @description
                         #' Printer
-                        #' @param ... (any) \cr
+                        #' @param ... `any`
                         #'
                         print = function (...){
                           if (!private$status) {

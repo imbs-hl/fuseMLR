@@ -21,7 +21,6 @@
 #' x = data.frame(x1 = runif(n = 50L, min = 0, max = 1))
 #' y = sample(x = 0L:1L, size = 50L, replace = TRUE)
 #' my_best_model = bestLayerLearner(x = x, y = y)
-#'
 bestLayerLearner = function (x, y, perf = NULL) {
   if (!is.data.frame(x)) {
     stop("x must be a data.frame.")

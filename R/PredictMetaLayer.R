@@ -29,7 +29,7 @@ PredictMetaLayer <- R6Class("PredictMetaLayer",
                        },
                        #' @description
                        #' Printer
-                       #' @param ... (any) \cr
+                       #' @param ... `any`
                        #'
                        print = function(...) {
                          cat("Class: PredictMetaLayer\n")

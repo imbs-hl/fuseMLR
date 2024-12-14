@@ -84,7 +84,7 @@ Printer
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{(any) \cr}
+\item{\code{...}}{\code{any}}
 }
 \if{html}{\out{</div>}}
 }
@@ -101,7 +101,7 @@ Printer
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{(any) \cr}
+\item{\code{...}}{\code{any}}
 }
 \if{html}{\out{</div>}}
 }
@@ -135,7 +135,7 @@ Name of the argument to pass the response variable in the original learning func
 \item{\code{object}}{\code{character} \cr
 Name of the argument to pass the model in the original predicting function.}
 
-\item{\code{data}}{\cr
+\item{\code{data}}{\code{character} \cr
 Name of the argument to pass new data in the original predicting function.}
 
 \item{\code{extract_pred_fct}}{\code{character} or \code{function} \cr

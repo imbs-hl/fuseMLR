@@ -22,7 +22,7 @@ PredictLayer <- R6Class("PredictLayer",
                           },
                           #' @description
                           #' Printer
-                          #' @param ... (any) \cr
+                          #' @param ... `any`
                           #'
                           print = function (...){
                             cat(sprintf("PredictLayer    : %s\n", private$id))

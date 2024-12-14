@@ -4,7 +4,7 @@
 \alias{predict.Training}
 \title{predict.Training}
 \usage{
-\method{predict}{Training}(object, testing, ind_subset = NULL)
+\method{predict}{Training}(object, testing, ind_subset = NULL, ...)
 }
 \arguments{
 \item{object}{\code{Training} \cr
@@ -15,6 +15,9 @@ A new testing object to be predicted.}
 
 \item{ind_subset}{\code{vector} \cr
 Vector of IDs to be predicted.}
+
+\item{...}{\code{any} \cr
+Further arguments passed to or from other methods.}
 }
 \value{
 The final predicted object. All layers and the meta layer are predicted.

@@ -17,8 +17,8 @@ Data <- R6Class("Data",
                   #' Object ID.
                   #' @param ind_col `character` \cr
                   #' Column name containing individual IDs.
-                  #' @param data_frame \cr
-                  #'  \code{data.frame} containing data.
+                  #' @param data_frame `data.frame` \cr
+                  #' `data.frame` containing data.
                   initialize = function (id, ind_col, data_frame) {
                     private$id = id
                     private$ind_col = ind_col
@@ -30,7 +30,7 @@ Data <- R6Class("Data",
                   },
                   #' @description
                   #' Printer
-                  #' @param ... (any) \cr
+                  #' @param ... `any`
                   #'
                   print = function(...) { # nocov start
                     cat("Class     : Data\n")

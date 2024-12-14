@@ -107,7 +107,7 @@ TrainData <- R6Class("TrainData",
                        },
                        #' @description
                        #' Printer
-                       #' @param ... (any) \cr
+                       #' @param ... `any`
                        #'
                        print = function (...) {
                          if ("TrainMetaLayer" %in% class(private$train_layer)) {
@@ -124,7 +124,7 @@ TrainData <- R6Class("TrainData",
                        },
                        #' @description
                        #' Summary
-                       #' @param ... (any) \cr
+                       #' @param ... `any`
                        #'
                        summary = function (...) {
                          if ("TrainMetaLayer" %in% class(private$train_layer)) {

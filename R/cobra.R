@@ -45,7 +45,6 @@
 #' @export
 #'
 #'
-
 cobra = function(x, y, tune = "epsilon", k_folds = NULL, eps = NULL){
 
   # Validate input parameters

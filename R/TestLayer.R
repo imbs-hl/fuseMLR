@@ -32,7 +32,7 @@ TestLayer <- R6Class("TestLayer",
                           },
                           #' @description
                           #' Printer
-                          #' @param ... (any) \cr
+                          #' @param ... `any`
                           #'
                           print = function (...){
                             cat(sprintf("TestLayer    : %s\n", private$id))

@@ -4,14 +4,17 @@
 \alias{predict.bestLayerLearner}
 \title{Best specific Learner prediction.}
 \usage{
-\method{predict}{bestLayerLearner}(object, data)
+\method{predict}{bestLayerLearner}(object, data, ...)
 }
 \arguments{
 \item{object}{\code{bestLayerLearner} \cr
 An object from class \link{bestLayerLearner}}
 
 \item{data}{\code{data.frame} \cr
-\code{data.frame} to be predicted.}
+New data to predicted.}
+
+\item{...}{\code{any}\cr
+Further arguments passed to or from other methods.}
 }
 \value{
 Predicted target values are returned.

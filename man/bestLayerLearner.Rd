@@ -28,5 +28,4 @@ set.seed(20240624L)
 x = data.frame(x1 = runif(n = 50L, min = 0, max = 1))
 y = sample(x = 0L:1L, size = 50L, replace = TRUE)
 my_best_model = bestLayerLearner(x = x, y = y)
-
 }

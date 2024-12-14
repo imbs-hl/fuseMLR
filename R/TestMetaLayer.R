@@ -26,7 +26,7 @@ TestMetaLayer <- R6Class("TestMetaLayer",
                           },
                           #' @description
                           #' Printer
-                          #' @param ... (any) \cr
+                          #' @param ... `any`
                           #'
                           print = function(...) {
                             cat(sprintf("TestMetaLayer: %s\n", private$id))

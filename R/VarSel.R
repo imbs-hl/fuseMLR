@@ -85,7 +85,7 @@ VarSel <- R6Class("VarSel",
                     },
                     #' @description
                     #' Printer
-                    #' @param ... (any) \cr
+                    #' @param ... `any`
                     #'
                     print = function (...) {
                       cat(sprintf("VarSel           : %s\n", private$id))
@@ -95,7 +95,7 @@ VarSel <- R6Class("VarSel",
                     },
                     #' @description
                     #' Summary
-                    #' @param ... (any) \cr
+                    #' @param ... `any`
                     #'
                     summary = function (...) {
                       cat(sprintf("      VarSel           : %s\n", private$id))

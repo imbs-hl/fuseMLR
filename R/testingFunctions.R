@@ -61,7 +61,7 @@ createTestLayer = function (testing,
 #'
 #' @param object `Testing` \cr
 #' The [Testing] object of interest.
-#' @param ... \cr
+#' @param ... `any` \cr
 #' Further arguments.
 #'
 #' @export

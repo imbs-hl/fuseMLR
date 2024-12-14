@@ -57,7 +57,7 @@ TestData <- R6Class("TestData",
                      },
                      #' @description
                      #' Printer
-                     #' @param ... (any) \cr
+                     #' @param ... `any`
                      #'
                      print = function (...) {
                        cat("Class     : TestData\n")

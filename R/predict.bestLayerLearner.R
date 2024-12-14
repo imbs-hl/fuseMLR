@@ -8,8 +8,9 @@
 #' @param object `bestLayerLearner` \cr
 #' An object from class [bestLayerLearner]
 #' @param data `data.frame` \cr
-#' \code{data.frame} to be predicted.
-#'
+#' New data to predicted.
+#' @param ... \code{any}\cr
+#' Further arguments passed to or from other methods.
 #' @return
 #' Predicted target values are returned.
 #'
@@ -25,7 +26,13 @@
 #' my_predictions <- predict(object = my_model, data = x_new)
 #'
 #'
-predict.bestLayerLearner = function (object, data) {
+predict.bestLayerLearner = function (object, data, ...) {
+  if (!inherits(object, "bestLayerLearner")) {
+    stop("'object' must be a 'bestLayerLearner'.")
+  }
+  if (!inherits(data, "data.frame")) {
+    stop("Error: 'newdata' must be an object from the class 'data.frame'.")
+  }
   if (all(names(object) %in% names(data))) {
     pred = apply(data[ , names(object), drop = FALSE], 1L, function (tmp_row) {
       for (rank in seq_along(object)) {

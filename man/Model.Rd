@@ -67,7 +67,7 @@ Printer
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{(any) \cr}
+\item{\code{...}}{\code{any}}
 }
 \if{html}{\out{</div>}}
 }
@@ -84,7 +84,7 @@ Summary
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{(any) \cr}
+\item{\code{...}}{\code{any}}
 }
 \if{html}{\out{</div>}}
 }
@@ -121,7 +121,7 @@ Getter of the individual ID column in the training data.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{(any) \cr}
+\item{\code{...}}{\code{any}}
 }
 \if{html}{\out{</div>}}
 }
@@ -148,7 +148,7 @@ Setter of the model ID.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{id}}{\cr
+\item{\code{id}}{\code{character} \cr
 ID value}
 }
 \if{html}{\out{</div>}}

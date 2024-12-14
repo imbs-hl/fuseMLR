@@ -23,7 +23,7 @@ HashTable <- R6Class("HashTable",
                        },
                        #' @description
                        #' Printer
-                       #' @param ... (any) \cr
+                       #' @param ... `any`
                        #'
                        #' @export
                        #'

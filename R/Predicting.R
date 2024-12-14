@@ -34,7 +34,7 @@ Predicting <- R6Class("Predicting",
                       #' @description
                       #' Printer
                       #'
-                      #' @param ... (any) \cr
+                      #' @param ... `any`
                       #'
                       print = function (...) {
                         cat(sprintf("Predicting   : %s\n", private$id))

@@ -14,7 +14,6 @@
 #' @param eps A \code{numeric} value representing the threshold for proximity between two predictions.
 #' @param alpha A value that determines the optimal number of learners in the neighborhood (only for alpha optimization).
 #'
-
 createWeights = function(train, test, n_train, n_test,
                           nlearners, eps, alpha) {
 

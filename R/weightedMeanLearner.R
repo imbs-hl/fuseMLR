@@ -8,7 +8,7 @@
 #' a specific learner.
 #' @param y `vector` \cr
 #' True target values. If classification, either binary or two level factor variable.
-#' @param weighted \cr
+#' @param weighted `boolean` \cr
 #' If TRUE, a weighted sum is computed. As default, weights are estimated based on Brier Score
 #' for classification setting and mean squared error for regression. Otherwise, use argument
 #' `perf` below to specify the function to use estimate learner performance.

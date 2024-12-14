@@ -52,7 +52,7 @@ Model <- R6Class("Model",
                    },
                    #' @description
                    #' Printer
-                   #' @param ... (any) \cr
+                   #' @param ... `any`
                    #'
                    print = function (...) {
                      cat("Class           : Model\n\n")
@@ -66,7 +66,7 @@ Model <- R6Class("Model",
                    },
                    #' @description
                    #' Summary
-                   #' @param ... (any) \cr
+                   #' @param ... `any`
                    #'
                    summary = function (...) {
                      cat("      Model           \n\n")
@@ -94,7 +94,7 @@ Model <- R6Class("Model",
                    #' @description
                    #' Getter of the individual ID column in the training data.
                    #'
-                   #' @param ... (any) \cr
+                   #' @param ... `any`
                    #'
                    getTrainLabel = function () {
                      train_data = private$train_data
@@ -111,7 +111,7 @@ Model <- R6Class("Model",
                    #' @description
                    #' Setter of the model ID.
                    #'
-                   #' @param id \cr
+                   #' @param id `character` \cr
                    #' ID value
                    #'
                    #' @export

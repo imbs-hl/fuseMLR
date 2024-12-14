@@ -9,8 +9,10 @@
 #' An object from class [weightedMeanLearner]
 #' @param data `data.frame` \cr
 #' \code{data.frame} to be predicted.
-#' @param na_rm \cr
+#' @param na_rm `boolean` \cr
 #' Removes NAs when TRUE.
+#' @param ... `any` \cr
+#' Further arguments.
 #'
 #' @return
 #' Predicted target values are returned.
@@ -28,7 +30,7 @@
 #' x_new <- data.frame(x1 = rnorm(10L))
 #' my_predictions <- predict(object = my_model, data = x_new)
 #'
-predict.weightedMeanLearner = function (object, data, na_rm = FALSE) {
+predict.weightedMeanLearner = function (object, data, na_rm = FALSE, ...) {
   if (all(names(object) %in% names(data))) {
     pred = apply(data[ , names(object), drop = FALSE], 1L, function (tmp_row) {
       return(weighted.mean(x = tmp_row, w = object, na.rm = na_rm))

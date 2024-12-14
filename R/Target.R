@@ -79,7 +79,7 @@ Target <- R6Class("Target",
                     },
                     #' @description
                     #' Printer
-                    #' @param ... (any) \cr
+                    #' @param ... `any`
                     #'
                     # nocov start
                     print = function (...) {
@@ -92,7 +92,7 @@ Target <- R6Class("Target",
                     # nocov end
                     #' @description
                     #' Summary
-                    #' @param ... (any) \cr
+                    #' @param ... `any`
                     #'
                     # nocov start
                     summary = function (...) {

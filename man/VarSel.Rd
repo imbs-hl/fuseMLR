@@ -81,7 +81,7 @@ Printer
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{(any) \cr}
+\item{\code{...}}{\code{any}}
 }
 \if{html}{\out{</div>}}
 }
@@ -98,7 +98,7 @@ Summary
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{(any) \cr}
+\item{\code{...}}{\code{any}}
 }
 \if{html}{\out{</div>}}
 }

@@ -27,7 +27,7 @@ PredictData <- R6Class("PredictData",
                          },
                          #' @description
                          #' Printer
-                         #' @param ... (any) \cr
+                         #' @param ... `any`
                          #'
                          print = function (...) {
                            cat("Class     : PredictData\n")

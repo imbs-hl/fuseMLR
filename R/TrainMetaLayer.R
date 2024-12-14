@@ -35,7 +35,7 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                             },
                             #' @description
                             #' Printer
-                            #' @param ... (any) \cr
+                            #' @param ... `any`
                             #'
                             print = function (...) {
                               if (!private$status) {
@@ -110,7 +110,9 @@ TrainMetaLayer <- R6Class("TrainMetaLayer",
                             #' Predicts values for the new layer taking as argument.
                             #'
                             #' @param new_layer `TrainLayer` \cr
+                            #' A trained TrainLayer object.
                             #' @param ind_subset `vector` \cr
+                            #' Index subset.
                             #'
                             #' @return
                             #' A new object with the predicted values is returned.

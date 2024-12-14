@@ -93,7 +93,7 @@ Lrner <- R6Class("Lrner",
                    },
                    #' @description
                    #' Printer
-                   #' @param ... (any) \cr
+                   #' @param ... `any`
                    #'
                    print = function (...) {
                      cat(sprintf("Learner          : %s\n", private$id))
@@ -103,7 +103,7 @@ Lrner <- R6Class("Lrner",
                    },
                    #' @description
                    #' Printer
-                   #' @param ... (any) \cr
+                   #' @param ... `any`
                    #'
                    summary = function (...) {
                      cat(sprintf("      Learner          : %s\n", private$id))
@@ -122,7 +122,7 @@ Lrner <- R6Class("Lrner",
                    #' Name of the argument to pass the response variable in the original learning function.
                    #' @param object `character` \cr
                    #' Name of the argument to pass the model in the original predicting function.
-                   #' @param data \cr
+                   #' @param data `character` \cr
                    #' Name of the argument to pass new data in the original predicting function.
                    #' @param extract_pred_fct `character` or `function` \cr
                    #' If the predict function that is called for the model does not return a vector, then

@@ -46,7 +46,7 @@ Object ID.}
 \item{\code{ind_col}}{\code{character} \cr
 Column name containing individual IDs.}
 
-\item{\code{data_frame}}{\cr
+\item{\code{data_frame}}{\code{data.frame} \cr
 \code{data.frame} containing data.}
 }
 \if{html}{\out{</div>}}
@@ -64,7 +64,7 @@ Printer
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{(any) \cr}
+\item{\code{...}}{\code{any}}
 }
 \if{html}{\out{</div>}}
 }

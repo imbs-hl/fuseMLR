@@ -48,7 +48,7 @@ Testing <- R6Class("Testing",
                    #' @description
                    #' Printer
                    #'
-                   #' @param ... (any) \cr
+                   #' @param ... `any`
                    #'
                    print = function (...) {
                      nb_layers = length(private$hash_table)
@@ -146,7 +146,7 @@ Testing <- R6Class("Testing",
                    #' @description
                    #' UpSet plot to show an overview of the overlap of individuals across various layers.
                    #'
-                   #' @param ... \cr
+                   #' @param ... `any` \cr
                    #' Further parameters to be passed to the the \code{upset} function from package \code{UpSetR}.
                    #'
                    #' @export

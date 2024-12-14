@@ -10,7 +10,7 @@
 \item{object}{\code{Training} \cr
 The \link{Training} object of interest.}
 
-\item{...}{\cr
+\item{...}{\code{any} \cr
 Further arguments.}
 }
 \description{

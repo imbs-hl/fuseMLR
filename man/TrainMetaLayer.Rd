@@ -89,7 +89,7 @@ Printer
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{(any) \cr}
+\item{\code{...}}{\code{any}}
 }
 \if{html}{\out{</div>}}
 }
@@ -153,9 +153,11 @@ Predicts values for the new layer taking as argument.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{new_layer}}{\code{TrainLayer} \cr}
+\item{\code{new_layer}}{\code{TrainLayer} \cr
+A trained TrainLayer object.}
 
-\item{\code{ind_subset}}{\code{vector} \cr}
+\item{\code{ind_subset}}{\code{vector} \cr
+Index subset.}
 }
 \if{html}{\out{</div>}}
 }

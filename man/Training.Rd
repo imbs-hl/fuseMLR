@@ -131,7 +131,7 @@ Printer
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{(any) \cr}
+\item{\code{...}}{\code{any}}
 }
 \if{html}{\out{</div>}}
 }
@@ -560,7 +560,7 @@ UpSet plot to show an overview of the overlap of individuals across various laye
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{\cr
+\item{\code{...}}{\code{any} \cr
 Further parameters to be passed to the \code{upset} function from package \code{UpSetR}.}
 }
 \if{html}{\out{</div>}}

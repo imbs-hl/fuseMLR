@@ -50,7 +50,7 @@ the layer-specific base models and the meta-model will be stored in the training
 object which can be used for predictions.
 }
 \references{
-Fouodo C.J.K, Bleskina M. and Szymczak S. (2024). fuseMLR: An R package for integrative prediction modeling of multi-omics data, paper submitted.\cr
+Fouodo C.J.K, Bleskina M. and Szymczak S. (2024). fuseMLR: An R package for integrative prediction modeling of multi-omics data, paper submitted.
 }
 \seealso{
 \link{createTrainLayer}, \link{createTrainMetaLayer}, \link{extractModel} and \link{extractData}.
