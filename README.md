@@ -6,8 +6,7 @@
 Stable](https://img.shields.io/badge/lifecycle-Stable-green.svg)](https://lifecycle.r-lib.org/articles/stages.html#Stable)
 [![CRAN
 version](https://www.r-pkg.org/badges/version/fuseMLR)](https://cran.r-project.org/package=fuseMLR)
-[![Stack
-Overflow](https://img.shields.io/badge/stackoverflow-questions-orange.svg)](https://stackoverflow.com/questions/tagged/fuseMLR)
+
 <!-- badges: end -->
 
 ### fuseMLR

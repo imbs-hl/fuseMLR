@@ -1,13 +1,12 @@
 Package: fuseMLR
 Type: Package
-Title: Fusing machine learning in R
+Title: Fusing Machine Learning in R
 Version: 0.0.1
 Authors@R: c(person(given = c("Cesaire", "J."),
                       family = c("K.", "Fouodo"),
                       role = c("aut", "cre"),
                       email = "cesaire.kuetefouodo@uni-luebeck.de")
             )
-Author: Cesaire J. K. Fouodo
 Maintainer: Cesaire J. K. Fouodo <cesaire.kuetefouodo@uni-luebeck.de>
 Description: Recent technological advances have enable the simultaneous collection
     of multi-omics data i.e., different types or modalities of molecular data, 
