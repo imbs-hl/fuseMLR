@@ -5,7 +5,7 @@
 [![Lifecycle:
 Stable](https://img.shields.io/badge/lifecycle-Stable-green.svg)](https://lifecycle.r-lib.org/articles/stages.html#Stable)
 [![CRAN
-v0.0.1](https://www.r-pkg.org/badges/version/fuseMLR)](https://cran.r-project.org/web/packages/fuseMLR/)
+v0.0.1](https://www.r-pkg.org/badges/version/fuseMLR?refresh)](https://cran.r-project.org/web/packages/fuseMLR/)
 
 <!-- badges: end -->
 
