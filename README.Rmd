@@ -39,6 +39,12 @@ The general architecture of `fuseMLR` includes the collection classes `Training`
 
 ### Installation
 
+Install the release version from CRAN with
+
+```R
+install.packages("fuseMLR")
+```
+
 Install the development version from GitHub with
 
 ```R

@@ -4,7 +4,8 @@
 [![codecov](https://codecov.io/github/imbs-hl/fuseMLR/graph/badge.svg?token=SZU7NGK8G8)](https://app.codecov.io/github/imbs-hl/fuseMLR/)
 [![Lifecycle:
 Stable](https://img.shields.io/badge/lifecycle-Stable-green.svg)](https://lifecycle.r-lib.org/articles/stages.html#Stable)
-[![CRAN v0.0.1](https://www.r-pkg.org/badges/version/fuseMLR?refresh)](https://cran.r-project.org/web/packages/fuseMLR/)
+[![CRAN
+v0.0.1](https://www.r-pkg.org/badges/version/fuseMLR?refresh)](https://cran.r-project.org/web/packages/fuseMLR/)
 
 <!-- badges: end -->
 
@@ -57,6 +58,12 @@ and train layer-specfic learner and the meta-learner. Analogously, a
 `Testing` can be set up and predicted after the training.
 
 ### Installation
+
+Install the release version from CRAN with
+
+``` r
+install.packages("fuseMLR")
+```
 
 Install the development version from GitHub with
 
