@@ -29,11 +29,13 @@ bestLayerLearner = function (x, y, perf = NULL) {
     if (is.numeric(y) & (length(unique(y)) > 2)) {
       perf_values = lapply(X = x, FUN = function (predicted) {
         value_esti <- mean(x = (predicted - y)^2, na.rm = TRUE)
+        # nocov start
         if (value_esti == 0) {
           # Avoid Brier score equals value
           value_esti = .Machine$double.eps
         }
         return(value_esti)
+        # nocov end
       })
     } else {
       if ((length(unique(y)) > 2) | is.character(y)) {
