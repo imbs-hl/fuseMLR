@@ -28,7 +28,11 @@ bestLayerLearner = function (x, y, perf = NULL) {
   if (is.null(perf)) {
     if (is.numeric(y) & (length(unique(y)) > 2)) {
       perf_values = lapply(X = x, FUN = function (predicted) {
-        mean(x = (predicted - y)^2, na.rm = TRUE)
+        value_esti <- mean(x = (predicted - y)^2, na.rm = TRUE)
+        if (value_esti == 0) {
+          # Avoid Brier score equals value
+          value_esti = .Machine$double.eps
+        }
       })
     } else {
       if ((length(unique(y)) > 2) | is.character(y)) {
@@ -51,7 +55,7 @@ bestLayerLearner = function (x, y, perf = NULL) {
     # nocov start
     if (is.function(perf)) {
       arg_names <- names(formals(perf))
-      if (arg_names %in% c("observed", "predicted")) {
+      if (all(arg_names %in% c("observed", "predicted"))) {
         # Function has been provided to estimated performance of layer-specific learner
         perf_values = lapply(X = x, FUN = function (predicted) {
           perf_estimate = do.call(what = perf, args = list(observed = y,
