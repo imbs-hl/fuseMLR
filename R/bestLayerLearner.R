@@ -33,6 +33,7 @@ bestLayerLearner = function (x, y, perf = NULL) {
           # Avoid Brier score equals value
           value_esti = .Machine$double.eps
         }
+        return(value_esti)
       })
     } else {
       if ((length(unique(y)) > 2) | is.character(y)) {
