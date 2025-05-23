@@ -103,8 +103,9 @@ Data <- R6Class("Data",
                           }
                         }
                       })
-                      imputed_data = as.data.frame(t(as.data.frame(imputed_data)))
-                      private$data_frame[ , name_current_data] = imputed_data
+                      # imputed_data = as.data.frame(t(as.data.frame(imputed_data)))
+                      imputed_data = do.call(what = "cbind", args = imputed_data)
+                      private$data_frame[ , names(imputed_data)] = imputed_data
                       if (target_name %in% name_current_data) {
                         private$data_frame[ , target_name] = target_values
                       }
