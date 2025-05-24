@@ -76,6 +76,8 @@ Data <- R6Class("Data",
                                      impute_param,
                                      target_name) {
                     # nocov start
+                    ### print("I am here before....")
+                    ### print(private$data_frame)
                     current_data = private$data_frame
                     current_data[ , private$ind_col] = NULL
                     # R is faster when working column wise.
@@ -84,6 +86,7 @@ Data <- R6Class("Data",
                       target_values = current_data[ , target_name]
                       current_data[ , target_name] = NULL
                     }
+                    name_modality_data = names(current_data)
                     current_data = as.data.frame(t(current_data))
                     if (is.null(impute_fct)) {
                       imputed_data = lapply(current_data, function(col_var) {
@@ -104,8 +107,10 @@ Data <- R6Class("Data",
                         }
                       })
                       # imputed_data = as.data.frame(t(as.data.frame(imputed_data)))
-                      imputed_data = do.call(what = "cbind", args = imputed_data)
-                      private$data_frame[ , names(imputed_data)] = imputed_data
+                      imputed_data = do.call(what = "rbind", args = imputed_data)
+                      ### print("I can print colnames of imputed data...")
+                      ### print(name_modality_data)
+                      private$data_frame[ , name_modality_data] = imputed_data
                       if (target_name %in% name_current_data) {
                         private$data_frame[ , target_name] = target_values
                       }

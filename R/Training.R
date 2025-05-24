@@ -293,7 +293,7 @@ Training <- R6Class("Training",
                           target_df = private$target_obj$getData()
                           predicted_values_wide = merge(x = target_df,
                                                         y = predicted_values_wide,
-                                                        by = colnames(target_df)[1],
+                                                        by = colnames(target_df)[1L],
                                                         all.y = TRUE)
                           # Add layer specific predictions to meta layer
                           layers = self$getKeyClass()
