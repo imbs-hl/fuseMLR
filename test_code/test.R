@@ -1,4 +1,4 @@
-data("entities")
+data("multi_omics")
 
 # Training
 training <- Training$new(id = "training",
@@ -14,13 +14,13 @@ tl_meta_layer <- TrainMetaLayer$new(id = "meta_layer", training = training)
 # Training data
 train_data_geneexpr <- TrainData$new(id = "geneexpr",
                                      train_layer = tl_geneexpr,
-                                     data_frame = entities$training$geneexpr[-10, ])
+                                     data_frame = multi_omics$training$geneexpr[-10, ])
 train_data_proteinexpr <- TrainData$new(id = "proteinexpr",
                                         train_layer = tl_proteinexpr,
-                                        data_frame = entities$training$proteinexpr)
+                                        data_frame = multi_omics$training$proteinexpr)
 train_data_methylation <- TrainData$new(id = "methylation",
                                         train_layer = tl_methylation,
-                                        data_frame = entities$training$methylation)
+                                        data_frame = multi_omics$training$methylation)
 
 # Learner parameters. Same parameter values at each layer.
 same_param <- ParamLrner$new(id = "ParamRanger",
@@ -74,13 +74,13 @@ new_methylation <- TestLayer$new(id = "methylation", testing = testing)
 # TestData are required at each layers
 testing_data_geneexpr <- TestData$new(id = "geneexpr",
                                  new_layer = new_geneexpr,
-                                 data_frame = entities$testing$geneexpr)
+                                 data_frame = multi_omics$testing$geneexpr)
 testing_data_proteinexpr <- TestData$new(id = "proteinexpr",
                                     new_layer = new_proteinexpr,
-                                    data_frame = entities$testing$proteinexpr)
+                                    data_frame = multi_omics$testing$proteinexpr)
 testing_data_methylation <- TestData$new(id = "methylation",
                                     new_layer = new_methylation,
-                                    data_frame = entities$testing$methylation)
+                                    data_frame = multi_omics$testing$methylation)
 
 
 tmp_red <- training$predict(testing = testing)
