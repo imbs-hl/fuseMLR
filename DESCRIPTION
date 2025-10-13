@@ -1,7 +1,7 @@
 Package: fuseMLR
 Type: Package
 Title: Fusing Machine Learning in R
-Version: 0.0.1
+Version: 0.0.2
 Authors@R: c(person(given = c("Cesaire", "J."),
                       family = c("K.", "Fouodo"),
                       role = c("aut", "cre"),
