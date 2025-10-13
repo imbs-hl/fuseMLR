@@ -74,7 +74,7 @@ devtools::install_github("imbs-hl/fuseMLR")
 ### Usage
 
 Refer to our vignette to understand [how fuseMLR
-works](https://cran.r-project.org/web/packages/fuseMLR/vignettes/fuseMLR.html).
+works](https://CRAN.R-project.org/package=fuseMLR).
 
 © 2024 Institute of Medical Biometry and Statistics (IMBS). All rights
 reserved.
