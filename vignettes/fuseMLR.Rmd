@@ -28,7 +28,6 @@ pre[class] {
   max-height: 400px;
 }
 ```
-
 ## A - Introduction
 
 The R package **fuseMLR** offers a framework for late integrative predictive modeling using multi-omics data. 
