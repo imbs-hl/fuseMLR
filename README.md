@@ -29,7 +29,7 @@ applying the same method across all modalities. Late integration
 modeling approaches analyze each data modality separately to obtain
 modality-specific predictions. These predictions are then integrated to
 train aggregative models like Lasso, random forests, or compute the
-weighted mean of modality-specific predictions.
+weighted mean of modality-specific predictions. 
 
 We introduce the R package fuseMLR for late integration prediction
 modeling. This comprehensive package enables users to define a training
