@@ -1,11 +1,15 @@
 Package: fuseMLR
 Type: Package
 Title: Fusing Machine Learning in R
-Version: 0.0.2
+Version: 0.0.3
 Authors@R: c(person(given = c("Cesaire", "J."),
                       family = c("K.", "Fouodo"),
                       role = c("aut", "cre"),
-                      email = "cesaire.kuetefouodo@uni-luebeck.de")
+                      email = "cesaire.joris.kuete.fouodo@emory.edu"),
+             person(given = c("Marina"),
+                      family = c("Bleskina"),
+                      role = c("ctb"),
+                      email = "marina.bleskina@uni-luebeck.de")
             )
 Maintainer: Cesaire J. K. Fouodo <cesaire.kuetefouodo@uni-luebeck.de>
 Description: Recent technological advances have enable the simultaneous collection
@@ -37,7 +41,7 @@ Suggests:
 Config/testthat/edition: 3
 Depends: R (>= 3.6.0)
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Collate: 
     'Data.R'
     'HashTable.R'

@@ -20,5 +20,5 @@ A \code{data.frame} with two columns: layer and selected variables.
 Variable selection on the training object passed as argument.
 }
 \references{
-Fouodo C.J.K, Bleskina M. and Szymczak (2024). fuseMLR: An R package for integrative prediction modeling of multi-omics data, paper submitted. \cr
+Fouodo, C. J. K., Bleskina, M. & Szymczak, S. fuseMLR: an R package for integrative prediction modeling of multi-omics data. BMC Bioinformatics 26, 221 (2025). https://doi.org/10.1186/s12859-025-06248-4 \cr
 }
