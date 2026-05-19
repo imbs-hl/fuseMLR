@@ -5,6 +5,7 @@
 ^README.Rmd
 ^README.files
 ^\.covrignore
+^doc$
 ^Meta$
 ^\.*.DS_Store
 ^\.*.Rhistory
