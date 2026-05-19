@@ -20,7 +20,8 @@ test_that("VarSel: with package for variable selection", {
                             package = "Boruta",
                             varsel_fct = "Boruta",
                             varsel_param = list(num.trees = 50L,
-                                                mtry = 3L),
+                                                mtry = 3L,
+                                                getImp = Boruta::getImpRfZ),
                             train_layer = tl_ge)
     print(varsel_ge)
   })
@@ -36,7 +37,8 @@ test_that("VarSel: with package for variable selection", {
                             package = "Boruta",
                             varsel_fct = "Boruta",
                             varsel_param = list(num.trees = 50L,
-                                                mtry = 3L),
+                                                mtry = 3L,
+                                                getImp = Boruta::getImpRfZ),
                             train_layer = tl_ge)
   })
   expect_no_error({

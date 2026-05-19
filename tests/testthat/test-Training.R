@@ -142,8 +142,8 @@ test_that("Training: all tests", {
     varsel_ge <- VarSel$new(id = "varsel_geneexpr",
                             package = "Boruta",
                             varsel_fct = "Boruta",
-                            varsel_param = list(num.trees = 50L,
-                                                mtry = 3L),
+                            varsel_param = list(trees = 50L,
+                                                tries = 3L),
                             train_layer = tl_ge)
     var_sel_res <- training$varSelection()
     print(var_sel_res)

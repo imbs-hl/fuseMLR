@@ -758,8 +758,11 @@ Training <- R6Class("Training",
                                                 list(input = ids_list))
                         names(from_list_ids) = layers$key
                         param_upset$data = from_list_ids
-                        print(do.call(eval(parse(text = "UpSetR::upset")),
-                                      param_upset))
+                        #TODO: Fix me once upset is up to-date with the latest version of ggplot2. For now, I use suppressWarnings to avoid the following warning: "Warning: Ignoring unknown aesthetics: x, y"
+                        suppressWarnings({
+                          print(do.call(eval(parse(text = "UpSetR::upset")),
+                                        param_upset))
+                        })
                         invisible(TRUE)
                       },
                       #' @description

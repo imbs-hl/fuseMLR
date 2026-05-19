@@ -11,7 +11,7 @@ Authors@R: c(person(given = c("Cesaire", "J."),
                       role = c("ctb"),
                       email = "marina.bleskina@uni-luebeck.de")
             )
-Maintainer: Cesaire J. K. Fouodo <cesaire.kuetefouodo@uni-luebeck.de>
+Maintainer: Cesaire J. K. Fouodo <cesaire.joris.kuete.fouodo@emory.edu>
 Description: Recent technological advances have enable the simultaneous collection
     of multi-omics data i.e., different types or modalities of molecular data, 
     presenting challenges for integrative prediction modeling due to the heterogeneous,
